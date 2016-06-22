@@ -41,7 +41,7 @@ public class MoveListTest {
                 "Qxe4 47.Qxg7+ Kxg7 48.h6+ Kh8";
         MoveList list = new MoveList();
         list.loadFromSAN(moveText);
-        assertEquals("8/6k1/7P/6K1/pr2q3/6p1/8/8 b - - 0 96", list.getFen());
+        assertEquals("8/6k1/7P/6K1/pr2q3/6p1/8/8 b - - 0 96", list.getFEN());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class MoveListTest {
                 "Nd5 88.Ke6 Nc7+";
         MoveList list = new MoveList();
         list.loadFromSAN(moveText);
-        assertEquals("8/7R/2P1K3/3n4/8/6b1/6kp/8 b - - 6 176", list.getFen());
+        assertEquals("8/7R/2P1K3/3n4/8/6b1/6kp/8 b - - 6 176", list.getFEN());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class MoveListTest {
                 "Ra4 57.Kf2 Rxh4 58.Be3 ";
         MoveList list = new MoveList();
         list.loadFromSAN(moveText);
-        assertEquals("8/8/4k2B/4r3/7r/5P2/3R1KP1/8 w - - 0 115", list.getFen());
+        assertEquals("8/8/4k2B/4r3/7r/5P2/3R1KP1/8 w - - 0 115", list.getFEN());
 
     }
 }

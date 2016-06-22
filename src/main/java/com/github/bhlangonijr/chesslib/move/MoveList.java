@@ -614,8 +614,8 @@ public class MoveList extends ArrayList<Move> implements List<Move> {
      * @param atMoveIndex
      * @return
      */
-    public String getFen(int atMoveIndex) {
-        return getFen(atMoveIndex, true);
+    public String getFEN(int atMoveIndex) {
+        return getFEN(atMoveIndex, true);
     }
 
     /**
@@ -626,7 +626,7 @@ public class MoveList extends ArrayList<Move> implements List<Move> {
      * @param includeCounters
      * @return
      */
-    public String getFen(int atMoveIndex, boolean includeCounters) {
+    public String getFEN(int atMoveIndex, boolean includeCounters) {
         final Board b = getBoard();
         if (!b.getFEN().equals(getStartFEN())) {
             b.loadFromFEN(getStartFEN());
@@ -651,8 +651,8 @@ public class MoveList extends ArrayList<Move> implements List<Move> {
      *
      * @return
      */
-    public String getFen() {
-        return getFen(this.size() - 1);
+    public String getFEN() {
+        return getFEN(this.size() - 1);
     }
 
     /**

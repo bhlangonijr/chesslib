@@ -113,9 +113,19 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Execute the move in the board
+     *
+     * @param move
+     */
+    public boolean doMove(final Move move) {
+        return doMove(move, true);
+    }
+
+    /**
      * Execute the move on the board
      *
      * @param move
+     * @param fullValidation
      */
     public boolean doMove(final Move move, boolean fullValidation) {
 
