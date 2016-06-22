@@ -1,0 +1,100 @@
+[Event "CCT 13"]
+[Site "FICS, San Jose, California US"]
+[Date "2011.01.29"]
+[Round "2"]
+[White "Rookie"]
+[Black "JabbaChess"]
+[Result "1-0"]
+[ECO "C00"]
+[WhiteElo "2285"]
+[BlackElo "1680"]
+[Annotator "Albert Silver"]
+[PlyCount "67"]
+[EventDate "2011.??.??"]
+[TimeControl "3000+3"]
+
+1. e4 e6 2. d4 a6 3. Nf3 d5 4. exd5 exd5 5. Bd3 Nc6 6. O-O Nf6 7. Re1+ Be7 8.
+c3 O-O 9. Nbd2 Re8 10. Ne5 Nxe5 11. dxe5 Nd7 12. Nb3 g6 13. Nd4 c5 14. Nf3 b5
+15. Bh6 Bb7 16. h4 Bxh4 17. a4 b4 18. cxb4 cxb4 19. Qc1 Be7 20. Qf4 Nc5 21.
+Rad1 Bc6 {#} 22. e6 $1 {A nice combination that takes apart Black's position
+with exemplary precision. The variations are no less interesting than the game
+continuation, as is typical.} f6 ({The engine obviously goes for the most
+resistant defense, however the question is what would happen if Black were to
+play a more fallible and human continuation such as} 22... Nxe6 $2 {The answer
+is} 23. Rxe6 $1 fxe6 24. Ne5 $1 {The double attack between mate and the bishop
+on c6 is decisive.} Rf8 25. Qg4 $1 {and JabbaChess would be forced to leave
+the bishop since} Be8 {trying to protect g6, fails to} 26. Bxg6 hxg6 27. Nxg6
+Kh7 28. Nxf8+ Bxf8 29. Bxf8 Bg6 30. Bxb4) 23. Nh4 Bxa4 $2 {This is certainly
+one of the more suicidal ways to go down.} ({but even the better} 23... Bf8 {
+would not hold.} 24. Nxg6 hxg6 25. Qg4 g5 (25... Bxh6 26. Qxg6+ Bg7 27. Qf7+
+Kh8 28. Re3 f5 29. Rh3+) 26. Qh5 Qe7 27. Bg6 Nxe6 28. Bxf8 Rxf8 29. Rxe6 Qxe6
+30. Qh7#) (23... g5 24. Bxh7+ Kh8 25. Qf5 Rg8 26. Bxg8 Qxg8 27. Ng6+ Kh7 28.
+Nxe7+) 24. Nxg6 Nxe6 25. Rxe6 Bd6 26. Qg4 {As the Borg famously said,
+"Resistance is futile". (Star Trek Next Gen for those who have no idea what I
+am talking about).} Bh2+ 27. Kxh2 Qc7+ 28. Kg1 Qg7 {#} 29. Re7 {Typical
+computer weirdness. Any normal person would take the queen, but then again,
+any normal player would have resigned instead of playing Qg7...} Rxe7 ({Just
+in case you wondered how White would finish off Black if the bishop was
+captured with} 29... Qxh6 30. Qe6#) 30. Nxe7+ Kf7 31. Qxg7+ Ke8 32. Nxd5 Ra7
+33. Bb5+ axb5 34. Nxf6# 1-0
+
+[Event "CCT 13"]
+[Site "FICS, San Jose, California US"]
+[Date "2011.01.29"]
+[Round "2"]
+[White "Chirone"]
+[Black "crafty"]
+[Result "1-0"]
+[ECO "C67"]
+[WhiteElo "2557"]
+[BlackElo "2308"]
+[Annotator "Albert Silver"]
+[PlyCount "143"]
+[EventDate "2011.??.??"]
+[TimeControl "3000+3"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. O-O Nxe4 5. d4 Be7 6. Qe2 Nd6 7. Bxc6 bxc6 8.
+dxe5 Nb7 9. Nd4 O-O 10. Nc3 Bc5 11. Be3 Re8 12. f4 d6 13. Rad1 Bd7 14. Qf3 Bb6
+15. Bf2 Qc8 16. h3 c5 17. Ndb5 d5 18. Rxd5 Bc6 19. Na3 Ba5 20. Nd1 Bxd5 21.
+Qxd5 Bb6 22. Nc4 {#} Qe6 {Although the engines seem incapable of understanding
+it, this is a serious mistake.} 23. Qxe6 fxe6 24. Bh4 Nd8 25. Nde3 Rf8 26. g3
+Nc6 27. Kg2 h6 28. g4 Rae8 29. a3 a5 30. a4 Rf7 31. c3 {#The engines, bless
+their little souls, think this is almost equal, but Black is completely lost
+here. If this doesnt seem obvious, count the pieces. If you counted four for
+Black, count again. Hint: that is a pawn on b6, not a bishop. White's plan is
+simple: centralize and push f5.} Ba7 (31... Rd7 {might seem logical, but the
+truth is the rook is biting on dust. it has nowhere to penetrate and the king
+will soon be on e4 where even Rd3 would be expelled.}) 32. Bg3 Rd7 33. f5 Bb6
+34. Kf3 Ba7 35. Ke4 Rf7 36. Rd1 Kh7 37. Bh4 Bb8 {#} 38. f6 $1 g5 (38... gxf6
+39. Bxf6 {Houdini actually suggested exf6, but that makes no sense to me. This
+is the logical way to continue with Ng2-f4 and h4-g5-g6 and it is over.}) 39.
+Bf2 Ba7 40. h4 Rg8 41. hxg5 hxg5 42. Nf1 Kg6 43. Nfd2 Rh7 44. Nf3 Rd8 45. Rg1
+Rh3 46. Be3 Bb6 47. Bc1 Rxf3 48. Kxf3 Rd5 49. Ke4 Nd8 50. Bd2 Nf7 51. Rg2 Ba7
+52. Nxa5 Rxe5+ 53. Kf3 Rd5 54. Nc6 Bb6 55. Ne7+ Kxf6 56. Nxd5+ exd5 57. b4 Ne5+
+58. Ke2 cxb4 59. cxb4 Kg6 60. a5 Ba7 61. a6 c6 62. Rf2 Nxg4 63. Rf8 Ne5 64.
+Rg8+ Kf5 65. Bxg5 Nd7 66. Ra8 Bb6 67. Bd8 Bg1 68. Rc8 d4 69. Rxc6 d3+ 70. Kd2
+Ne5 71. Rc1 Bd4 72. b5 1-0
+
+[Event "CCT 13"]
+[Site "FICS, San Jose, California US"]
+[Date "2011.01.29"]
+[Round "3"]
+[White "JabbaChess"]
+[Black "CapivaraLK"]
+[Result "1-0"]
+[ECO "E62"]
+[WhiteElo "1680"]
+[Annotator "Albert Silver"]
+[PlyCount "64"]
+[EventDate "2011.??.??"]
+[TimeControl "3000+3"]
+
+1. d4 Nf6 2. c4 g6 3. Nf3 Bg7 4. g3 O-O 5. Nc3 d6 6. Bg2 Nc6 7. O-O Bg4 8. d5
+Na5 9. b3 Nxd5 10. Nxd5 Bxa1 11. Bd2 Bxf3 12. Bxf3 Nxc4 13. bxc4 Bg7 14. Qb3 c6
+15. Nb4 e5 16. Rd1 f5 17. Bc3 Rf7 18. c5 d5 $2 {#} 19. Nxd5 $1 {Very nice.}
+cxd5 20. Bxd5 Qc7 21. Be6 {Threatening Rd7} Kf8 (21... Raf8 22. Rd7 Qxc5 23.
+Qxb7 Qb6 (23... Qxc3 24. Rxf7) 24. Rxf7 Qxb7 25. Rxb7+ Kh8) 22. Bb4 $1 {Oh the
+pain...} Re7 23. c6 Qxc6 24. Bg8 {Now Qf7 mate is hanging.} Qf6 25. Bxh7 {
+Sorry, did I say Qf7 mate? I meant Qg8 mate.} Ke8 26. Qg8+ Bf8 27. Bxg6+ Qxg6
+28. Qxg6+ Rf7 29. Qe6+ Re7 30. Bxe7 Bxe7 31. Rd7 Kf8 32. Qxe7+ Kg8 1-0
+
