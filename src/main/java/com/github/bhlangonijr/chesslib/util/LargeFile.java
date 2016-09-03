@@ -27,7 +27,7 @@ public class LargeFile implements Iterable<String> {
         reader = new BufferedReader(new FileReader(filePath));
     }
 
-    public void Close() {
+    public void close() {
         try {
             reader.close();
         } catch (Exception ex) {
