@@ -95,4 +95,35 @@ public class PgnHolderTest {
 
     }
 
+    @Test
+    public void testPGNLoad4() throws Exception {
+
+        PgnHolder pgn = new PgnHolder("src/test/resources/redqueen.pgn");
+        pgn.loadPgn();
+        Game game = pgn.getGame().get(1);
+        game.loadMoveText();
+
+        assertEquals(270, pgn.getGame().size());
+        assertEquals("Amoeba 1.2 64-bit", game.getWhitePlayer().getName());
+        assertEquals("RedQueen 1.1.98 64-bit", game.getBlackPlayer().getName());
+        assertEquals("2016.06.08", game.getDate());
+        assertEquals(1, game.getRound().getNumber());
+        assertEquals("1-0", game.getResult().getDescription());
+        assertEquals("0", game.getPlyCount());
+        assertEquals(null, game.getAnnotator());
+        assertEquals(0, game.getWhitePlayer().getElo());
+        assertEquals(0, game.getBlackPlayer().getElo());
+
+        assertEquals("B90", game.getEco());
+        assertEquals(97, game.getHalfMoves().size());
+        assertEquals("e2e4 c7c5 g1f3 d7d6 d2d4 c5d4 f3d4 g8f6 b1c3 a7a6 f2f3 d8b6 d4b3 e7e6 g2g4 b8c6 d1e2 b6c7 c1e3 " +
+                "b7b5 e1c1 f6d7 c1b1 d7b6 e2f2 a8b8 h2h4 f8e7 f1b5 a6b5 c3b5 c7b7 e3b6 e8g8 b6c7 b7b5 h4h5 c8a6 h5h6 " +
+                "g7g6 c7d6 b5e2 f2g3 b8d8 b3c1 e7d6 d1d6 e2b5 h1d1 b5g5 d6d8 f8d8 d1d8 g5d8 f3f4 c6d4 f4f5 e6f5 e4f5 " +
+                "a6b7 g3f4 d4f3 c1d3 b7e4 d3f2 e4d5 b2b3 g8h8 f2d3 g6g5 f4e3 d5e4 b1b2 e4d5 e3c5 f7f6 a2a4 f3h2 a4a5 " +
+                "h2g4 c5d4 g4h6 d3b4 g5g4 b4d5 g4g3 a5a6 g3g2 a6a7 h6g8 d4c5 g2g1q c5g1 d8d5 g1b6 d5e5 b2a3",
+                game.getHalfMoves().toString());
+
+    }
+
+
 }

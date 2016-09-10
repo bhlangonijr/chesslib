@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 public class PgnHolder {
 
     private final static Pattern propertyPattern = Pattern.compile("\\[.* \".*\"\\]");
+    private final static String UTF8_BOM = "\uFEFF";
     private final Map<String, Event> event = new HashMap<String, Event>();
     private final Map<String, Player> player = new HashMap<String, Player>();
     private final List<Game> game = new ArrayList<Game>();
@@ -124,203 +125,208 @@ public class PgnHolder {
         Player blackPlayer = null;
         StringBuilder moveText = null;
         boolean moveTextParsing = false;
-        for (String line : file) {
-            try {
-                line = line.trim();
-                if (isProperty(line)) {
-                    PGNProperty p = parsePGNProperty(line);
-                    if (p != null) {
-                        String tag = p.name.toLowerCase().trim();
-                        //begin
-                        if (tag.equals("event")) {
-                            if (moveTextParsing && moveText != null && game != null &&
-                                    game.getHalfMoves().size() == 0) {
+        try {
+            for (String line : file) {
+                try {
+                    line = line.trim();
+                    if (line.startsWith(UTF8_BOM)) {
+                        line = line.substring(1);
+                    }
+                    if (isProperty(line)) {
+                        PGNProperty p = parsePGNProperty(line);
+                        if (p != null) {
+                            String tag = p.name.toLowerCase().trim();
+                            //begin
+                            if (tag.equals("event")) {
+                                if (moveTextParsing && moveText != null && game != null &&
+                                        game.getHalfMoves().size() == 0) {
+                                    setMoveText(game, moveText);
+                                }
+                                size++;
+                                for (PGNLoadListener l : getListener()) {
+                                    l.notifyProgress(size);
+                                }
+                                game = null;
+                                round = null;
+                                whitePlayer = null;
+                                blackPlayer = null;
+                                event = getEvent().get(p.value);
+                                if (event == null) {
+                                    event = GameFactory.newEvent(p.value);
+                                    event.setPgnHolder(this);
+                                    getEvent().put(p.value, event);
+                                }
+                                moveText = new StringBuilder();
+
+                            } else if (tag.equals("site")) {
+                                if (event != null) {
+                                    event.setSite(p.value);
+                                }
+                            } else if (tag.equals("date")) {
+                                if (event != null) {
+                                    event.setStartDate(p.value);
+                                }
+                            } else if (tag.equals("round")) {
+                                if (event != null) {
+                                    int r = 1;
+                                    try {
+                                        r = Integer.parseInt(p.value);
+                                    } catch (Exception e1) {
+                                    }
+                                    r = Math.max(0, r);
+                                    round = event.getRound().get(r);
+                                    if (round == null) {
+                                        round = GameFactory.newRound(event, r);
+                                        event.getRound().put(r, round);
+                                    }
+                                }
+                            } else if (tag.equals("white")) {
+                                if (round == null) {
+                                    round = GameFactory.newRound(event, 1);
+                                    event.getRound().put(1, round);
+                                }
+                                if (game == null) {
+                                    game = GameFactory.newGame((size - 1) + "", round);
+                                    game.setDate(event.getStartDate());
+                                    round.getGame().add(game);
+                                    getGame().add(size - 1, game);
+                                }
+
+                                Player player = getPlayer().get(p.value);
+                                if (player == null) {
+                                    player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
+                                    player.setId(p.value);
+                                    player.setDescription(p.value);
+                                    getPlayer().put(p.value, player);
+                                }
+                                game.setWhitePlayer(player);
+                                whitePlayer = player;
+
+                            } else if (tag.equals("black")) {
+                                if (round == null) {
+                                    round = GameFactory.newRound(event, 1);
+                                    event.getRound().put(1, round);
+                                }
+                                if (game == null) {
+                                    game = GameFactory.newGame((size - 1) + "", round);
+                                    game.setDate(event.getStartDate());
+                                    round.getGame().add(game);
+                                    getGame().add(size - 1, game);
+                                }
+                                Player player = getPlayer().get(p.value);
+                                if (player == null) {
+                                    player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
+                                    player.setId(p.value);
+                                    player.setDescription(p.value);
+                                    getPlayer().put(p.value, player);
+                                }
+                                game.setBlackPlayer(player);
+                                blackPlayer = player;
+
+                            } else if (tag.equals("result")) {
+                                if (game != null) {
+                                    GameResult r = GameResult.fromNotation(p.value);
+                                    game.setResult(r);
+                                }
+                            } else if (tag.equals("plycount")) {
+                                if (game != null) {
+                                    game.setPlyCount(p.value);
+                                }
+                            } else if (tag.equals("termination")) {
+                                if (game != null) {
+                                    try {
+                                        game.setTermination(Termination.fromValue(p.value.toUpperCase()));
+                                    } catch (Exception e1) {
+                                        game.setTermination(Termination.UNTERMINATED);
+                                    }
+                                }
+                            } else if (tag.equals("timecontrol")) {
+                                if (event != null && event.getTimeControl() == null) {
+                                    try {
+                                        event.setTimeControl(TimeControl.parseFromString(p.value.toUpperCase()));
+                                    } catch (Exception e1) {
+                                        throw new PgnException("Error parsing TimeControl Tag [" + (round != null ? round.getNumber() : 1) +
+                                                ", " + event.getName() + "]: " + e1.getMessage());
+                                    }
+                                }
+                            } else if (tag.equals("annotator")) {
+                                if (game != null) {
+                                    game.setAnnotator(p.value);
+                                }
+                            } else if (tag.equals("fen")) {
+                                if (game != null) {
+                                    game.setFen(p.value);
+                                }
+                            } else if (tag.equals("eco")) {
+                                if (game != null) {
+                                    game.setEco(p.value);
+                                }
+                            } else if (tag.equals("opening")) {
+                                if (game != null) {
+                                    game.setOpening(p.value);
+                                }
+                            } else if (tag.equals("variation")) {
+                                if (game != null) {
+                                    game.setVariation(p.value);
+                                }
+                            } else if (tag.equals("whiteelo")) {
+                                if (whitePlayer != null) {
+                                    try {
+                                        whitePlayer.setElo(Integer.parseInt(p.value));
+                                    } catch (NumberFormatException e) {
+
+                                    }
+                                }
+                            } else if (tag.equals("blackelo")) {
+                                if (blackPlayer != null) {
+                                    try {
+                                        blackPlayer.setElo(Integer.parseInt(p.value));
+                                    } catch (NumberFormatException e) {
+
+                                    }
+                                }
+                            } else {
+                                if (game != null) {
+                                    if (game.getProperty() == null) {
+                                        game.setProperty(new HashMap<String, String>());
+                                    }
+                                    game.getProperty().put(p.name, p.value);
+                                }
+                            }
+                        }
+                    } else if (!line.trim().equals("") && moveText != null) {
+                        moveText.append(line);
+                        moveText.append('\n');
+                        moveTextParsing = true;
+                        if (line.endsWith("1-0") ||
+                                line.endsWith("0-1") ||
+                                line.endsWith("1/2-1/2") ||
+                                line.endsWith("*")) {
+                            //end of PGN
+                            if (game != null) {
                                 setMoveText(game, moveText);
                             }
-                            size++;
-                            for (PGNLoadListener l : getListener()) {
-                                l.notifyProgress(size);
-                            }
-                            game = null;
-                            round = null;
                             moveText = null;
-                            whitePlayer = null;
-                            blackPlayer = null;
-                            event = getEvent().get(p.value);
-                            if (event == null) {
-                                event = GameFactory.newEvent(p.value);
-                                event.setPgnHolder(this);
-                                getEvent().put(p.value, event);
-                            }
-                            moveText = new StringBuilder();
-
-                        } else if (tag.equals("site")) {
-                            if (event != null) {
-                                event.setSite(p.value);
-                            }
-                        } else if (tag.equals("date")) {
-                            if (event != null) {
-                                event.setStartDate(p.value);
-                            }
-                        } else if (tag.equals("round")) {
-                            if (event != null) {
-                                int r = 1;
-                                try {
-                                    r = Integer.parseInt(p.value);
-                                } catch (Exception e1) {
-                                }
-                                r = Math.max(0, r);
-                                round = event.getRound().get(r);
-                                if (round == null) {
-                                    round = GameFactory.newRound(event, r);
-                                    event.getRound().put(r, round);
-                                }
-                            }
-                        } else if (tag.equals("white")) {
-                            if (round == null) {
-                                round = GameFactory.newRound(event, 1);
-                                event.getRound().put(1, round);
-                            }
-                            if (game == null) {
-                                game = GameFactory.newGame((size - 1) + "", round);
-                                game.setDate(event.getStartDate());
-                                round.getGame().add(game);
-                                getGame().add(size - 1, game);
-                            }
-
-                            Player player = getPlayer().get(p.value);
-                            if (player == null) {
-                                player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
-                                player.setId(p.value);
-                                player.setDescription(p.value);
-                                getPlayer().put(p.value, player);
-                            }
-                            game.setWhitePlayer(player);
-                            whitePlayer = player;
-
-                        } else if (tag.equals("black")) {
-                            if (round == null) {
-                                round = GameFactory.newRound(event, 1);
-                                event.getRound().put(1, round);
-                            }
-                            if (game == null) {
-                                game = GameFactory.newGame((size - 1) + "", round);
-                                game.setDate(event.getStartDate());
-                                round.getGame().add(game);
-                                getGame().add(size - 1, game);
-                            }
-                            Player player = getPlayer().get(p.value);
-                            if (player == null) {
-                                player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
-                                player.setId(p.value);
-                                player.setDescription(p.value);
-                                getPlayer().put(p.value, player);
-                            }
-                            game.setBlackPlayer(player);
-                            blackPlayer = player;
-
-                        } else if (tag.equals("result")) {
-                            if (game != null) {
-                                GameResult r = GameResult.fromNotation(p.value);
-                                game.setResult(r);
-                            }
-                        } else if (tag.equals("plycount")) {
-                            if (game != null) {
-                                game.setPlyCount(p.value);
-                            }
-                        } else if (tag.equals("termination")) {
-                            if (game != null) {
-                                try {
-                                    game.setTermination(Termination.fromValue(p.value.toUpperCase()));
-                                } catch (Exception e1) {
-                                    throw new PgnException("Error parsing Termination Tag [" + round.getNumber() +
-                                            ", " + event.getName() + "]: " + e1.getMessage());
-                                }
-                            }
-                        } else if (tag.equals("timecontrol")) {
-                            if (event != null && event.getTimeControl() == null) {
-                                try {
-                                    event.setTimeControl(TimeControl.parseFromString(p.value.toUpperCase()));
-                                } catch (Exception e1) {
-                                    throw new PgnException("Error parsing TimeControl Tag [" + (round != null ? round.getNumber() : 1) +
-                                            ", " + event.getName() + "]: " + e1.getMessage());
-                                }
-                            }
-                        } else if (tag.equals("annotator")) {
-                            if (game != null) {
-                                game.setAnnotator(p.value);
-                            }
-                        } else if (tag.equals("fen")) {
-                            if (game != null) {
-                                game.setFen(p.value);
-                            }
-                        } else if (tag.equals("eco")) {
-                            if (game != null) {
-                                game.setEco(p.value);
-                            }
-                        } else if (tag.equals("opening")) {
-                            if (game != null) {
-                                game.setOpening(p.value);
-                            }
-                        } else if (tag.equals("variation")) {
-                            if (game != null) {
-                                game.setVariation(p.value);
-                            }
-                        } else if (tag.equals("whiteelo")) {
-                            if (whitePlayer != null) {
-                                try {
-                                    whitePlayer.setElo(Integer.parseInt(p.value));
-                                } catch (NumberFormatException e) {
-
-                                }
-                            }
-                        } else if (tag.equals("blackelo")) {
-                            if (blackPlayer != null) {
-                                try {
-                                    blackPlayer.setElo(Integer.parseInt(p.value));
-                                } catch (NumberFormatException e) {
-
-                                }
-                            }
-                        } else {
-                            if (game != null) {
-                                if (game.getProperty() == null) {
-                                    game.setProperty(new HashMap<String, String>());
-                                }
-                                game.getProperty().put(p.name, p.value);
-                            }
+                            moveTextParsing = false;
                         }
                     }
-                } else if (!line.trim().equals("") && moveText != null) {
-                    moveText.append(line);
-                    moveText.append('\n');
-                    moveTextParsing = true;
-                    if (line.endsWith("1-0") ||
-                            line.endsWith("0-1") ||
-                            line.endsWith("1/2-1/2") ||
-                            line.endsWith("*")) {
-                        //end of PGN
-                        if (game != null) {
-                            setMoveText(game, moveText);
-                        }
-                        moveText = null;
-                        moveTextParsing = false;
+
+                } catch (Exception e) {
+                    String name = "";
+                    int r = 0;
+                    try {
+                        r = round.getNumber();
+                        name = event.getName();
+                    } catch (Exception e2) {
+
                     }
+                    throw new PgnException("Error parsing PGN[" + r + ", " + name + "]: ", e);
                 }
 
-            } catch (Exception e) {
-                String name = "";
-                int r = 0;
-                try {
-                    r = round.getNumber();
-                    name = event.getName();
-                } catch (Exception e2) {
-
-                }
-                throw new PgnException("Error parsing PGN[" + r + ", " + name + "]: " + e.getMessage());
             }
+        } finally {
+            file.close();
         }
-
     }
 
     private void setMoveText(Game game, StringBuilder moveText) throws Exception {
