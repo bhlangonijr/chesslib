@@ -14,7 +14,7 @@ public class MoveGeneratorTest {
     @Test
     public void testBBtoSquare() {
         assertEquals(Piece.make(Side.BLACK, PieceType.PAWN).value(), "BLACK_PAWN");
-        long pieces = 1L << 10 | 1L << 63 | 1L << 45;
+        long pieces = (1L << 10) | (1L << 63) | (1L << 45);
 
         List<Square> sqs = Bitboard.bbToSquareList(pieces);
         assertEquals(sqs.size(), Arrays.asList(Square.C2, Square.F6, Square.H8).size());
