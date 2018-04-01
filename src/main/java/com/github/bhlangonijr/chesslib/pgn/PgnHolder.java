@@ -428,6 +428,7 @@ public class PgnHolder {
 
         public PGNProperty() {
         }
+
         public PGNProperty(String name, String value) {
             this.name = name;
             this.value = value;

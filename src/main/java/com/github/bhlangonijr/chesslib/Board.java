@@ -972,7 +972,7 @@ public class Board implements Cloneable, BoardEvent {
     public boolean isAttackedBy(Move move) {
 
         PieceType pieceType = getPiece(move.getFrom()).getPieceType();
-        assert(!PieceType.NONE.equals(pieceType));
+        assert (!PieceType.NONE.equals(pieceType));
         Side side = getSideToMove();
         long attacks = 0L;
         switch (pieceType) {
