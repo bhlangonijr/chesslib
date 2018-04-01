@@ -19,7 +19,6 @@ public class PerftTest {
 
         long nodes = perft(board, 5, 1);
         assertEquals(4865609, nodes);
-
     }
 
     @Test
@@ -31,7 +30,17 @@ public class PerftTest {
 
         long nodes = perft(board, 4, 1);
         assertEquals(2103487, nodes);
+    }
 
+    @Test
+    public void testPerft3() throws MoveGeneratorException, CloneNotSupportedException {
+
+        Board board = new Board();
+        board.setEnableEvents(false);
+        board.loadFromFEN("r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10");
+
+        long nodes = perft(board, 4, 1);
+        assertEquals(3894594, nodes);
     }
 
     private long perft(Board board, int depth, int ply) throws MoveGeneratorException, CloneNotSupportedException {

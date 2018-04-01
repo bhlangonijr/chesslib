@@ -125,7 +125,6 @@ public class Board implements Cloneable, BoardEvent {
         }
 
         Piece movingPiece = getPiece(move.getFrom());
-        Piece capturedPiece = getPiece(move.getTo());
         Side side = getSideToMove();
 
         backup.add(new MoveBackup(this, move));
@@ -144,28 +143,27 @@ public class Board implements Cloneable, BoardEvent {
                 }
             }
             getCastleRight().put(side, CastleRight.NONE);
-        } else if (PieceType.ROOK.equals(movingPiece.getPieceType())) {
-            if (!CastleRight.NONE.equals(getCastleRight(side))) {
-                final Move oo = context.getRookoo(side);
-                final Move ooo = context.getRookooo(side);
+        } else if (PieceType.ROOK.equals(movingPiece.getPieceType())
+                && !CastleRight.NONE.equals(getCastleRight(side))) {
+            final Move oo = context.getRookoo(side);
+            final Move ooo = context.getRookooo(side);
 
-                if (move.getFrom().equals(oo.getFrom())) {
-                    if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
-                        getCastleRight().put(side, CastleRight.QUEEN_SIDE);
-                    } else if (CastleRight.KING_SIDE.equals(getCastleRight(side))) {
-                        getCastleRight().put(side, CastleRight.NONE);
-                    }
-                } else if (move.getFrom().equals(ooo.getFrom())) {
-                    if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
-                        getCastleRight().put(side, CastleRight.KING_SIDE);
-                    } else if (CastleRight.QUEEN_SIDE.equals(getCastleRight(side))) {
-                        getCastleRight().put(side, CastleRight.NONE);
-                    }
+            if (move.getFrom().equals(oo.getFrom())) {
+                if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
+                    getCastleRight().put(side, CastleRight.QUEEN_SIDE);
+                } else {
+                    getCastleRight().put(side, CastleRight.NONE);
+                }
+            } else if (move.getFrom().equals(ooo.getFrom())) {
+                if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
+                    getCastleRight().put(side, CastleRight.KING_SIDE);
+                } else {
+                    getCastleRight().put(side, CastleRight.NONE);
                 }
             }
         }
 
-        capturedPiece = movePiece(move);
+        Piece capturedPiece = movePiece(move);
 
         if (PieceType.ROOK.equals(capturedPiece.getPieceType())) {
             final Move oo = context.getRookoo(side.flip());
@@ -185,14 +183,14 @@ public class Board implements Cloneable, BoardEvent {
             }
         }
 
-        setEnPassantTarget(Square.NONE);
-        setEnPassant(Square.NONE);
-
         if (Piece.NONE.equals(capturedPiece)) {
             setHalfMoveCounter(getHalfMoveCounter() + 1);
         } else {
             setHalfMoveCounter(0);
         }
+
+        setEnPassantTarget(Square.NONE);
+        setEnPassant(Square.NONE);
 
         if (PieceType.PAWN.equals(movingPiece.getPieceType())) {
             if (Math.abs(move.getTo().getRank().ordinal() -
@@ -866,9 +864,6 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Verify if a move is legal within this board context
-     *
-     * @param move
-     * @return
      */
     public boolean isMoveLegal(Move move, boolean fullValidation) {
 
@@ -921,10 +916,6 @@ public class Board implements Cloneable, BoardEvent {
                     }
                     return false;
                 }
-            }
-
-            if (!isAttackedBy(move)) {
-                return false;
             }
         }
         if (fromType.equals(PieceType.KING)) {
