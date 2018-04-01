@@ -771,6 +771,7 @@ public class Game {
         int index;
         int size;
         StringBuilder text = new StringBuilder();
+
         public RTextEntry(int index) {
             this.index = index;
             this.size = 0;

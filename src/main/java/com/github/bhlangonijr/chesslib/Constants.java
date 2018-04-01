@@ -39,7 +39,6 @@ public class Constants {
             new EnumMap<Piece, String>(Piece.class);
     public static final Map<String, Piece> pieceNotationR =
             new HashMap<String, Piece>(12);
-    private static EnumMap<Piece, String> pieceImg = new EnumMap<Piece, String>(Piece.class);
 
     static {
 

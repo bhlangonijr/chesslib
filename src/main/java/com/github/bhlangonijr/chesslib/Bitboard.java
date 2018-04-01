@@ -390,8 +390,8 @@ public class Bitboard {
                 whitePawnAttacks[square.ordinal()] :
                 blackPawnAttacks[square.ordinal()]);
         if (!enPassant.equals(Square.NONE)) {
-            occupied |= bbTable[enPassant.ordinal() +
-                    (side.equals(Side.WHITE) ? 8 : -8)]; // en passant
+            long ep = enPassant.getBitboard();
+            occupied |= side.equals(Side.WHITE) ? ep << 8L : ep >> 8L;
         }
         return pawnAttacks & occupied;
     }
@@ -408,16 +408,15 @@ public class Bitboard {
 
         if (square.getRank().equals(Rank.RANK_2) &&
                 side.equals(Side.WHITE)) {
-            if ((bbTable[square.ordinal() + 8] & occ) != 0L) {
-                occ |= bbTable[square.ordinal() + 16]; // double move
+            if ((square.getBitboard() << 8 & occ) != 0L) {
+                occ |= square.getBitboard() << 16; // double move
             }
         } else if (square.getRank().equals(Rank.RANK_7) &&
                 side.equals(Side.BLACK)) {
-            if ((bbTable[square.ordinal() - 8] & occ) != 0L) {
-                occ |= bbTable[square.ordinal() - 16]; // double move
+            if ((square.getBitboard() >> 8 & occ) != 0L) {
+                occ |= square.getBitboard() >> 16; // double move
             }
         }
-
         return pawnMoves & ~occ;
     }
 
