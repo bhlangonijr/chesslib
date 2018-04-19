@@ -66,7 +66,7 @@ public class MoveBackup implements BoardEvent {
         getCastleRight().put(Side.BLACK, board.getCastleRight(Side.BLACK));
         setCapturedPiece(board.getPiece(move.getTo()));
         setCapturedSquare(move.getTo());
-        Piece moving = board.getPiece(move.getFrom());
+        Piece moving = move.getPromotion() == Piece.NONE ? board.getPiece(move.getFrom()) : move.getPromotion();
         setMovingPiece(moving);
         if (board.getContext().isCastleMove(move)) {
             CastleRight c = board.getContext().isKingSideCastle(move) ? CastleRight.KING_SIDE :

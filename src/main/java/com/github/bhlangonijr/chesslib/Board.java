@@ -109,7 +109,7 @@ public class Board implements Cloneable, BoardEvent {
      * @param move
      */
     public boolean doMove(final Move move) {
-        return doMove(move, true);
+        return doMove(move, false);
     }
 
     /**
@@ -138,7 +138,7 @@ public class Board implements Cloneable, BoardEvent {
                     Move rookMove = context.getRookCastleMove(side, c);
                     movePiece(rookMove);
                 } else {
-                    backup.pollLast();
+                    backup.removeLast();
                     return false;
                 }
             }
@@ -226,9 +226,9 @@ public class Board implements Cloneable, BoardEvent {
      */
     public Move undoMove() {
         Move move = null;
-        final MoveBackup b = backup.pollLast();
+        final MoveBackup b = backup.removeLast();
         if (updateHistory) {
-            getHistory().pollLast();
+            getHistory().removeLast();
         }
         if (b != null) {
             move = b.getMove();

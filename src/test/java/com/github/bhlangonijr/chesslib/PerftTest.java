@@ -43,6 +43,32 @@ public class PerftTest {
         assertEquals(3894594, nodes);
     }
 
+    @Test
+    public void testPerft4() throws MoveGeneratorException, CloneNotSupportedException {
+
+        Board board = new Board();
+        board.setEnableEvents(false);
+        board.loadFromFEN("r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10");
+
+        long nodes = perft(board, 4, 1);
+        assertEquals(3894594, nodes);
+    }
+
+    @Test
+    public void testPerft5() throws MoveGeneratorException, CloneNotSupportedException {
+
+        Board board = new Board();
+        board.setEnableEvents(false);
+        board.loadFromFEN("rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8");
+
+        long nodes = perft(board, 4, 1);
+
+
+        System.out.println(board);
+        System.out.println(board.getFEN());
+        assertEquals(2103487, nodes);
+    }
+
     private long perft(Board board, int depth, int ply) throws MoveGeneratorException, CloneNotSupportedException {
 
         if (depth == 0) {
@@ -56,22 +82,26 @@ public class PerftTest {
         long partialNodes;
         MoveList moves = MoveGenerator.getInstance().generateLegalMoves(board);
 
+        String previousFen = board.getFEN();
+        String previousBord = board.toString();
         for (Move move: moves)  {
             try {
-                Board b = board.clone();
-                if (!b.doMove(move)) {
+                if (!board.doMove(move, false)) {
                     continue;
                 }
-                partialNodes = perft(b, depth - 1, ply + 1);
+                partialNodes = perft(board, depth - 1, ply + 1);
                 nodes += partialNodes;
                 if (ply == 1) {
                     System.out.println(move.toString() + ": " + partialNodes);
                 }
-                //board.undoMove();
+                board.undoMove();
             } catch (Exception e) {
 
                 System.err.println(move.toString());
+                System.err.println(previousFen);
+                System.err.println(previousBord);
                 System.err.println(board.getFEN());
+
                 System.err.println(board);
 
                 System.err.println("depth " + depth + " - ply " + ply);

@@ -277,7 +277,7 @@ public class MoveGenerator {
         try {
             MoveList moves = generatePseudoLegalMoves(board);
             for (Move move : moves) {
-                if (board.isMoveLegal(move, false)) {
+                if (board.isMoveLegal(move, true)) {
                     legalMoves.add(move);
                 }
             }
