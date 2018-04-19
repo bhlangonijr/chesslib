@@ -127,5 +127,18 @@ public class BoardTest {
 
     }
 
+    @Test
+    public void testUndoMove() {
+        String fen1 = "rnbqkbnr/1p1ppppp/p7/1Pp5/8/8/P1PPPPPP/RNBQKBNR w KQkq c6 0 5";
+        Board b1 = new Board();
+        b1.loadFromFEN(fen1);
+
+        b1.doMove(new Move(Square.B5, Square.A6));
+        b1.undoMove();
+
+        assertEquals(fen1, b1.getFEN());
+
+    }
+
 
 }

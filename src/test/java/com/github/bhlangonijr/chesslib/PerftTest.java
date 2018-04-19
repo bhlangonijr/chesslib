@@ -11,7 +11,7 @@ import static junit.framework.Assert.assertEquals;
 public class PerftTest {
 
     @Test
-    public void testPerft1() throws MoveGeneratorException, CloneNotSupportedException {
+    public void testPerft1() throws MoveGeneratorException {
 
         Board board = new Board();
         board.setEnableEvents(false);
@@ -22,7 +22,7 @@ public class PerftTest {
     }
 
     @Test
-    public void testPerft2() throws MoveGeneratorException, CloneNotSupportedException {
+    public void testPerft2() throws MoveGeneratorException {
 
         Board board = new Board();
         board.setEnableEvents(false);
@@ -33,7 +33,7 @@ public class PerftTest {
     }
 
     @Test
-    public void testPerft3() throws MoveGeneratorException, CloneNotSupportedException {
+    public void testPerft3() throws MoveGeneratorException {
 
         Board board = new Board();
         board.setEnableEvents(false);
@@ -44,18 +44,18 @@ public class PerftTest {
     }
 
     @Test
-    public void testPerft4() throws MoveGeneratorException, CloneNotSupportedException {
+    public void testPerft4() throws MoveGeneratorException {
 
         Board board = new Board();
         board.setEnableEvents(false);
-        board.loadFromFEN("r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10");
+        board.loadFromFEN("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -");
 
         long nodes = perft(board, 4, 1);
-        assertEquals(3894594, nodes);
+        assertEquals(4085603, nodes);
     }
 
     @Test
-    public void testPerft5() throws MoveGeneratorException, CloneNotSupportedException {
+    public void testPerft5() throws MoveGeneratorException {
 
         Board board = new Board();
         board.setEnableEvents(false);
@@ -69,7 +69,18 @@ public class PerftTest {
         assertEquals(2103487, nodes);
     }
 
-    private long perft(Board board, int depth, int ply) throws MoveGeneratorException, CloneNotSupportedException {
+    @Test
+    public void testPerft6() throws MoveGeneratorException {
+
+        Board board = new Board();
+        board.setEnableEvents(false);
+        board.loadFromFEN("r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1");
+
+        long nodes = perft(board, 4, 1);
+        assertEquals(422333, nodes);
+    }
+
+    private long perft(Board board, int depth, int ply) throws MoveGeneratorException {
 
         if (depth == 0) {
             return 1;
@@ -82,11 +93,9 @@ public class PerftTest {
         long partialNodes;
         MoveList moves = MoveGenerator.getInstance().generateLegalMoves(board);
 
-        String previousFen = board.getFEN();
-        String previousBord = board.toString();
         for (Move move: moves)  {
             try {
-                if (!board.doMove(move, false)) {
+                if (!board.doMove(move, true)) {
                     continue;
                 }
                 partialNodes = perft(board, depth - 1, ply + 1);
@@ -96,13 +105,6 @@ public class PerftTest {
                 }
                 board.undoMove();
             } catch (Exception e) {
-
-                System.err.println(move.toString());
-                System.err.println(previousFen);
-                System.err.println(previousBord);
-                System.err.println(board.getFEN());
-
-                System.err.println(board);
 
                 System.err.println("depth " + depth + " - ply " + ply);
                 e.printStackTrace();

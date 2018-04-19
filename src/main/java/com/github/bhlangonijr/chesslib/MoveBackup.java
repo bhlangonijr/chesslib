@@ -78,17 +78,6 @@ public class MoveBackup implements BoardEvent {
             setRookCastleMove(null);
             setCastleMove(false);
         }
-        setEnPassantMove(false);
-        if (!Square.NONE.equals(getEnPassantTarget())) {
-            if (PieceType.PAWN.equals(moving.getPieceType())) {
-                if (!move.getTo().getFile().equals(move.getFrom().getFile())) {
-                    setCapturedPiece(board.getPiece(getEnPassantTarget()));
-                    setCapturedSquare(getEnPassantTarget());
-                    setEnPassantMove(true);
-                }
-            }
-        }
-
     }
 
     /**
@@ -108,21 +97,14 @@ public class MoveBackup implements BoardEvent {
 
         final boolean isCastle = board.getContext().isCastleMove(getMove());
 
-        if (PieceType.KING.equals(movingPiece.getPieceType())) {
-            if (isCastle) {
-                board.movePiece(getRookCastleMove().getTo(),
-                        getRookCastleMove().getFrom(), Piece.NONE);
-            }
+        if (PieceType.KING.equals(movingPiece.getPieceType()) && isCastle) {
+            board.undoMovePiece(getRookCastleMove());
         }
         board.unsetPiece(movingPiece, getMove().getTo());
         if (Piece.NONE.equals(getMove().getPromotion())) {
             board.setPiece(movingPiece, getMove().getFrom());
         } else {
-            if (Side.WHITE.equals(getSideToMove())) {
-                board.setPiece(Piece.WHITE_PAWN, getMove().getFrom());
-            } else {
-                board.setPiece(Piece.BLACK_PAWN, getMove().getFrom());
-            }
+            board.setPiece(Piece.make(getSideToMove(), PieceType.PAWN), getMove().getFrom());
         }
         if (!Piece.NONE.equals(getCapturedPiece())) {
             board.setPiece(getCapturedPiece(), getCapturedSquare());

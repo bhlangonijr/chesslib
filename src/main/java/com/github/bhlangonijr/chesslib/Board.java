@@ -127,7 +127,7 @@ public class Board implements Cloneable, BoardEvent {
         Piece movingPiece = getPiece(move.getFrom());
         Side side = getSideToMove();
 
-        backup.add(new MoveBackup(this, move));
+        MoveBackup backupMove = new MoveBackup(this, move);
         final boolean isCastle = context.isCastleMove(move);
 
         if (PieceType.KING.equals(movingPiece.getPieceType())) {
@@ -136,9 +136,8 @@ public class Board implements Cloneable, BoardEvent {
                     CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE :
                             CastleRight.QUEEN_SIDE;
                     Move rookMove = context.getRookCastleMove(side, c);
-                    movePiece(rookMove);
+                    movePiece(rookMove, backupMove);
                 } else {
-                    backup.removeLast();
                     return false;
                 }
             }
@@ -163,7 +162,7 @@ public class Board implements Cloneable, BoardEvent {
             }
         }
 
-        Piece capturedPiece = movePiece(move);
+        Piece capturedPiece = movePiece(move, backupMove);
 
         if (PieceType.ROOK.equals(capturedPiece.getPieceType())) {
             final Move oo = context.getRookoo(side.flip());
@@ -210,6 +209,7 @@ public class Board implements Cloneable, BoardEvent {
             getHistory().addLast(this.hashCode());
         }
         setMoveCounter(getMoveCounter() + 1);
+        backup.add(backupMove);
         //call listeners
         if (isEnableEvents() &&
                 eventListener.get(BoardEventType.ON_MOVE).size() > 0) {
@@ -250,11 +250,11 @@ public class Board implements Cloneable, BoardEvent {
      * @param move
      * @return
      */
-    protected Piece movePiece(Move move) {
-        return movePiece(move.getFrom(), move.getTo(), move.getPromotion());
+    protected Piece movePiece(Move move, MoveBackup backup) {
+        return movePiece(move.getFrom(), move.getTo(), move.getPromotion(), backup);
     }
 
-    protected Piece movePiece(Square from, Square to, Piece promotion) {
+    protected Piece movePiece(Square from, Square to, Piece promotion, MoveBackup backup) {
         Piece movingPiece = getPiece(from);
         Piece capturedPiece = getPiece(to);
 
@@ -273,11 +273,28 @@ public class Board implements Cloneable, BoardEvent {
                 !to.getFile().equals(from.getFile()) &&
                 Piece.NONE.equals(capturedPiece)) {
             capturedPiece = getPiece(getEnPassantTarget());
-            if (!Piece.NONE.equals(capturedPiece)) {
+            if (backup != null && !Piece.NONE.equals(capturedPiece)) {
                 unsetPiece(capturedPiece, getEnPassantTarget());
+                backup.setCapturedSquare(getEnPassantTarget());
+                backup.setCapturedPiece(capturedPiece);
             }
         }
         return capturedPiece;
+    }
+
+    protected void undoMovePiece(Move move) {
+        Square from = move.getFrom();
+        Square to = move.getTo();
+        Piece promotion = move.getPromotion();
+        Piece movingPiece = getPiece(to);
+
+        unsetPiece(movingPiece, to);
+
+        if (!Piece.NONE.equals(promotion)) {
+            setPiece(Piece.make(getSideToMove(), PieceType.PAWN), from);
+        } else {
+            setPiece(movingPiece, from);
+        }
     }
 
     /**
@@ -873,6 +890,13 @@ public class Board implements Cloneable, BoardEvent {
         final PieceType fromType = fromPiece.getPieceType();
         final Piece capturedPiece = getPiece(move.getTo());
 
+        if (Piece.NONE.equals(fromPiece)) {
+            System.err.println("------------------");
+            System.err.println(getFEN());
+            System.err.println(this);
+            System.err.println("------------------");
+        }
+
         if (fullValidation) {
             if (Piece.NONE.equals(fromPiece)) {
                 throw new RuntimeException("From piece cannot be null");
@@ -918,6 +942,7 @@ public class Board implements Cloneable, BoardEvent {
                 }
             }
         }
+
         if (fromType.equals(PieceType.KING)) {
             if (squareAttackedBy(move.getTo(), side.flip()) != 0L) {
                 return false;
