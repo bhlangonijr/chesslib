@@ -1034,7 +1034,7 @@ public class Board implements Cloneable, BoardEvent {
     public boolean isMated() {
         try {
             if (isKingAttacked()) {
-                final MoveList l = MoveGenerator.getInstance().generateLegalMoves(this);
+                final MoveList l = MoveGenerator.generateLegalMoves(this);
                 if (l.size() == 0) {
                     return true;
                 }
@@ -1115,7 +1115,7 @@ public class Board implements Cloneable, BoardEvent {
     public boolean isStaleMate() {
         try {
             if (!isKingAttacked()) {
-                MoveList l = MoveGenerator.getInstance().generateLegalMoves(this);
+                MoveList l = MoveGenerator.generateLegalMoves(this);
                 if (l.size() == 0) {
                     return true;
                 }

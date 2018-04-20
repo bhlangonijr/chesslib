@@ -149,7 +149,7 @@ public class BoardTest {
         Board b1 = new Board();
         b1.loadFromFEN(fen1);
 
-        MoveList moves = MoveGenerator.getInstance().generateLegalMoves(b1);
+        MoveList moves = MoveGenerator.generateLegalMoves(b1);
 
         assertEquals(47, moves.size());
     }

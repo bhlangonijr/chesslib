@@ -93,7 +93,7 @@ public class PerftTest {
         long partialNodes;
         int hash = 0;
         if (CHECK_BOARD_STATE) hash = board.hashCode();
-        MoveList moves = MoveGenerator.getInstance().generateLegalMoves(board);
+        MoveList moves = MoveGenerator.generateLegalMoves(board);
         for (Move move : moves) {
             try {
                 if (!board.doMove(move, false)) {
