@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Ben-Hur Carlos Vieira Langoni Junior
+ * Copyright 2017 Ben-Hur Carlos Vieira Langoni Junior
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,6 @@ public class Move implements BoardEvent {
     private final Square to;
     private final Piece promotion;
     private String san;
-
-    public Move(Move move) {
-        this(move.from, move.to, move.promotion);
-    }
-
-    public Move() {
-        this(Square.NONE, Square.NONE, Piece.NONE);
-    }
 
     public Move(Square from, Square to) {
         this(from, to, Piece.NONE);
@@ -72,7 +64,8 @@ public class Move implements BoardEvent {
         }
         Move move = (Move) obj;
         return move.getFrom().equals(getFrom()) &&
-                move.getTo().equals(getTo());
+                move.getTo().equals(getTo()) &&
+                move.getPromotion().equals(getPromotion());
 
     }
 

@@ -1,6 +1,9 @@
 package com.github.bhlangonijr.chesslib;
 
 import com.github.bhlangonijr.chesslib.move.Move;
+import com.github.bhlangonijr.chesslib.move.MoveGenerator;
+import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
+import com.github.bhlangonijr.chesslib.move.MoveList;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -102,7 +105,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testClone() throws CloneNotSupportedException {
+    public void testClone() {
         String fen1 = "rnbqk2r/ppp1b1pp/5p1n/3p4/8/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 4 3";
         Board b1 = new Board();
         b1.loadFromFEN(fen1);
@@ -127,5 +130,28 @@ public class BoardTest {
 
     }
 
+    @Test
+    public void testUndoMove() {
+        String fen1 = "rnbqkbnr/1p1ppppp/p7/1Pp5/8/8/P1PPPPPP/RNBQKBNR w KQkq c6 0 5";
+        Board b1 = new Board();
+        b1.loadFromFEN(fen1);
+
+        b1.doMove(new Move(Square.B5, Square.A6));
+        b1.undoMove();
+
+        assertEquals(fen1, b1.getFEN());
+
+    }
+
+    @Test
+    public void testLegalMove() throws MoveGeneratorException {
+        String fen1 = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/5Q2/PPPBBPpP/RN2K2R w KQkq - 0 2";
+        Board b1 = new Board();
+        b1.loadFromFEN(fen1);
+
+        MoveList moves = MoveGenerator.generateLegalMoves(b1);
+
+        assertEquals(47, moves.size());
+    }
 
 }

@@ -62,7 +62,7 @@ Side: BLACK
 ```java
     // Generate legal chess moves for the current position
     Board board = new Board();
-    MoveList moves = MoveGenerator.getInstance().generateLegalMoves(board);
+    MoveList moves = MoveGenerator.generateLegalMoves(board);
     System.out.println("Legal moves: " + moves);
 ```
 Result:

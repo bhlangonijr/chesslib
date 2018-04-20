@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Ben-Hur Carlos Vieira Langoni Junior
+ * Copyright 2017 Ben-Hur Carlos Vieira Langoni Junior
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,21 +21,9 @@ import com.github.bhlangonijr.chesslib.*;
 import java.util.List;
 
 public class MoveGenerator {
-    static final MoveGenerator instance = new MoveGenerator();
 
     private MoveGenerator() {
     }
-
-    /**
-     * get the instance
-     *
-     * @return
-     */
-    public static MoveGenerator getInstance() {
-        return instance;
-    }
-
-    ;
 
     /**
      * Generate All pawn moves
@@ -43,7 +31,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public void generatePawnCaptures(Board board, MoveList moves) {
+    public static void generatePawnCaptures(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.PAWN));
         if (pieces != 0L) {
@@ -80,7 +68,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public void generatePawnMoves(Board board, MoveList moves) {
+    public static void generatePawnMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.PAWN));
         if (pieces != 0L) {
@@ -115,7 +103,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public void generateKnightMoves(Board board, MoveList moves) {
+    public static void generateKnightMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.KNIGHT));
         if (pieces != 0L) {
@@ -136,7 +124,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public void generateBishopMoves(Board board, MoveList moves) {
+    public static void generateBishopMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.BISHOP));
         if (pieces != 0L) {
@@ -158,7 +146,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public void generateRookMoves(Board board, MoveList moves) {
+    public static void generateRookMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.ROOK));
         if (pieces != 0L) {
@@ -180,7 +168,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public void generateQueenMoves(Board board, MoveList moves) {
+    public static void generateQueenMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.QUEEN));
         if (pieces != 0L) {
@@ -202,7 +190,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public void generateKingMoves(Board board, MoveList moves) {
+    public static void generateKingMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.KING));
         if (pieces != 0L) {
@@ -224,14 +212,14 @@ public class MoveGenerator {
      * @param board
      * @param moves
      */
-    public void generateCastleMoves(Board board, MoveList moves) {
+    public static void generateCastleMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         if (board.isKingAttacked()) {
             return;
         }
         if (board.getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                 (board.getCastleRight(side).equals(CastleRight.KING_SIDE))) {
-            if ((board.getBitboard() & board.getContext().getooSquaresBb(side)) == 0L) {
+            if ((board.getBitboard() & board.getContext().getooAllSquaresBb(side)) == 0L) {
                 if (!board.isSquareAttackedBy(board.getContext().getooSquares(side), side.flip())) {
                     moves.add(board.getContext().getoo(side));
                 }
@@ -239,7 +227,7 @@ public class MoveGenerator {
         }
         if (board.getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                 (board.getCastleRight(side).equals(CastleRight.QUEEN_SIDE))) {
-            if ((board.getBitboard() & board.getContext().getoooSquaresBb(side)) == 0L) {
+            if ((board.getBitboard() & board.getContext().getoooAllSquaresBb(side)) == 0L) {
                 if (!board.isSquareAttackedBy(board.getContext().getoooSquares(side), side.flip())) {
                     moves.add(board.getContext().getooo(side));
                 }
@@ -253,7 +241,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public MoveList generatePseudoLegalMoves(Board board) {
+    public static MoveList generatePseudoLegalMoves(Board board) {
         MoveList moves = new MoveList();
         generatePawnCaptures(board, moves);
         generatePawnMoves(board, moves);
@@ -272,7 +260,7 @@ public class MoveGenerator {
      * @param board
      * @return
      */
-    public MoveList generateLegalMoves(Board board) throws MoveGeneratorException {
+    public static MoveList generateLegalMoves(Board board) throws MoveGeneratorException {
         MoveList legalMoves = new MoveList();
         try {
             MoveList moves = generatePseudoLegalMoves(board);

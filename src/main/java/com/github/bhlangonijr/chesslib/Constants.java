@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Ben-Hur Carlos Vieira Langoni Junior
+ * Copyright 2017 Ben-Hur Carlos Vieira Langoni Junior
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,12 @@ public class Constants {
     public static final List<Square> DEFAULT_WHITE_OOO_SQUARES = new ArrayList<Square>();
     public static final List<Square> DEFAULT_BLACK_OO_SQUARES = new ArrayList<Square>();
     public static final List<Square> DEFAULT_BLACK_OOO_SQUARES = new ArrayList<Square>();
+
+    public static final List<Square> DEFAULT_WHITE_OO_ALL_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_WHITE_OOO_ALL_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_BLACK_OO_ALL_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_BLACK_OOO_ALL_SQUARES = new ArrayList<Square>();
+
     public static final EnumMap<Piece, String> pieceNotation =
             new EnumMap<Piece, String>(Piece.class);
     public static final Map<String, Piece> pieceNotationR =
@@ -51,6 +57,18 @@ public class Constants {
         DEFAULT_BLACK_OO_SQUARES.add(Square.G8);
         DEFAULT_BLACK_OOO_SQUARES.add(Square.D8);
         DEFAULT_BLACK_OOO_SQUARES.add(Square.C8);
+
+        DEFAULT_WHITE_OO_ALL_SQUARES.add(Square.F1);
+        DEFAULT_WHITE_OO_ALL_SQUARES.add(Square.G1);
+        DEFAULT_WHITE_OOO_ALL_SQUARES.add(Square.D1);
+        DEFAULT_WHITE_OOO_ALL_SQUARES.add(Square.C1);
+        DEFAULT_WHITE_OOO_ALL_SQUARES.add(Square.B1);
+
+        DEFAULT_BLACK_OO_ALL_SQUARES.add(Square.F8);
+        DEFAULT_BLACK_OO_ALL_SQUARES.add(Square.G8);
+        DEFAULT_BLACK_OOO_ALL_SQUARES.add(Square.D8);
+        DEFAULT_BLACK_OOO_ALL_SQUARES.add(Square.C8);
+        DEFAULT_BLACK_OOO_ALL_SQUARES.add(Square.B8);
 
         pieceNotation.put(Piece.WHITE_PAWN, "P");
         pieceNotation.put(Piece.WHITE_KNIGHT, "N");

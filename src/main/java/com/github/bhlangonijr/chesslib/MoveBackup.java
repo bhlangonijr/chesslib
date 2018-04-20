@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Ben-Hur Carlos Vieira Langoni Junior
+ * Copyright 2017 Ben-Hur Carlos Vieira Langoni Junior
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,12 +61,12 @@ public class MoveBackup implements BoardEvent {
         setEnPassant(board.getEnPassant());
         setMoveCounter(board.getMoveCounter());
         setHalfMoveCounter(board.getHalfMoveCounter());
-        setMove(new Move(move));
+        setMove(move);
         getCastleRight().put(Side.WHITE, board.getCastleRight(Side.WHITE));
         getCastleRight().put(Side.BLACK, board.getCastleRight(Side.BLACK));
         setCapturedPiece(board.getPiece(move.getTo()));
         setCapturedSquare(move.getTo());
-        Piece moving = board.getPiece(move.getFrom());
+        Piece moving = move.getPromotion() == Piece.NONE ? board.getPiece(move.getFrom()) : move.getPromotion();
         setMovingPiece(moving);
         if (board.getContext().isCastleMove(move)) {
             CastleRight c = board.getContext().isKingSideCastle(move) ? CastleRight.KING_SIDE :
@@ -78,17 +78,6 @@ public class MoveBackup implements BoardEvent {
             setRookCastleMove(null);
             setCastleMove(false);
         }
-        setEnPassantMove(false);
-        if (!Square.NONE.equals(getEnPassantTarget())) {
-            if (PieceType.PAWN.equals(moving.getPieceType())) {
-                if (!move.getTo().getFile().equals(move.getFrom().getFile())) {
-                    setCapturedPiece(board.getPiece(getEnPassantTarget()));
-                    setCapturedSquare(getEnPassantTarget());
-                    setEnPassantMove(true);
-                }
-            }
-        }
-
     }
 
     /**
@@ -108,21 +97,14 @@ public class MoveBackup implements BoardEvent {
 
         final boolean isCastle = board.getContext().isCastleMove(getMove());
 
-        if (PieceType.KING.equals(movingPiece.getPieceType())) {
-            if (isCastle) {
-                board.movePiece(getRookCastleMove().getTo(),
-                        getRookCastleMove().getFrom(), Piece.NONE);
-            }
+        if (PieceType.KING.equals(movingPiece.getPieceType()) && isCastle) {
+            board.undoMovePiece(getRookCastleMove());
         }
         board.unsetPiece(movingPiece, getMove().getTo());
         if (Piece.NONE.equals(getMove().getPromotion())) {
             board.setPiece(movingPiece, getMove().getFrom());
         } else {
-            if (Side.WHITE.equals(getSideToMove())) {
-                board.setPiece(Piece.WHITE_PAWN, getMove().getFrom());
-            } else {
-                board.setPiece(Piece.BLACK_PAWN, getMove().getFrom());
-            }
+            board.setPiece(Piece.make(getSideToMove(), PieceType.PAWN), getMove().getFrom());
         }
         if (!Piece.NONE.equals(getCapturedPiece())) {
             board.setPiece(getCapturedPiece(), getCapturedSquare());

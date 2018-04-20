@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Ben-Hur Carlos Vieira Langoni Junior
+ * Copyright 2017 Ben-Hur Carlos Vieira Langoni Junior
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,11 @@ public class GameContext {
     protected long blackooSquaresBb;
     protected long blackoooSquaresBb;
 
+    protected long whiteooAllSquaresBb;
+    protected long whiteoooAllSquaresBb;
+    protected long blackooAllSquaresBb;
+    protected long blackoooAllSquaresBb;
+
     protected String startFEN;
 
     protected GameMode gameMode;
@@ -86,10 +91,15 @@ public class GameContext {
         setBlackooSquaresBb(squareListToBb(Constants.DEFAULT_BLACK_OO_SQUARES));
         setBlackoooSquaresBb(squareListToBb(Constants.DEFAULT_BLACK_OOO_SQUARES));
 
+        setWhiteooAllSquaresBb(squareListToBb(Constants.DEFAULT_WHITE_OO_ALL_SQUARES));
+        setWhiteoooAllSquaresBb(squareListToBb(Constants.DEFAULT_WHITE_OOO_ALL_SQUARES));
+        setBlackooAllSquaresBb(squareListToBb(Constants.DEFAULT_BLACK_OO_ALL_SQUARES));
+        setBlackoooAllSquaresBb(squareListToBb(Constants.DEFAULT_BLACK_OOO_ALL_SQUARES));
+
         setStartFEN(Constants.startStandardFENPosition);
     }
 
-    private long squareListToBb(List<Square> list) {
+    private static long squareListToBb(List<Square> list) {
         long r = 0L;
         for (Square s : list) {
             r |= s.getBitboard();
@@ -355,6 +365,42 @@ public class GameContext {
         this.blackoooSquaresBb = blackoooSquaresBb;
     }
 
+    public long getWhiteooAllSquaresBb() {
+        return whiteooAllSquaresBb;
+    }
+
+    public GameContext setWhiteooAllSquaresBb(long whiteooAllSquaresBb) {
+        this.whiteooAllSquaresBb = whiteooAllSquaresBb;
+        return this;
+    }
+
+    public long getWhiteoooAllSquaresBb() {
+        return whiteoooAllSquaresBb;
+    }
+
+    public GameContext setWhiteoooAllSquaresBb(long whiteoooAllSquaresBb) {
+        this.whiteoooAllSquaresBb = whiteoooAllSquaresBb;
+        return this;
+    }
+
+    public long getBlackooAllSquaresBb() {
+        return blackooAllSquaresBb;
+    }
+
+    public GameContext setBlackooAllSquaresBb(long blackooAllSquaresBb) {
+        this.blackooAllSquaresBb = blackooAllSquaresBb;
+        return this;
+    }
+
+    public long getBlackoooAllSquaresBb() {
+        return blackoooAllSquaresBb;
+    }
+
+    public GameContext setBlackoooAllSquaresBb(long blackoooAllSquaresBb) {
+        this.blackoooAllSquaresBb = blackoooAllSquaresBb;
+        return this;
+    }
+
     public Move getoo(Side side) {
         return Side.WHITE.equals(side) ? getWhiteoo() : getBlackoo();
     }
@@ -389,6 +435,16 @@ public class GameContext {
     public long getoooSquaresBb(Side side) {
         return Side.WHITE.equals(side) ?
                 getWhiteoooSquaresBb() : getBlackoooSquaresBb();
+    }
+
+    public long getooAllSquaresBb(Side side) {
+        return Side.WHITE.equals(side) ?
+                getWhiteooAllSquaresBb() : getBlackooAllSquaresBb();
+    }
+
+    public long getoooAllSquaresBb(Side side) {
+        return Side.WHITE.equals(side) ?
+                getWhiteoooAllSquaresBb() : getBlackoooAllSquaresBb();
     }
 
     /**
