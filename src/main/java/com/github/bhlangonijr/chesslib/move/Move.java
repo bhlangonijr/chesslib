@@ -25,14 +25,6 @@ public class Move implements BoardEvent {
     private final Piece promotion;
     private String san;
 
-    public Move(Move move) {
-        this(move.from, move.to, move.promotion);
-    }
-
-    public Move() {
-        this(Square.NONE, Square.NONE, Piece.NONE);
-    }
-
     public Move(Square from, Square to) {
         this(from, to, Piece.NONE);
     }
@@ -72,7 +64,8 @@ public class Move implements BoardEvent {
         }
         Move move = (Move) obj;
         return move.getFrom().equals(getFrom()) &&
-                move.getTo().equals(getTo());
+                move.getTo().equals(getTo()) &&
+                move.getPromotion().equals(getPromotion());
 
     }
 

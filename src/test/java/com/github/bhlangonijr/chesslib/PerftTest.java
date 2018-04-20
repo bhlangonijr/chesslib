@@ -80,18 +80,6 @@ public class PerftTest {
         assertEquals(422333, nodes);
     }
 
-    @Test
-    public void testAll() throws MoveGeneratorException, InterruptedException {
-        Thread.sleep(5000);
-        testPerft1();
-        testPerft2();
-        testPerft3();
-        testPerft4();
-        testPerft5();
-        testPerft6();
-
-    }
-
     private long perft(Board board, int depth, int ply) throws MoveGeneratorException {
 
         if (depth == 0) {
