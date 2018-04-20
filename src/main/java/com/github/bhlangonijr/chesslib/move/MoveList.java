@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Ben-Hur Carlos Vieira Langoni Junior
+ * Copyright 2017 Ben-Hur Carlos Vieira Langoni Junior
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -171,7 +171,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                     move.toString() + "] for current setup: " + board.getFEN());
         }
 
-        Piece captured = board.getBackup().peekLast().getCapturedPiece();
+        Piece captured = board.getBackup().removeLast().getCapturedPiece();
         boolean isCapture = !captured.equals(Piece.NONE);
         if (isCapture) {
             if (!ambResolved &&
