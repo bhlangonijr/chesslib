@@ -32,20 +32,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Board implements Cloneable, BoardEvent {
 
-    protected final LinkedList<MoveBackup> backup;
-    protected final EnumMap<BoardEventType, List<BoardEventListener>> eventListener;
+    private final LinkedList<MoveBackup> backup;
+    private final EnumMap<BoardEventType, List<BoardEventListener>> eventListener;
     private final long bitboard[];
     private final long bbSide[];
     private final EnumMap<Side, CastleRight> castleRight;
     private final LinkedList<Integer> history = new LinkedList<Integer>();
-    protected Side sideToMove;
-    protected Square enPassantTarget;
-    protected Square enPassant;
-    protected Integer moveCounter;
-    protected Integer halfMoveCounter;
-    protected GameContext context;
-    protected boolean enableEvents;
-    protected boolean updateHistory;
+    private Side sideToMove;
+    private Square enPassantTarget;
+    private Square enPassant;
+    private Integer moveCounter;
+    private Integer halfMoveCounter;
+    private GameContext context;
+    private boolean enableEvents;
+    private boolean updateHistory;
 
     public Board() {
         this(new GameContext(), false);

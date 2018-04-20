@@ -16,8 +16,7 @@
 
 package com.github.bhlangonijr.chesslib;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static com.github.bhlangonijr.chesslib.DiagonalA1H8.*;
 import static com.github.bhlangonijr.chesslib.DiagonalH1A8.*;
@@ -427,7 +426,7 @@ public class Bitboard {
      * @return List of Square
      */
     public static List<Square> bbToSquareList(long pieces) {
-        List<Square> squares = new ArrayList<Square>();
+        List<Square> squares = new LinkedList<Square>();
         while (pieces != 0L) {
             int sq = Bitboard.bitScanForward(pieces);
             pieces = Bitboard.extractLsb(pieces);
