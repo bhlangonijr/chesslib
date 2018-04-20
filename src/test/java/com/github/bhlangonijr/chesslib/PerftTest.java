@@ -94,7 +94,7 @@ public class PerftTest {
         int hash = 0;
         if (CHECK_BOARD_STATE) hash = board.hashCode();
         MoveList moves = MoveGenerator.getInstance().generateLegalMoves(board);
-        for (Move move: moves)  {
+        for (Move move : moves) {
             try {
                 if (!board.doMove(move, false)) {
                     continue;
@@ -117,7 +117,7 @@ public class PerftTest {
         }
         if (ply == 1) {
             System.out.println("Node count: " + nodes);
-            System.out.println("Time: " + (System.currentTimeMillis() - time ));
+            System.out.println("Time: " + (System.currentTimeMillis() - time));
         }
         return nodes;
 

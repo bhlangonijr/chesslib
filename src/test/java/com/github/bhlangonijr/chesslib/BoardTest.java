@@ -105,7 +105,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testClone()  {
+    public void testClone() {
         String fen1 = "rnbqk2r/ppp1b1pp/5p1n/3p4/8/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 4 3";
         Board b1 = new Board();
         b1.loadFromFEN(fen1);
