@@ -776,10 +776,10 @@ public class Board implements Cloneable, BoardEvent {
      * Returns if the the bitboard with pieces which can attack the given square
      *
      * @param side
-     * @return true if the king is attacked
+     * @return true if the square is attacked
      */
     public long squareAttackedBy(Square square, Side side) {
-        long result = 0L;
+        long result;
         long occ = getBitboard();
         result = Bitboard.getPawnAttacks(side.flip(), square) &
                 getBitboard(Piece.make(side, PieceType.PAWN));
@@ -890,13 +890,6 @@ public class Board implements Cloneable, BoardEvent {
         final PieceType fromType = fromPiece.getPieceType();
         final Piece capturedPiece = getPiece(move.getTo());
 
-        if (Piece.NONE.equals(fromPiece)) {
-            System.err.println("------------------");
-            System.err.println(getFEN());
-            System.err.println(this);
-            System.err.println("------------------");
-        }
-
         if (fullValidation) {
             if (Piece.NONE.equals(fromPiece)) {
                 throw new RuntimeException("From piece cannot be null");
@@ -921,10 +914,8 @@ public class Board implements Cloneable, BoardEvent {
                 if (getContext().isKingSideCastle(move)) {
                     if (getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                             (getCastleRight(side).equals(CastleRight.KING_SIDE))) {
-                        if ((getBitboard() & getContext().getooSquaresBb(side)) == 0L) {
-                            if (!isSquareAttackedBy(getContext().getooSquares(side), side.flip())) {
-                                return true;
-                            }
+                        if ((getBitboard() & getContext().getooAllSquaresBb(side)) == 0L) {
+                            return !isSquareAttackedBy(getContext().getooSquares(side), side.flip());
                         }
                     }
                     return false;
@@ -932,10 +923,8 @@ public class Board implements Cloneable, BoardEvent {
                 if (getContext().isQueenSideCastle(move)) {
                     if (getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                             (getCastleRight(side).equals(CastleRight.QUEEN_SIDE))) {
-                        if ((getBitboard() & getContext().getoooSquaresBb(side)) == 0L) {
-                            if (!isSquareAttackedBy(getContext().getoooSquares(side), side.flip())) {
-                                return true;
-                            }
+                        if ((getBitboard() & getContext().getoooAllSquaresBb(side)) == 0L) {
+                            return !isSquareAttackedBy(getContext().getoooSquares(side), side.flip());
                         }
                     }
                     return false;
@@ -1213,7 +1202,7 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     @Override
-    public Board clone() throws CloneNotSupportedException {
+    public Board clone() {
         Board copy = new Board(getContext(), this.updateHistory);
         copy.loadFromFEN(this.getFEN());
         return copy;

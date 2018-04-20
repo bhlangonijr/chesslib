@@ -10,6 +10,8 @@ import static junit.framework.Assert.assertEquals;
 
 public class PerftTest {
 
+    private boolean CHECK_BOARD_STATE = false;
+
     @Test
     public void testPerft1() throws MoveGeneratorException {
 
@@ -64,8 +66,6 @@ public class PerftTest {
         long nodes = perft(board, 4, 1);
 
 
-        System.out.println(board);
-        System.out.println(board.getFEN());
         assertEquals(2103487, nodes);
     }
 
@@ -91,11 +91,12 @@ public class PerftTest {
         }
         long nodes = 0;
         long partialNodes;
+        int hash = 0;
+        if (CHECK_BOARD_STATE) hash = board.hashCode();
         MoveList moves = MoveGenerator.getInstance().generateLegalMoves(board);
-
         for (Move move: moves)  {
             try {
-                if (!board.doMove(move, true)) {
+                if (!board.doMove(move, false)) {
                     continue;
                 }
                 partialNodes = perft(board, depth - 1, ply + 1);
@@ -104,6 +105,9 @@ public class PerftTest {
                     System.out.println(move.toString() + ": " + partialNodes);
                 }
                 board.undoMove();
+                if (CHECK_BOARD_STATE && hash != board.hashCode()) {
+                    throw new IllegalArgumentException("Illegal board state after move: " + move);
+                }
             } catch (Exception e) {
 
                 System.err.println("depth " + depth + " - ply " + ply);

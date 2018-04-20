@@ -231,7 +231,7 @@ public class MoveGenerator {
         }
         if (board.getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                 (board.getCastleRight(side).equals(CastleRight.KING_SIDE))) {
-            if ((board.getBitboard() & board.getContext().getooSquaresBb(side)) == 0L) {
+            if ((board.getBitboard() & board.getContext().getooAllSquaresBb(side)) == 0L) {
                 if (!board.isSquareAttackedBy(board.getContext().getooSquares(side), side.flip())) {
                     moves.add(board.getContext().getoo(side));
                 }
@@ -239,7 +239,7 @@ public class MoveGenerator {
         }
         if (board.getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                 (board.getCastleRight(side).equals(CastleRight.QUEEN_SIDE))) {
-            if ((board.getBitboard() & board.getContext().getoooSquaresBb(side)) == 0L) {
+            if ((board.getBitboard() & board.getContext().getoooAllSquaresBb(side)) == 0L) {
                 if (!board.isSquareAttackedBy(board.getContext().getoooSquares(side), side.flip())) {
                     moves.add(board.getContext().getooo(side));
                 }
