@@ -6,7 +6,7 @@
 
     <groupId>com.github.bhlangonijr.chesslib</groupId>
     <artifactId>chesslib</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
