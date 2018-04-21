@@ -67,7 +67,7 @@ public class Board implements Cloneable, BoardEvent {
         for (BoardEventType evt : BoardEventType.values()) {
             eventListener.put(evt, new CopyOnWriteArrayList<BoardEventListener>());
         }
-        loadFromFEN(gameContext.getStartFEN());
+        loadFromFen(gameContext.getStartFEN());
         setEnableEvents(true);
     }
 
@@ -361,7 +361,7 @@ public class Board implements Cloneable, BoardEvent {
      *
      * @param fen
      */
-    public void loadFromFEN(String fen) {
+    public void loadFromFen(String fen) {
         clear();
         String squares = fen.substring(0, fen.indexOf(' '));
         String state = fen.substring(fen.indexOf(' ') + 1);
@@ -441,8 +441,8 @@ public class Board implements Cloneable, BoardEvent {
      *
      * @return board fen
      */
-    public String getFEN() {
-        return getFEN(true);
+    public String getFen() {
+        return getFen(true);
     }
 
     /**
@@ -451,7 +451,7 @@ public class Board implements Cloneable, BoardEvent {
      * @param includeCounters if true include halfMove and fullMove counters
      * @return board fen
      */
-    public String getFEN(boolean includeCounters) {
+    public String getFen(boolean includeCounters) {
 
         StringBuffer fen = new StringBuffer();
         int count = 0;
@@ -1147,7 +1147,7 @@ public class Board implements Cloneable, BoardEvent {
      * @return
      */
     public String getPositionId() {
-        return getFEN(false);
+        return getFen(false);
     }
 
     /**
@@ -1204,7 +1204,7 @@ public class Board implements Cloneable, BoardEvent {
     @Override
     public Board clone() {
         Board copy = new Board(getContext(), this.updateHistory);
-        copy.loadFromFEN(this.getFEN());
+        copy.loadFromFen(this.getFen());
         return copy;
     }
 

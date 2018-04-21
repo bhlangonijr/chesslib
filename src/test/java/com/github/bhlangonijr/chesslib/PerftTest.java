@@ -114,7 +114,7 @@ public class PerftTest {
 
         Board board = new Board();
         board.setEnableEvents(false);
-        board.loadFromFEN(fen);
+        board.loadFromFen(fen);
 
         return perft(board, depth, 1);
     }
@@ -160,8 +160,6 @@ public class PerftTest {
             System.out.println("Time: " + (System.currentTimeMillis() - time));
         }
         return nodes;
-
-
     }
 
 }

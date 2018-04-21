@@ -289,7 +289,7 @@ public class Game {
             } else {
                 sb.append(". ");
             }
-            final String sanArray[] = getHalfMoves().toSANArray();
+            final String sanArray[] = getHalfMoves().toSanArray();
             for (int i = 0; i < sanArray.length; i++) {
                 String san = sanArray[i];
                 index++;
@@ -353,7 +353,7 @@ public class Game {
             int i = 0;
             int mc = moveCounter;
             int idx = index;
-            String sanArray[] = variation.toSANArray();
+            String sanArray[] = variation.toSanArray();
             for (i = 0; i < sanArray.length; i++) {
                 String sanMove = sanArray[i];
                 if (i == 0) {
@@ -636,9 +636,9 @@ public class Game {
                         }
 
                         MoveList tmp = new MoveList();
-                        tmp.loadFromSAN(getMovesAt(currentLine.toString(), last.index));
+                        tmp.loadFromSan(getMovesAt(currentLine.toString(), last.index));
                         MoveList var = MoveList.createMoveListFrom(tmp, tmp.size());
-                        var.loadFromSAN(last.text.toString());
+                        var.loadFromSan(last.text.toString());
                         final RTextEntry parent = variation.peekLast();
                         if (onVariationBlock && parent != null) {
                             var.setParent(parent.index);
@@ -688,7 +688,7 @@ public class Game {
 
         StringUtil.replaceAll(moves, "\n", " ");
         getHalfMoves().clear();
-        getHalfMoves().loadFromSAN(moves.toString());
+        getHalfMoves().loadFromSan(moves.toString());
 
     }
 
@@ -701,7 +701,7 @@ public class Game {
         setCurrentMoveList(moves);
         if (getBoard() != null &&
                 index >= 0 && index < moves.size()) {
-            getBoard().loadFromFEN(moves.getStartFEN());
+            getBoard().loadFromFen(moves.getStartFen());
 
             int i = 0;
             for (Move move : moves) {

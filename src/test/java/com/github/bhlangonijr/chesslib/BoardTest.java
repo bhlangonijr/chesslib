@@ -23,7 +23,7 @@ public class BoardTest {
 
         Board board = new Board();
 
-        board.loadFromFEN(fen1);
+        board.loadFromFen(fen1);
 
         assertEquals(Piece.BLACK_BISHOP, board.getPiece(Square.C8));
         assertEquals(Piece.WHITE_BISHOP, board.getPiece(Square.C1));
@@ -34,42 +34,42 @@ public class BoardTest {
         assertEquals(new Integer(1), board.getMoveCounter());
         assertEquals(Square.E3, board.getEnPassant());
 
-        assertEquals(fen1, board.getFEN());
+        assertEquals(fen1, board.getFen());
 
         Move move = new Move(Square.E7, Square.E5); //sm: b
         board.doMove(move, true);
-        System.out.println("new FEN after: " + move.toString() + ": " + board.getFEN());
+        System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
 
-        assertEquals(fen2, board.getFEN()); //sm: w
+        assertEquals(fen2, board.getFen()); //sm: w
 
         board.undoMove();
-        System.out.println("new FEN after: undo: " + board.getFEN());
-        assertEquals(fen1, board.getFEN()); // sm: b
+        System.out.println("new FEN after: undo: " + board.getFen());
+        assertEquals(fen1, board.getFen()); // sm: b
 
         move = new Move(Square.D7, Square.D5); //sm: b
         board.doMove(move, true);
-        System.out.println("new FEN after: " + move.toString() + ": " + board.getFEN());
-        assertEquals(fen3, board.getFEN()); // sm: w
+        System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        assertEquals(fen3, board.getFen()); // sm: w
 
         move = new Move(Square.E4, Square.E5); //sm: w
         board.doMove(move, true);
-        System.out.println("new FEN after: " + move.toString() + ": " + board.getFEN());
-        assertEquals(fen4, board.getFEN()); // sm: b
+        System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        assertEquals(fen4, board.getFen()); // sm: b
 
         move = new Move(Square.F7, Square.F5); //sm: b
         board.doMove(move, true);
-        System.out.println("new FEN after: " + move.toString() + ": " + board.getFEN());
-        assertEquals(fen5, board.getFEN()); // sm: w
+        System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        assertEquals(fen5, board.getFen()); // sm: w
 
         move = new Move(Square.E5, Square.F6); //sm: w
         board.doMove(move, true);
-        System.out.println("new FEN after: " + move.toString() + ": " + board.getFEN());
-        assertEquals(fen6, board.getFEN()); // sm: b
+        System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        assertEquals(fen6, board.getFen()); // sm: b
 
         move = new Move(Square.E7, Square.F6); //sm: b
         board.doMove(move, true);
-        System.out.println("new FEN after: " + move.toString() + ": " + board.getFEN());
-        assertEquals(fen7, board.getFEN()); // sm: w
+        System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        assertEquals(fen7, board.getFen()); // sm: w
 
     }
 
@@ -82,25 +82,25 @@ public class BoardTest {
 
         Board board = new Board();
 
-        board.loadFromFEN(fen1);
+        board.loadFromFen(fen1);
 
-        assertEquals(fen1, board.getFEN());
+        assertEquals(fen1, board.getFen());
 
         Move move = new Move(Square.E1, Square.G1); //sm: b
         board.doMove(move, true);
-        System.out.println("new FEN after: " + move.toString() + ": " + board.getFEN());
+        System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
 
-        assertEquals(fen2, board.getFEN()); //sm: w
+        assertEquals(fen2, board.getFen()); //sm: w
 
         move = new Move(Square.E8, Square.G8); //sm: w
         board.doMove(move, true);
-        System.out.println("new FEN after: " + move.toString() + ": " + board.getFEN());
+        System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
 
-        assertEquals(fen3, board.getFEN()); //sm: b
+        assertEquals(fen3, board.getFen()); //sm: b
 
         board.undoMove();
-        System.out.println("new FEN after: undo: " + board.getFEN());
-        assertEquals(fen2, board.getFEN()); // sm: w
+        System.out.println("new FEN after: undo: " + board.getFen());
+        assertEquals(fen2, board.getFen()); // sm: w
 
     }
 
@@ -108,7 +108,7 @@ public class BoardTest {
     public void testClone() {
         String fen1 = "rnbqk2r/ppp1b1pp/5p1n/3p4/8/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 4 3";
         Board b1 = new Board();
-        b1.loadFromFEN(fen1);
+        b1.loadFromFen(fen1);
 
         Board b2 = b1.clone();
 
@@ -120,10 +120,10 @@ public class BoardTest {
     public void testEquality() {
         String fen1 = "rnbqk2r/ppp1b1pp/5p1n/3p4/8/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 4 3";
         Board b1 = new Board();
-        b1.loadFromFEN(fen1);
+        b1.loadFromFen(fen1);
 
         Board b2 = new Board();
-        b2.loadFromFEN(fen1);
+        b2.loadFromFen(fen1);
 
         assertEquals(b1, b2);
         assertEquals(b1.getPositionId(), b2.getPositionId());
@@ -134,12 +134,12 @@ public class BoardTest {
     public void testUndoMove() {
         String fen1 = "rnbqkbnr/1p1ppppp/p7/1Pp5/8/8/P1PPPPPP/RNBQKBNR w KQkq c6 0 5";
         Board b1 = new Board();
-        b1.loadFromFEN(fen1);
+        b1.loadFromFen(fen1);
 
         b1.doMove(new Move(Square.B5, Square.A6));
         b1.undoMove();
 
-        assertEquals(fen1, b1.getFEN());
+        assertEquals(fen1, b1.getFen());
 
     }
 
@@ -147,7 +147,7 @@ public class BoardTest {
     public void testLegalMove() throws MoveGeneratorException {
         String fen1 = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/5Q2/PPPBBPpP/RN2K2R w KQkq - 0 2";
         Board b1 = new Board();
-        b1.loadFromFEN(fen1);
+        b1.loadFromFen(fen1);
 
         MoveList moves = MoveGenerator.generateLegalMoves(b1);
 

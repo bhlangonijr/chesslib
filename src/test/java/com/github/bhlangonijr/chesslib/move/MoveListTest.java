@@ -18,9 +18,9 @@ public class MoveListTest {
         for (Move move : list) {
             assertEquals(mvs[i++], move.toString());
         }
-        assertEquals(san, list.toSAN());
+        assertEquals(san, list.toSan());
         MoveList list1 = new MoveList();
-        list1.loadFromSAN(san);
+        list1.loadFromSan(san);
         i = 0;
         for (Move move : list1) {
             assertEquals(mvs[i++], move.toString());
@@ -40,8 +40,8 @@ public class MoveListTest {
                 "41.Qe6 a4 42.Qe5 Qf2+ 43.Kh3 Qh2+ 44.Kg4 Rb4+ 45.Re4 Qe2+ 46.Kg5 " +
                 "Qxe4 47.Qxg7+ Kxg7 48.h6+ Kh8";
         MoveList list = new MoveList();
-        list.loadFromSAN(moveText);
-        assertEquals("8/6k1/7P/6K1/pr2q3/6p1/8/8 b - - 0 96", list.getFEN());
+        list.loadFromSan(moveText);
+        assertEquals("8/6k1/7P/6K1/pr2q3/6p1/8/8 b - - 0 96", list.getFen());
     }
 
     @Test
@@ -63,8 +63,8 @@ public class MoveListTest {
                 "Kf3 82.Kf5 Bg3 83.Re7 Ng4 84.Rh7 h2 85.c6 Ne3+ 86.Ke6 Kg2 87.Kd7 " +
                 "Nd5 88.Ke6 Nc7+";
         MoveList list = new MoveList();
-        list.loadFromSAN(moveText);
-        assertEquals("8/7R/2P1K3/3n4/8/6b1/6kp/8 b - - 6 176", list.getFEN());
+        list.loadFromSan(moveText);
+        assertEquals("8/7R/2P1K3/3n4/8/6b1/6kp/8 b - - 6 176", list.getFen());
     }
 
     @Test
@@ -81,8 +81,8 @@ public class MoveListTest {
                 "Kc6 52.Rc1+ Kd7 53.Qxd5+ Rxd5 54.Bxh6 Re5 55.Rd1+ Ke6 56.Rd2 " +
                 "Ra4 57.Kf2 Rxh4 58.Be3 ";
         MoveList list = new MoveList();
-        list.loadFromSAN(moveText);
-        assertEquals("8/8/4k2B/4r3/7r/5P2/3R1KP1/8 w - - 0 115", list.getFEN());
+        list.loadFromSan(moveText);
+        assertEquals("8/8/4k2B/4r3/7r/5P2/3R1KP1/8 w - - 0 115", list.getFen());
 
     }
 }

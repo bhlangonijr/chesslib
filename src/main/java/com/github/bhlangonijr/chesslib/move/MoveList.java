@@ -106,7 +106,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @param halfMoves
      */
     public MoveList(MoveList halfMoves) {
-        this(halfMoves.getStartFEN());
+        this(halfMoves.getStartFen());
         super.addAll(halfMoves);
     }
 
@@ -115,12 +115,12 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     // encode the move to SAN move and update thread local board
-    protected static String encodeToSAN(final Board board, Move move) throws MoveConversionException {
+    protected static String encodeToSan(final Board board, Move move) throws MoveConversionException {
         return encode(board, move, sanNotation);
     }
 
     // encode the move to SAN move and update thread local board
-    protected static String encodeToFAN(final Board board, Move move) throws MoveConversionException {
+    protected static String encodeToFan(final Board board, Move move) throws MoveConversionException {
         return encode(board, move, fanNotation);
     }
 
@@ -136,7 +136,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             if (Math.abs(delta) >= 2) { // is castle
                 if (!board.doMove(move, true)) {
                     throw new MoveConversionException("Invalid move [" +
-                            move.toString() + "] for current setup: " + board.getFEN());
+                            move.toString() + "] for current setup: " + board.getFen());
                 }
                 if (delta > 0) {
                     return "O-O";
@@ -168,7 +168,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
 
         if (!board.doMove(move, true)) {
             throw new MoveConversionException("Invalid move [" +
-                    move.toString() + "] for current setup: " + board.getFEN());
+                    move.toString() + "] for current setup: " + board.getFen());
         }
 
         Piece captured = board.getBackup().removeLast().getCapturedPiece();
@@ -221,23 +221,23 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     public static MoveList createMoveListFrom(MoveList startMoves, int finalIndex) throws MoveConversionException {
         String fen = null;
         final Board b = getBoard();
-        if (!b.getFEN().equals(startMoves.getStartFEN())) {
-            b.loadFromFEN(startMoves.getStartFEN());
+        if (!b.getFen().equals(startMoves.getStartFen())) {
+            b.loadFromFen(startMoves.getStartFen());
         }
         int i = 0;
         for (Move move : startMoves) {
             i++;
             if (!b.doMove(move, false)) {
                 throw new MoveConversionException("Couldn't parse SAN to MoveList: Illegal move: " +
-                        move + " [" + move.toString() + "] on " + b.getFEN());
+                        move + " [" + move.toString() + "] on " + b.getFen());
             }
             if (i >= finalIndex) {
-                fen = b.getFEN();
+                fen = b.getFen();
                 break;
             }
         }
         if (fen == null) {
-            fen = b.getFEN();
+            fen = b.getFen();
         }
         MoveList moves = new MoveList(fen);
         return moves;
@@ -309,9 +309,9 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      *
      * @return
      */
-    public String toSAN() throws MoveConversionException {
+    public String toSan() throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
-        for (String sanMove : this.toSANArray()) {
+        for (String sanMove : this.toSanArray()) {
             sb.append(sanMove);
             sb.append(" ");
         }
@@ -323,9 +323,9 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      *
      * @return
      */
-    public String toFAN() throws MoveConversionException {
+    public String toFan() throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
-        for (String fanMove : this.toFANArray()) {
+        for (String fanMove : this.toFanArray()) {
             sb.append(fanMove);
             sb.append(" ");
         }
@@ -337,18 +337,18 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      *
      * @return
      */
-    public String[] toSANArray() throws MoveConversionException {
+    public String[] toSanArray() throws MoveConversionException {
         if (!dirty && sanArray != null) {
             return sanArray;
         }
         sanArray = new String[this.size()];
         final Board b = getBoard();
-        if (!b.getFEN().equals(getStartFEN())) {
-            b.loadFromFEN(getStartFEN());
+        if (!b.getFen().equals(getStartFen())) {
+            b.loadFromFen(getStartFen());
         }
         int i = 0;
         for (Move move : this) {
-            String sanMove = encodeToSAN(b, move);
+            String sanMove = encodeToSan(b, move);
             sanArray[i++] = sanMove;
         }
         dirty = false;
@@ -360,18 +360,18 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      *
      * @return
      */
-    public String[] toFANArray() throws MoveConversionException {
+    public String[] toFanArray() throws MoveConversionException {
         if (!dirty && fanArray != null) {
             return fanArray;
         }
         fanArray = new String[this.size()];
         final Board b = getBoard();
-        if (!b.getFEN().equals(getStartFEN())) {
-            b.loadFromFEN(getStartFEN());
+        if (!b.getFen().equals(getStartFen())) {
+            b.loadFromFen(getStartFen());
         }
         int i = 0;
         for (Move move : this) {
-            String sanMove = encodeToFAN(b, move);
+            String sanMove = encodeToFan(b, move);
             fanArray[i++] = sanMove;
         }
         dirty = false;
@@ -381,7 +381,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * @return the startFEN
      */
-    public String getStartFEN() {
+    public String getStartFen() {
         return startFEN;
     }
 
@@ -392,8 +392,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      */
     public synchronized void loadFromText(String text) throws MoveConversionException {
         final Board b = getBoard();
-        if (!b.getFEN().equals(getStartFEN())) {
-            b.loadFromFEN(getStartFEN());
+        if (!b.getFen().equals(getStartFen())) {
+            b.loadFromFen(getStartFen());
         }
         try {
             Side side = b.getSideToMove();
@@ -430,22 +430,22 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     public void addSanMove(String san, boolean replay, boolean fullValidation) throws MoveConversionException {
         final Board b = getBoard();
         if (replay) {
-            if (!b.getFEN().equals(getStartFEN())) {
-                b.loadFromFEN(getStartFEN());
+            if (!b.getFen().equals(getStartFen())) {
+                b.loadFromFen(getStartFen());
             }
             for (Move move : this) {
                 if (!b.doMove(move, false)) {
                     throw new MoveConversionException("Couldn't parse SAN to MoveList: Illegal move: " +
-                            move + " [" + move.toString() + "] on " + b.getFEN());
+                            move + " [" + move.toString() + "] on " + b.getFen());
                 }
             }
         }
-        Move move = encodeSANToMove(b, san, b.getSideToMove());
+        Move move = encodeSanToMove(b, san, b.getSideToMove());
         move.setSan(san);
 
         if (!b.doMove(move, fullValidation)) {
             throw new MoveConversionException("Couldn't parse SAN to MoveList: Illegal move: " +
-                    move + " [" + san + "] on " + b.getFEN());
+                    move + " [" + san + "] on " + b.getFen());
         }
         add(this.size(), move);
     }
@@ -455,10 +455,10 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      *
      * @param text
      */
-    public void loadFromSAN(String text) throws MoveConversionException {
+    public void loadFromSan(String text) throws MoveConversionException {
         final Board b = getBoard();
-        if (!b.getFEN().equals(getStartFEN())) {
-            b.loadFromFEN(getStartFEN());
+        if (!b.getFen().equals(getStartFen())) {
+            b.loadFromFen(getStartFen());
         }
         try {
             text = StringUtil.normalize(text);
@@ -467,13 +467,13 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                 if (strMove.startsWith("$")) {
                     continue;
                 }
-                if (strMove.indexOf("...") > -1) {
+                if (strMove.contains("...")) {
                     continue;
                 }
-                if (strMove.indexOf(".") > -1) {
+                if (strMove.contains(".")) {
                     strMove = StringUtil.afterSequence(strMove, ".");
                 }
-                if (strMove == null || strMove.trim().equals("")) {
+                if (strMove.trim().equals("")) {
                     continue;
                 }
                 addSanMove(strMove);
@@ -489,7 +489,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /*
      * encode san to move
      */
-    protected Move encodeSANToMove(Board board, String san, Side side) throws MoveConversionException {
+    protected Move encodeSanToMove(Board board, String san, Side side) throws MoveConversionException {
 
         san = san.replace("+", "");
         san = san.replace("#", "");
@@ -536,7 +536,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             }
         } else {
 
-            String strFrom = (san.indexOf("x") >= 0 ?
+            String strFrom = (san.contains("x") ?
                     StringUtil.beforeSequence(san, "x") :
                     san.substring(0, san.length() - 2));
 
@@ -602,7 +602,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
 
         }
         if (from.equals(Square.NONE)) {
-            throw new MoveConversionException("Couldn't parse 'from' square " + san + " to setup: " + board.getFEN());
+            throw new MoveConversionException("Couldn't parse 'from' square " + san + " to setup: " + board.getFen());
         }
         return new Move(from, to, promotion);
     }
@@ -614,8 +614,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @param atMoveIndex
      * @return
      */
-    public String getFEN(int atMoveIndex) {
-        return getFEN(atMoveIndex, true);
+    public String getFen(int atMoveIndex) {
+        return getFen(atMoveIndex, true);
     }
 
     /**
@@ -626,20 +626,20 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @param includeCounters
      * @return
      */
-    public String getFEN(int atMoveIndex, boolean includeCounters) {
+    public String getFen(int atMoveIndex, boolean includeCounters) {
         final Board b = getBoard();
-        if (!b.getFEN().equals(getStartFEN())) {
-            b.loadFromFEN(getStartFEN());
+        if (!b.getFen().equals(getStartFen())) {
+            b.loadFromFen(getStartFen());
         }
         int i = 0;
         for (Move move : this) {
             i++;
             if (!b.doMove(move, false)) {
                 throw new IllegalArgumentException("Couldn't parse SAN to MoveList: Illegal move: " +
-                        move + " [" + move.toString() + "] on " + b.getFEN(includeCounters));
+                        move + " [" + move.toString() + "] on " + b.getFen(includeCounters));
             }
             if (i >= atMoveIndex) {
-                return b.getFEN(includeCounters);
+                return b.getFen(includeCounters);
             }
         }
         return null;
@@ -651,8 +651,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      *
      * @return
      */
-    public String getFEN() {
-        return getFEN(this.size() - 1);
+    public String getFen() {
+        return getFen(this.size() - 1);
     }
 
     /**

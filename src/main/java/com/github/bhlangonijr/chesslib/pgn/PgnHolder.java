@@ -37,7 +37,7 @@ public class PgnHolder {
     private final Map<String, Event> event = new HashMap<String, Event>();
     private final Map<String, Player> player = new HashMap<String, Player>();
     private final List<Game> game = new ArrayList<Game>();
-    private final List<PGNLoadListener> listener = new ArrayList<PGNLoadListener>();
+    private final List<PgnLoadListener> listener = new ArrayList<PgnLoadListener>();
     private String fileName;
     private Integer size;
     private boolean lazyLoad;
@@ -51,14 +51,14 @@ public class PgnHolder {
         return propertyPattern.matcher(line).matches();
     }
 
-    private static PGNProperty parsePGNProperty(String line) {
+    private static PgnProperty parsePgnProperty(String line) {
         try {
 
             String l = line.replace("[", "");
             l = l.replace("]", "");
             l = l.replace("\"", "");
 
-            return new PGNProperty(StringUtil.beforeSequence(l, " "),
+            return new PgnProperty(StringUtil.beforeSequence(l, " "),
                     StringUtil.afterSequence(l, " "));
         } catch (Exception e) {
             // do nothing
@@ -133,7 +133,7 @@ public class PgnHolder {
                         line = line.substring(1);
                     }
                     if (isProperty(line)) {
-                        PGNProperty p = parsePGNProperty(line);
+                        PgnProperty p = parsePgnProperty(line);
                         if (p != null) {
                             String tag = p.name.toLowerCase().trim();
                             //begin
@@ -143,7 +143,7 @@ public class PgnHolder {
                                     setMoveText(game, moveText);
                                 }
                                 size++;
-                                for (PGNLoadListener l : getListener()) {
+                                for (PgnLoadListener l : getListener()) {
                                     l.notifyProgress(size);
                                 }
                                 game = null;
@@ -396,7 +396,7 @@ public class PgnHolder {
     /**
      * @return the listener
      */
-    public List<PGNLoadListener> getListener() {
+    public List<PgnLoadListener> getListener() {
         return listener;
     }
 
@@ -420,16 +420,16 @@ public class PgnHolder {
         return sb.toString();
     }
 
-    static class PGNProperty {
+    static class PgnProperty {
         public String name;
 
         ;
         public String value;
 
-        public PGNProperty() {
+        public PgnProperty() {
         }
 
-        public PGNProperty(String name, String value) {
+        public PgnProperty(String name, String value) {
             this.name = name;
             this.value = value;
         }
