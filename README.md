@@ -154,7 +154,7 @@ Example of a perft function using chesslib:
         long nodes = 0;      
         MoveList moves = MoveGenerator.generateLegalMoves(board);
         for (Move move : moves) {
-            board.doMove(move, false);
+            board.doMove(move);
             nodes += perft(board, depth - 1, ply + 1);
             board.undoMove();
         }
