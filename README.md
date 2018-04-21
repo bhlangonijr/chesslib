@@ -151,31 +151,12 @@ Example of a perft function using chesslib:
         if (depth == 0) {
             return 1;
         }
-        long time = 0;
-        if (ply == 1) {
-            time = System.currentTimeMillis();
-        }
-        long nodes = 0;
-        long partialNodes;      
+        long nodes = 0;      
         MoveList moves = MoveGenerator.generateLegalMoves(board);
         for (Move move : moves) {
-            try {
-                if (!board.doMove(move, false)) {
-                    continue;
-                }
-                partialNodes = perft(board, depth - 1, ply + 1);
-                nodes += partialNodes;
-                if (ply == 1) {
-                    System.out.println(move.toString() + ": " + partialNodes);
-                }
-                board.undoMove();
-            } catch (Exception e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
-        if (ply == 1) {
-            System.out.println("Node count: " + nodes);
-            System.out.println("Time: " + (System.currentTimeMillis() - time));
+            board.doMove(move, false);
+            nodes += perft(board, depth - 1, ply + 1);
+            board.undoMove();
         }
         return nodes;
     }
