@@ -172,7 +172,7 @@ keeping the `Board` in a consistent state, e.g.:
 
         Board board = new Board();
         board.setEnableEvents(false);
-        board.loadFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        board.loadFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
         long nodes = perft(board, 5, 1);
         assertEquals(4865609, nodes);
