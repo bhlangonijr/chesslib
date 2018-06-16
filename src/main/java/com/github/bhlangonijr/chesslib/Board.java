@@ -969,12 +969,6 @@ public class Board implements Cloneable, BoardEvent {
 
         long pawns = (getBitboard(Piece.make(other, PieceType.PAWN))) & ~moveTo;
 
-        if (fromPiece.getPieceType().equals(PieceType.PAWN) &&
-                !Square.NONE.equals(getEnPassantTarget()) &&
-                toPiece.equals(Piece.NONE)) {
-            pawns &= ~getEnPassantTarget().getBitboard();
-        }
-
         if (pawns != 0L &&
                 (Bitboard.getPawnAttacks(side, kingSq) & pawns) != 0L) {
             return false;
