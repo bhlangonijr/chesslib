@@ -1,13 +1,59 @@
 Simple Java Chess Library
 =========================
 
+[![](https://jitpack.io/v/bhlangonijr/chesslib.svg)](https://jitpack.io/#bhlangonijr/chesslib)
+
 Chesslib is a simple java chess library for generating
 legal chess moves given a chessboard [position](https://en.wikipedia.org/wiki/Chess#Setup),
 parse a chess game stored in [PGN](https://en.wikipedia.org/wiki/Portable_Game_Notation) or [FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation) format and many other things.
 
+### Building/Installing from source
 
-### Building/Installing
+```
+    git clone git@github.com:bhlangonijr/chesslib.git
     mvn clean compile package install
+```
+
+### Building/Installing from repo
+
+Chesslib dependency can be added via the jitpack repository.
+
+#### Maven
+
+```xml
+<repositories>
+  ...
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+```
+
+```xml
+<dependency>
+  <groupId>com.github.bhlangonijr</groupId>
+  <artifactId>chesslib</artifactId>
+  <version>1.1.1</version>
+</dependency>
+```
+
+#### Gradle
+
+```
+repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+}
+```
+
+```
+dependencies {
+    ...
+    implementation 'com.github.bhlangonijr:chesslib:1.1.1'
+    ...
+}
+```
 
 ### Usage
 
