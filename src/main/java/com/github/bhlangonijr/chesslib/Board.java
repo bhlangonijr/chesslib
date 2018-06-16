@@ -62,7 +62,7 @@ public class Board implements Cloneable, BoardEvent {
         setSideToMove(Side.WHITE);
         setEnPassantTarget(Square.NONE);
         setEnPassant(Square.NONE);
-        setMoveCounter(0);
+        setMoveCounter(1);
         setHalfMoveCounter(0);
         for (BoardEventType evt : BoardEventType.values()) {
             eventListener.put(evt, new CopyOnWriteArrayList<BoardEventListener>());
@@ -204,11 +204,15 @@ public class Board implements Cloneable, BoardEvent {
             setHalfMoveCounter(0);
         }
 
+        if (side == Side.BLACK) {
+            setMoveCounter(getMoveCounter() + 1);
+        }
+
         setSideToMove(side.flip());
         if (updateHistory) {
             getHistory().addLast(this.hashCode());
         }
-        setMoveCounter(getMoveCounter() + 1);
+
         backup.add(backupMove);
         //call listeners
         if (isEnableEvents() &&

@@ -9,9 +9,9 @@ public class MoveListTest {
     @Test
     public void testMoveListStartingPosition() throws MoveConversionException {
         String[] san = {"e4", "e4 e6", "e4 e6 f4"};
-        String[] fen = {"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 2",
-                        "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3",
-                        "rnbqkbnr/pppp1ppp/4p3/8/4PP2/8/PPPP2PP/RNBQKBNR b KQkq f3 0 4"};
+        String[] fen = {"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+                        "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+                        "rnbqkbnr/pppp1ppp/4p3/8/4PP2/8/PPPP2PP/RNBQKBNR b KQkq f3 0 2"};
 
         for (int i=0; i<3; i++) {
             MoveList list = new MoveList();
@@ -26,7 +26,7 @@ public class MoveListTest {
         String san = "e4 Nc6 d4 Nf6 d5 Ne5 Nf3 d6 Nxe5 dxe5 Bb5+ Bd7 Bxd7+ Qxd7 Nc3 e6 O-O exd5 ";
         MoveList list1 = new MoveList();
         list1.loadFromSan(san);
-        assertEquals("r3kb1r/pppq1ppp/5n2/3pp3/4P3/2N5/PPP2PPP/R1BQ1RK1 w kq - 0 19" , list1.getFen());
+        assertEquals("r3kb1r/pppq1ppp/5n2/3pp3/4P3/2N5/PPP2PPP/R1BQ1RK1 w kq - 0 10" , list1.getFen());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class MoveListTest {
                 "Qxe4 47.Qxg7+ Kxg7 48.h6+ Kh8";
         MoveList list = new MoveList();
         list.loadFromSan(moveText);
-        assertEquals("7k/8/7P/6K1/pr2q3/6p1/8/8 w - - 1 97", list.getFen());
+        assertEquals("7k/8/7P/6K1/pr2q3/6p1/8/8 w - - 1 49", list.getFen());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class MoveListTest {
                 "Nd5 88.Ke6 Nc7+";
         MoveList list = new MoveList();
         list.loadFromSan(moveText);
-        assertEquals("8/2n4R/2P1K3/8/8/6b1/6kp/8 w - - 7 177", list.getFen());
+        assertEquals("8/2n4R/2P1K3/8/8/6b1/6kp/8 w - - 7 89", list.getFen());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class MoveListTest {
                 "Ra4 57.Kf2 Rxh4 58.Be3 ";
         MoveList list = new MoveList();
         list.loadFromSan(moveText);
-        assertEquals("8/8/4k3/4r3/7r/4BP2/3R1KP1/8 b - - 1 116", list.getFen());
+        assertEquals("8/8/4k3/4r3/7r/4BP2/3R1KP1/8 b - - 1 58", list.getFen());
 
     }
 }
