@@ -272,43 +272,43 @@ private final ProgressBarDialog progress = new ProgressBarDialog("PGN Loader", f
 ...
 private void init() {
     ...
-   LoadPGNWorker loadPGNWorker = new LoadPGNWorker();
-        loadPGNWorker.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent e) {                
-                progress.getProgressBar().setIndeterminate(true);
-                progress.getProgressBar().setValue((Integer) e.getNewValue());
-            }
-        });
-        loadPGNWorker.execute();
+    LoadPGNWorker loadPGNWorker = new LoadPGNWorker();
+    loadPGNWorker.addPropertyChangeListener(new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent e) {                
+            progress.getProgressBar().setIndeterminate(true);
+            progress.getProgressBar().setValue((Integer) e.getNewValue());
+        }
+    });
+    loadPGNWorker.execute();
 
 }
 ...
 private class LoadPGNWorker extends SwingWorker<Integer, Integer> implements PgnLoadListener {
 
-        @Override
-        protected Integer doInBackground() throws Exception {
-            try {
-                getPgnHolder().getListener().add(this);
-                loadPGN();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(owner, errorMessageFromBundle + e.getMessage(), JOptionPane.ERROR_MESSAGE);
-                log.error("Error loading pgn", e);
-            } finally {
-                progress.dispose();
-            }
-            return getPgnHolder().getSize();
+    @Override
+    protected Integer doInBackground() throws Exception {
+        try {
+            getPgnHolder().getListener().add(this);
+            loadPGN();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(owner, errorMessageFromBundle + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+            log.error("Error loading pgn", e);
+        } finally {
+            progress.dispose();
         }
-
-        @Override
-        protected void done() {
-            setProgress(100);
-        }
-
-        @Override
-        public void notifyProgress(int games) {
-            setProgress(Math.min(90, games));
-            progress.getLabel().setText("Loading games...");
-        }
+        return getPgnHolder().getSize();
+    }
+    
+    @Override
+    protected void done() {
+        setProgress(100);
+    }
+    
+    @Override
+    public void notifyProgress(int games) {
+        setProgress(Math.min(90, games));
+        progress.getLabel().setText("Loading games...");
+    }
     }
 ```
