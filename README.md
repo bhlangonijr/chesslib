@@ -7,18 +7,20 @@ Chesslib is a simple java chess library for generating
 legal chess moves given a chessboard [position](https://en.wikipedia.org/wiki/Chess#Setup),
 parse a chess game stored in [PGN](https://en.wikipedia.org/wiki/Portable_Game_Notation) or [FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation) format and many other things.
 
-### Building/Installing from source
+# Building/Installing
+## From source
 
 ```
     git clone git@github.com:bhlangonijr/chesslib.git
+    cd chesslib/
     mvn clean compile package install
 ```
 
-### Building/Installing from repo
+## From repo
 
 Chesslib dependency can be added via the jitpack repository.
 
-#### Maven
+## Maven
 
 ```xml
 <repositories>
@@ -38,7 +40,7 @@ Chesslib dependency can be added via the jitpack repository.
 </dependency>
 ```
 
-#### Gradle
+## Gradle
 
 ```
 repositories {
@@ -55,9 +57,9 @@ dependencies {
 }
 ```
 
-### Usage
+# Usage
 
-#### Create a chessboard and make a move
+## Create a chessboard and make a move
 
 ```java
     // Creates a new chessboard in the standard initial position
@@ -81,7 +83,7 @@ PPPP PPP
 RNBQKBNR
 Side: BLACK
 ```
-#### Undo a move
+## Undo a move
 
 ```java
     // Undo a move from the stack and return it
@@ -89,7 +91,7 @@ Side: BLACK
 
 ```
 
-#### Get FEN string from chessboard
+## Get FEN string from chessboard
 
 ```java
     System.out.println(board.getFen());
@@ -97,7 +99,7 @@ Side: BLACK
 ```
 
 
-#### Load a chessboard position from [FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation) notation
+## Load a chessboard position from [FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation) notation
 
 ```java
     // Load a FEN position into the chessboard
@@ -111,7 +113,7 @@ Side: BLACK
     //Get the piece at A1 square...
     Piece piece = board.getPiece(Square.A1);
 ```
-#### MoveList
+## MoveList
 
 `MoveList` stores a list of moves played in the chessboard. When created it assumes the initial 
 position of a regular chess game. Arbitrary moves from a chess game can be loaded using SAN or LAN string: 
@@ -125,7 +127,7 @@ position of a regular chess game. Arbitrary moves from a chess game can be loade
 
 ```
 
-#### Generate all chess legal-moves for the current position
+## Generate all chess legal-moves for the current position
 
 ```java
     // Generate legal chess moves for the current position
@@ -150,7 +152,7 @@ Relaying the legal moves to the chessboard:
     System.out.println("Legal moves: " + moves);
 ```
 
-#### Checking chessboard situation
+## Checking chessboard situation
 
 Chessboard situation can be checked using the methods:
  
@@ -162,7 +164,7 @@ Chessboard situation can be checked using the methods:
   - `board.getSideToMove()`
   - ...
 
-#### Load a chess game collection from a [PGN](https://en.wikipedia.org/wiki/Portable_Game_Notation) file
+## Load a chess game collection from a [PGN](https://en.wikipedia.org/wiki/Portable_Game_Notation) file
 
 ```java
     PgnHolder pgn = new PgnHolder("/opt/games/linares_2002.pgn");
@@ -185,9 +187,9 @@ You could achieve the same by loading the move list final FEN position:
 
 ```
 
-### Advanced usage
+# Advanced usage
 
-#### Sanity checking of chesslib move generation with Perft
+## Sanity checking of chesslib move generation with Perft
 
 Perft, (performance test, move path enumeration) is a debugging function to walk the 
 move generation tree of strictly legal moves to count all the leaf nodes of a certain depth.
@@ -230,12 +232,12 @@ keeping the `Board` in a consistent state, e.g.:
 It's known that from the initial standard chess position, there should have exactly 4865609 positions
 for depth 5. Deviation from this number would imply a bug in move generation or keeping the board state. 
 
-#### Capturing and reacting to events
+## Capturing and reacting to events
 
 Actions occurring in the chessboard or when loading a PGN file are emitted as events by the library so that it can
 be captured by a GUI, for example:
 
-#### Listening to PGN loading progress
+### Listening to PGN loading progress
 
 Create your listener:
 
@@ -313,7 +315,7 @@ private class LoadPGNWorker extends SwingWorker<Integer, Integer> implements Pgn
 }
 ```
 
-#### Listening to chessboard events
+### Listening to chessboard events
 
 Moves played and game statuses are emitted by the `Board` whenever these actions happen.
 
