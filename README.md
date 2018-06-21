@@ -11,9 +11,9 @@ parse a chess game stored in [PGN](https://en.wikipedia.org/wiki/Portable_Game_N
 ## From source
 
 ```
-    git clone git@github.com:bhlangonijr/chesslib.git
-    cd chesslib/
-    mvn clean compile package install
+$ git clone git@github.com:bhlangonijr/chesslib.git
+$ cd chesslib/
+$ mvn clean compile package install
 ```
 
 ## From repo
@@ -342,8 +342,15 @@ Add your listener to `Board` and listen to played moves events:
     ...
 ```
 
+* Beware that listeners are executed using the calling thread that updated the `Board` and 
+depending on your listener processing requirements you'd want to hand the execution off 
+to a separate thread like in a `threadpool:  
 
+```java
+    public void onEvent(BoardEvent event) {
 
-
+        executors.submit(myListenerRunnable);
+    }
+```    
   
  
