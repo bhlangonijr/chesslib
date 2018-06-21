@@ -344,7 +344,7 @@ Add your listener to `Board` and listen to played moves events:
 
 * Beware that listeners are executed using the calling thread that updated the `Board` and 
 depending on your listener processing requirements you'd want to hand the execution off 
-to a separate thread like in a `threadpool:  
+to a separate thread like in a threadpool:  
 
 ```java
     public void onEvent(BoardEvent event) {
