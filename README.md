@@ -143,7 +143,7 @@ Relaying the legal moves to the chessboard:
 ```java
     ...
     for (Move move : moves) {
-        board.doMove();
+        board.doMove(move);
         //do something
         board.undoMove();
     }
@@ -185,7 +185,9 @@ You could achieve the same by loading the move list final FEN position:
 
 ```
 
-### Sanity checking of chesslib move generation with Perft
+### Advanced usage
+
+#### Sanity checking of chesslib move generation with Perft
 
 Perft, (performance test, move path enumeration) is a debugging function to walk the 
 move generation tree of strictly legal moves to count all the leaf nodes of a certain depth.
@@ -228,7 +230,85 @@ keeping the `Board` in a consistent state, e.g.:
 It's known that from the initial standard chess position, there should have exactly 4865609 positions
 for depth 5. Deviation from this number would imply a bug in move generation or keeping the board state. 
 
-### Advanced usage
+#### Capturing and reacting to events
 
-[TODO]
+Actions occurring in the chessboard or when loading a PGN file are emitted as events by the library so that it can
+be captured by a GUI, for example:
 
+#### Listening to PGN load progress
+
+Create your listener:
+
+```java
+class MyListener implements PgnLoadListener {
+    
+    private int games = 0;
+    @Override
+    protected void done() {
+        System.out.println("Finished loading " + games + " games");
+    }
+     @Override
+    public void notifyProgress(int games) {
+        System.out.println("Loaded " + games + " games...");
+    }
+}
+```
+
+Add the listener to `PgnHolder` object and load the games:
+
+```java
+    PgnHolder pgn = new PgnHolder(".../games.pgn");
+    // add your listener
+    pgn.getListener().add(myListener);
+    pgn.loadPgn();
+    
+```
+
+Example implementing a `SwingWorker` to update a Swing `ProgressBarDialog` with PGN loading status: 
+
+```java
+
+private final ProgressBarDialog progress = new ProgressBarDialog("PGN Loader", frame);
+...
+private void init() {
+    ...
+   LoadPGNWorker loadPGNWorker = new LoadPGNWorker();
+        loadPGNWorker.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {                
+                progress.getProgressBar().setIndeterminate(true);
+                progress.getProgressBar().setValue((Integer) e.getNewValue());
+            }
+        });
+        loadPGNWorker.execute();
+
+}
+...
+private class LoadPGNWorker extends SwingWorker<Integer, Integer> implements PgnLoadListener {
+
+        @Override
+        protected Integer doInBackground() throws Exception {
+            try {
+                getPgnHolder().getListener().add(this);
+                loadPGN();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(owner, errorMessageFromBundle + e.getMessage(), JOptionPane.ERROR_MESSAGE);
+                log.error("Error loading pgn", e);
+            } finally {
+                progress.dispose();
+            }
+            return getPgnHolder().getSize();
+        }
+
+        @Override
+        protected void done() {
+            setProgress(100);
+        }
+
+        @Override
+        public void notifyProgress(int games) {
+            setProgress(Math.min(90, games));
+            progress.getLabel().setText("Loading games...");
+        }
+    }
+```
