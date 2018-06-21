@@ -235,7 +235,7 @@ for depth 5. Deviation from this number would imply a bug in move generation or 
 Actions occurring in the chessboard or when loading a PGN file are emitted as events by the library so that it can
 be captured by a GUI, for example:
 
-#### Listening to PGN load progress
+#### Listening to PGN loading progress
 
 Create your listener:
 
@@ -310,5 +310,38 @@ private class LoadPGNWorker extends SwingWorker<Integer, Integer> implements Pgn
         setProgress(Math.min(90, games));
         progress.getLabel().setText("Loading games...");
     }
-    }
+}
 ```
+
+#### Listening to chessboard events
+
+Moves played and game statuses are emitted by the `Board` whenever these actions happen.
+
+Implement your `Board` listener:
+```java
+class MyBoardListener implements BoardEventListener {
+    
+    public void onEvent(BoardEvent event) {
+
+        if (event.getType() == BoardEventType.ON_MOVE) {
+            Move move = (Move) event;
+            System.out.println("Move " + move + " was played");
+        }
+    }
+}
+```
+
+Add your listener to `Board` and listen to played moves events:
+```java
+    Board board = new Board();
+    board.addEventListener(BoardEventType.ON_MOVE, new MyBoardListener());    
+
+    handleToGui(board);
+    ...
+```
+
+
+
+
+  
+ 

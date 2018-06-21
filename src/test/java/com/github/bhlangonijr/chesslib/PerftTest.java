@@ -162,4 +162,23 @@ public class PerftTest {
         return nodes;
     }
 
+    private void test() {
+
+        Board board = new Board();
+        board.addEventListener(BoardEventType.ON_MOVE, new MyBoardListener());
+
+
+    }
+
+    class MyBoardListener implements BoardEventListener {
+
+        public void onEvent(BoardEvent event) {
+
+            if (event.getType() == BoardEventType.ON_MOVE) {
+                Move move = (Move) event;
+                System.out.println("Move " + move + " was played");
+            }
+        }
+    }
+
 }
