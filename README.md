@@ -338,7 +338,7 @@ Add your listener to `Board` and listen to played moves events:
     Board board = new Board();
     board.addEventListener(BoardEventType.ON_MOVE, new MyBoardListener());    
 
-    handleToGui(board);
+    handToGui(board);
     ...
 ```
 
