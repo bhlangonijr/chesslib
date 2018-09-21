@@ -47,10 +47,19 @@ public class Board implements Cloneable, BoardEvent {
     private boolean enableEvents;
     private boolean updateHistory;
 
+    /**
+     * Instantiates a new Board.
+     */
     public Board() {
         this(new GameContext(), false);
     }
 
+    /**
+     * Instantiates a new Board.
+     *
+     * @param gameContext   the game context
+     * @param updateHistory the update history
+     */
     public Board(GameContext gameContext, boolean updateHistory) {
         bitboard = new long[Piece.values().length];
         bbSide = new long[Side.values().length];
@@ -91,6 +100,13 @@ public class Board implements Cloneable, BoardEvent {
         return ep;
     }
 
+    /**
+     * Is promo rank boolean.
+     *
+     * @param side the side
+     * @param move the move
+     * @return the boolean
+     */
     public static boolean isPromoRank(Side side, Move move) {
         if (side.equals(Side.WHITE) &&
                 move.getTo().getRank().equals(Rank.RANK_8)) {
@@ -103,7 +119,8 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Execute the move in the board
      *
-     * @param move
+     * @param move the move
+     * @return the boolean
      */
     public boolean doMove(final Move move) {
         return doMove(move, false);
@@ -112,8 +129,9 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Execute the move on the board
      *
-     * @param move
-     * @param fullValidation
+     * @param move           the move
+     * @param fullValidation the full validation
+     * @return the boolean
      */
     public boolean doMove(final Move move, boolean fullValidation) {
 
@@ -224,6 +242,8 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Undo the last move executed on the board
+     *
+     * @return the move
      */
     public Move undoMove() {
         Move move = null;
@@ -246,6 +266,13 @@ public class Board implements Cloneable, BoardEvent {
         return move;
     }
 
+    /**
+     * Move piece piece.
+     *
+     * @param move   the move
+     * @param backup the backup
+     * @return the piece
+     */
     /*
      * Move a piece
      * @param move
@@ -255,6 +282,15 @@ public class Board implements Cloneable, BoardEvent {
         return movePiece(move.getFrom(), move.getTo(), move.getPromotion(), backup);
     }
 
+    /**
+     * Move piece piece.
+     *
+     * @param from      the from
+     * @param to        the to
+     * @param promotion the promotion
+     * @param backup    the backup
+     * @return the piece
+     */
     protected Piece movePiece(Square from, Square to, Piece promotion, MoveBackup backup) {
         Piece movingPiece = getPiece(from);
         Piece capturedPiece = getPiece(to);
@@ -283,6 +319,11 @@ public class Board implements Cloneable, BoardEvent {
         return capturedPiece;
     }
 
+    /**
+     * Undo move piece.
+     *
+     * @param move the move
+     */
     protected void undoMovePiece(Move move) {
         Square from = move.getFrom();
         Square to = move.getTo();
@@ -301,9 +342,9 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Returns true if finds the specific piece in the given square locations
      *
-     * @param piece
-     * @param location
-     * @return
+     * @param piece    the piece
+     * @param location the location
+     * @return boolean
      */
     public boolean hasPiece(Piece piece, Square location[]) {
         for (Square sq : location) {
@@ -337,8 +378,8 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * add a piece into a given square
      *
-     * @param piece
-     * @param sq
+     * @param piece the piece
+     * @param sq    the sq
      */
     public void setPiece(Piece piece, Square sq) {
         bitboard[piece.ordinal()] |= sq.getBitboard();
@@ -348,8 +389,8 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * remove a piece from a given square
      *
-     * @param piece
-     * @param sq
+     * @param piece the piece
+     * @param sq    the sq
      */
     public void unsetPiece(Piece piece, Square sq) {
         bitboard[piece.ordinal()] ^= sq.getBitboard();
@@ -360,7 +401,7 @@ public class Board implements Cloneable, BoardEvent {
      * Load an specific chess position using FEN notation
      * ex.: rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1
      *
-     * @param fen
+     * @param fen the fen
      */
     public void loadFromFen(String fen) {
         clear();
@@ -545,8 +586,8 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Get the piece on the given square
      *
-     * @param sq
-     * @return
+     * @param sq the sq
+     * @return piece
      */
     public Piece getPiece(Square sq) {
         for (int i = 0; i < bitboard.length - 1; i++) {
@@ -558,6 +599,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets bitboard.
+     *
      * @return the bitboard
      */
     public long getBitboard() {
@@ -565,6 +608,9 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets bitboard.
+     *
+     * @param piece the piece
      * @return the bitboard of a given piece
      */
     public long getBitboard(Piece piece) {
@@ -572,7 +618,9 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * @param side
+     * Gets bitboard.
+     *
+     * @param side the side
      * @return the bitboard of a given side
      */
     public long getBitboard(Side side) {
@@ -580,6 +628,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Get bb side long [ ].
+     *
      * @return the bbSide
      */
     public long[] getBbSide() {
@@ -589,8 +639,8 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Get the square(s) location of the given piece
      *
-     * @param piece
-     * @return
+     * @param piece the piece
+     * @return piece location
      */
     public List<Square> getPieceLocation(Piece piece) {
         if (getBitboard(piece) != 0L) {
@@ -601,6 +651,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets side to move.
+     *
      * @return the sideToMove
      */
     public Side getSideToMove() {
@@ -608,6 +660,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Sets side to move.
+     *
      * @param sideToMove the sideToMove to set
      */
     public void setSideToMove(Side sideToMove) {
@@ -615,6 +669,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets en passant target.
+     *
      * @return the enPassantTarget
      */
     public Square getEnPassantTarget() {
@@ -622,6 +678,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Sets en passant target.
+     *
      * @param enPassant the enPassantTarget to set
      */
     public void setEnPassantTarget(Square enPassant) {
@@ -629,6 +687,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets en passant.
+     *
      * @return the enPassant
      */
     public Square getEnPassant() {
@@ -636,6 +696,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Sets en passant.
+     *
      * @param enPassant the enPassant to set
      */
     public void setEnPassant(Square enPassant) {
@@ -643,6 +705,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets move counter.
+     *
      * @return the moveCounter
      */
     public Integer getMoveCounter() {
@@ -650,6 +714,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Sets move counter.
+     *
      * @param moveCounter the moveCounter to set
      */
     public void setMoveCounter(Integer moveCounter) {
@@ -657,6 +723,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets half move counter.
+     *
      * @return the halfMoveCounter
      */
     public Integer getHalfMoveCounter() {
@@ -664,6 +732,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Sets half move counter.
+     *
      * @param halfMoveCounter the halfMoveCounter to set
      */
     public void setHalfMoveCounter(Integer halfMoveCounter) {
@@ -671,6 +741,9 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets castle right.
+     *
+     * @param side the side
      * @return the castleRight
      */
     public CastleRight getCastleRight(Side side) {
@@ -678,6 +751,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets castle right.
+     *
      * @return the castleRight
      */
     public EnumMap<Side, CastleRight> getCastleRight() {
@@ -685,6 +760,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets context.
+     *
      * @return the context
      */
     public GameContext getContext() {
@@ -692,12 +769,19 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Sets context.
+     *
      * @param context the context to set
      */
     public void setContext(GameContext context) {
         this.context = context;
     }
 
+    /**
+     * Gets backup.
+     *
+     * @return the backup
+     */
     public LinkedList<MoveBackup> getBackup() {
         return backup;
     }
@@ -727,6 +811,11 @@ public class Board implements Cloneable, BoardEvent {
         return sb.toString();
     }
 
+    /**
+     * Board to array piece [ ].
+     *
+     * @return the piece [ ]
+     */
     public Piece[] boardToArray() {
 
         final Piece pieces[] = new Piece[65];
@@ -745,6 +834,11 @@ public class Board implements Cloneable, BoardEvent {
         return BoardEventType.ON_LOAD;
     }
 
+    /**
+     * Gets event listener.
+     *
+     * @return the event listener
+     */
     public EnumMap<BoardEventType, List<BoardEventListener>> getEventListener() {
         return eventListener;
     }
@@ -752,8 +846,9 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Adds a Board Event Listener
      *
-     * @param listener
-     * @return Board
+     * @param eventType the event type
+     * @param listener  the listener
+     * @return Board board
      */
     public Board addEventListener(BoardEventType eventType, BoardEventListener listener) {
         getEventListener().get(eventType).add(listener);
@@ -763,8 +858,9 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Removes a Board Event Listener
      *
-     * @param listener
-     * @return Board
+     * @param eventType the event type
+     * @param listener  the listener
+     * @return Board board
      */
     public Board removeEventListener(BoardEventType eventType, BoardEventListener listener) {
         if (getEventListener() != null && getEventListener().get(eventType) != null) {
@@ -776,7 +872,8 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Returns if the the bitboard with pieces which can attack the given square
      *
-     * @param side
+     * @param square the square
+     * @param side   the side
      * @return true if the square is attacked
      */
     public long squareAttackedBy(Square square, Side side) {
@@ -798,12 +895,12 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Square attacked by a given piece type & side
+     * Square attacked by a given piece type and side
      *
-     * @param square
-     * @param side
-     * @param type
-     * @return
+     * @param square the square
+     * @param side   the side
+     * @param type   the type
+     * @return long
      */
     public long squareAttackedByPieceType(Square square,
                                           Side side, PieceType type) {
@@ -843,8 +940,8 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Get king Square
      *
-     * @param side
-     * @return
+     * @param side the side
+     * @return king square
      */
     public Square getKingSquare(Side side) {
         Square result = Square.NONE;
@@ -858,7 +955,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Is King Attacked
      *
-     * @return
+     * @return boolean
      */
     public boolean isKingAttacked() {
         return squareAttackedBy(getKingSquare(getSideToMove()), getSideToMove().flip()) != 0;
@@ -867,9 +964,9 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * set of squares attacked by
      *
-     * @param squares
-     * @param side
-     * @return
+     * @param squares the squares
+     * @param side    the side
+     * @return boolean
      */
     public boolean isSquareAttackedBy(List<Square> squares, Side side) {
         for (Square sq : squares) {
@@ -882,6 +979,10 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Verify if a move is legal within this board context
+     *
+     * @param move           the move
+     * @param fullValidation the full validation
+     * @return the boolean
      */
     public boolean isMoveLegal(Move move, boolean fullValidation) {
 
@@ -974,6 +1075,12 @@ public class Board implements Cloneable, BoardEvent {
                 (Bitboard.getPawnAttacks(side, kingSq) & pawns) == 0L;
     }
 
+    /**
+     * Is attacked by boolean.
+     *
+     * @param move the move
+     * @return the boolean
+     */
     public boolean isAttackedBy(Move move) {
 
         PieceType pieceType = getPiece(move.getFrom()).getPieceType();
@@ -1011,6 +1118,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Gets history.
+     *
      * @return the history
      */
     public LinkedList<Integer> getHistory() {
@@ -1020,7 +1129,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Is side mated
      *
-     * @return
+     * @return boolean
      */
     public boolean isMated() {
         try {
@@ -1038,6 +1147,8 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * verify draw by 50th move rule, 3 fold rep and insuficient material
+     *
+     * @return the boolean
      */
     public boolean isDraw() {
         final int i = Math.min(getHistory().size() - 1, getHalfMoveCounter());
@@ -1067,7 +1178,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Verify if there is enough material left in the board
      *
-     * @return
+     * @return boolean
      */
     public boolean isInsufficientMaterial() {
         boolean result = false;
@@ -1101,7 +1212,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Is stale mate
      *
-     * @return
+     * @return boolean
      */
     public boolean isStaleMate() {
         try {
@@ -1118,6 +1229,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Is enable events boolean.
+     *
      * @return the enableEvents
      */
     public boolean isEnableEvents() {
@@ -1125,6 +1238,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Sets enable events.
+     *
      * @param enableEvents the enableEvents to set
      */
     public void setEnableEvents(boolean enableEvents) {
@@ -1135,7 +1250,7 @@ public class Board implements Cloneable, BoardEvent {
      * Get the unique position ID for the board state,
      * which is the actual FEN representation of the board without counters
      *
-     * @return
+     * @return position id
      */
     public String getPositionId() {
         return getFen(false);

@@ -16,11 +16,32 @@
 
 package com.github.bhlangonijr.chesslib.game;
 
+/**
+ * The enum Variation type.
+ */
 public enum VariationType {
+    /**
+     * Normal variation type.
+     */
     NORMAL,
+    /**
+     * Chess 960 variation type.
+     */
     CHESS960,
+    /**
+     * Nocastle variation type.
+     */
     NOCASTLE,
+    /**
+     * Wildcastle variation type.
+     */
     WILDCASTLE,
+    /**
+     * Bughouse variation type.
+     */
     BUGHOUSE,
+    /**
+     * Crazyhouse variation type.
+     */
     CRAZYHOUSE
 }

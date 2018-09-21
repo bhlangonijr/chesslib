@@ -19,6 +19,8 @@ package com.github.bhlangonijr.chesslib.util;
 import java.util.Map;
 
 /**
+ * The type String util.
+ *
  * @author bhlangonijr
  */
 public class StringUtil {
@@ -26,9 +28,9 @@ public class StringUtil {
     /**
      * Extracts the last char sequence of a string
      *
-     * @param str
-     * @param size
-     * @return
+     * @param str  the str
+     * @param size the size
+     * @return string
      */
     public static String lastSequence(final String str, int size) {
         return str.substring(str.length() - size, str.length());
@@ -37,10 +39,10 @@ public class StringUtil {
     /**
      * Extracts the sequence after the given subsequence
      *
-     * @param str
-     * @param seq
-     * @param size
-     * @return
+     * @param str  the str
+     * @param seq  the seq
+     * @param size the size
+     * @return string
      */
     public static String afterSequence(final String str, final String seq, int size) {
         int idx = str.indexOf(seq) + seq.length();
@@ -53,9 +55,9 @@ public class StringUtil {
     /**
      * Extracts the sequence after the given subsequence
      *
-     * @param str
-     * @param seq
-     * @return
+     * @param str the str
+     * @param seq the seq
+     * @return string
      */
     public static String afterSequence(final String str, final String seq) {
         int idx = str.indexOf(seq) + seq.length();
@@ -68,9 +70,9 @@ public class StringUtil {
     /**
      * Extracts the sequence before the given subsequence
      *
-     * @param str
-     * @param seq
-     * @return
+     * @param str the str
+     * @param seq the seq
+     * @return string
      */
     public static String beforeSequence(final String str, final String seq) {
         int idx = str.indexOf(seq);
@@ -83,8 +85,8 @@ public class StringUtil {
     /**
      * Remove extra-whitespaces in the text
      *
-     * @param str
-     * @return
+     * @param str the str
+     * @return string
      */
     public static String normalize(String str) {
         StringBuilder sb = new StringBuilder();
@@ -99,6 +101,14 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * Replace all string builder.
+     *
+     * @param builder the builder
+     * @param from    the from
+     * @param to      the to
+     * @return the string builder
+     */
     public static StringBuilder replaceAll(StringBuilder builder, String from, String to) {
         int index = builder.indexOf(from);
         while (index != -1) {
@@ -109,6 +119,12 @@ public class StringUtil {
         return builder;
     }
 
+    /**
+     * Translate.
+     *
+     * @param str   the str
+     * @param table the table
+     */
     public static void translate(StringBuilder str, char[] table) {
         for (int idx = 0; idx < str.length(); ++idx) {
             char ch = str.charAt(idx);
@@ -119,6 +135,12 @@ public class StringUtil {
         }
     }
 
+    /**
+     * Translate.
+     *
+     * @param str   the str
+     * @param table the table
+     */
     public static void translate(StringBuilder str, Map<Character, Character> table) {
         for (int idx = 0; idx < str.length(); ++idx) {
             char ch = str.charAt(idx);
@@ -128,6 +150,13 @@ public class StringUtil {
         }
     }
 
+    /**
+     * Count occurrences int.
+     *
+     * @param str         the str
+     * @param charToCount the char to count
+     * @return the int
+     */
     public static int countOccurrences(String str, char charToCount) {
         int count = 0;
         for (int i = 0; i < str.length(); i++) {

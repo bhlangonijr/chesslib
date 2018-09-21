@@ -16,24 +16,73 @@
 
 package com.github.bhlangonijr.chesslib;
 
+/**
+ * The enum Rank.
+ */
 public enum Rank {
 
-    RANK_1("1"), RANK_2("2"), RANK_3("3"), RANK_4("4"), RANK_5("5"), RANK_6("6"), RANK_7("7"), RANK_8("8"), NONE("");
+    /**
+     * Rank 1 rank.
+     */
+    RANK_1("1"), /**
+     * Rank 2 rank.
+     */
+    RANK_2("2"), /**
+     * Rank 3 rank.
+     */
+    RANK_3("3"), /**
+     * Rank 4 rank.
+     */
+    RANK_4("4"), /**
+     * Rank 5 rank.
+     */
+    RANK_5("5"), /**
+     * Rank 6 rank.
+     */
+    RANK_6("6"), /**
+     * Rank 7 rank.
+     */
+    RANK_7("7"), /**
+     * Rank 8 rank.
+     */
+    RANK_8("8"), /**
+     * None rank.
+     */
+    NONE("");
 
+    /**
+     * The Notation.
+     */
     String notation;
 
     Rank(String notation) {
         this.notation = notation;
     }
 
+    /**
+     * From value rank.
+     *
+     * @param v the v
+     * @return the rank
+     */
     public static Rank fromValue(String v) {
         return valueOf(v);
     }
 
+    /**
+     * Gets notation.
+     *
+     * @return the notation
+     */
     public String getNotation() {
         return notation;
     }
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     public String value() {
         return name();
     }

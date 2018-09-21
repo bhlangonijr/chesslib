@@ -16,22 +16,44 @@
 
 package com.github.bhlangonijr.chesslib.move;
 
+/**
+ * The type Move exception.
+ */
 public class MoveException extends Exception {
 
     private static final long serialVersionUID = 6523240383760826752L;
 
+    /**
+     * Instantiates a new Move exception.
+     */
     public MoveException() {
         super();
     }
 
+    /**
+     * Instantiates a new Move exception.
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
     public MoveException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Instantiates a new Move exception.
+     *
+     * @param message the message
+     */
     public MoveException(String message) {
         super(message);
     }
 
+    /**
+     * Instantiates a new Move exception.
+     *
+     * @param cause the cause
+     */
     public MoveException(Throwable cause) {
         super(cause);
     }

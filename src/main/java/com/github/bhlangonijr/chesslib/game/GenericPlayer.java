@@ -16,6 +16,9 @@
 
 package com.github.bhlangonijr.chesslib.game;
 
+/**
+ * The type Generic player.
+ */
 public class GenericPlayer implements Player {
 
     private String id;
@@ -24,10 +27,19 @@ public class GenericPlayer implements Player {
     private PlayerType type;
     private String description;
 
+    /**
+     * Instantiates a new Generic player.
+     */
     public GenericPlayer() {
 
     }
 
+    /**
+     * Instantiates a new Generic player.
+     *
+     * @param id   the id
+     * @param name the name
+     */
     public GenericPlayer(String id, String name) {
         this.id = id;
         this.name = name;

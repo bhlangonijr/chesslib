@@ -19,6 +19,9 @@ package com.github.bhlangonijr.chesslib.game;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Time control.
+ */
 public class TimeControl {
 
     private final List<MovePerTime> movePerTime =
@@ -30,6 +33,12 @@ public class TimeControl {
     private int depth = 0;
     private long nodes;
 
+    /**
+     * Parse from string time control.
+     *
+     * @param s the s
+     * @return the time control
+     */
     public static TimeControl parseFromString(String s) {
         TimeControl tc = new TimeControl();
         s = s.replace("|", "+");
@@ -90,60 +99,127 @@ public class TimeControl {
         }
     }
 
+    /**
+     * Gets time control type.
+     *
+     * @return the time control type
+     */
     public TimeControlType getTimeControlType() {
         return timeControlType;
     }
 
+    /**
+     * Sets time control type.
+     *
+     * @param timeControlType the time control type
+     */
     public void setTimeControlType(TimeControlType timeControlType) {
         this.timeControlType = timeControlType;
     }
 
+    /**
+     * Gets half moves.
+     *
+     * @return the half moves
+     */
     public int getHalfMoves() {
         return halfMoves;
     }
 
+    /**
+     * Sets half moves.
+     *
+     * @param halfMoves the half moves
+     */
     public void setHalfMoves(int halfMoves) {
         this.halfMoves = halfMoves;
     }
 
+    /**
+     * Gets milliseconds.
+     *
+     * @return the milliseconds
+     */
     public long getMilliseconds() {
         return milliseconds;
     }
 
+    /**
+     * Sets milliseconds.
+     *
+     * @param milliseconds the milliseconds
+     */
     public void setMilliseconds(long milliseconds) {
         this.milliseconds = milliseconds;
     }
 
+    /**
+     * Gets increment.
+     *
+     * @return the increment
+     */
     public long getIncrement() {
         return increment;
     }
 
+    /**
+     * Sets increment.
+     *
+     * @param increment the increment
+     */
     public void setIncrement(long increment) {
         this.increment = increment;
     }
 
+    /**
+     * Gets nodes.
+     *
+     * @return the nodes
+     */
     public long getNodes() {
         return nodes;
     }
 
+    /**
+     * Sets nodes.
+     *
+     * @param nodes the nodes
+     */
     public void setNodes(long nodes) {
         this.nodes = nodes;
     }
 
+    /**
+     * Gets move per time.
+     *
+     * @return the move per time
+     */
     public List<MovePerTime> getMovePerTime() {
         return movePerTime;
     }
 
+    /**
+     * Gets depth.
+     *
+     * @return the depth
+     */
     public int getDepth() {
         return depth;
     }
 
+    /**
+     * Sets depth.
+     *
+     * @param depth the depth
+     */
     public void setDepth(int depth) {
         this.depth = depth;
     }
 
     /**
      * TimeControl to PGN String Format
+     *
+     * @return the string
      */
     public String toPGNString() {
         if (getTimeControlType().equals(TimeControlType.UNKNOW)) {

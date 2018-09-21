@@ -8,10 +8,18 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
+/**
+ * The type Perft test.
+ */
 public class PerftTest {
 
     private boolean CHECK_BOARD_STATE = false;
 
+    /**
+     * Test perft 1.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft1() throws MoveGeneratorException {
 
@@ -19,6 +27,11 @@ public class PerftTest {
         assertEquals(4865609, nodes);
     }
 
+    /**
+     * Test perft 2.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft2() throws MoveGeneratorException {
 
@@ -26,6 +39,11 @@ public class PerftTest {
         assertEquals(2103487, nodes);
     }
 
+    /**
+     * Test perft 3.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft3() throws MoveGeneratorException {
 
@@ -33,6 +51,11 @@ public class PerftTest {
         assertEquals(3894594, nodes);
     }
 
+    /**
+     * Test perft 4.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft4() throws MoveGeneratorException {
 
@@ -40,6 +63,11 @@ public class PerftTest {
         assertEquals(4085603, nodes);
     }
 
+    /**
+     * Test perft 5.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft5() throws MoveGeneratorException {
 
@@ -47,6 +75,11 @@ public class PerftTest {
         assertEquals(2103487, nodes);
     }
 
+    /**
+     * Test perft 6.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft6() throws MoveGeneratorException {
 
@@ -54,6 +87,11 @@ public class PerftTest {
         assertEquals(422333, nodes);
     }
 
+    /**
+     * Test perft 7.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft7() throws MoveGeneratorException {
 
@@ -61,6 +99,11 @@ public class PerftTest {
         assertEquals(1274206, nodes);
     }
 
+    /**
+     * Test perft 8.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft8() throws MoveGeneratorException {
 
@@ -68,6 +111,11 @@ public class PerftTest {
         assertEquals(1720476, nodes);
     }
 
+    /**
+     * Test perft 9.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft9() throws MoveGeneratorException {
 
@@ -75,6 +123,11 @@ public class PerftTest {
         assertEquals(1004658, nodes);
     }
 
+    /**
+     * Test perft 10.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft10() throws MoveGeneratorException {
 
@@ -82,6 +135,11 @@ public class PerftTest {
         assertEquals(217342, nodes);
     }
 
+    /**
+     * Test perft 11.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft11() throws MoveGeneratorException {
 
@@ -89,6 +147,11 @@ public class PerftTest {
         assertEquals(92683, nodes);
     }
 
+    /**
+     * Test perft 12.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft12() throws MoveGeneratorException {
 
@@ -96,6 +159,11 @@ public class PerftTest {
         assertEquals(2217, nodes);
     }
 
+    /**
+     * Test perft 13.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft13() throws MoveGeneratorException {
 
@@ -103,6 +171,11 @@ public class PerftTest {
         assertEquals(567584, nodes);
     }
 
+    /**
+     * Test perft 14.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testPerft14() throws MoveGeneratorException {
 
@@ -110,6 +183,14 @@ public class PerftTest {
         assertEquals(23527, nodes);
     }
 
+    /**
+     * Test perft long.
+     *
+     * @param fen   the fen
+     * @param depth the depth
+     * @return the long
+     * @throws MoveGeneratorException the move generator exception
+     */
     public long testPerft(String fen, int depth) throws MoveGeneratorException {
 
         Board board = new Board();
@@ -170,6 +251,9 @@ public class PerftTest {
 
     }
 
+    /**
+     * The type My board listener.
+     */
     class MyBoardListener implements BoardEventListener {
 
         public void onEvent(BoardEvent event) {

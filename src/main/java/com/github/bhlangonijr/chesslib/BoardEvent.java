@@ -21,6 +21,11 @@ package com.github.bhlangonijr.chesslib;
  */
 public interface BoardEvent {
 
+    /**
+     * Gets type.
+     *
+     * @return the type
+     */
     BoardEventType getType();
 
 }

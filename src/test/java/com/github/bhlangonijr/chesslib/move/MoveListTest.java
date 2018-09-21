@@ -4,8 +4,16 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * The type Move list test.
+ */
 public class MoveListTest {
 
+    /**
+     * Test move list starting position.
+     *
+     * @throws MoveConversionException the move conversion exception
+     */
     @Test
     public void testMoveListStartingPosition() throws MoveConversionException {
         String[] san = {"e4", "e4 e6", "e4 e6 f4"};
@@ -21,6 +29,11 @@ public class MoveListTest {
         }
     }
 
+    /**
+     * Test move list small.
+     *
+     * @throws MoveConversionException the move conversion exception
+     */
     @Test
     public void testMoveListSmall() throws MoveConversionException {
         String san = "e4 Nc6 d4 Nf6 d5 Ne5 Nf3 d6 Nxe5 dxe5 Bb5+ Bd7 Bxd7+ Qxd7 Nc3 e6 O-O exd5 ";
@@ -29,6 +42,11 @@ public class MoveListTest {
         assertEquals("r3kb1r/pppq1ppp/5n2/3pp3/4P3/2N5/PPP2PPP/R1BQ1RK1 w kq - 0 10", list1.getFen());
     }
 
+    /**
+     * Test move list.
+     *
+     * @throws MoveConversionException the move conversion exception
+     */
     @Test
     public void testMoveList() throws MoveConversionException {
 
@@ -51,6 +69,11 @@ public class MoveListTest {
 
     }
 
+    /**
+     * Test move list pgn 1.
+     *
+     * @throws MoveConversionException the move conversion exception
+     */
     @Test
     public void testMoveListPGN1() throws MoveConversionException {
         String moveText = "1.d4 d5 2.c4 c6 3.Nf3 Nf6 4.e3 Bf5 5.Nc3 e6 6.Nh4 Bg6 7.Nxg6 " +
@@ -67,6 +90,11 @@ public class MoveListTest {
         assertEquals("7k/8/7P/6K1/pr2q3/6p1/8/8 w - - 1 49", list.getFen());
     }
 
+    /**
+     * Test move list pgn 2.
+     *
+     * @throws MoveConversionException the move conversion exception
+     */
     @Test
     public void testMoveListPGN2() throws MoveConversionException {
         String moveText = "1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 a6 6.Bc4 Nbd7 7.O-O " +
@@ -90,6 +118,11 @@ public class MoveListTest {
         assertEquals("8/2n4R/2P1K3/8/8/6b1/6kp/8 w - - 7 89", list.getFen());
     }
 
+    /**
+     * Test move list pgn 3.
+     *
+     * @throws MoveConversionException the move conversion exception
+     */
     @Test
     public void testMoveListPGN3() throws MoveConversionException {
         String moveText = "1.Nf3 d6 2.d4 Bg4 3.c4 Nd7 4.e4 Bxf3 5.Qxf3 g6 6.Nc3 Bg7 7.Qd1 " +

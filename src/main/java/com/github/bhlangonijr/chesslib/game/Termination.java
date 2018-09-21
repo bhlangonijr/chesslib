@@ -16,27 +16,71 @@
 
 package com.github.bhlangonijr.chesslib.game;
 
+/**
+ * The enum Termination.
+ */
 public enum Termination {
+    /**
+     * Abandoned termination.
+     */
     ABANDONED("ABANDONED"),
+    /**
+     * Adjudication termination.
+     */
     ADJUDICATION("ADJUDICATION"),
+    /**
+     * Death termination.
+     */
     DEATH("DEATH"),
+    /**
+     * Emergency termination.
+     */
     EMERGENCY("EMERGENCY"),
+    /**
+     * Normal termination.
+     */
     NORMAL("NORMAL"),
+    /**
+     * The Rules infraction.
+     */
     RULES_INFRACTION("RULES INFRACTION"),
+    /**
+     * The Time forfeit.
+     */
     TIME_FORFEIT("TIME FORFEIT"),
+    /**
+     * Unterminated termination.
+     */
     UNTERMINATED("UNTERMINATED"),
+    /**
+     * Time termination.
+     */
     TIME("TIME");
 
+    /**
+     * The Description.
+     */
     String description;
 
     Termination(String description) {
         this.description = description;
     }
 
+    /**
+     * From value termination.
+     *
+     * @param v the v
+     * @return the termination
+     */
     public static Termination fromValue(String v) {
         return valueOf(v.replace(' ', '_'));
     }
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     public String value() {
         return name();
     }

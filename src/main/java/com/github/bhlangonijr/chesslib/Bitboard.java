@@ -28,23 +28,44 @@ import static com.github.bhlangonijr.chesslib.Square.*;
  */
 public class Bitboard {
 
+    /**
+     * The constant lightSquares.
+     */
     public static final long lightSquares = 0x55AA55AA55AA55AAL;
+    /**
+     * The constant darkSquares.
+     */
     public static final long darkSquares = 0xAA55AA55AA55AA55L;
 
-    // bitboard for all ranks
+    /**
+     * The constant rankBB.
+     */
+// bitboard for all ranks
     final static long rankBB[] = {
             0x00000000000000FFL, 0x000000000000FF00L, 0x0000000000FF0000L, 0x00000000FF000000L,
             0x000000FF00000000L, 0x0000FF0000000000L, 0x00FF000000000000L, 0xFF00000000000000L
     };
-    // bitboard for all files
+    /**
+     * The constant fileBB.
+     */
+// bitboard for all files
     final static long fileBB[] = {
             0x0101010101010101L, 0x0202020202020202L, 0x0404040404040404L, 0x0808080808080808L,
             0x1010101010101010L, 0x2020202020202020L, 0x4040404040404040L, 0x8080808080808080L
     };
 
+    /**
+     * The constant ms1bTable.
+     */
     final static int ms1bTable[] = new int[257];
+    /**
+     * The constant bbTable.
+     */
     final static long bbTable[] = new long[64];
-    // square to enum diagonal A1..H8
+    /**
+     * The constant squareToDiagonalA1H8.
+     */
+// square to enum diagonal A1..H8
     static final DiagonalA1H8 squareToDiagonalA1H8[] = {
             H8_A1, B1_H7, C1_H6, D1_H5, E1_H4, F1_H3, G1_H2, H1_H1,
             G8_A2, H8_A1, B1_H7, C1_H6, D1_H5, E1_H4, F1_H3, G1_H2,
@@ -55,7 +76,10 @@ public class Bitboard {
             B8_A7, C8_A6, D8_A5, E8_A4, F8_A3, G8_A2, H8_A1, B1_H7,
             A8_A8, B8_A7, C8_A6, D8_A5, E8_A4, F8_A3, G8_A2, H8_A1
     };
-    // square to enum diagonal A1..H8
+    /**
+     * The constant squareToDiagonalH1A8.
+     */
+// square to enum diagonal A1..H8
     static final DiagonalH1A8 squareToDiagonalH1A8[] = {
             A1_A1, B1_A2, C1_A3, D1_A4, E1_A5, F1_A6, G1_A7, H1_A8,
             B1_A2, C1_A3, D1_A4, E1_A5, F1_A6, G1_A7, H1_A8, B8_H2,
@@ -66,7 +90,10 @@ public class Bitboard {
             G1_A7, H1_A8, B8_H2, C8_H3, D8_H4, E8_H5, F8_H6, G8_H7,
             H1_A8, B8_H2, C8_H3, D8_H4, E8_H5, F8_H6, G8_H7, H8_H8
     };
-    // bitboard for all diagonal H1..A8
+    /**
+     * The constant diagonalH1A8BB.
+     */
+// bitboard for all diagonal H1..A8
     final static long diagonalH1A8BB[] = {
             sq2Bb(A1),
             sq2Bb(B1) | sq2Bb(A2),
@@ -84,7 +111,10 @@ public class Bitboard {
             sq2Bb(G8) | sq2Bb(H7),
             sq2Bb(H8)
     };
-    // bitboard for all diagonal A1..H8
+    /**
+     * The constant diagonalA1H8BB.
+     */
+// bitboard for all diagonal A1..H8
     final static long diagonalA1H8BB[] = {
             sq2Bb(A8),
             sq2Bb(B8) | sq2Bb(A7),
@@ -102,7 +132,10 @@ public class Bitboard {
             sq2Bb(G1) | sq2Bb(H2),
             sq2Bb(H1)
     };
-    // bitboard for all knight attacks
+    /**
+     * The constant knightAttacks.
+     */
+// bitboard for all knight attacks
     final static long knightAttacks[] = {
             0x0000000000020400L, 0x0000000000050800L, 0x00000000000a1100L, 0x0000000000142200L, 0x0000000000284400L, 0x0000000000508800L, 0x0000000000a01000L, 0x0000000000402000L,
             0x0000000002040004L, 0x0000000005080008L, 0x000000000a110011L, 0x0000000014220022L, 0x0000000028440044L, 0x0000000050880088L, 0x00000000a0100010L, 0x0000000040200020L,
@@ -113,7 +146,10 @@ public class Bitboard {
             0x0400040200000000L, 0x0800080500000000L, 0x1100110a00000000L, 0x2200221400000000L, 0x4400442800000000L, 0x8800885000000000L, 0x100010a000000000L, 0x2000204000000000L,
             0x0004020000000000L, 0x0008050000000000L, 0x00110a0000000000L, 0x0022140000000000L, 0x0044280000000000L, 0x0088500000000000L, 0x0010a00000000000L, 0x0020400000000000L
     };
-    // bitboard for all white pawn attacks
+    /**
+     * The constant whitePawnAttacks.
+     */
+// bitboard for all white pawn attacks
     final static long whitePawnAttacks[] = {
             0x0000000000000200L, 0x0000000000000500L, 0x0000000000000a00L, 0x0000000000001400L, 0x0000000000002800L, 0x0000000000005000L, 0x000000000000a000L, 0x0000000000004000L,
             0x0000000000020000L, 0x0000000000050000L, 0x00000000000a0000L, 0x0000000000140000L, 0x0000000000280000L, 0x0000000000500000L, 0x0000000000a00000L, 0x0000000000400000L,
@@ -124,7 +160,10 @@ public class Bitboard {
             0x0200000000000000L, 0x0500000000000000L, 0x0a00000000000000L, 0x1400000000000000L, 0x2800000000000000L, 0x5000000000000000L, 0xa000000000000000L, 0x4000000000000000L,
             0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L
     };
-    // bitboard for all black pawn attacks
+    /**
+     * The constant blackPawnAttacks.
+     */
+// bitboard for all black pawn attacks
     final static long blackPawnAttacks[] = {
             0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L,
             0x0000000000000002L, 0x0000000000000005L, 0x000000000000000aL, 0x0000000000000014L, 0x0000000000000028L, 0x0000000000000050L, 0x00000000000000a0L, 0x0000000000000040L,
@@ -135,7 +174,10 @@ public class Bitboard {
             0x0000020000000000L, 0x0000050000000000L, 0x00000a0000000000L, 0x0000140000000000L, 0x0000280000000000L, 0x0000500000000000L, 0x0000a00000000000L, 0x0000400000000000L,
             0x0002000000000000L, 0x0005000000000000L, 0x000a000000000000L, 0x0014000000000000L, 0x0028000000000000L, 0x0050000000000000L, 0x00a0000000000000L, 0x0040000000000000L
     };
-    // bitboard for all white pawn moves
+    /**
+     * The constant whitePawnMoves.
+     */
+// bitboard for all white pawn moves
     final static long whitePawnMoves[] = {
             0x0000000000000100L, 0x0000000000000200L, 0x0000000000000400L, 0x0000000000000800L, 0x0000000000001000L, 0x0000000000002000L, 0x0000000000004000L, 0x0000000000008000L,
             0x0000000001010000L, 0x0000000002020000L, 0x0000000004040000L, 0x0000000008080000L, 0x0000000010100000L, 0x0000000020200000L, 0x0000000040400000L, 0x0000000080800000L,
@@ -146,7 +188,10 @@ public class Bitboard {
             0x0100000000000000L, 0x0200000000000000L, 0x0400000000000000L, 0x0800000000000000L, 0x1000000000000000L, 0x2000000000000000L, 0x4000000000000000L, 0x8000000000000000L,
             0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L
     };
-    // bitboard for all black pawn moves
+    /**
+     * The constant blackPawnMoves.
+     */
+// bitboard for all black pawn moves
     final static long blackPawnMoves[] = {
             0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L,
             0x0000000000000001L, 0x0000000000000002L, 0x0000000000000004L, 0x0000000000000008L, 0x0000000000000010L, 0x0000000000000020L, 0x0000000000000040L, 0x0000000000000080L,
@@ -157,7 +202,10 @@ public class Bitboard {
             0x0000010100000000L, 0x0000020200000000L, 0x0000040400000000L, 0x0000080800000000L, 0x0000101000000000L, 0x0000202000000000L, 0x0000404000000000L, 0x0000808000000000L,
             0x0001000000000000L, 0x0002000000000000L, 0x0004000000000000L, 0x0008000000000000L, 0x0010000000000000L, 0x0020000000000000L, 0x0040000000000000L, 0x0080000000000000L
     };
-    // bitboard for all adjacent squares
+    /**
+     * The constant adjacentSquares.
+     */
+// bitboard for all adjacent squares
     final static long adjacentSquares[] = {
             0x0000000000000302L, 0x0000000000000705L, 0x0000000000000e0aL, 0x0000000000001c14L, 0x0000000000003828L, 0x0000000000007050L, 0x000000000000e0a0L, 0x000000000000c040L,
             0x0000000000030203L, 0x0000000000070507L, 0x00000000000e0a0eL, 0x00000000001c141cL, 0x0000000000382838L, 0x0000000000705070L, 0x0000000000e0a0e0L, 0x0000000000c040c0L,
@@ -168,7 +216,10 @@ public class Bitboard {
             0x0302030000000000L, 0x0705070000000000L, 0x0e0a0e0000000000L, 0x1c141c0000000000L, 0x3828380000000000L, 0x7050700000000000L, 0xe0a0e00000000000L, 0xc040c00000000000L,
             0x0203000000000000L, 0x0507000000000000L, 0x0a0e000000000000L, 0x141c000000000000L, 0x2838000000000000L, 0x5070000000000000L, 0xa0e0000000000000L, 0x40c0000000000000L
     };
-    // bitboard for rank attacks
+    /**
+     * The constant rankAttacks.
+     */
+// bitboard for rank attacks
     final static long rankAttacks[] = {
             sq2RA(A1), sq2RA(B1), sq2RA(C1), sq2RA(D1), sq2RA(E1), sq2RA(F1), sq2RA(G1), sq2RA(H1),
             sq2RA(A2), sq2RA(B2), sq2RA(C2), sq2RA(D2), sq2RA(E2), sq2RA(F2), sq2RA(G2), sq2RA(H2),
@@ -179,7 +230,10 @@ public class Bitboard {
             sq2RA(A7), sq2RA(B7), sq2RA(C7), sq2RA(D7), sq2RA(E7), sq2RA(F7), sq2RA(G7), sq2RA(H7),
             sq2RA(A8), sq2RA(B8), sq2RA(C8), sq2RA(D8), sq2RA(E8), sq2RA(F8), sq2RA(G8), sq2RA(H8)
     };
-    // bitboard for file attacks
+    /**
+     * The constant fileAttacks.
+     */
+// bitboard for file attacks
     final static long fileAttacks[] = {
             sq2FA(A1), sq2FA(B1), sq2FA(C1), sq2FA(D1), sq2FA(E1), sq2FA(F1), sq2FA(G1), sq2FA(H1),
             sq2FA(A2), sq2FA(B2), sq2FA(C2), sq2FA(D2), sq2FA(E2), sq2FA(F2), sq2FA(G2), sq2FA(H2),
@@ -190,7 +244,10 @@ public class Bitboard {
             sq2FA(A7), sq2FA(B7), sq2FA(C7), sq2FA(D7), sq2FA(E7), sq2FA(F7), sq2FA(G7), sq2FA(H7),
             sq2FA(A8), sq2FA(B8), sq2FA(C8), sq2FA(D8), sq2FA(E8), sq2FA(F8), sq2FA(G8), sq2FA(H8)
     };
-    // bitboard for diagonal attacks
+    /**
+     * The constant diagA1H8Attacks.
+     */
+// bitboard for diagonal attacks
     final static long diagA1H8Attacks[] = {
             sq2A1(A1), sq2A1(B1), sq2A1(C1), sq2A1(D1), sq2A1(E1), sq2A1(F1), sq2A1(G1), sq2A1(H1),
             sq2A1(A2), sq2A1(B2), sq2A1(C2), sq2A1(D2), sq2A1(E2), sq2A1(F2), sq2A1(G2), sq2A1(H2),
@@ -201,7 +258,10 @@ public class Bitboard {
             sq2A1(A7), sq2A1(B7), sq2A1(C7), sq2A1(D7), sq2A1(E7), sq2A1(F7), sq2A1(G7), sq2A1(H7),
             sq2A1(A8), sq2A1(B8), sq2A1(C8), sq2A1(D8), sq2A1(E8), sq2A1(F8), sq2A1(G8), sq2A1(H8)
     };
-    // bitboard for diagonal attacks
+    /**
+     * The constant diagH1A8Attacks.
+     */
+// bitboard for diagonal attacks
     final static long diagH1A8Attacks[] = {
             sq2H1(A1), sq2H1(B1), sq2H1(C1), sq2H1(D1), sq2H1(E1), sq2H1(F1), sq2H1(G1), sq2H1(H1),
             sq2H1(A2), sq2H1(B2), sq2H1(C2), sq2H1(D2), sq2H1(E2), sq2H1(F2), sq2H1(G2), sq2H1(H2),
@@ -222,26 +282,62 @@ public class Bitboard {
         }
     }
 
+    /**
+     * Sq 2 bb long.
+     *
+     * @param x the x
+     * @return the long
+     */
     final static long sq2Bb(Square x) {
         return 1L << x.ordinal();
     }
 
+    /**
+     * Sq 2 ra long.
+     *
+     * @param x the x
+     * @return the long
+     */
     final static long sq2RA(Square x) {
         return (rankBB[x.getRank().ordinal()] ^ sq2Bb(x));
     }
 
+    /**
+     * Sq 2 fa long.
+     *
+     * @param x the x
+     * @return the long
+     */
     final static long sq2FA(Square x) {
         return (fileBB[x.getFile().ordinal()] ^ sq2Bb(x));
     }
 
+    /**
+     * Sq 2 a 1 long.
+     *
+     * @param x the x
+     * @return the long
+     */
     final static long sq2A1(Square x) {
         return (diagonalA1H8BB[squareToDiagonalA1H8[x.ordinal()].ordinal()] ^ sq2Bb(x));
     }
 
+    /**
+     * Sq 2 h 1 long.
+     *
+     * @param x the x
+     * @return the long
+     */
     final static long sq2H1(Square x) {
         return (diagonalH1A8BB[squareToDiagonalH1A8[x.ordinal()].ordinal()] ^ sq2Bb(x));
     }
 
+    /**
+     * Slow ms 1 b 8 bits int.
+     *
+     * @param bb the bb
+     * @return the int
+     */
     final static int slowMs1b8bits(int bb) {
         if (bb > 0) {
             for (int i = 8; i >= 0; i--) {
@@ -256,8 +352,8 @@ public class Bitboard {
     /**
      * Bit Scan Forward - LS1B
      *
-     * @param bb
-     * @return
+     * @param bb the bb
+     * @return int
      */
     public static int bitScanForward(long bb) {
         return Long.numberOfTrailingZeros(bb);
@@ -266,8 +362,8 @@ public class Bitboard {
     /**
      * Bit Scan Reverse - MS1B
      *
-     * @param bb
-     * @return
+     * @param bb the bb
+     * @return int
      */
     public static int bitScanReverse(long bb) {
         return 63 - Long.numberOfLeadingZeros(bb);
@@ -276,10 +372,10 @@ public class Bitboard {
     /**
      * Bits between
      *
-     * @param bb
-     * @param sq1
-     * @param sq2
-     * @return
+     * @param bb  the bb
+     * @param sq1 the sq 1
+     * @param sq2 the sq 2
+     * @return long
      */
     public static long bitsBetween(long bb, int sq1, int sq2) {
         return (((bbTable[sq2] | (bbTable[sq2] - bbTable[sq1]))) & bb);
@@ -288,17 +384,29 @@ public class Bitboard {
     /**
      * extract least significant bit of a bitboard
      *
-     * @param bb
-     * @return
+     * @param bb the bb
+     * @return long
      */
     public static long extractLsb(Long bb) {
         return bb & (bb - 1);
     }
 
+    /**
+     * Has only 1 bit boolean.
+     *
+     * @param bb the bb
+     * @return the boolean
+     */
     public static boolean hasOnly1Bit(Long bb) {
         return bb > 0L && extractLsb(bb) == 0L;
     }
 
+    /**
+     * Gets bbtable.
+     *
+     * @param sq the sq
+     * @return the bbtable
+     */
     public static long getBbtable(Square sq) {
         return bbTable[sq.ordinal()];
     }
@@ -330,9 +438,9 @@ public class Bitboard {
     /**
      * Get the bishop attacks
      *
-     * @param mask
-     * @param square
-     * @return
+     * @param mask   the mask
+     * @param square the square
+     * @return bishop attacks
      */
     public static long getBishopAttacks(long mask, Square square) {
         return getSliderAttacks(diagA1H8Attacks[square.ordinal()], mask, square.ordinal()) |
@@ -342,9 +450,9 @@ public class Bitboard {
     /**
      * Get the rook attacks
      *
-     * @param mask
-     * @param square
-     * @return
+     * @param mask   the mask
+     * @param square the square
+     * @return rook attacks
      */
     public static long getRookAttacks(long mask, Square square) {
         return getSliderAttacks(fileAttacks[square.ordinal()], mask, square.ordinal()) |
@@ -354,9 +462,9 @@ public class Bitboard {
     /**
      * Get the queen attacks
      *
-     * @param mask
-     * @param square
-     * @return
+     * @param mask   the mask
+     * @param square the square
+     * @return queen attacks
      */
     public static long getQueenAttacks(long mask, Square square) {
         return getRookAttacks(mask, square) |
@@ -366,7 +474,9 @@ public class Bitboard {
     /**
      * return a bitboard with attacked squares by the pawn in the given square
      *
-     * @return
+     * @param square   the square
+     * @param occupied the occupied
+     * @return knight attacks
      */
     public static long getKnightAttacks(Square square, long occupied) {
         return knightAttacks[square.ordinal()] & occupied;
@@ -374,6 +484,10 @@ public class Bitboard {
 
     /**
      * return a bitboard with move squares by the pawn in the given square
+     *
+     * @param side   the side
+     * @param square the square
+     * @return the pawn attacks
      */
     public static long getPawnAttacks(Side side, Square square) {
         return (side.equals(Side.WHITE) ?
@@ -383,6 +497,12 @@ public class Bitboard {
 
     /**
      * return a bitboard with move squares by the pawn in the given square
+     *
+     * @param side      the side
+     * @param square    the square
+     * @param occupied  the occupied
+     * @param enPassant the en passant
+     * @return the pawn captures
      */
     public static long getPawnCaptures(Side side, Square square,
                                        long occupied, Square enPassant) {
@@ -399,6 +519,11 @@ public class Bitboard {
 
     /**
      * return a bitboard with move squares by the pawn in the given square
+     *
+     * @param side     the side
+     * @param square   the square
+     * @param occupied the occupied
+     * @return the pawn moves
      */
     public static long getPawnMoves(Side side, Square square, long occupied) {
 
@@ -423,7 +548,7 @@ public class Bitboard {
     /**
      * Converts a bitboard to a list of squares
      *
-     * @param pieces
+     * @param pieces the pieces
      * @return List of Square
      */
     public static List<Square> bbToSquareList(long pieces) {
@@ -438,12 +563,18 @@ public class Bitboard {
 
     /**
      * return a bitboard with attacked squares by the King in the given square
+     *
+     * @param square   the square
+     * @param occupied the occupied
+     * @return the king attacks
      */
     public static long getKingAttacks(Square square, long occupied) {
         return adjacentSquares[square.ordinal()] & occupied;
     }
 
     /**
+     * Get rankbb long [ ].
+     *
      * @return the rankbb
      */
     public static long[] getRankbb() {
@@ -451,6 +582,8 @@ public class Bitboard {
     }
 
     /**
+     * Get filebb long [ ].
+     *
      * @return the filebb
      */
     public static long[] getFilebb() {
@@ -458,6 +591,9 @@ public class Bitboard {
     }
 
     /**
+     * Gets rankbb.
+     *
+     * @param sq the sq
      * @return the rankbb
      */
     public static long getRankbb(Square sq) {
@@ -465,6 +601,9 @@ public class Bitboard {
     }
 
     /**
+     * Gets filebb.
+     *
+     * @param sq the sq
      * @return the filebb
      */
     public static long getFilebb(Square sq) {
@@ -472,6 +611,9 @@ public class Bitboard {
     }
 
     /**
+     * Gets rankbb.
+     *
+     * @param rank the rank
      * @return the rankbb
      */
     public static long getRankbb(Rank rank) {
@@ -479,6 +621,9 @@ public class Bitboard {
     }
 
     /**
+     * Gets filebb.
+     *
+     * @param file the file
      * @return the filebb
      */
     public static long getFilebb(File file) {
@@ -488,7 +633,8 @@ public class Bitboard {
     /**
      * print a bitboard in a readble form
      *
-     * @param bb
+     * @param bb the bb
+     * @return the string
      */
     public static String bitboardToString(long bb) {
         StringBuilder b = new StringBuilder();

@@ -9,8 +9,14 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * The type Board test.
+ */
 public class BoardTest {
 
+    /**
+     * Test move and fen parsing.
+     */
     @Test
     public void testMoveAndFENParsing() {
 
@@ -74,6 +80,9 @@ public class BoardTest {
 
     }
 
+    /**
+     * Test castle and fen parsing.
+     */
     @Test
     public void testCastleAndFENParsing() {
 
@@ -105,6 +114,9 @@ public class BoardTest {
 
     }
 
+    /**
+     * Test clone.
+     */
     @Test
     public void testClone() {
         String fen1 = "rnbqk2r/ppp1b1pp/5p1n/3p4/8/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 4 3";
@@ -117,6 +129,9 @@ public class BoardTest {
 
     }
 
+    /**
+     * Test equality.
+     */
     @Test
     public void testEquality() {
         String fen1 = "rnbqk2r/ppp1b1pp/5p1n/3p4/8/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 4 3";
@@ -131,6 +146,9 @@ public class BoardTest {
 
     }
 
+    /**
+     * Test undo move.
+     */
     @Test
     public void testUndoMove() {
         String fen1 = "rnbqkbnr/1p1ppppp/p7/1Pp5/8/8/P1PPPPPP/RNBQKBNR w KQkq c6 0 5";
@@ -144,6 +162,11 @@ public class BoardTest {
 
     }
 
+    /**
+     * Test legal move.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testLegalMove() throws MoveGeneratorException {
         String fen1 = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/5Q2/PPPBBPpP/RN2K2R w KQkq - 0 2";
@@ -155,6 +178,11 @@ public class BoardTest {
         assertEquals(47, moves.size());
     }
 
+    /**
+     * Test legal move 1.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testLegalMove1() throws MoveGeneratorException {
         String fen = "1r6/3k2p1/7p/Ppp2r1P/K1N1B1p1/2P2NP1/b7/4b3 w - - 0 56";
@@ -167,6 +195,11 @@ public class BoardTest {
 
     }
 
+    /**
+     * Test legal move 3.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testLegalMove3() throws MoveGeneratorException {
         String fen = "2r3r3/4n3/p1kp3p/1p3pP1/1p1bPPKP/1PPP4/BR1R4/8 w - - 0 73";

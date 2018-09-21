@@ -20,14 +20,34 @@ package com.github.bhlangonijr.chesslib;
  * Board Event Types
  */
 public enum BoardEventType {
+    /**
+     * On move board event type.
+     */
     ON_MOVE,
+    /**
+     * On undo move board event type.
+     */
     ON_UNDO_MOVE,
+    /**
+     * On load board event type.
+     */
     ON_LOAD;
 
+    /**
+     * From value board event type.
+     *
+     * @param v the v
+     * @return the board event type
+     */
     public static BoardEventType fromValue(String v) {
         return valueOf(v);
     }
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     public String value() {
         return name();
     }

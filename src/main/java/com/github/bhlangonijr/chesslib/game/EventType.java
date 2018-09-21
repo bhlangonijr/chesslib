@@ -16,13 +16,40 @@
 
 package com.github.bhlangonijr.chesslib.game;
 
+/**
+ * The enum Event type.
+ */
 public enum EventType {
+    /**
+     * Normal match event type.
+     */
     NORMAL_MATCH,
+    /**
+     * Round robin event type.
+     */
     ROUND_ROBIN,
+    /**
+     * Round robin carousel event type.
+     */
     ROUND_ROBIN_CAROUSEL,
+    /**
+     * Swiss event type.
+     */
     SWISS,
+    /**
+     * Gauntlet event type.
+     */
     GAUNTLET,
+    /**
+     * Single elimination event type.
+     */
     SINGLE_ELIMINATION,
+    /**
+     * Double elimination event type.
+     */
     DOUBLE_ELIMINATION,
+    /**
+     * Analyses event type.
+     */
     ANALYSES
 }

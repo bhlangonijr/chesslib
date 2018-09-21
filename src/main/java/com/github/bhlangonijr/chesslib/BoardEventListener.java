@@ -25,7 +25,7 @@ public interface BoardEventListener {
     /**
      * On Move Event
      *
-     * @param event
+     * @param event the event
      */
     void onEvent(BoardEvent event);
 

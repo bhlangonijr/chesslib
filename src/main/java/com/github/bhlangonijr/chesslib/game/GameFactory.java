@@ -16,13 +16,16 @@
 
 package com.github.bhlangonijr.chesslib.game;
 
+/**
+ * The type Game factory.
+ */
 public class GameFactory {
 
     /**
      * Create a new Event
      *
-     * @param name
-     * @return
+     * @param name the name
+     * @return event
      */
     public static Event newEvent(String name) {
 
@@ -36,9 +39,9 @@ public class GameFactory {
     /**
      * Create a new Round
      *
-     * @param event
-     * @param number
-     * @return
+     * @param event  the event
+     * @param number the number
+     * @return round
      */
     public static Round newRound(Event event, int number) {
 
@@ -51,8 +54,9 @@ public class GameFactory {
     /**
      * Create a new Game
      *
-     * @param round
-     * @return
+     * @param gameId the game id
+     * @param round  the round
+     * @return game
      */
     public static Game newGame(String gameId, Round round) {
 
@@ -64,9 +68,9 @@ public class GameFactory {
     /**
      * Creates a new player
      *
-     * @param type
-     * @param name
-     * @return
+     * @param type the type
+     * @param name the name
+     * @return player
      */
     public static Player newPlayer(PlayerType type, String name) {
         return new GenericPlayer(name, name);

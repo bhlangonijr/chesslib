@@ -16,20 +16,43 @@
 
 package com.github.bhlangonijr.chesslib.game;
 
+/**
+ * The enum Mode.
+ */
 public enum Mode {
+    /**
+     * The Otb.
+     */
     OTB("Over the Board"),
+    /**
+     * The Ics.
+     */
     ICS("Internet Chess Server");
 
+    /**
+     * The Description.
+     */
     String description;
 
     Mode(String description) {
         this.description = description;
     }
 
+    /**
+     * From value mode.
+     *
+     * @param v the v
+     * @return the mode
+     */
     public static Mode fromValue(String v) {
         return valueOf(v);
     }
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     public String value() {
         return name();
     }

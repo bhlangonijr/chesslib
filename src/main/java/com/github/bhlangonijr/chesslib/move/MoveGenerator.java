@@ -20,6 +20,9 @@ import com.github.bhlangonijr.chesslib.*;
 
 import java.util.List;
 
+/**
+ * The Move generator.
+ */
 public class MoveGenerator {
 
     private MoveGenerator() {
@@ -28,8 +31,8 @@ public class MoveGenerator {
     /**
      * Generate All pawn moves
      *
-     * @param board
-     * @return
+     * @param board the board
+     * @param moves the moves
      */
     public static void generatePawnCaptures(Board board, MoveList moves) {
         Side side = board.getSideToMove();
@@ -65,8 +68,8 @@ public class MoveGenerator {
     /**
      * Generate All pawn captures
      *
-     * @param board
-     * @return
+     * @param board the board
+     * @param moves the moves
      */
     public static void generatePawnMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
@@ -100,8 +103,8 @@ public class MoveGenerator {
     /**
      * Get knight moves
      *
-     * @param board
-     * @return
+     * @param board the board
+     * @param moves the moves
      */
     public static void generateKnightMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
@@ -121,8 +124,8 @@ public class MoveGenerator {
     /**
      * Get Bishop moves
      *
-     * @param board
-     * @return
+     * @param board the board
+     * @param moves the moves
      */
     public static void generateBishopMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
@@ -143,8 +146,8 @@ public class MoveGenerator {
     /**
      * Get Rook moves
      *
-     * @param board
-     * @return
+     * @param board the board
+     * @param moves the moves
      */
     public static void generateRookMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
@@ -165,8 +168,8 @@ public class MoveGenerator {
     /**
      * Get Queen moves
      *
-     * @param board
-     * @return
+     * @param board the board
+     * @param moves the moves
      */
     public static void generateQueenMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
@@ -187,8 +190,8 @@ public class MoveGenerator {
     /**
      * Get King moves
      *
-     * @param board
-     * @return
+     * @param board the board
+     * @param moves the moves
      */
     public static void generateKingMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
@@ -209,8 +212,8 @@ public class MoveGenerator {
     /**
      * Generate all castle moves - always legal moves
      *
-     * @param board
-     * @param moves
+     * @param board the board
+     * @param moves the moves
      */
     public static void generateCastleMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
@@ -238,8 +241,8 @@ public class MoveGenerator {
     /**
      * Generate all pseudo-legal moves
      *
-     * @param board
-     * @return
+     * @param board the board
+     * @return move list
      */
     public static MoveList generatePseudoLegalMoves(Board board) {
         MoveList moves = new MoveList();
@@ -257,8 +260,9 @@ public class MoveGenerator {
     /**
      * Generate Legal Moves
      *
-     * @param board
-     * @return
+     * @param board the board
+     * @return move list
+     * @throws MoveGeneratorException the move generator exception
      */
     public static MoveList generateLegalMoves(Board board) throws MoveGeneratorException {
         MoveList legalMoves = new MoveList();

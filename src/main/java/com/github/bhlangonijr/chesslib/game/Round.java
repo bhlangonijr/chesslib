@@ -19,28 +19,56 @@ package com.github.bhlangonijr.chesslib.game;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Round.
+ */
 public class Round {
     private final List<Game> game =
             new ArrayList<Game>();
     private final Event event;
     private int number;
 
+    /**
+     * Instantiates a new Round.
+     *
+     * @param event the event
+     */
     public Round(Event event) {
         this.event = event;
     }
 
+    /**
+     * Gets number.
+     *
+     * @return the number
+     */
     public int getNumber() {
         return number;
     }
 
+    /**
+     * Sets number.
+     *
+     * @param number the number
+     */
     public void setNumber(int number) {
         this.number = number;
     }
 
+    /**
+     * Gets game.
+     *
+     * @return the game
+     */
     public List<Game> getGame() {
         return game;
     }
 
+    /**
+     * Gets event.
+     *
+     * @return the event
+     */
     public Event getEvent() {
         return event;
     }

@@ -19,12 +19,30 @@ package com.github.bhlangonijr.chesslib.game;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The enum Game result.
+ */
 public enum GameResult {
+    /**
+     * White won game result.
+     */
     WHITE_WON("1-0"),
+    /**
+     * Black won game result.
+     */
     BLACK_WON("0-1"),
+    /**
+     * Draw game result.
+     */
     DRAW("1/2-1/2"),
+    /**
+     * Ongoing game result.
+     */
     ONGOING("*");
 
+    /**
+     * The Notation.
+     */
     static Map<String, GameResult> notation =
             new HashMap<String, GameResult>(4);
 
@@ -35,24 +53,49 @@ public enum GameResult {
         notation.put("*", ONGOING);
     }
 
+    /**
+     * The Description.
+     */
     String description;
 
     GameResult(String description) {
         this.description = description;
     }
 
+    /**
+     * From value game result.
+     *
+     * @param v the v
+     * @return the game result
+     */
     public static GameResult fromValue(String v) {
         return valueOf(v);
     }
 
+    /**
+     * From notation game result.
+     *
+     * @param s the s
+     * @return the game result
+     */
     public static GameResult fromNotation(String s) {
         return notation.get(s);
     }
 
+    /**
+     * Gets description.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     public String value() {
         return name();
     }

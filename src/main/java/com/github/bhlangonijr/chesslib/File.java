@@ -16,24 +16,73 @@
 
 package com.github.bhlangonijr.chesslib;
 
+/**
+ * The enum File.
+ */
 public enum File {
 
-    FILE_A("A"), FILE_B("B"), FILE_C("C"), FILE_D("D"), FILE_E("E"), FILE_F("F"), FILE_G("G"), FILE_H("H"), NONE("");
+    /**
+     * File a file.
+     */
+    FILE_A("A"), /**
+     * File b file.
+     */
+    FILE_B("B"), /**
+     * File c file.
+     */
+    FILE_C("C"), /**
+     * File d file.
+     */
+    FILE_D("D"), /**
+     * File e file.
+     */
+    FILE_E("E"), /**
+     * File f file.
+     */
+    FILE_F("F"), /**
+     * File g file.
+     */
+    FILE_G("G"), /**
+     * File h file.
+     */
+    FILE_H("H"), /**
+     * None file.
+     */
+    NONE("");
 
+    /**
+     * The Notation.
+     */
     String notation;
 
     File(String notation) {
         this.notation = notation;
     }
 
+    /**
+     * From value file.
+     *
+     * @param v the v
+     * @return the file
+     */
     public static File fromValue(String v) {
         return valueOf(v);
     }
 
+    /**
+     * Gets notation.
+     *
+     * @return the notation
+     */
     public String getNotation() {
         return notation;
     }
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     public String value() {
         return name();
     }

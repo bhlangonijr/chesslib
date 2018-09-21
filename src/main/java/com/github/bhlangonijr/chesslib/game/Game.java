@@ -60,6 +60,12 @@ public class Game {
     private String opening;
     private String variation;
 
+    /**
+     * Instantiates a new Game.
+     *
+     * @param gameId the game id
+     * @param round  the round
+     */
     public Game(String gameId, Round round) {
         this.gameId = gameId;
         this.round = round;
@@ -86,95 +92,207 @@ public class Game {
         return b.toString();
     }
 
+    /**
+     * Gets date.
+     *
+     * @return the date
+     */
     public String getDate() {
         return date;
     }
 
+    /**
+     * Sets date.
+     *
+     * @param date the date
+     */
     public void setDate(String date) {
         this.date = date;
     }
 
+    /**
+     * Gets time.
+     *
+     * @return the time
+     */
     public String getTime() {
         return time;
     }
 
+    /**
+     * Sets time.
+     *
+     * @param time the time
+     */
     public void setTime(String time) {
         this.time = time;
     }
 
+    /**
+     * Gets termination.
+     *
+     * @return the termination
+     */
     public Termination getTermination() {
         return termination;
     }
 
+    /**
+     * Sets termination.
+     *
+     * @param termination the termination
+     */
     public void setTermination(Termination termination) {
         this.termination = termination;
     }
 
+    /**
+     * Gets white player.
+     *
+     * @return the white player
+     */
     public Player getWhitePlayer() {
         return whitePlayer;
     }
 
+    /**
+     * Sets white player.
+     *
+     * @param whitePlayer the white player
+     */
     public void setWhitePlayer(Player whitePlayer) {
         this.whitePlayer = whitePlayer;
     }
 
+    /**
+     * Gets black player.
+     *
+     * @return the black player
+     */
     public Player getBlackPlayer() {
         return blackPlayer;
     }
 
+    /**
+     * Sets black player.
+     *
+     * @param blackPlayer the black player
+     */
     public void setBlackPlayer(Player blackPlayer) {
         this.blackPlayer = blackPlayer;
     }
 
+    /**
+     * Gets annotator.
+     *
+     * @return the annotator
+     */
     public String getAnnotator() {
         return annotator;
     }
 
+    /**
+     * Sets annotator.
+     *
+     * @param annotator the annotator
+     */
     public void setAnnotator(String annotator) {
         this.annotator = annotator;
     }
 
+    /**
+     * Gets ply count.
+     *
+     * @return the ply count
+     */
     public String getPlyCount() {
         return plyCount;
     }
 
+    /**
+     * Sets ply count.
+     *
+     * @param plyCount the ply count
+     */
     public void setPlyCount(String plyCount) {
         this.plyCount = plyCount;
     }
 
+    /**
+     * Gets result.
+     *
+     * @return the result
+     */
     public GameResult getResult() {
         return result;
     }
 
+    /**
+     * Sets result.
+     *
+     * @param result the result
+     */
     public void setResult(GameResult result) {
         this.result = result;
     }
 
+    /**
+     * Gets variations.
+     *
+     * @return the variations
+     */
     public Map<Integer, MoveList> getVariations() {
         return variations;
     }
 
+    /**
+     * Sets variations.
+     *
+     * @param variations the variations
+     */
     public void setVariations(Map<Integer, MoveList> variations) {
         this.variations = variations;
     }
 
+    /**
+     * Gets commentary.
+     *
+     * @return the commentary
+     */
     public Map<Integer, String> getCommentary() {
         return commentary;
     }
 
+    /**
+     * Sets commentary.
+     *
+     * @param commentary the commentary
+     */
     public void setCommentary(Map<Integer, String> commentary) {
         this.commentary = commentary;
     }
 
+    /**
+     * Gets nag.
+     *
+     * @return the nag
+     */
     public Map<Integer, String> getNag() {
         return nag;
     }
 
+    /**
+     * Sets nag.
+     *
+     * @param nag the nag
+     */
     public void setNag(Map<Integer, String> nag) {
         this.nag = nag;
     }
 
     /**
+     * Gets half moves.
+     *
      * @return the halfMoves
      */
     public MoveList getHalfMoves() {
@@ -185,7 +303,9 @@ public class Game {
     }
 
     /**
-     * @param halfMoves
+     * Sets half moves.
+     *
+     * @param halfMoves the half moves
      */
     public void setHalfMoves(MoveList halfMoves) {
         this.halfMoves = halfMoves;
@@ -193,6 +313,8 @@ public class Game {
     }
 
     /**
+     * Gets fen.
+     *
      * @return the fen
      */
     public String getFen() {
@@ -200,6 +322,8 @@ public class Game {
     }
 
     /**
+     * Sets fen.
+     *
      * @param fen the fen to set
      */
     public void setFen(String fen) {
@@ -207,6 +331,8 @@ public class Game {
     }
 
     /**
+     * Gets board.
+     *
      * @return the board
      */
     public Board getBoard() {
@@ -214,6 +340,8 @@ public class Game {
     }
 
     /**
+     * Sets board.
+     *
      * @param board the board to set
      */
     public void setBoard(Board board) {
@@ -221,6 +349,8 @@ public class Game {
     }
 
     /**
+     * Gets round.
+     *
      * @return the round
      */
     public Round getRound() {
@@ -230,9 +360,10 @@ public class Game {
     /**
      * Convert the Game object to the PGN format
      *
-     * @param includeVariations
-     * @param includeComments
-     * @return
+     * @param includeVariations the include variations
+     * @param includeComments   the include comments
+     * @return string
+     * @throws MoveConversionException the move conversion exception
      */
     public String toPgn(boolean includeVariations, boolean includeComments) throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
@@ -410,6 +541,8 @@ public class Game {
     }
 
     /**
+     * Gets game id.
+     *
      * @return the gameId
      */
     public String getGameId() {
@@ -417,6 +550,8 @@ public class Game {
     }
 
     /**
+     * Sets game id.
+     *
      * @param gameId the gameId to set
      */
     public void setGameId(String gameId) {
@@ -424,6 +559,8 @@ public class Game {
     }
 
     /**
+     * Gets position.
+     *
      * @return the position
      */
     public int getPosition() {
@@ -431,21 +568,35 @@ public class Game {
     }
 
     /**
+     * Sets position.
+     *
      * @param position the position to set
      */
     public void setPosition(int position) {
         this.position = position;
     }
 
+    /**
+     * Gets initial position.
+     *
+     * @return the initial position
+     */
     public int getInitialPosition() {
         return initialPosition;
     }
 
+    /**
+     * Sets initial position.
+     *
+     * @param initialPosition the initial position
+     */
     public void setInitialPosition(int initialPosition) {
         this.initialPosition = initialPosition;
     }
 
     /**
+     * Gets current move list.
+     *
      * @return the currentMoveList
      */
     public MoveList getCurrentMoveList() {
@@ -453,6 +604,8 @@ public class Game {
     }
 
     /**
+     * Sets current move list.
+     *
      * @param currentMoveList the currentMoveList to set
      */
     public void setCurrentMoveList(MoveList currentMoveList) {
@@ -460,6 +613,8 @@ public class Game {
     }
 
     /**
+     * Gets eco.
+     *
      * @return the eco
      */
     public String getEco() {
@@ -467,29 +622,53 @@ public class Game {
     }
 
     /**
+     * Sets eco.
+     *
      * @param eco the eco to set
      */
     public void setEco(String eco) {
         this.eco = eco;
     }
 
+    /**
+     * Gets opening.
+     *
+     * @return the opening
+     */
     public String getOpening() {
         return opening;
     }
 
+    /**
+     * Sets opening.
+     *
+     * @param opening the opening
+     */
     public void setOpening(String opening) {
         this.opening = opening;
     }
 
+    /**
+     * Gets variation.
+     *
+     * @return the variation
+     */
     public String getVariation() {
         return variation;
     }
 
+    /**
+     * Sets variation.
+     *
+     * @param variation the variation
+     */
     public void setVariation(String variation) {
         this.variation = variation;
     }
 
     /**
+     * Gets move text.
+     *
      * @return the moveText
      */
     public StringBuilder getMoveText() {
@@ -497,6 +676,8 @@ public class Game {
     }
 
     /**
+     * Sets move text.
+     *
      * @param moveText the moveText to set
      */
     public void setMoveText(StringBuilder moveText) {
@@ -506,7 +687,7 @@ public class Game {
     /**
      * Load a MoveText from a PGN file into the Game object
      *
-     * @throws Exception
+     * @throws Exception the exception
      */
     public void loadMoveText() throws Exception {
         if (getMoveText() != null) {
@@ -517,8 +698,8 @@ public class Game {
     /**
      * Load a MoveText from a PGN file into the Game object
      *
-     * @param moveText
-     * @throws Exception
+     * @param moveText the move text
+     * @throws Exception the exception
      */
     public void loadMoveText(StringBuilder moveText) throws Exception {
 
@@ -695,7 +876,9 @@ public class Game {
     /**
      * Goto move with the specified index
      *
-     * @param index
+     * @param moves the moves
+     * @param index the index
+     * @throws MoveException the move exception
      */
     public void gotoMove(final MoveList moves, int index) throws MoveException {
         setCurrentMoveList(moves);
@@ -719,59 +902,140 @@ public class Game {
 
     }
 
+    /**
+     * Goto first.
+     *
+     * @param moves the moves
+     * @throws MoveException the move exception
+     */
     public void gotoFirst(final MoveList moves) throws MoveException {
         gotoMove(moves, 0);
     }
 
+    /**
+     * Goto last.
+     *
+     * @param moves the moves
+     * @throws MoveException the move exception
+     */
     public void gotoLast(final MoveList moves) throws MoveException {
         gotoMove(moves, getHalfMoves().size() - 1);
     }
 
+    /**
+     * Goto next.
+     *
+     * @param moves the moves
+     * @throws MoveException the move exception
+     */
     public void gotoNext(final MoveList moves) throws MoveException {
         gotoMove(moves, getPosition() + 1);
     }
 
+    /**
+     * Goto prior.
+     *
+     * @param moves the moves
+     * @throws MoveException the move exception
+     */
     public void gotoPrior(final MoveList moves) throws MoveException {
         gotoMove(moves, getPosition() - 1);
     }
 
+    /**
+     * Goto first.
+     *
+     * @throws MoveException the move exception
+     */
     public void gotoFirst() throws MoveException {
         gotoFirst(getCurrentMoveList());
     }
 
+    /**
+     * Goto last.
+     *
+     * @throws MoveException the move exception
+     */
     public void gotoLast() throws MoveException {
         gotoLast(getCurrentMoveList());
     }
 
+    /**
+     * Goto next.
+     *
+     * @throws MoveException the move exception
+     */
     public void gotoNext() throws MoveException {
         gotoNext(getCurrentMoveList());
     }
 
+    /**
+     * Goto prior.
+     *
+     * @throws MoveException the move exception
+     */
     public void gotoPrior() throws MoveException {
         gotoPrior(getCurrentMoveList());
     }
 
+    /**
+     * Is end of move list boolean.
+     *
+     * @return the boolean
+     */
     public boolean isEndOfMoveList() {
         return getCurrentMoveList() == null || getPosition() >= getCurrentMoveList().size() - 1;
     }
 
+    /**
+     * Is start of move list boolean.
+     *
+     * @return the boolean
+     */
     public boolean isStartOfMoveList() {
         return getCurrentMoveList() == null && getPosition() == 0;
     }
 
+    /**
+     * Gets property.
+     *
+     * @return the property
+     */
     public Map<String, String> getProperty() {
         return property;
     }
 
+    /**
+     * Sets property.
+     *
+     * @param property the property
+     */
     public void setProperty(Map<String, String> property) {
         this.property = property;
     }
 
+    /**
+     * The type R text entry.
+     */
     class RTextEntry {
+        /**
+         * The Index.
+         */
         int index;
+        /**
+         * The Size.
+         */
         int size;
+        /**
+         * The Text.
+         */
         StringBuilder text = new StringBuilder();
 
+        /**
+         * Instantiates a new R text entry.
+         *
+         * @param index the index
+         */
         public RTextEntry(int index) {
             this.index = index;
             this.size = 0;

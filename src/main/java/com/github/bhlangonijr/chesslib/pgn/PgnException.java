@@ -16,22 +16,44 @@
 
 package com.github.bhlangonijr.chesslib.pgn;
 
+/**
+ * The type Pgn exception.
+ */
 public class PgnException extends Exception {
 
     private static final long serialVersionUID = 6523240383760826752L;
 
+    /**
+     * Instantiates a new Pgn exception.
+     */
     public PgnException() {
         super();
     }
 
+    /**
+     * Instantiates a new Pgn exception.
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
     public PgnException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Instantiates a new Pgn exception.
+     *
+     * @param message the message
+     */
     public PgnException(String message) {
         super(message);
     }
 
+    /**
+     * Instantiates a new Pgn exception.
+     *
+     * @param cause the cause
+     */
     public PgnException(Throwable cause) {
         super(cause);
     }

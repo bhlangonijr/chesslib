@@ -20,29 +20,89 @@ import com.github.bhlangonijr.chesslib.move.Move;
 
 import java.util.*;
 
+/**
+ * The type Constants.
+ */
 public class Constants {
 
+    /**
+     * The constant startStandardFENPosition.
+     */
     public static final String startStandardFENPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    /**
+     * The constant DEFAULT_WHITE_OO.
+     */
     public static final Move DEFAULT_WHITE_OO = new Move(Square.E1, Square.G1);
+    /**
+     * The constant DEFAULT_WHITE_OOO.
+     */
     public static final Move DEFAULT_WHITE_OOO = new Move(Square.E1, Square.C1);
+    /**
+     * The constant DEFAULT_BLACK_OO.
+     */
     public static final Move DEFAULT_BLACK_OO = new Move(Square.E8, Square.G8);
+    /**
+     * The constant DEFAULT_BLACK_OOO.
+     */
     public static final Move DEFAULT_BLACK_OOO = new Move(Square.E8, Square.C8);
+    /**
+     * The constant DEFAULT_WHITE_ROOK_OO.
+     */
     public static final Move DEFAULT_WHITE_ROOK_OO = new Move(Square.H1, Square.F1);
+    /**
+     * The constant DEFAULT_WHITE_ROOK_OOO.
+     */
     public static final Move DEFAULT_WHITE_ROOK_OOO = new Move(Square.A1, Square.D1);
+    /**
+     * The constant DEFAULT_BLACK_ROOK_OO.
+     */
     public static final Move DEFAULT_BLACK_ROOK_OO = new Move(Square.H8, Square.F8);
+    /**
+     * The constant DEFAULT_BLACK_ROOK_OOO.
+     */
     public static final Move DEFAULT_BLACK_ROOK_OOO = new Move(Square.A8, Square.D8);
+    /**
+     * The constant DEFAULT_WHITE_OO_SQUARES.
+     */
     public static final List<Square> DEFAULT_WHITE_OO_SQUARES = new ArrayList<Square>();
+    /**
+     * The constant DEFAULT_WHITE_OOO_SQUARES.
+     */
     public static final List<Square> DEFAULT_WHITE_OOO_SQUARES = new ArrayList<Square>();
+    /**
+     * The constant DEFAULT_BLACK_OO_SQUARES.
+     */
     public static final List<Square> DEFAULT_BLACK_OO_SQUARES = new ArrayList<Square>();
+    /**
+     * The constant DEFAULT_BLACK_OOO_SQUARES.
+     */
     public static final List<Square> DEFAULT_BLACK_OOO_SQUARES = new ArrayList<Square>();
 
+    /**
+     * The constant DEFAULT_WHITE_OO_ALL_SQUARES.
+     */
     public static final List<Square> DEFAULT_WHITE_OO_ALL_SQUARES = new ArrayList<Square>();
+    /**
+     * The constant DEFAULT_WHITE_OOO_ALL_SQUARES.
+     */
     public static final List<Square> DEFAULT_WHITE_OOO_ALL_SQUARES = new ArrayList<Square>();
+    /**
+     * The constant DEFAULT_BLACK_OO_ALL_SQUARES.
+     */
     public static final List<Square> DEFAULT_BLACK_OO_ALL_SQUARES = new ArrayList<Square>();
+    /**
+     * The constant DEFAULT_BLACK_OOO_ALL_SQUARES.
+     */
     public static final List<Square> DEFAULT_BLACK_OOO_ALL_SQUARES = new ArrayList<Square>();
 
+    /**
+     * The constant pieceNotation.
+     */
     public static final EnumMap<Piece, String> pieceNotation =
             new EnumMap<Piece, String>(Piece.class);
+    /**
+     * The constant pieceNotationR.
+     */
     public static final Map<String, Piece> pieceNotationR =
             new HashMap<String, Piece>(12);
 
@@ -103,8 +163,8 @@ public class Constants {
     /**
      * gets the notation of a piece
      *
-     * @param piece
-     * @return
+     * @param piece the piece
+     * @return piece notation
      */
     public static String getPieceNotation(Piece piece) {
         return pieceNotation.get(piece);
@@ -113,8 +173,8 @@ public class Constants {
     /**
      * gets the piece by its notation
      *
-     * @param notation
-     * @return
+     * @param notation the notation
+     * @return piece by notation
      */
     public static Piece getPieceByNotation(String notation) {
         return pieceNotationR.get(notation);

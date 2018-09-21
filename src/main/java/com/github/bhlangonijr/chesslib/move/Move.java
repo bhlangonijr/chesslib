@@ -18,6 +18,9 @@ package com.github.bhlangonijr.chesslib.move;
 
 import com.github.bhlangonijr.chesslib.*;
 
+/**
+ * The type Move.
+ */
 public class Move implements BoardEvent {
 
     private final Square from;
@@ -25,16 +28,35 @@ public class Move implements BoardEvent {
     private final Piece promotion;
     private String san;
 
+    /**
+     * Instantiates a new Move.
+     *
+     * @param from the from
+     * @param to   the to
+     */
     public Move(Square from, Square to) {
         this(from, to, Piece.NONE);
     }
 
+    /**
+     * Instantiates a new Move.
+     *
+     * @param from      the from
+     * @param to        the to
+     * @param promotion the promotion
+     */
     public Move(Square from, Square to, Piece promotion) {
         this.promotion = promotion;
         this.from = from;
         this.to = to;
     }
 
+    /**
+     * Instantiates a new Move.
+     *
+     * @param move the move
+     * @param side the side
+     */
     public Move(String move, Side side) {
         this(Square.valueOf(move.substring(0, 2).toUpperCase()),
                 Square.valueOf(move.substring(2, 4).toUpperCase()),
@@ -45,14 +67,29 @@ public class Move implements BoardEvent {
                                 move.substring(4, 5).toLowerCase()));
     }
 
+    /**
+     * Gets from.
+     *
+     * @return the from
+     */
     public Square getFrom() {
         return from;
     }
 
+    /**
+     * Gets to.
+     *
+     * @return the to
+     */
     public Square getTo() {
         return to;
     }
 
+    /**
+     * Gets promotion.
+     *
+     * @return the promotion
+     */
     public Piece getPromotion() {
         return promotion;
     }
@@ -89,10 +126,20 @@ public class Move implements BoardEvent {
         return BoardEventType.ON_MOVE;
     }
 
+    /**
+     * Gets san.
+     *
+     * @return the san
+     */
     public String getSan() {
         return san;
     }
 
+    /**
+     * Sets san.
+     *
+     * @param san the san
+     */
     public void setSan(String san) {
         this.san = san;
     }

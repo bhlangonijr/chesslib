@@ -16,8 +16,16 @@
 
 package com.github.bhlangonijr.chesslib.pgn;
 
+/**
+ * The interface Pgn load listener.
+ */
 public interface PgnLoadListener {
 
+    /**
+     * Notify progress.
+     *
+     * @param games the games
+     */
     void notifyProgress(int games);
 
 }

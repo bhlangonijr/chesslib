@@ -16,22 +16,44 @@
 
 package com.github.bhlangonijr.chesslib.move;
 
+/**
+ * The type Move generator exception.
+ */
 public class MoveGeneratorException extends Exception {
 
     private static final long serialVersionUID = 6523240383760826752L;
 
+    /**
+     * Instantiates a new Move generator exception.
+     */
     public MoveGeneratorException() {
         super();
     }
 
+    /**
+     * Instantiates a new Move generator exception.
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
     public MoveGeneratorException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Instantiates a new Move generator exception.
+     *
+     * @param message the message
+     */
     public MoveGeneratorException(String message) {
         super(message);
     }
 
+    /**
+     * Instantiates a new Move generator exception.
+     *
+     * @param cause the cause
+     */
     public MoveGeneratorException(Throwable cause) {
         super(cause);
     }

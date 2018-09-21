@@ -21,6 +21,9 @@ import com.github.bhlangonijr.chesslib.util.StringUtil;
 
 import java.util.*;
 
+/**
+ * The type Move list.
+ */
 public class MoveList extends LinkedList<Move> implements List<Move> {
 
     private static final long serialVersionUID = -6204280556340150806L;
@@ -87,6 +90,9 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     private int parent;
     private int index;
 
+    /**
+     * Instantiates a new Move list.
+     */
     public MoveList() {
         this(Constants.startStandardFENPosition);
     }
@@ -94,7 +100,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Initialize the move list with the initial FEN
      *
-     * @param initialFEN
+     * @param initialFEN the initial fen
      */
     public MoveList(String initialFEN) {
         this.startFEN = initialFEN;
@@ -103,28 +109,58 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Intialize a MoveList based on another
      *
-     * @param halfMoves
+     * @param halfMoves the half moves
      */
     public MoveList(MoveList halfMoves) {
         this(halfMoves.getStartFen());
         super.addAll(halfMoves);
     }
 
+    /**
+     * Gets board.
+     *
+     * @return the board
+     */
     protected static Board getBoard() {
         return boardHolder.get();
     }
 
-    // encode the move to SAN move and update thread local board
+    /**
+     * Encode to san string.
+     *
+     * @param board the board
+     * @param move  the move
+     * @return the string
+     * @throws MoveConversionException the move conversion exception
+     */
+// encode the move to SAN move and update thread local board
     protected static String encodeToSan(final Board board, Move move) throws MoveConversionException {
         return encode(board, move, sanNotation);
     }
 
-    // encode the move to SAN move and update thread local board
+    /**
+     * Encode to fan string.
+     *
+     * @param board the board
+     * @param move  the move
+     * @return the string
+     * @throws MoveConversionException the move conversion exception
+     */
+// encode the move to SAN move and update thread local board
     protected static String encodeToFan(final Board board, Move move) throws MoveConversionException {
         return encode(board, move, fanNotation);
     }
 
-    // encode the move to SAN/FAN move and update thread local board
+    /**
+     * Encode string.
+     *
+     * @param board    the board
+     * @param move     the move
+     * @param notation the notation
+     * @return the string
+     * @throws MoveConversionException the move conversion exception
+     */
+// encode the move to SAN/FAN move and update thread local board
     protected static String encode(final Board board, Move move, EnumMap<Piece, String> notation)
             throws MoveConversionException {
         StringBuilder san = new StringBuilder();
@@ -213,10 +249,10 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Create a MoveList with a given startposition
      *
-     * @param startMoves
-     * @param finalIndex
-     * @return
-     * @throws MoveConversionException
+     * @param startMoves the start moves
+     * @param finalIndex the final index
+     * @return move list
+     * @throws MoveConversionException the move conversion exception
      */
     public static MoveList createMoveListFrom(MoveList startMoves, int finalIndex) throws MoveConversionException {
         String fen = null;
@@ -244,6 +280,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
+     * Gets index.
+     *
      * @return the index
      */
     public int getIndex() {
@@ -251,6 +289,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
+     * Sets index.
+     *
      * @param index the index to set
      */
     public void setIndex(int index) {
@@ -307,7 +347,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Converts the MoveList into SAN representation
      *
-     * @return
+     * @return string
+     * @throws MoveConversionException the move conversion exception
      */
     public String toSan() throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
@@ -321,7 +362,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Converts the MoveList into FAN representation
      *
-     * @return
+     * @return string
+     * @throws MoveConversionException the move conversion exception
      */
     public String toFan() throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
@@ -335,7 +377,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Converts the MoveList into SAN Array representation
      *
-     * @return
+     * @return string [ ]
+     * @throws MoveConversionException the move conversion exception
      */
     public String[] toSanArray() throws MoveConversionException {
         if (!dirty && sanArray != null) {
@@ -358,7 +401,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Converts the MoveList into FAN Array representation
      *
-     * @return
+     * @return string [ ]
+     * @throws MoveConversionException the move conversion exception
      */
     public String[] toFanArray() throws MoveConversionException {
         if (!dirty && fanArray != null) {
@@ -379,6 +423,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
+     * Gets start fen.
+     *
      * @return the startFEN
      */
     public String getStartFen() {
@@ -388,7 +434,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * load from long algebraic text
      *
-     * @param text
+     * @param text the text
+     * @throws MoveConversionException the move conversion exception
      */
     public synchronized void loadFromText(String text) throws MoveConversionException {
         final Board b = getBoard();
@@ -414,8 +461,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Add a move in the SAN format
      *
-     * @param san
-     * @throws MoveConversionException
+     * @param san the san
+     * @throws MoveConversionException the move conversion exception
      */
     public void addSanMove(String san) throws MoveConversionException {
         addSanMove(san, false, true);
@@ -424,8 +471,10 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Add a move in the SAN format
      *
-     * @param san
-     * @throws MoveConversionException
+     * @param san            the san
+     * @param replay         the replay
+     * @param fullValidation the full validation
+     * @throws MoveConversionException the move conversion exception
      */
     public void addSanMove(String san, boolean replay, boolean fullValidation) throws MoveConversionException {
         final Board b = getBoard();
@@ -453,7 +502,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * load from SAN text
      *
-     * @param text
+     * @param text the text
+     * @throws MoveConversionException the move conversion exception
      */
     public void loadFromSan(String text) throws MoveConversionException {
         final Board b = getBoard();
@@ -486,6 +536,15 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         }
     }
 
+    /**
+     * Encode san to move move.
+     *
+     * @param board the board
+     * @param san   the san
+     * @param side  the side
+     * @return the move
+     * @throws MoveConversionException the move conversion exception
+     */
     /*
      * encode san to move
      */
@@ -611,8 +670,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * Get the FEN representation of the movelist applied
      * into a standard board at the start position
      *
-     * @param atMoveIndex
-     * @return
+     * @param atMoveIndex the at move index
+     * @return fen
      */
     public String getFen(int atMoveIndex) {
         return getFen(atMoveIndex, true);
@@ -622,9 +681,9 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * Get the FEN representation of the movelist applied
      * into a standard board at the start position
      *
-     * @param atMoveIndex
-     * @param includeCounters
-     * @return
+     * @param atMoveIndex     the at move index
+     * @param includeCounters the include counters
+     * @return fen
      */
     public String getFen(int atMoveIndex, boolean includeCounters) {
         final Board b = getBoard();
@@ -649,13 +708,15 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * Get the FEN representation of the movelist applied
      * into a standard board at the start position
      *
-     * @return
+     * @return fen
      */
     public String getFen() {
         return getFen(this.size());
     }
 
     /**
+     * Gets parent.
+     *
      * @return the parent
      */
     public int getParent() {
@@ -663,6 +724,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
+     * Sets parent.
+     *
      * @param parent the parent to set
      */
     public void setParent(int parent) {

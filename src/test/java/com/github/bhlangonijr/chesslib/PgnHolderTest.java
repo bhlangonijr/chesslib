@@ -6,8 +6,16 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * The type Pgn holder test.
+ */
 public class PgnHolderTest {
 
+    /**
+     * Test pgn load 1.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void testPGNLoad1() throws Exception {
 
@@ -36,6 +44,11 @@ public class PgnHolderTest {
 
     }
 
+    /**
+     * Test pgn load 2.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void testPGNLoad2() throws Exception {
 
@@ -65,6 +78,11 @@ public class PgnHolderTest {
 
     }
 
+    /**
+     * Test pgn load 3.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void testPGNLoad3() throws Exception {
 
@@ -95,6 +113,11 @@ public class PgnHolderTest {
 
     }
 
+    /**
+     * Test pgn load 4.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void testPGNLoad4() throws Exception {
 

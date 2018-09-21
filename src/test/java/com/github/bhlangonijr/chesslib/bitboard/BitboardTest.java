@@ -6,8 +6,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * The type Bitboard test.
+ */
 public class BitboardTest {
 
+    /**
+     * Test bb functions.
+     */
     @Test
     public void testBBFunctions() {
 

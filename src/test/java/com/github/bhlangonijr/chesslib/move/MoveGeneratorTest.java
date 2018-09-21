@@ -8,9 +8,15 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * The type Move generator test.
+ */
 public class MoveGeneratorTest {
 
 
+    /**
+     * Test b bto square.
+     */
     @Test
     public void testBBtoSquare() {
         assertEquals(Piece.make(Side.BLACK, PieceType.PAWN).value(), "BLACK_PAWN");
@@ -21,6 +27,11 @@ public class MoveGeneratorTest {
 
     }
 
+    /**
+     * Test all move generation.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
     @Test
     public void testAllMoveGeneration() throws MoveGeneratorException {
         Board board = new Board();

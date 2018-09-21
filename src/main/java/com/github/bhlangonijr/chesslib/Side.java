@@ -16,18 +16,43 @@
 
 package com.github.bhlangonijr.chesslib;
 
+/**
+ * The enum Side.
+ */
 public enum Side {
 
-    WHITE, BLACK;
+    /**
+     * White side.
+     */
+    WHITE, /**
+     * Black side.
+     */
+    BLACK;
 
+    /**
+     * From value side.
+     *
+     * @param v the v
+     * @return the side
+     */
     public static Side fromValue(String v) {
         return valueOf(v);
     }
 
+    /**
+     * Value string.
+     *
+     * @return the string
+     */
     public String value() {
         return name();
     }
 
+    /**
+     * Flip side.
+     *
+     * @return the side
+     */
     public Side flip() {
         return Side.WHITE.equals(this) ?
                 Side.BLACK : Side.WHITE;

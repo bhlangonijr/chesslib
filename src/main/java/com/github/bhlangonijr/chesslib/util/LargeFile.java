@@ -20,13 +20,25 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Iterator;
 
+/**
+ * The type Large file.
+ */
 public class LargeFile implements Iterable<String> {
     private BufferedReader reader;
 
+    /**
+     * Instantiates a new Large file.
+     *
+     * @param filePath the file path
+     * @throws Exception the exception
+     */
     public LargeFile(String filePath) throws Exception {
         reader = new BufferedReader(new FileReader(filePath));
     }
 
+    /**
+     * Close.
+     */
     public void close() {
         try {
             reader.close();

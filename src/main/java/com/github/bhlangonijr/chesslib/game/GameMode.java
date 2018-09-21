@@ -21,9 +21,21 @@ package com.github.bhlangonijr.chesslib.game;
  */
 public enum GameMode {
 
+    /**
+     * Human vs machine game mode.
+     */
     HUMAN_VS_MACHINE,
+    /**
+     * Machine vs human game mode.
+     */
     MACHINE_VS_HUMAN,
+    /**
+     * Human vs human game mode.
+     */
     HUMAN_VS_HUMAN,
+    /**
+     * Machine vs machine game mode.
+     */
     MACHINE_VS_MACHINE
 
 }

@@ -16,12 +16,33 @@
 
 package com.github.bhlangonijr.chesslib.game;
 
+/**
+ * The enum Time control type.
+ */
 public enum TimeControlType {
+    /**
+     * Unknow time control type.
+     */
     UNKNOW,
+    /**
+     * Time bonus time control type.
+     */
     TIME_BONUS,
+    /**
+     * Fixed depth time control type.
+     */
     FIXED_DEPTH,
+    /**
+     * Time per move time control type.
+     */
     TIME_PER_MOVE,
+    /**
+     * Moves per time time control type.
+     */
     MOVES_PER_TIME,
+    /**
+     * Nodes time control type.
+     */
     NODES
 
 }
