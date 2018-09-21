@@ -42,7 +42,7 @@ public class PgnHolder {
     private Integer size;
     private boolean lazyLoad;
 
-    public PgnHolder(String filename) throws FileNotFoundException {
+    public PgnHolder(String filename) {
         setFileName(filename);
         setLazyLoad(false);
     }
@@ -423,7 +423,6 @@ public class PgnHolder {
     static class PgnProperty {
         public String name;
 
-        ;
         public String value;
 
         public PgnProperty() {

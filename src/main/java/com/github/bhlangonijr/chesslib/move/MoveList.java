@@ -652,7 +652,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @return
      */
     public String getFen() {
-        return getFen(this.size() );
+        return getFen(this.size());
     }
 
     /**

@@ -16,7 +16,8 @@
 
 package com.github.bhlangonijr.chesslib;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.github.bhlangonijr.chesslib.DiagonalA1H8.*;
 import static com.github.bhlangonijr.chesslib.DiagonalH1A8.*;

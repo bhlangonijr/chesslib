@@ -10,10 +10,10 @@ public class MoveListTest {
     public void testMoveListStartingPosition() throws MoveConversionException {
         String[] san = {"e4", "e4 e6", "e4 e6 f4"};
         String[] fen = {"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
-                        "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
-                        "rnbqkbnr/pppp1ppp/4p3/8/4PP2/8/PPPP2PP/RNBQKBNR b KQkq f3 0 2"};
+                "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+                "rnbqkbnr/pppp1ppp/4p3/8/4PP2/8/PPPP2PP/RNBQKBNR b KQkq f3 0 2"};
 
-        for (int i=0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             MoveList list = new MoveList();
             list.loadFromSan(san[i]);
             list.getFen();
@@ -26,7 +26,7 @@ public class MoveListTest {
         String san = "e4 Nc6 d4 Nf6 d5 Ne5 Nf3 d6 Nxe5 dxe5 Bb5+ Bd7 Bxd7+ Qxd7 Nc3 e6 O-O exd5 ";
         MoveList list1 = new MoveList();
         list1.loadFromSan(san);
-        assertEquals("r3kb1r/pppq1ppp/5n2/3pp3/4P3/2N5/PPP2PPP/R1BQ1RK1 w kq - 0 10" , list1.getFen());
+        assertEquals("r3kb1r/pppq1ppp/5n2/3pp3/4P3/2N5/PPP2PPP/R1BQ1RK1 w kq - 0 10", list1.getFen());
     }
 
     @Test

@@ -95,12 +95,9 @@ public class Board implements Cloneable, BoardEvent {
         if (side.equals(Side.WHITE) &&
                 move.getTo().getRank().equals(Rank.RANK_8)) {
             return true;
-        } else if (side.equals(Side.BLACK) &&
-                move.getTo().getRank().equals(Rank.RANK_1)) {
-            return true;
-        }
+        } else return side.equals(Side.BLACK) &&
+                move.getTo().getRank().equals(Rank.RANK_1);
 
-        return false;
     }
 
     /**
@@ -973,12 +970,8 @@ public class Board implements Cloneable, BoardEvent {
 
         long pawns = (getBitboard(Piece.make(other, PieceType.PAWN))) & ~moveTo;
 
-        if (pawns != 0L &&
-                (Bitboard.getPawnAttacks(side, kingSq) & pawns) != 0L) {
-            return false;
-        }
-
-        return true;
+        return pawns == 0L ||
+                (Bitboard.getPawnAttacks(side, kingSq) & pawns) == 0L;
     }
 
     public boolean isAttackedBy(Move move) {
