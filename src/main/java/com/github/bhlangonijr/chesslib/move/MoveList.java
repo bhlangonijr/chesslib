@@ -558,6 +558,13 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         String strPromotion = StringUtil.afterSequence(san, "=", 1);
         san = StringUtil.beforeSequence(san, "=");
 
+        char lastChar = san.charAt(san.length() - 1);
+        //FIX missing equal sign for pawn promotions
+        if (Character.isLetter(lastChar) && Character.toUpperCase(lastChar) == 'Q') {
+            san = san.substring(0, san.length() - 1);
+            strPromotion = lastChar + "";
+        }
+
         if (san.equals("O-O") || san.equals("O-O-O")) { // is castle
             if (san.equals("O-O")) {
                 return board.getContext().getoo(side);
@@ -573,7 +580,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         }
 
         Square from = Square.NONE;
-        Square to = Square.NONE;
+        Square to;
         try {
             to = Square.valueOf(StringUtil.lastSequence(san.toUpperCase(), 2));
         } catch (Exception e) {

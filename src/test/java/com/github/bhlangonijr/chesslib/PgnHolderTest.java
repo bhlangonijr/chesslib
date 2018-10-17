@@ -1,6 +1,8 @@
 package com.github.bhlangonijr.chesslib;
 
 import com.github.bhlangonijr.chesslib.game.Game;
+import com.github.bhlangonijr.chesslib.move.Move;
+import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
 import org.junit.Test;
 
@@ -148,5 +150,24 @@ public class PgnHolderTest {
 
     }
 
+
+    @Test
+    public void testPromotionWithMissingEqualSign() throws Exception {
+
+        PgnHolder pgn = new PgnHolder("src/test/resources/cup.pgn");
+        pgn.loadPgn();
+        Game game = pgn.getGame().get(0);
+        game.loadMoveText();
+        MoveList moves = game.getHalfMoves();
+        Board board = new Board();
+        for (Move move: moves) {
+            board.doMove(move);
+        }
+        assertEquals(moves.toString(), "g1f3 d7d5 e2e3 g8f6 c2c4 e7e6 d2d4 c7c5 a2a3 b8c6 d4c5 f8c5 b2b4 c5e7 " +
+                "c1b2 e8g8 b1d2 a7a5 b4b5 c6b8 f1e2 b8d7 e1g1 b7b6 a1c1 c8b7 c4d5 f6d5 d2c4 d7c5 f3d4 e7f6 e2f3 e6e5 " +
+                "d4c6 b7c6 b5c6 e5e4 b2f6 d5f6 d1d8 a8d8 c4b6 c5d3 c1c3 e4f3 c6c7 f6e4 c7d8q f8d8 c3c8 d8c8 b6c8 g7g5 " +
+                "g2f3 e4d2 f1d1 d2f3 g1g2 f3e5 c8e7 g8g7 e7c6 d3f2 g2f2 e5c6 d1d5 f7f6 d5c5 c6e5 f2e2 h7h5 c5a5 g5g4 " +
+                "a5e5 f6e5 a3a4");
+    }
 
 }
