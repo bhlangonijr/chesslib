@@ -491,7 +491,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         }
         Move move = encodeSanToMove(b, san, b.getSideToMove());
         move.setSan(san);
-
         if (!b.doMove(move, fullValidation)) {
             throw new MoveConversionException("Couldn't parse SAN to MoveList: Illegal move: " +
                     move + " [" + san + "] on " + b.getFen());
@@ -560,7 +559,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
 
         char lastChar = san.charAt(san.length() - 1);
         //FIX missing equal sign for pawn promotions
-        if (Character.isLetter(lastChar) && Character.toUpperCase(lastChar) == 'Q') {
+        if (Character.isLetter(lastChar) && Character.toUpperCase(lastChar) != 'O') {
             san = san.substring(0, san.length() - 1);
             strPromotion = lastChar + "";
         }

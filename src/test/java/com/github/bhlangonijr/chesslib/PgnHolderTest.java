@@ -154,7 +154,7 @@ public class PgnHolderTest {
     @Test
     public void testPromotionWithMissingEqualSign() throws Exception {
 
-        PgnHolder pgn = new PgnHolder("src/test/resources/cup.pgn");
+        PgnHolder pgn = new PgnHolder("src/test/resources/promoting.pgn");
         pgn.loadPgn();
         Game game = pgn.getGame().get(0);
         game.loadMoveText();
@@ -168,6 +168,21 @@ public class PgnHolderTest {
                 "d4c6 b7c6 b5c6 e5e4 b2f6 d5f6 d1d8 a8d8 c4b6 c5d3 c1c3 e4f3 c6c7 f6e4 c7d8q f8d8 c3c8 d8c8 b6c8 g7g5 " +
                 "g2f3 e4d2 f1d1 d2f3 g1g2 f3e5 c8e7 g8g7 e7c6 d3f2 g2f2 e5c6 d1d5 f7f6 d5c5 c6e5 f2e2 h7h5 c5a5 g5g4 " +
                 "a5e5 f6e5 a3a4");
+    }
+
+    @Test
+    public void testCupPgn() throws Exception {
+
+        PgnHolder pgn = new PgnHolder("src/test/resources/cup.pgn");
+        pgn.loadPgn();
+        for (Game game: pgn.getGame()) {
+            game.loadMoveText();
+            MoveList moves = game.getHalfMoves();
+            Board board = new Board();
+            for (Move move : moves) {
+                board.doMove(move);
+            }
+        }
     }
 
 }

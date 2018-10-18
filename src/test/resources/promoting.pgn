@@ -1,0 +1,42 @@
+[Event "ECC 2018 Open"]
+[Site "Chalkidiki"]
+[Date "2018.10.16"]
+[Round "5"]
+[Board "1"]
+[White "Gorodetzky, David"]
+[Black "Ashton, Adam G"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2452"]
+[BlackElo "2359"]
+[PlyCount "0"]
+[EventDate "2018.10.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Rehovot Chess School"]
+[BlackTeam "3Cs"]
+
+1. Nf3 {[%clk 1:30:56]} d5 {[%clk 1:30:48]} 2. e3 {[%clk 1:31:09]} Nf6 {[%clk
+1:29:53]} 3. c4 {[%clk 1:26:57]} e6 {[%clk 1:29:32]} 4. d4 {[%clk 1:24:12]} c5
+{[%clk 1:26:20]} 5. a3 {[%clk 1:16:59]} Nc6 {[%clk 1:14:32]} 6. dxc5 {[%clk
+1:08:44]} Bxc5 {[%clk 1:09:58]} 7. b4 {[%clk 1:07:39]} Be7 {[%clk 1:10:11]} 8.
+Bb2 {[%clk 1:05:14]} O-O {[%clk 1:09:28]} 9. Nbd2 {[%clk 1:03:38]} a5 {[%clk
+1:02:50]} 10. b5 {[%clk 0:59:44]} Nb8 {[%clk 1:03:02]} 11. Be2 {[%clk 0:59:57]}
+Nbd7 {[%clk 1:01:15]} 12. O-O {[%clk 0:58:40]} b6 {[%clk 0:53:56]} 13. Rc1 {[%clk
+0:52:10]} Bb7 {[%clk 0:52:14]} 14. cxd5 {[%clk 0:48:41]} Nxd5 {[%clk 0:48:54]}
+15. Nc4 {[%clk 0:48:27]} Nc5 {[%clk 0:44:06]} 16. Nd4 {[%clk 0:46:49]} Bf6 {[%clk
+0:34:33]} 17. Bf3 {[%clk 0:45:46]} e5 {[%clk 0:20:02]} 18. Nc6 {[%clk 0:37:23]}
+Bxc6 {[%clk 0:20:19]} 19. bxc6 {[%clk 0:37:51]} e4 {[%clk 0:19:35]} 20. Bxf6
+{[%clk 0:37:09]} Nxf6 {[%clk 0:08:56]} 21. Qxd8 {[%clk 0:36:10]} Raxd8 {[%clk
+0:09:21]} 22. Nxb6 {[%clk 0:28:58]} Nd3 {[%clk 0:07:36]} 23. Rc3 {[%clk 0:24:20]}
+exf3 {[%clk 0:07:30]} 24. c7 {[%clk 0:23:22]} Ne4 {[%clk 0:06:16]} 25. cxd8Q
+{[%clk 0:21:57]} Rxd8 {[%clk 0:06:35]} 26. Rc8 {[%clk 0:21:18]} Rxc8 {[%clk
+0:06:55]} 27. Nxc8 {[%clk 0:21:46]} g5 {[%clk 0:04:58]} 28. gxf3 {[%clk 0:17:28]}
+Nd2 {[%clk 0:05:16]} 29. Rd1 {[%clk 0:17:09]} Nxf3+ {[%clk 0:05:39]} 30. Kg2
+{[%clk 0:16:20]} Nfe5 {[%clk 0:05:41]} 31. Ne7+ {[%clk 0:15:11]} Kg7 {[%clk
+0:05:59]} 32. Nc6 {[%clk 0:14:34]} Nxf2 {[%clk 0:05:20]} 33. Kxf2 {[%clk
+0:14:46]} Nxc6 {[%clk 0:05:45]} 34. Rd5 {[%clk 0:14:50]} f6 {[%clk 0:05:27]} 35.
+Rc5 {[%clk 0:11:10]} Ne5 {[%clk 0:05:52]} 36. Ke2 {[%clk 0:11:23]} h5 {[%clk
+0:05:11]} 37. Rxa5 {[%clk 0:11:45]} g4 {[%clk 0:05:08]} 38. Rxe5 {[%clk 0:10:12]}
+fxe5 {[%clk 0:05:30]} 39. a4 {[%clk 0:10:41]}  1-0
