@@ -4,6 +4,7 @@ import com.github.bhlangonijr.chesslib.game.Game;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
+import com.github.bhlangonijr.chesslib.pgn.PgnLoadListener;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -174,6 +175,21 @@ public class PgnHolderTest {
     public void testCupPgn() throws Exception {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/cup.pgn");
+        pgn.loadPgn();
+        for (Game game: pgn.getGame()) {
+            game.loadMoveText();
+            MoveList moves = game.getHalfMoves();
+            Board board = new Board();
+            for (Move move : moves) {
+                board.doMove(move);
+            }
+        }
+    }
+
+    @Test
+    public void testOO() throws Exception {
+
+        PgnHolder pgn = new PgnHolder("src/test/resources/oo.pgn");
         pgn.loadPgn();
         for (Game game: pgn.getGame()) {
             game.loadMoveText();

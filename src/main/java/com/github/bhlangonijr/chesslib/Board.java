@@ -165,13 +165,13 @@ public class Board implements Cloneable, BoardEvent {
             if (move.getFrom().equals(oo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
                     getCastleRight().put(side, CastleRight.QUEEN_SIDE);
-                } else {
+                } else if (CastleRight.KING_SIDE.equals(getCastleRight(side.flip()))) {
                     getCastleRight().put(side, CastleRight.NONE);
                 }
             } else if (move.getFrom().equals(ooo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
                     getCastleRight().put(side, CastleRight.KING_SIDE);
-                } else {
+                } else if (CastleRight.QUEEN_SIDE.equals(getCastleRight(side.flip()))) {
                     getCastleRight().put(side, CastleRight.NONE);
                 }
             }
@@ -185,13 +185,13 @@ public class Board implements Cloneable, BoardEvent {
             if (move.getTo().equals(oo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side.flip()))) {
                     getCastleRight().put(side.flip(), CastleRight.QUEEN_SIDE);
-                } else {
+                } else if (CastleRight.KING_SIDE.equals(getCastleRight(side.flip()))) {
                     getCastleRight().put(side.flip(), CastleRight.NONE);
                 }
             } else if (move.getTo().equals(ooo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side.flip()))) {
                     getCastleRight().put(side.flip(), CastleRight.KING_SIDE);
-                } else {
+                } else if (CastleRight.QUEEN_SIDE.equals(getCastleRight(side.flip()))) {
                     getCastleRight().put(side.flip(), CastleRight.NONE);
                 }
             }
