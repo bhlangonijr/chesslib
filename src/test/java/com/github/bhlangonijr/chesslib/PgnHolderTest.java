@@ -2,6 +2,7 @@ package com.github.bhlangonijr.chesslib;
 
 import com.github.bhlangonijr.chesslib.game.Game;
 import com.github.bhlangonijr.chesslib.move.Move;
+import com.github.bhlangonijr.chesslib.move.MoveConversionException;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
 import com.github.bhlangonijr.chesslib.pgn.PgnLoadListener;
@@ -201,4 +202,48 @@ public class PgnHolderTest {
         }
     }
 
+    @Test
+    public void testEP() throws Exception {
+
+        PgnHolder pgn = new PgnHolder("src/test/resources/ep.pgn");
+        pgn.loadPgn();
+        for (Game game: pgn.getGame()) {
+            game.loadMoveText();
+            MoveList moves = game.getHalfMoves();
+            Board board = new Board();
+            for (Move move : moves) {
+                board.doMove(move);
+            }
+        }
+    }
+
+    @Test
+    public void testZ0() throws Exception {
+
+        PgnHolder pgn = new PgnHolder("src/test/resources/z0.pgn");
+        pgn.loadPgn();
+        for (Game game: pgn.getGame()) {
+            game.loadMoveText();
+            MoveList moves = game.getHalfMoves();
+            Board board = new Board();
+            for (Move move : moves) {
+                board.doMove(move);
+            }
+        }
+    }
+
+    @Test(expected = MoveConversionException.class)
+    public void testErr() throws Exception {
+
+        PgnHolder pgn = new PgnHolder("src/test/resources/err.pgn");
+        pgn.loadPgn();
+        for (Game game: pgn.getGame()) {
+            game.loadMoveText();
+            MoveList moves = game.getHalfMoves();
+            Board board = new Board();
+            for (Move move : moves) {
+                board.doMove(move);
+            }
+        }
+    }
 }

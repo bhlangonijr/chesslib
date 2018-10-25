@@ -33,6 +33,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             return new Board();
         }
     };
+    private static final Move nullMove = new Move(Square.NONE, Square.NONE);
 
     private static EnumMap<Piece, String> sanNotation =
             new EnumMap<Piece, String>(Piece.class);
@@ -160,7 +161,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @return the string
      * @throws MoveConversionException the move conversion exception
      */
-// encode the move to SAN/FAN move and update thread local board
+    // encode the move to SAN/FAN move and update thread local board
     protected static String encode(final Board board, Move move, EnumMap<Piece, String> notation)
             throws MoveConversionException {
         StringBuilder san = new StringBuilder();
@@ -217,8 +218,12 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             san.append("x");
         }
         san.append(move.getTo().toString().toLowerCase());
+        if (isCapture) {
+
+        }
         if (!move.getPromotion().equals(Piece.NONE)) {
-            san.append("=" + notation.get(move.getPromotion()));
+            san.append("=");
+            san.append(notation.get(move.getPromotion()));
         }
         if (board.isKingAttacked()) {
             if (board.isMated()) {
@@ -227,6 +232,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                 san.append("+");
             }
         }
+
         return san.toString();
     }
 
@@ -490,6 +496,9 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             }
         }
         Move move = encodeSanToMove(b, san, b.getSideToMove());
+        if (move == nullMove) {
+            return;
+        }
         move.setSan(san);
         if (!b.doMove(move, fullValidation)) {
             throw new MoveConversionException("Couldn't parse SAN to MoveList: Illegal move: " +
@@ -530,7 +539,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         } catch (MoveConversionException e1) {
             throw e1;
         } catch (Exception e2) {
-            e2.printStackTrace();
             throw new MoveConversionException("Couldn't parse SAN to MoveList: " + e2.getMessage());
         }
     }
@@ -549,11 +557,16 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      */
     protected Move encodeSanToMove(Board board, String san, Side side) throws MoveConversionException {
 
+        if (san.equalsIgnoreCase("Z0")) {
+            return nullMove;
+        }
         san = san.replace("+", "");
         san = san.replace("#", "");
         san = san.replace("!", "");
         san = san.replace("?", "");
+        san = san.replace("ep", "");
         san = san.replace("\n", " ");
+
         String strPromotion = StringUtil.afterSequence(san, "=", 1);
         san = StringUtil.beforeSequence(san, "=");
 

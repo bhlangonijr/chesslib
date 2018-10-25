@@ -870,7 +870,6 @@ public class Game {
         StringUtil.replaceAll(moves, "\n", " ");
         getHalfMoves().clear();
         getHalfMoves().loadFromSan(moves.toString());
-
     }
 
     /**
