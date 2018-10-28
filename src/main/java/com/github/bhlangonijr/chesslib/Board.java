@@ -165,13 +165,13 @@ public class Board implements Cloneable, BoardEvent {
             if (move.getFrom().equals(oo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
                     getCastleRight().put(side, CastleRight.QUEEN_SIDE);
-                } else if (CastleRight.KING_SIDE.equals(getCastleRight(side.flip()))) {
+                } else if (CastleRight.KING_SIDE.equals(getCastleRight(side))) {
                     getCastleRight().put(side, CastleRight.NONE);
                 }
             } else if (move.getFrom().equals(ooo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
                     getCastleRight().put(side, CastleRight.KING_SIDE);
-                } else if (CastleRight.QUEEN_SIDE.equals(getCastleRight(side.flip()))) {
+                } else if (CastleRight.QUEEN_SIDE.equals(getCastleRight(side))) {
                     getCastleRight().put(side, CastleRight.NONE);
                 }
             }
