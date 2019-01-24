@@ -40,6 +40,7 @@ public class BoardTest {
         assertEquals(new Integer(0), board.getHalfMoveCounter());
         assertEquals(new Integer(1), board.getMoveCounter());
         assertEquals(Square.E3, board.getEnPassant());
+        assertEquals(Square.E4, board.getEnPassantTarget());
 
         assertEquals(fen1, board.getFen());
 
