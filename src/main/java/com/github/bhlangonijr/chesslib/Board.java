@@ -84,8 +84,8 @@ public class Board implements Cloneable, BoardEvent {
         Square ep = Square.NONE;
         if (!Square.NONE.equals(sq)) {
             ep = Side.WHITE.equals(side) ?
-                    Square.encode(Rank.RANK_4, sq.getFile()) :
-                    Square.encode(Rank.RANK_5, sq.getFile());
+                    Square.encode(Rank.RANK_5, sq.getFile()) :
+                    Square.encode(Rank.RANK_4, sq.getFile());
         }
         return ep;
     }
