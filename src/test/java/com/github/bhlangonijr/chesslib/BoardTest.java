@@ -215,4 +215,28 @@ public class BoardTest {
         assertTrue(moves.contains(new Move(Square.G4, Square.H3)));
         assertTrue(moves.contains(new Move(Square.G4, Square.H5)));
     }
+
+    /**
+     * Test legal move 4.
+     *
+     * @throws MoveGeneratorException the move generator exception
+     */
+    @Test
+    public void testLegalMove4() throws MoveGeneratorException {
+        String fen = "7k/8/R5Q1/1BpP4/3K4/8/8/8 w - c6 0 0";
+        Board b = new Board();
+        b.loadFromFen(fen);
+
+        MoveList moves = MoveGenerator.generateLegalMoves(b);
+
+        assertTrue(moves.contains(new Move(Square.D5, Square.C6)));
+        assertTrue(moves.contains(new Move(Square.D4, Square.C3)));
+        assertTrue(moves.contains(new Move(Square.D4, Square.D3)));
+        assertTrue(moves.contains(new Move(Square.D4, Square.E3)));
+        assertTrue(moves.contains(new Move(Square.D4, Square.C4)));
+        assertTrue(moves.contains(new Move(Square.D4, Square.E4)));
+        assertTrue(moves.contains(new Move(Square.D4, Square.C5)));
+        assertTrue(moves.contains(new Move(Square.D4, Square.E5)));
+        assertEquals(8, moves.size());
+    }
 }
