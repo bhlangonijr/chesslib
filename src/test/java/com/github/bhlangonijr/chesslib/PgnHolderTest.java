@@ -5,7 +5,6 @@ import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveConversionException;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
-import com.github.bhlangonijr.chesslib.pgn.PgnLoadListener;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

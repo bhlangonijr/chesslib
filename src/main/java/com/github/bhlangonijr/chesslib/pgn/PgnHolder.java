@@ -20,7 +20,6 @@ import com.github.bhlangonijr.chesslib.game.*;
 import com.github.bhlangonijr.chesslib.util.LargeFile;
 import com.github.bhlangonijr.chesslib.util.StringUtil;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
