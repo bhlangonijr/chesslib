@@ -47,36 +47,43 @@ public class BoardTest {
         Move move = new Move(Square.E7, Square.E5); //sm: b
         board.doMove(move, true);
         System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
 
         assertEquals(fen2, board.getFen()); //sm: w
 
         board.undoMove();
         System.out.println("new FEN after: undo: " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
         assertEquals(fen1, board.getFen()); // sm: b
 
         move = new Move(Square.D7, Square.D5); //sm: b
         board.doMove(move, true);
         System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
         assertEquals(fen3, board.getFen()); // sm: w
 
         move = new Move(Square.E4, Square.E5); //sm: w
         board.doMove(move, true);
         System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
         assertEquals(fen4, board.getFen()); // sm: b
 
         move = new Move(Square.F7, Square.F5); //sm: b
         board.doMove(move, true);
         System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
         assertEquals(fen5, board.getFen()); // sm: w
 
         move = new Move(Square.E5, Square.F6); //sm: w
         board.doMove(move, true);
         System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
         assertEquals(fen6, board.getFen()); // sm: b
 
         move = new Move(Square.E7, Square.F6); //sm: b
         board.doMove(move, true);
         System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
         assertEquals(fen7, board.getFen()); // sm: w
 
     }
@@ -100,17 +107,20 @@ public class BoardTest {
         Move move = new Move(Square.E1, Square.G1); //sm: b
         board.doMove(move, true);
         System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
 
         assertEquals(fen2, board.getFen()); //sm: w
 
         move = new Move(Square.E8, Square.G8); //sm: w
         board.doMove(move, true);
         System.out.println("new FEN after: " + move.toString() + ": " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
 
         assertEquals(fen3, board.getFen()); //sm: b
 
         board.undoMove();
         System.out.println("new FEN after: undo: " + board.getFen());
+        System.out.println("hash code is: " + board.hashCode());
         assertEquals(fen2, board.getFen()); // sm: w
 
     }
@@ -138,9 +148,11 @@ public class BoardTest {
         String fen1 = "rnbqk2r/ppp1b1pp/5p1n/3p4/8/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 4 3";
         Board b1 = new Board();
         b1.loadFromFen(fen1);
+        System.out.println("hash code is: " + b1.hashCode());
 
         Board b2 = new Board();
         b2.loadFromFen(fen1);
+        System.out.println("hash code is: " + b2.hashCode());
 
         assertEquals(b1, b2);
         assertEquals(b1.getPositionId(), b2.getPositionId());
