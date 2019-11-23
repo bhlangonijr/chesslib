@@ -245,4 +245,34 @@ public class PgnHolderTest {
             }
         }
     }
+
+    @Test
+    public void testAnsi() throws Exception {
+
+        PgnHolder pgn = new PgnHolder("src/test/resources/Morphy_Ansi.pgn");
+        pgn.loadPgn();
+        for (Game game: pgn.getGame()) {
+            game.loadMoveText();
+            MoveList moves = game.getHalfMoves();
+            Board board = new Board();
+            for (Move move : moves) {
+                board.doMove(move);
+            }
+        }
+    }
+
+    @Test
+    public void testUtf8() throws Exception {
+
+        PgnHolder pgn = new PgnHolder("src/test/resources/Morphy_UTF8.pgn");
+        pgn.loadPgn();
+        for (Game game: pgn.getGame()) {
+            game.loadMoveText();
+            MoveList moves = game.getHalfMoves();
+            Board board = new Board();
+            for (Move move : moves) {
+                board.doMove(move);
+            }
+        }
+    }
 }
