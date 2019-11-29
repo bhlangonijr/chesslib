@@ -249,7 +249,7 @@ public class PgnHolderTest {
     @Test
     public void testAnsi() throws Exception {
 
-        PgnHolder pgn = new PgnHolder("src/test/resources/Morphy_Ansi.pgn");
+        PgnHolder pgn = new PgnHolder("src/test/resources/Morphy_ANSI.pgn");
         pgn.loadPgn();
         for (Game game: pgn.getGame()) {
             game.loadMoveText();
