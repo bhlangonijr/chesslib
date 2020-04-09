@@ -95,7 +95,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * Instantiates a new Move list.
      */
     public MoveList() {
-        this(Constants.startStandardFENPosition);
+        this(Constants.START_STANDARD_FEN_POSITION);
     }
 
     /**
