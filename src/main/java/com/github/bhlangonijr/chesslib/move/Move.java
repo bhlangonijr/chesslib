@@ -96,7 +96,7 @@ public class Move implements BoardEvent {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Move)) {
+        if (!(obj instanceof Move)) {
             return false;
         }
         Move move = (Move) obj;

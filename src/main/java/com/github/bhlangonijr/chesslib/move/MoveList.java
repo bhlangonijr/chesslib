@@ -782,17 +782,9 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     public boolean equals(Object obj) {
         if (obj instanceof MoveList) {
             MoveList l = (MoveList) obj;
-            if (l.size() != this.size()) {
-                return false;
-            }
-            for (int i = 0; i < l.size(); i++) {
-                if (!l.get(i).equals(this.get(i))) {
-                    return false;
-                }
-            }
+            return super.equals(l);
         }
         return false;
     }
-
 
 }
