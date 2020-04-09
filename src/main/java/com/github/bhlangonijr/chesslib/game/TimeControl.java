@@ -25,7 +25,7 @@ import java.util.List;
 public class TimeControl {
 
     private final List<MovePerTime> movePerTime =
-            new ArrayList<MovePerTime>();
+            new ArrayList<>();
     private TimeControlType timeControlType;
     private int halfMoves = 0;
     private long milliseconds = 0;
@@ -47,7 +47,7 @@ public class TimeControl {
             return tc;
         }
 
-        if (s.indexOf(":") >= 0) {
+        if (s.contains(":")) {
             for (String field : s.split(":")) {
                 parseTC(field, tc);
             }
@@ -60,36 +60,36 @@ public class TimeControl {
 
     private static void parseTC(String s, TimeControl tc) {
 
-        if (s.indexOf("/") >= 0) {
+        if (s.indexOf('/') >= 0) {
             tc.setTimeControlType(TimeControlType.MOVES_PER_TIME);
             parseMT(s, tc);
-        } else if (s.indexOf("+") >= 0) {
+        } else if (s.indexOf('+') >= 0) {
             tc.setTimeControlType(TimeControlType.TIME_BONUS);
             parseTM(s, tc);
         } else {
             tc.setTimeControlType(TimeControlType.TIME_BONUS);
-            tc.milliseconds = Integer.parseInt(s) * 1000;
+            tc.milliseconds = (long) Integer.parseInt(s) * 1000;
         }
     }
 
     private static void parseTM(String s, TimeControl tc) {
-        String tm[] = s.split("\\+");
-        tc.setIncrement(Integer.parseInt(tm[1]) * 1000);
-        if (tm[0].indexOf("/") >= 0) {
+        String[] tm = s.split("\\+");
+        tc.setIncrement((long) Integer.parseInt(tm[1]) * 1000);
+        if (tm[0].indexOf('/') >= 0) {
             parseMT(tm[0], tc);
         } else {
-            tc.setMilliseconds(Integer.parseInt(tm[0]) * 1000);
+            tc.setMilliseconds((long) Integer.parseInt(tm[0]) * 1000);
         }
 
     }
 
     private static void parseMT(String s, TimeControl tc) {
-        String tm[] = s.split("/");
+        String[] tm = s.split("/");
         int moves = Integer.parseInt(tm[0]);
         int milliseconds = Integer.parseInt(tm[1]) * 1000;
         if (tc.getHalfMoves() == 0) {
             tc.setHalfMoves(moves);
-            if (tm[1].indexOf("+") >= 0) {
+            if (tm[1].contains("+")) {
                 parseTM(tm[1], tc);
             } else {
                 tc.setMilliseconds(milliseconds);
@@ -237,7 +237,7 @@ public class TimeControl {
             s.append("+");
             s.append(getIncrement() / 1000);
         }
-        if (getMovePerTime().size() > 0) {
+        if (!getMovePerTime().isEmpty()) {
             for (MovePerTime mt : getMovePerTime()) {
                 s.append(":");
                 s.append(mt.toPGNString());
@@ -266,7 +266,7 @@ public class TimeControl {
             s.append(getIncrement() / 1000);
             s.append(" Sec");
         }
-        if (getMovePerTime().size() > 0) {
+        if (!getMovePerTime().isEmpty()) {
             for (MovePerTime mt : getMovePerTime()) {
                 s.append(" : ");
                 s.append(mt.toString());

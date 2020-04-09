@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class Round {
     private final List<Game> game =
-            new ArrayList<Game>();
+            new ArrayList<>();
     private final Event event;
     private int number;
 

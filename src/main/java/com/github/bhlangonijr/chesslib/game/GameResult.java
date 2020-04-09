@@ -44,7 +44,7 @@ public enum GameResult {
      * The Notation.
      */
     static Map<String, GameResult> notation =
-            new HashMap<String, GameResult>(4);
+            new HashMap<>(4);
 
     static {
         notation.put("1-0", WHITE_WON);

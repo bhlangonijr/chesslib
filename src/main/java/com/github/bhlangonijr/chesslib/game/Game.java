@@ -411,7 +411,7 @@ public class Game {
         int variantIndex = 0;
         int lastSize = sb.length();
 
-        if (getHalfMoves().size() == 0) {
+        if (getHalfMoves().isEmpty()) {
             sb.append(getMoveText().toString());
         } else {
             sb.append(moveCounter);
@@ -420,7 +420,7 @@ public class Game {
             } else {
                 sb.append(". ");
             }
-            final String sanArray[] = getHalfMoves().toSanArray();
+            final String[] sanArray = getHalfMoves().toSanArray();
             for (int i = 0; i < sanArray.length; i++) {
                 String san = sanArray[i];
                 index++;
@@ -481,11 +481,10 @@ public class Game {
         if (variation != null) {
             boolean terminated = false;
             sb.append("(");
-            int i = 0;
             int mc = moveCounter;
             int idx = index;
-            String sanArray[] = variation.toSanArray();
-            for (i = 0; i < sanArray.length; i++) {
+            String[] sanArray = variation.toSanArray();
+            for (int i = 0; i < sanArray.length; i++) {
                 String sanMove = sanArray[i];
                 if (i == 0) {
                     sb.append(mc);
@@ -721,9 +720,6 @@ public class Game {
         StringUtil.replaceAll(moveText, ")", " ) ");
 
         String text = moveText.toString();
-        if (text == null) {
-            return;
-        }
         if (getHalfMoves() == null) {
             if (getFen() != null && !getFen().trim().equals("")) {
                 setHalfMoves(new MoveList(getFen()));
@@ -734,7 +730,7 @@ public class Game {
         StringBuilder moves = new StringBuilder();
         StringBuilder comment = null;
         LinkedList<RTextEntry> variation =
-                new LinkedList<RTextEntry>();
+                new LinkedList<>();
 
         int halfMove = 0;
         int variantIndex = 0;
@@ -747,18 +743,16 @@ public class Game {
                 continue;
             }
             if (!(onLineCommentBlock || onCommentBlock) &&
-                    token.indexOf("...") > -1) {
+                    token.contains("...")) {
                 token = StringUtil.afterSequence(token, "...");
-                if (token == null ||
-                        token.trim().length() == 0) {
+                if (token.trim().length() == 0) {
                     continue;
                 }
             }
             if (!(onLineCommentBlock || onCommentBlock) &&
-                    token.indexOf(".") > -1) {
+                    token.contains(".")) {
                 token = StringUtil.afterSequence(token, ".");
-                if (token == null ||
-                        token.trim().length() == 0) {
+                if (token.trim().length() == 0) {
                     continue;
                 }
             }
@@ -804,47 +798,44 @@ public class Game {
             } else if (token.equals(")") && onVariationBlock &&
                     !(onCommentBlock) || onLineCommentBlock) {
                 onVariationBlock = false;
-                if (variation != null) {
-                    final RTextEntry last = variation.pollLast();
-                    StringBuilder currentLine =
-                            new StringBuilder(getMovesAt(moves.toString(), halfMove));
-                    try {
+                final RTextEntry last = variation.pollLast();
+                StringBuilder currentLine =
+                        new StringBuilder(getMovesAt(moves.toString(), halfMove));
+                try {
 
-                        onVariationBlock = variation.size() > 0;
+                    onVariationBlock = !variation.isEmpty();
 
-                        for (RTextEntry entry : variation) {
-                            currentLine.append(getMovesAt(entry.text.toString(), entry.size));
-                        }
-
-                        MoveList tmp = new MoveList();
-                        tmp.loadFromSan(getMovesAt(currentLine.toString(), last.index));
-                        MoveList var = MoveList.createMoveListFrom(tmp, tmp.size());
-                        var.loadFromSan(last.text.toString());
-                        final RTextEntry parent = variation.peekLast();
-                        if (onVariationBlock && parent != null) {
-                            var.setParent(parent.index);
-                        } else {
-                            var.setParent(-1);
-                        }
-                        if (getVariations() == null) {
-                            setVariations(new HashMap<Integer, MoveList>());
-                        }
-                        getVariations().put(last.index, var);
-                    } catch (Exception e) {
-                        if (last != null && currentLine != null) {
-                            throw new PgnException("Error while reading variation: " +
-                                    getMovesAt(currentLine.toString(), last.index) + " - " +
-                                    last.text.toString(), e);
-                        } else {
-                            throw new PgnException("Error while reading variation: ", e);
-                        }
+                    for (RTextEntry entry : variation) {
+                        currentLine.append(getMovesAt(entry.text.toString(), entry.size));
                     }
-                    currentLine = null;
+
+                    MoveList tmp = new MoveList();
+                    tmp.loadFromSan(getMovesAt(currentLine.toString(), last.index));
+                    MoveList var = MoveList.createMoveListFrom(tmp, tmp.size());
+                    var.loadFromSan(last.text.toString());
+                    final RTextEntry parent = variation.peekLast();
+                    if (onVariationBlock && parent != null) {
+                        var.setParent(parent.index);
+                    } else {
+                        var.setParent(-1);
+                    }
+                    if (getVariations() == null) {
+                        setVariations(new HashMap<Integer, MoveList>());
+                    }
+                    getVariations().put(last.index, var);
+                } catch (Exception e) {
+                    if (last != null) {
+                        throw new PgnException("Error while reading variation: " +
+                                getMovesAt(currentLine.toString(), last.index) + " - " +
+                                last.text.toString(), e);
+                    } else {
+                        throw new PgnException("Error while reading variation: ", e);
+                    }
                 }
                 continue;
             }
 
-            if (onCommentBlock || onLineCommentBlock) {
+            if (onCommentBlock) {
                 if (comment != null) {
                     comment.append(token);
                     comment.append(" ");
@@ -853,12 +844,10 @@ public class Game {
             }
 
             if (onVariationBlock) {
-                if (variation != null) {
-                    variation.getLast().text.append(token);
-                    variation.getLast().text.append(" ");
-                    variation.getLast().size++;
-                    variantIndex++;
-                }
+                variation.getLast().text.append(token);
+                variation.getLast().text.append(" ");
+                variation.getLast().size++;
+                variantIndex++;
                 continue;
             }
             variantIndex++;

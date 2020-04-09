@@ -21,6 +21,9 @@ package com.github.bhlangonijr.chesslib.game;
  */
 public class GameFactory {
 
+    private GameFactory() {
+    }
+
     /**
      * Create a new Event
      *
@@ -59,10 +62,7 @@ public class GameFactory {
      * @return game
      */
     public static Game newGame(String gameId, Round round) {
-
-        Game game = new Game(gameId, round);
-
-        return game;
+        return new Game(gameId, round);
     }
 
     /**
