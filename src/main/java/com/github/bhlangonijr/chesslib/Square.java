@@ -228,12 +228,12 @@ public enum Square {
     NONE;
 
     private static final EnumMap<Square, Square[]> sideSquare =
-            new EnumMap<Square, Square[]>(Square.class);
+            new EnumMap<>(Square.class);
 
     static {
         for (Square sq : Square.values()) {
             if (!Square.NONE.equals(sq)) {
-                Square a[] = null;
+                Square[] a = null;
                 if (File.FILE_A.equals(sq.getFile())) {
                     a = new Square[1];
                     a[0] = encode(sq.getRank(), File.FILE_B);
@@ -338,7 +338,7 @@ public enum Square {
      * @return the boolean
      */
     public boolean isLightSquare() {
-        return (getBitboard() & Bitboard.lightSquares) != 0L;
+        return (getBitboard() & Bitboard.LIGHT_SQUARES) != 0L;
     }
 
 }

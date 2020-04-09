@@ -43,7 +43,7 @@ public class MoveBackup implements BoardEvent {
      * Instantiates a new Move backup.
      */
     public MoveBackup() {
-        castleRight = new EnumMap<Side, CastleRight>(Side.class);
+        castleRight = new EnumMap<>(Side.class);
     }
 
     /**

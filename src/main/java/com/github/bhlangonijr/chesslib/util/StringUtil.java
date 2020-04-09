@@ -25,6 +25,9 @@ import java.util.Map;
  */
 public class StringUtil {
 
+    private StringUtil() {
+    }
+
     /**
      * Extracts the last char sequence of a string
      *

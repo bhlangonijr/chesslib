@@ -180,7 +180,7 @@ public class GameContext {
         setBlackooAllSquaresBb(squareListToBb(Constants.DEFAULT_BLACK_OO_ALL_SQUARES));
         setBlackoooAllSquaresBb(squareListToBb(Constants.DEFAULT_BLACK_OOO_ALL_SQUARES));
 
-        setStartFEN(Constants.startStandardFENPosition);
+        setStartFEN(Constants.START_STANDARD_FEN_POSITION);
     }
 
     private static long squareListToBb(List<Square> list) {

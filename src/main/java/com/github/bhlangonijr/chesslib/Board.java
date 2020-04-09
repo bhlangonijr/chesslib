@@ -21,10 +21,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -34,10 +31,10 @@ public class Board implements Cloneable, BoardEvent {
 
     private final LinkedList<MoveBackup> backup;
     private final EnumMap<BoardEventType, List<BoardEventListener>> eventListener;
-    private final long bitboard[];
-    private final long bbSide[];
+    private final long[] bitboard;
+    private final long[] bbSide;
     private final EnumMap<Side, CastleRight> castleRight;
-    private final LinkedList<Integer> history = new LinkedList<Integer>();
+    private final LinkedList<Integer> history = new LinkedList<>();
     private Side sideToMove;
     private Square enPassantTarget;
     private Square enPassant;
@@ -54,7 +51,7 @@ public class Board implements Cloneable, BoardEvent {
      * (3) no xor of three keys collides with another single key
      */
 
-    private static final int shortKeys [] = {
+    private static final int[] shortKeys = {
             -702565069, -651716404, -90772002, 139827217, -818005229, 1941803680, -1748144377, 596276289,
             1921378528, 1368035031, -1425636917, -575780564, 1409290471, 845303300, 1136883922, -1430851484,
             924912986, 92095816, -1065598504, -748528041, 1089599880, -723160118, 598513820, -1833342420,
@@ -146,7 +143,7 @@ public class Board implements Cloneable, BoardEvent {
             -93114079, 2094770206, -829540968, 838077186, 1183801227, 1034667295, -1366764251, -442861168,
             -1804474693, -81629767, 1243366786, -594428051, -646278283, -1526405242, 686221453, 372623104,
             568130968, -1013174072, -1641184673, 1858985781, -777049255, 1834416915, 663860650, 2106666450,
-            -423798316, -1492014558, 1802169576,  670009693, 275948276, -2136905904, 1455848813, -428955569,
+            -423798316, -1492014558, 1802169576, 670009693, 275948276, -2136905904, 1455848813, -428955569,
             -519611950, -1559659699, 751854940, -4572983, -1615791950, -923141036, -1962400809, 942704084,
             922044431, -1433808400, -606386080, 696210099, 1536819315, 1603327493, -1644798329, 198911974,
             2084080181, 368153161, 964257884, 912710436, 597074072, 1234873272, -355403114, -76697025,
@@ -169,10 +166,10 @@ public class Board implements Cloneable, BoardEvent {
     public Board(GameContext gameContext, boolean updateHistory) {
         bitboard = new long[Piece.values().length];
         bbSide = new long[Side.values().length];
-        castleRight = new EnumMap<Side, CastleRight>(Side.class);
-        backup = new LinkedList<MoveBackup>();
+        castleRight = new EnumMap<>(Side.class);
+        backup = new LinkedList<>();
         context = gameContext;
-        eventListener = new EnumMap<BoardEventType, List<BoardEventListener>>(BoardEventType.class);
+        eventListener = new EnumMap<>(BoardEventType.class);
         this.updateHistory = updateHistory;
         setSideToMove(Side.WHITE);
         setEnPassantTarget(Square.NONE);
@@ -337,7 +334,7 @@ public class Board implements Cloneable, BoardEvent {
         backup.add(backupMove);
         //call listeners
         if (isEnableEvents() &&
-                eventListener.get(BoardEventType.ON_MOVE).size() > 0) {
+                !eventListener.get(BoardEventType.ON_MOVE).isEmpty()) {
             for (BoardEventListener evl :
                     eventListener.get(BoardEventType.ON_MOVE)) {
                 evl.onEvent(move);
@@ -363,7 +360,7 @@ public class Board implements Cloneable, BoardEvent {
         }
         //call listeners
         if (isEnableEvents() &&
-                eventListener.get(BoardEventType.ON_UNDO_MOVE).size() > 0) {
+                !eventListener.get(BoardEventType.ON_UNDO_MOVE).isEmpty()) {
             for (BoardEventListener evl :
                     eventListener.get(BoardEventType.ON_UNDO_MOVE)) {
                 evl.onEvent(b);
@@ -452,7 +449,7 @@ public class Board implements Cloneable, BoardEvent {
      * @param location the location
      * @return boolean
      */
-    public boolean hasPiece(Piece piece, Square location[]) {
+    public boolean hasPiece(Piece piece, Square[] location) {
         for (Square sq : location) {
             if (piece.equals(getPiece(sq))) {
                 return true;
@@ -514,7 +511,7 @@ public class Board implements Cloneable, BoardEvent {
         String squares = fen.substring(0, fen.indexOf(' '));
         String state = fen.substring(fen.indexOf(' ') + 1);
 
-        String ranks[] = squares.split("/");
+        String[] ranks = squares.split("/");
         int file;
         int rank = 7;
         for (String r : ranks) {
@@ -554,7 +551,7 @@ public class Board implements Cloneable, BoardEvent {
             castleRight.put(Side.BLACK, CastleRight.NONE);
         }
 
-        String flags[] = state.split(" ");
+        String[] flags = state.split(" ");
 
         if (flags.length >= 3) {
             String s = flags[2].toUpperCase().trim();
@@ -576,7 +573,7 @@ public class Board implements Cloneable, BoardEvent {
 
         //call listeners
         if (isEnableEvents() &&
-                eventListener.get(BoardEventType.ON_LOAD).size() > 0) {
+                !eventListener.get(BoardEventType.ON_LOAD).isEmpty()) {
             for (BoardEventListener evl :
                     eventListener.get(BoardEventType.ON_LOAD)) {
                 evl.onEvent(Board.this);
@@ -601,7 +598,7 @@ public class Board implements Cloneable, BoardEvent {
      */
     public String getFen(boolean includeCounters) {
 
-        StringBuffer fen = new StringBuffer();
+        StringBuilder fen = new StringBuilder();
         int count = 0;
         int rankCounter = 1;
         int sqCount = 0;
@@ -668,7 +665,7 @@ public class Board implements Cloneable, BoardEvent {
         if (rights.equals("")) {
             fen.append(" -");
         } else {
-            fen.append(" " + rights);
+            fen.append(" ").append(rights);
         }
 
         if (Square.NONE.equals(getEnPassant())) {
@@ -861,7 +858,7 @@ public class Board implements Cloneable, BoardEvent {
      *
      * @return the castleRight
      */
-    public EnumMap<Side, CastleRight> getCastleRight() {
+    public Map<Side, CastleRight> getCastleRight() {
         return castleRight;
     }
 
@@ -924,7 +921,7 @@ public class Board implements Cloneable, BoardEvent {
      */
     public Piece[] boardToArray() {
 
-        final Piece pieces[] = new Piece[65];
+        final Piece[] pieces = new Piece[65];
         pieces[64] = Piece.NONE;
 
         for (Square square : Square.values()) {
@@ -945,7 +942,7 @@ public class Board implements Cloneable, BoardEvent {
      *
      * @return the event listener
      */
-    public EnumMap<BoardEventType, List<BoardEventListener>> getEventListener() {
+    public Map<BoardEventType, List<BoardEventListener>> getEventListener() {
         return eventListener;
     }
 
@@ -954,11 +951,9 @@ public class Board implements Cloneable, BoardEvent {
      *
      * @param eventType the event type
      * @param listener  the listener
-     * @return Board board
      */
-    public Board addEventListener(BoardEventType eventType, BoardEventListener listener) {
+    public void addEventListener(BoardEventType eventType, BoardEventListener listener) {
         getEventListener().get(eventType).add(listener);
-        return this;
     }
 
     /**
@@ -990,11 +985,11 @@ public class Board implements Cloneable, BoardEvent {
         result |= Bitboard.getKnightAttacks(square, occ) &
                 getBitboard(Piece.make(side, PieceType.KNIGHT));
         result |= Bitboard.getBishopAttacks(occ, square) &
-                ((getBitboard(Piece.make(side, PieceType.BISHOP)) |
-                        getBitboard(Piece.make(side, PieceType.QUEEN))));
+                (getBitboard(Piece.make(side, PieceType.BISHOP)) |
+                        getBitboard(Piece.make(side, PieceType.QUEEN)));
         result |= Bitboard.getRookAttacks(occ, square) &
-                ((getBitboard(Piece.make(side, PieceType.ROOK)) |
-                        getBitboard(Piece.make(side, PieceType.QUEEN))));
+                (getBitboard(Piece.make(side, PieceType.ROOK)) |
+                        getBitboard(Piece.make(side, PieceType.QUEEN)));
         result |= Bitboard.getKingAttacks(square, occ) &
                 getBitboard(Piece.make(side, PieceType.KING));
         return result;
@@ -1052,7 +1047,7 @@ public class Board implements Cloneable, BoardEvent {
     public Square getKingSquare(Side side) {
         Square result = Square.NONE;
         List<Square> sq = getPieceLocation(Piece.make(side, PieceType.KING));
-        if (sq != null && sq.size() > 0) {
+        if (sq != null && !sq.isEmpty()) {
             result = sq.get(0);
         }
         return result;
@@ -1093,7 +1088,6 @@ public class Board implements Cloneable, BoardEvent {
     public boolean isMoveLegal(Move move, boolean fullValidation) {
 
         final Piece fromPiece = getPiece(move.getFrom());
-        final Piece toPiece = getPiece(move.getTo());
         final Side side = getSideToMove();
         final PieceType fromType = fromPiece.getPieceType();
         final Piece capturedPiece = getPiece(move.getTo());
@@ -1140,10 +1134,8 @@ public class Board implements Cloneable, BoardEvent {
             }
         }
 
-        if (fromType.equals(PieceType.KING)) {
-            if (squareAttackedBy(move.getTo(), side.flip()) != 0L) {
-                return false;
-            }
+        if (fromType.equals(PieceType.KING) && squareAttackedBy(move.getTo(), side.flip()) != 0L) {
+            return false;
         }
         Square kingSq = (fromType.equals(PieceType.KING) ?
                 move.getTo() : getKingSquare(side));
@@ -1154,16 +1146,16 @@ public class Board implements Cloneable, BoardEvent {
                 (fromType.equals(PieceType.PAWN)) ? getEnPassantTarget().getBitboard() : 0;
         long allPieces = (getBitboard() ^ moveFrom) | moveTo;
 
-        long bishopAndQueens = ((getBitboard(Piece.make(other, PieceType.BISHOP)) |
-                getBitboard(Piece.make(other, PieceType.QUEEN)))) & ~moveTo;
+        long bishopAndQueens = (getBitboard(Piece.make(other, PieceType.BISHOP)) |
+                getBitboard(Piece.make(other, PieceType.QUEEN))) & ~moveTo;
 
         if (bishopAndQueens != 0L &&
                 (Bitboard.getBishopAttacks(allPieces, kingSq) & bishopAndQueens) != 0L) {
             return false;
         }
 
-        long rookAndQueens = ((getBitboard(Piece.make(other, PieceType.ROOK)) |
-                getBitboard(Piece.make(other, PieceType.QUEEN)))) & ~moveTo;
+        long rookAndQueens = (getBitboard(Piece.make(other, PieceType.ROOK)) |
+                getBitboard(Piece.make(other, PieceType.QUEEN))) & ~moveTo;
 
         if (rookAndQueens != 0L &&
                 (Bitboard.getRookAttacks(allPieces, kingSq) & rookAndQueens) != 0L) {
@@ -1243,7 +1235,7 @@ public class Board implements Cloneable, BoardEvent {
         try {
             if (isKingAttacked()) {
                 final MoveList l = MoveGenerator.generateLegalMoves(this);
-                if (l.size() == 0) {
+                if (l.isEmpty()) {
                     return true;
                 }
             }
@@ -1293,24 +1285,17 @@ public class Board implements Cloneable, BoardEvent {
         final long pawns = getBitboard(Piece.WHITE_PAWN) |
                 getBitboard(Piece.BLACK_PAWN);
         if (pawns == 0L) {
-            if ((getBitboard(Piece.WHITE_QUEEN) +
-                    getBitboard(Piece.BLACK_QUEEN) +
-                    getBitboard(Piece.WHITE_ROOK) +
-                    getBitboard(Piece.BLACK_ROOK)) != 0L) {
-                result = false;
-            } else {
-                long count = Long.bitCount(getBitboard());
-                if (count == 4) {
-                    if (Long.bitCount(getBitboard(Side.WHITE)) > 1 &&
-                            Long.bitCount(getBitboard(Side.BLACK)) > 1) {
-                        result = true;
-                    } else if (Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
-                            Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2) {
-                        result = true;
-                    }
-                } else if (count < 4) {
-                    return true;
+            long count = Long.bitCount(getBitboard());
+            if (count == 4) {
+                if (Long.bitCount(getBitboard(Side.WHITE)) > 1 &&
+                        Long.bitCount(getBitboard(Side.BLACK)) > 1) {
+                    result = true;
+                } else if (Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
+                        Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2) {
+                    result = true;
                 }
+            } else if (count < 4) {
+                return true;
             }
         }
 
@@ -1326,7 +1311,7 @@ public class Board implements Cloneable, BoardEvent {
         try {
             if (!isKingAttacked()) {
                 MoveList l = MoveGenerator.generateLegalMoves(this);
-                if (l.size() == 0) {
+                if (l.isEmpty()) {
                     return true;
                 }
             }
@@ -1372,7 +1357,7 @@ public class Board implements Cloneable, BoardEvent {
     @Override
     public boolean equals(Object obj) {
         boolean result = false;
-        if (obj != null && obj instanceof Board) {
+        if (obj instanceof Board) {
 
             Board board = (Board) obj;
             result = true;
@@ -1403,7 +1388,7 @@ public class Board implements Cloneable, BoardEvent {
             if (!Piece.NONE.equals(piece) &&
                     !Square.NONE.equals(sq)) {
                 //hash ^= sq.hashCode() ^ piece.hashCode();
-                hash ^= shortKeys[11 * piece.ordinal() + sq.ordinal() ];
+                hash ^= shortKeys[11 * piece.ordinal() + sq.ordinal()];
             }
         }
         hash ^= getSideToMove().hashCode();
@@ -1412,7 +1397,7 @@ public class Board implements Cloneable, BoardEvent {
         if (!Square.NONE.equals(getEnPassant())) {
             hash ^= getEnPassant().hashCode();
         }
-        //TODO use increamental zobrist's hashing
+        //TODO: Use incremental Zobrist hashing.
         return hash;
     }
 

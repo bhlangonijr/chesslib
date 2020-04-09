@@ -28,7 +28,7 @@ public class Constants {
     /**
      * The constant startStandardFENPosition.
      */
-    public static final String startStandardFENPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    public static final String START_STANDARD_FEN_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     /**
      * The constant DEFAULT_WHITE_OO.
      */
@@ -64,47 +64,47 @@ public class Constants {
     /**
      * The constant DEFAULT_WHITE_OO_SQUARES.
      */
-    public static final List<Square> DEFAULT_WHITE_OO_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_WHITE_OO_SQUARES = new ArrayList<>();
     /**
      * The constant DEFAULT_WHITE_OOO_SQUARES.
      */
-    public static final List<Square> DEFAULT_WHITE_OOO_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_WHITE_OOO_SQUARES = new ArrayList<>();
     /**
      * The constant DEFAULT_BLACK_OO_SQUARES.
      */
-    public static final List<Square> DEFAULT_BLACK_OO_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_BLACK_OO_SQUARES = new ArrayList<>();
     /**
      * The constant DEFAULT_BLACK_OOO_SQUARES.
      */
-    public static final List<Square> DEFAULT_BLACK_OOO_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_BLACK_OOO_SQUARES = new ArrayList<>();
 
     /**
      * The constant DEFAULT_WHITE_OO_ALL_SQUARES.
      */
-    public static final List<Square> DEFAULT_WHITE_OO_ALL_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_WHITE_OO_ALL_SQUARES = new ArrayList<>();
     /**
      * The constant DEFAULT_WHITE_OOO_ALL_SQUARES.
      */
-    public static final List<Square> DEFAULT_WHITE_OOO_ALL_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_WHITE_OOO_ALL_SQUARES = new ArrayList<>();
     /**
      * The constant DEFAULT_BLACK_OO_ALL_SQUARES.
      */
-    public static final List<Square> DEFAULT_BLACK_OO_ALL_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_BLACK_OO_ALL_SQUARES = new ArrayList<>();
     /**
      * The constant DEFAULT_BLACK_OOO_ALL_SQUARES.
      */
-    public static final List<Square> DEFAULT_BLACK_OOO_ALL_SQUARES = new ArrayList<Square>();
+    public static final List<Square> DEFAULT_BLACK_OOO_ALL_SQUARES = new ArrayList<>();
 
     /**
      * The constant pieceNotation.
      */
     public static final EnumMap<Piece, String> pieceNotation =
-            new EnumMap<Piece, String>(Piece.class);
+            new EnumMap<>(Piece.class);
     /**
      * The constant pieceNotationR.
      */
     public static final Map<String, Piece> pieceNotationR =
-            new HashMap<String, Piece>(12);
+            new HashMap<>(12);
 
     static {
 

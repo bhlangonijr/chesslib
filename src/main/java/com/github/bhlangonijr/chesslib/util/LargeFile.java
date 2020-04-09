@@ -42,7 +42,7 @@ public class LargeFile implements Iterable<String> {
     public void close() {
         try {
             reader.close();
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -51,24 +51,22 @@ public class LargeFile implements Iterable<String> {
     }
 
     private class FileIterator implements Iterator<String> {
-        private String _currentLine;
+        private String currentLine;
 
         public boolean hasNext() {
             try {
-                _currentLine = reader.readLine();
+                currentLine = reader.readLine();
             } catch (Exception ex) {
-                _currentLine = null;
+                currentLine = null;
                 ex.printStackTrace();
             }
 
-            return _currentLine != null;
+            return currentLine != null;
         }
 
         public String next() {
-            return _currentLine;
+            return currentLine;
         }
 
-        public void remove() {
-        }
     }
 }
