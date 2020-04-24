@@ -130,13 +130,22 @@ public class PgnHolder {
         return game;
     }
 
+
     /**
      * Load the PGN file
      *
      * @throws Exception the exception
      */
     public void loadPgn() throws Exception {
-        LargeFile file = new LargeFile(getFileName());
+        loadPgn(new LargeFile(getFileName()));
+    }
+
+    /**
+     * Load a PGN file
+     *
+     * @throws Exception the exception
+     */
+    public void loadPgn(LargeFile file) throws Exception {
         size = 0;
         Event event = null;
         Round round = null;

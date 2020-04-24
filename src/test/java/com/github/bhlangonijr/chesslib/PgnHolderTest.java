@@ -5,6 +5,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveConversionException;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
+import com.github.bhlangonijr.chesslib.util.LargeFile;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -161,7 +162,7 @@ public class PgnHolderTest {
         game.loadMoveText();
         MoveList moves = game.getHalfMoves();
         Board board = new Board();
-        for (Move move: moves) {
+        for (Move move : moves) {
             board.doMove(move);
         }
         assertEquals(moves.toString(), "g1f3 d7d5 e2e3 g8f6 c2c4 e7e6 d2d4 c7c5 a2a3 b8c6 d4c5 f8c5 b2b4 c5e7 " +
@@ -176,7 +177,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/cup.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -191,7 +192,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/oo.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -206,7 +207,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/ep.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -221,7 +222,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/z0.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -236,7 +237,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/err.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -251,7 +252,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/Morphy_ANSI.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -266,7 +267,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/Morphy_UTF8.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -274,5 +275,39 @@ public class PgnHolderTest {
                 board.doMove(move);
             }
         }
+    }
+
+
+    /**
+     * Test pgn load 1.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testPGNLoadInputStream() throws Exception {
+
+        PgnHolder pgn = new PgnHolder(null);
+        pgn.loadPgn(new LargeFile(this.getClass().getResourceAsStream("/cct131.pgn")));
+        Game game = pgn.getGame().get(0);
+        game.loadMoveText();
+
+        assertEquals(3, pgn.getGame().size());
+        assertEquals("Rookie", game.getWhitePlayer().getName());
+        assertEquals("JabbaChess", game.getBlackPlayer().getName());
+        assertEquals("2011.01.29", game.getDate());
+        assertEquals(2, game.getRound().getNumber());
+        assertEquals("1-0", game.getResult().getDescription());
+        assertEquals("0", game.getPlyCount());
+        assertEquals("Albert Silver", game.getAnnotator());
+        assertEquals(2285, game.getWhitePlayer().getElo());
+        assertEquals(1680, game.getBlackPlayer().getElo());
+
+        assertEquals("C00", game.getEco());
+        assertEquals(67, game.getHalfMoves().size());
+        assertEquals("e2e4 e7e6 d2d4 a7a6 g1f3 d7d5 e4d5 e6d5 f1d3 b8c6 e1g1 g8f6 f1e1 f8e7 c2c3 e8g8 b1d2 f8e8 f3e5 " +
+                "c6e5 d4e5 f6d7 d2b3 g7g6 b3d4 c7c5 d4f3 b7b5 c1h6 c8b7 h2h4 e7h4 a2a4 b5b4 c3b4 c5b4 d1c1 h4e7 c1f4 " +
+                "d7c5 a1d1 b7c6 e5e6 f7f6 f3h4 c6a4 h4g6 c5e6 e1e6 e7d6 f4g4 d6h2 g1h2 d8c7 h2g1 c7g7 e6e7 e8e7 g6e7 " +
+                "g8f7 g4g7 f7e8 e7d5 a8a7 d3b5 a6b5 d5f6", game.getHalfMoves().toString());
+
     }
 }
