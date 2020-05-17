@@ -6,7 +6,7 @@
 
     <groupId>com.github.bhlangonijr.chesslib</groupId>
     <artifactId>chesslib</artifactId>
-    <version>1.1.12</version>
+    <version>1.1.14</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
