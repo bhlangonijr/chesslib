@@ -1051,9 +1051,10 @@ public class Board implements Cloneable, BoardEvent {
      */
     public Square getKingSquare(Side side) {
         Square result = Square.NONE;
-        List<Square> sq = getPieceLocation(Piece.make(side, PieceType.KING));
-        if (sq != null && sq.size() > 0) {
-            result = sq.get(0);
+        long piece = getBitboard(Piece.make(side, PieceType.KING));
+        if (piece != 0L) {
+            int sq = Bitboard.bitScanForward(piece);
+            return Square.squareAt(sq);
         }
         return result;
     }

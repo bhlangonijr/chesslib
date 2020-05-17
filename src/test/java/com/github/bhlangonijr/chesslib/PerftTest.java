@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class PerftTest {
 
-    private boolean CHECK_BOARD_STATE = false;
+    private static final boolean CHECK_BOARD_STATE = false;
 
     /**
      * Test perft 1.
