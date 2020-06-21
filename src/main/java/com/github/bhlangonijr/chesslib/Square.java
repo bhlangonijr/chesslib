@@ -25,200 +25,256 @@ public enum Square {
     /**
      * A 1 square.
      */
-    A1, /**
+    A1,
+    /**
      * B 1 square.
      */
-    B1, /**
+    B1,
+    /**
      * C 1 square.
      */
-    C1, /**
+    C1,
+    /**
      * D 1 square.
      */
-    D1, /**
+    D1,
+    /**
      * E 1 square.
      */
-    E1, /**
+    E1,
+    /**
      * F 1 square.
      */
-    F1, /**
+    F1,
+    /**
      * G 1 square.
      */
-    G1, /**
+    G1,
+    /**
      * H 1 square.
      */
     H1,
     /**
      * A 2 square.
      */
-    A2, /**
+    A2,
+    /**
      * B 2 square.
      */
-    B2, /**
+    B2,
+    /**
      * C 2 square.
      */
-    C2, /**
+    C2,
+    /**
      * D 2 square.
      */
-    D2, /**
+    D2,
+    /**
      * E 2 square.
      */
-    E2, /**
+    E2,
+    /**
      * F 2 square.
      */
-    F2, /**
+    F2,
+    /**
      * G 2 square.
      */
-    G2, /**
+    G2,
+    /**
      * H 2 square.
      */
     H2,
     /**
      * A 3 square.
      */
-    A3, /**
+    A3,
+    /**
      * B 3 square.
      */
-    B3, /**
+    B3,
+    /**
      * C 3 square.
      */
-    C3, /**
+    C3,
+    /**
      * D 3 square.
      */
-    D3, /**
+    D3,
+    /**
      * E 3 square.
      */
-    E3, /**
+    E3,
+    /**
      * F 3 square.
      */
-    F3, /**
+    F3,
+    /**
      * G 3 square.
      */
-    G3, /**
+    G3,
+    /**
      * H 3 square.
      */
     H3,
     /**
      * A 4 square.
      */
-    A4, /**
+    A4,
+    /**
      * B 4 square.
      */
-    B4, /**
+    B4,
+    /**
      * C 4 square.
      */
-    C4, /**
+    C4,
+    /**
      * D 4 square.
      */
-    D4, /**
+    D4,
+    /**
      * E 4 square.
      */
-    E4, /**
+    E4,
+    /**
      * F 4 square.
      */
-    F4, /**
+    F4,
+    /**
      * G 4 square.
      */
-    G4, /**
+    G4,
+    /**
      * H 4 square.
      */
     H4,
     /**
      * A 5 square.
      */
-    A5, /**
+    A5,
+    /**
      * B 5 square.
      */
-    B5, /**
+    B5,
+    /**
      * C 5 square.
      */
-    C5, /**
+    C5,
+    /**
      * D 5 square.
      */
-    D5, /**
+    D5,
+    /**
      * E 5 square.
      */
-    E5, /**
+    E5,
+    /**
      * F 5 square.
      */
-    F5, /**
+    F5,
+    /**
      * G 5 square.
      */
-    G5, /**
+    G5,
+    /**
      * H 5 square.
      */
     H5,
     /**
      * A 6 square.
      */
-    A6, /**
+    A6,
+    /**
      * B 6 square.
      */
-    B6, /**
+    B6,
+    /**
      * C 6 square.
      */
-    C6, /**
+    C6,
+    /**
      * D 6 square.
      */
-    D6, /**
+    D6,
+    /**
      * E 6 square.
      */
-    E6, /**
+    E6,
+    /**
      * F 6 square.
      */
-    F6, /**
+    F6,
+    /**
      * G 6 square.
      */
-    G6, /**
+    G6,
+    /**
      * H 6 square.
      */
     H6,
     /**
      * A 7 square.
      */
-    A7, /**
+    A7,
+    /**
      * B 7 square.
      */
-    B7, /**
+    B7,
+    /**
      * C 7 square.
      */
-    C7, /**
+    C7,
+    /**
      * D 7 square.
      */
-    D7, /**
+    D7,
+    /**
      * E 7 square.
      */
-    E7, /**
+    E7,
+    /**
      * F 7 square.
      */
-    F7, /**
+    F7,
+    /**
      * G 7 square.
      */
-    G7, /**
+    G7,
+    /**
      * H 7 square.
      */
     H7,
     /**
      * A 8 square.
      */
-    A8, /**
+    A8,
+    /**
      * B 8 square.
      */
-    B8, /**
+    B8,
+    /**
      * C 8 square.
      */
-    C8, /**
+    C8,
+    /**
      * D 8 square.
      */
-    D8, /**
+    D8,
+    /**
      * E 8 square.
      */
-    E8, /**
+    E8,
+    /**
      * F 8 square.
      */
-    F8, /**
+    F8,
+    /**
      * G 8 square.
      */
-    G8, /**
+    G8,
+    /**
      * H 8 square.
      */
     H8,

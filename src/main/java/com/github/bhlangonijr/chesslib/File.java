@@ -24,28 +24,36 @@ public enum File {
     /**
      * File a file.
      */
-    FILE_A("A"), /**
+    FILE_A("A"),
+    /**
      * File b file.
      */
-    FILE_B("B"), /**
+    FILE_B("B"),
+    /**
      * File c file.
      */
-    FILE_C("C"), /**
+    FILE_C("C"),
+    /**
      * File d file.
      */
-    FILE_D("D"), /**
+    FILE_D("D"),
+    /**
      * File e file.
      */
-    FILE_E("E"), /**
+    FILE_E("E"),
+    /**
      * File f file.
      */
-    FILE_F("F"), /**
+    FILE_F("F"),
+    /**
      * File g file.
      */
-    FILE_G("G"), /**
+    FILE_G("G"),
+    /**
      * File h file.
      */
-    FILE_H("H"), /**
+    FILE_H("H"),
+    /**
      * None file.
      */
     NONE("");

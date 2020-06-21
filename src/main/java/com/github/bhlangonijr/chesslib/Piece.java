@@ -26,41 +26,52 @@ public enum Piece {
     /**
      * White pawn piece.
      */
-    WHITE_PAWN, /**
+    WHITE_PAWN,
+    /**
      * White knight piece.
      */
-    WHITE_KNIGHT, /**
+    WHITE_KNIGHT,
+    /**
      * White bishop piece.
      */
-    WHITE_BISHOP, /**
+    WHITE_BISHOP,
+    /**
      * White rook piece.
      */
-    WHITE_ROOK, /**
+    WHITE_ROOK,
+    /**
      * White queen piece.
      */
-    WHITE_QUEEN, /**
+    WHITE_QUEEN,
+    /**
      * White king piece.
      */
     WHITE_KING,
     /**
      * Black pawn piece.
      */
-    BLACK_PAWN, /**
+    BLACK_PAWN,
+    /**
      * Black knight piece.
      */
-    BLACK_KNIGHT, /**
+    BLACK_KNIGHT,
+    /**
      * Black bishop piece.
      */
-    BLACK_BISHOP, /**
+    BLACK_BISHOP,
+    /**
      * Black rook piece.
      */
-    BLACK_ROOK, /**
+    BLACK_ROOK,
+    /**
      * Black queen piece.
      */
-    BLACK_QUEEN, /**
+    BLACK_QUEEN,
+    /**
      * Black king piece.
      */
-    BLACK_KING, /**
+    BLACK_KING,
+    /**
      * None piece.
      */
     NONE;

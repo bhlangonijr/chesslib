@@ -161,7 +161,7 @@ public class PgnHolderTest {
         game.loadMoveText();
         MoveList moves = game.getHalfMoves();
         Board board = new Board();
-        for (Move move: moves) {
+        for (Move move : moves) {
             board.doMove(move);
         }
         assertEquals(moves.toString(), "g1f3 d7d5 e2e3 g8f6 c2c4 e7e6 d2d4 c7c5 a2a3 b8c6 d4c5 f8c5 b2b4 c5e7 " +
@@ -176,7 +176,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/cup.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -191,7 +191,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/oo.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -206,7 +206,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/ep.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -221,7 +221,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/z0.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -236,7 +236,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/err.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -251,7 +251,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/Morphy_ANSI.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();
@@ -266,7 +266,7 @@ public class PgnHolderTest {
 
         PgnHolder pgn = new PgnHolder("src/test/resources/Morphy_UTF8.pgn");
         pgn.loadPgn();
-        for (Game game: pgn.getGame()) {
+        for (Game game : pgn.getGame()) {
             game.loadMoveText();
             MoveList moves = game.getHalfMoves();
             Board board = new Board();

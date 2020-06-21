@@ -24,7 +24,8 @@ public enum Side {
     /**
      * White side.
      */
-    WHITE, /**
+    WHITE,
+    /**
      * Black side.
      */
     BLACK;

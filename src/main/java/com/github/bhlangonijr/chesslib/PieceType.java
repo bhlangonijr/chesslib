@@ -24,22 +24,28 @@ public enum PieceType {
     /**
      * Pawn piece type.
      */
-    PAWN, /**
+    PAWN,
+    /**
      * Knight piece type.
      */
-    KNIGHT, /**
+    KNIGHT,
+    /**
      * Bishop piece type.
      */
-    BISHOP, /**
+    BISHOP,
+    /**
      * Rook piece type.
      */
-    ROOK, /**
+    ROOK,
+    /**
      * Queen piece type.
      */
-    QUEEN, /**
+    QUEEN,
+    /**
      * King piece type.
      */
-    KING, /**
+    KING,
+    /**
      * None piece type.
      */
     NONE;
