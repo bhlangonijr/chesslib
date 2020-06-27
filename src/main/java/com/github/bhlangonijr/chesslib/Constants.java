@@ -106,6 +106,8 @@ public class Constants {
     public static final Map<String, Piece> pieceNotationR =
             new HashMap<String, Piece>(12);
 
+    public static final Move emptyMove = new Move(Square.NONE, Square.NONE);
+
     static {
 
         DEFAULT_WHITE_OO_SQUARES.add(Square.F1);

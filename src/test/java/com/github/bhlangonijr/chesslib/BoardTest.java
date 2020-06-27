@@ -6,8 +6,7 @@ import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * The type Board test.
@@ -393,5 +392,22 @@ public class BoardTest {
 
         assertEquals(initialHash, b.hashCode());
         assertEquals(b.hashCode(), b2.hashCode());
+    }
+
+    @Test
+    public void testNullMove() {
+
+        Board b = new Board();
+        Board b2 = b.clone();
+
+        b.doNullMove();
+
+        assertNotSame(b.getSideToMove(), b2.getSideToMove());
+        assertNotSame(b.hashCode(), b2.hashCode());
+
+        b.undoMove();
+        assertEquals(b.getSideToMove(), b2.getSideToMove());
+        assertEquals(b.hashCode(), b2.hashCode());
+
     }
 }

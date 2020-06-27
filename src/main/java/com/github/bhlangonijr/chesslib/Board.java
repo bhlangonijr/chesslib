@@ -27,6 +27,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
+
 /**
  * Chessboard data structure
  */
@@ -227,7 +229,7 @@ public class Board implements Cloneable, BoardEvent {
      * Execute the move in the board
      *
      * @param move the move
-     * @return the boolean
+     * @return true if operation was successful
      */
     public boolean doMove(final Move move) {
         return doMove(move, false);
@@ -237,8 +239,8 @@ public class Board implements Cloneable, BoardEvent {
      * Execute the move on the board
      *
      * @param move           the move
-     * @param fullValidation the full validation
-     * @return the boolean
+     * @param fullValidation perform full validation
+     * @return true if operation was successful
      */
     public boolean doMove(final Move move, boolean fullValidation) {
 
@@ -373,6 +375,32 @@ public class Board implements Cloneable, BoardEvent {
                 evl.onEvent(move);
             }
         }
+        return true;
+    }
+
+    /**
+     * Execute a null move on the board -
+     *
+     * @return true if operation was successful
+     */
+    public boolean doNullMove() {
+
+        Side side = getSideToMove();
+        MoveBackup backupMove = new MoveBackup(this, emptyMove);
+
+        setHalfMoveCounter(getHalfMoveCounter() + 1);
+
+        if (!Square.NONE.equals(getEnPassant())) {
+            incrementalHashKey ^= getEnPassant().hashCode();
+        }
+        setEnPassantTarget(Square.NONE);
+        setEnPassant(Square.NONE);
+
+        incrementalHashKey ^= getSideToMove().hashCode();
+        setSideToMove(side.flip());
+        incrementalHashKey ^= getSideToMove().hashCode();
+
+        backup.add(backupMove);
         return true;
     }
 

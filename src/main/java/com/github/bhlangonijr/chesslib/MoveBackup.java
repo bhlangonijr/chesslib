@@ -20,6 +20,8 @@ import com.github.bhlangonijr.chesslib.move.Move;
 
 import java.util.EnumMap;
 
+import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
+
 /**
  * Move Backup structure
  */
@@ -106,19 +108,21 @@ public class MoveBackup implements BoardEvent {
         board.getCastleRight().put(Side.WHITE, getCastleRight().get(Side.WHITE));
         board.getCastleRight().put(Side.BLACK, getCastleRight().get(Side.BLACK));
 
-        final boolean isCastle = board.getContext().isCastleMove(getMove());
+        if (move != emptyMove) {
+            final boolean isCastle = board.getContext().isCastleMove(getMove());
 
-        if (PieceType.KING.equals(movingPiece.getPieceType()) && isCastle) {
-            board.undoMovePiece(getRookCastleMove());
-        }
-        board.unsetPiece(movingPiece, getMove().getTo());
-        if (Piece.NONE.equals(getMove().getPromotion())) {
-            board.setPiece(movingPiece, getMove().getFrom());
-        } else {
-            board.setPiece(Piece.make(getSideToMove(), PieceType.PAWN), getMove().getFrom());
-        }
-        if (!Piece.NONE.equals(getCapturedPiece())) {
-            board.setPiece(getCapturedPiece(), getCapturedSquare());
+            if (PieceType.KING.equals(movingPiece.getPieceType()) && isCastle) {
+                board.undoMovePiece(getRookCastleMove());
+            }
+            board.unsetPiece(movingPiece, getMove().getTo());
+            if (Piece.NONE.equals(getMove().getPromotion())) {
+                board.setPiece(movingPiece, getMove().getFrom());
+            } else {
+                board.setPiece(Piece.make(getSideToMove(), PieceType.PAWN), getMove().getFrom());
+            }
+            if (!Piece.NONE.equals(getCapturedPiece())) {
+                board.setPiece(getCapturedPiece(), getCapturedSquare());
+            }
         }
         board.setIncrementalHashKey(getIncrementalHashKey());
     }
