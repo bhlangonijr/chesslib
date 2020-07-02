@@ -562,6 +562,22 @@ public class Bitboard {
     }
 
     /**
+     * Converts bitboard to array of squares
+     * @param pieces
+     * @return
+     */
+    public static Square[] bbToSquareArray(long pieces) {
+        Square[] squares = new Square[Long.bitCount(pieces)];
+        int index = 0;
+        while (pieces != 0L) {
+            int sq = bitScanForward(pieces);
+            pieces = extractLsb(pieces);
+            squares[index++] = Square.squareAt(sq);
+        }
+        return squares;
+    }
+
+    /**
      * return a bitboard with attacked squares by the King in the given square
      *
      * @param square   the square

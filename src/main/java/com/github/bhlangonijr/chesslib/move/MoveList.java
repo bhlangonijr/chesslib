@@ -655,7 +655,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                             if (!(irank >= 1 && irank <= 8)) {
                                 throw new MoveConversionException("Couldn't parse rank: " + location);
                             }
-                            Rank rank = Rank.values()[irank - 1];
+                            Rank rank = Rank.allRanks[irank - 1];
                             xfrom &= Bitboard.getRankbb(rank);
                         } else {
                             try {

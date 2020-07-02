@@ -58,6 +58,7 @@ public enum File {
      */
     NONE("");
 
+    public static File[] allFiles = values();
     /**
      * The Notation.
      */

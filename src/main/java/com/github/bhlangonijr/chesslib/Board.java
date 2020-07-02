@@ -170,8 +170,8 @@ public class Board implements Cloneable, BoardEvent {
      * @param updateHistory the update history
      */
     public Board(GameContext gameContext, boolean updateHistory) {
-        bitboard = new long[Piece.values().length];
-        bbSide = new long[Side.values().length];
+        bitboard = new long[Piece.allPieces.length];
+        bbSide = new long[Side.allSides.length];
         castleRight = new EnumMap<Side, CastleRight>(Side.class);
         backup = new LinkedList<MoveBackup>();
         context = gameContext;
@@ -589,7 +589,7 @@ public class Board implements Cloneable, BoardEvent {
                 if (Character.isDigit(c)) {
                     file += Integer.parseInt(c + "");
                 } else {
-                    Square sq = Square.encode(Rank.values()[rank], File.values()[file]);
+                    Square sq = Square.encode(Rank.allRanks[rank], File.allFiles[file]);
                     setPiece(Constants.getPieceByNotation(c + ""), sq);
                     file++;
                 }
@@ -672,9 +672,9 @@ public class Board implements Cloneable, BoardEvent {
         int rankCounter = 1;
         int sqCount = 0;
         for (int i = 7; i >= 0; i--) {
-            Rank r = Rank.values()[i];
+            Rank r = Rank.allRanks[i];
             for (int n = 0; n <= 7; n++) {
-                File f = File.values()[n];
+                File f = File.allFiles[n];
                 if (!File.NONE.equals(f) && !Rank.NONE.equals(r)) {
                     Square sq = Square.encode(r, f);
                     Piece piece = getPiece(sq);
@@ -764,7 +764,7 @@ public class Board implements Cloneable, BoardEvent {
     public Piece getPiece(Square sq) {
         for (int i = 0; i < bitboard.length - 1; i++) {
             if ((sq.getBitboard() & bitboard[i]) != 0L) {
-                return Piece.values()[i];
+                return Piece.allPieces[i];
             }
         }
         return Piece.NONE;
@@ -963,9 +963,9 @@ public class Board implements Cloneable, BoardEvent {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 7; i >= 0; i--) {
-            Rank r = Rank.values()[i];
+            Rank r = Rank.allRanks[i];
             for (int n = 0; n <= 7; n++) {
-                File f = File.values()[n];
+                File f = File.allFiles[n];
                 if (!File.NONE.equals(f) && !Rank.NONE.equals(r)) {
                     Square sq = Square.encode(r, f);
                     Piece piece = getPiece(sq);

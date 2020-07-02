@@ -38,9 +38,9 @@ public class MoveGenerator {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.PAWN));
         if (pieces != 0L) {
-            List<Square> source = Bitboard.bbToSquareList(pieces);
+            Square[] source = Bitboard.bbToSquareArray(pieces);
             for (Square sqSource : source) {
-                List<Square> target = Bitboard.bbToSquareList(
+                Square[] target = Bitboard.bbToSquareArray(
                         Bitboard.getPawnCaptures(side, sqSource,
                                 board.getBitboard(), board.getEnPassantTarget())
                                 & ~board.getBitboard(side));
@@ -75,9 +75,9 @@ public class MoveGenerator {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.PAWN));
         if (pieces != 0L) {
-            List<Square> source = Bitboard.bbToSquareList(pieces);
+            Square[] source = Bitboard.bbToSquareArray(pieces);
             for (Square sqSource : source) {
-                List<Square> target = Bitboard.bbToSquareList(
+                Square[] target = Bitboard.bbToSquareArray(
                         Bitboard.getPawnMoves(side, sqSource, board.getBitboard()));
                 for (Square sqTarget : target) {
                     if (Side.WHITE.equals(side) &&
@@ -110,9 +110,9 @@ public class MoveGenerator {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.KNIGHT));
         if (pieces != 0L) {
-            List<Square> source = Bitboard.bbToSquareList(pieces);
+            Square[] source = Bitboard.bbToSquareArray(pieces);
             for (Square sqSource : source) {
-                List<Square> target = Bitboard.bbToSquareList(
+                Square[] target = Bitboard.bbToSquareArray(
                         Bitboard.getKnightAttacks(sqSource, ~board.getBitboard(side)));
                 for (Square sqTarget : target) {
                     moves.add(new Move(sqSource, sqTarget, Piece.NONE));
@@ -131,9 +131,9 @@ public class MoveGenerator {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.BISHOP));
         if (pieces != 0L) {
-            List<Square> source = Bitboard.bbToSquareList(pieces);
+            Square[] source = Bitboard.bbToSquareArray(pieces);
             for (Square sqSource : source) {
-                List<Square> target = Bitboard.bbToSquareList(
+                Square[] target = Bitboard.bbToSquareArray(
                         Bitboard.getBishopAttacks(board.getBitboard(), sqSource)
                                 & ~board.getBitboard(side));
                 for (Square sqTarget : target) {
@@ -153,9 +153,9 @@ public class MoveGenerator {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.ROOK));
         if (pieces != 0L) {
-            List<Square> source = Bitboard.bbToSquareList(pieces);
+            Square[] source = Bitboard.bbToSquareArray(pieces);
             for (Square sqSource : source) {
-                List<Square> target = Bitboard.bbToSquareList(
+                Square[] target = Bitboard.bbToSquareArray(
                         Bitboard.getRookAttacks(board.getBitboard(), sqSource)
                                 & ~board.getBitboard(side));
                 for (Square sqTarget : target) {
@@ -175,9 +175,9 @@ public class MoveGenerator {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.QUEEN));
         if (pieces != 0L) {
-            List<Square> source = Bitboard.bbToSquareList(pieces);
+            Square[] source = Bitboard.bbToSquareArray(pieces);
             for (Square sqSource : source) {
-                List<Square> target = Bitboard.bbToSquareList(
+                Square[] target = Bitboard.bbToSquareArray(
                         Bitboard.getQueenAttacks(board.getBitboard(), sqSource)
                                 & ~board.getBitboard(side));
                 for (Square sqTarget : target) {
@@ -197,9 +197,9 @@ public class MoveGenerator {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.KING));
         if (pieces != 0L) {
-            List<Square> source = Bitboard.bbToSquareList(pieces);
+            Square[] source = Bitboard.bbToSquareArray(pieces);
             for (Square sqSource : source) {
-                List<Square> target = Bitboard.bbToSquareList(
+                Square[] target = Bitboard.bbToSquareArray(
                         Bitboard.getKingAttacks(
                                 sqSource, ~board.getBitboard(side)));
                 for (Square sqTarget : target) {

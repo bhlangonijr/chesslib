@@ -30,6 +30,8 @@ public enum Side {
      */
     BLACK;
 
+    public static Side[] allSides = values();
+
     /**
      * From value side.
      *

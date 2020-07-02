@@ -76,6 +76,8 @@ public enum Piece {
      */
     NONE;
 
+    public static Piece[] allPieces = values();
+
     /**
      * The Piece type.
      */

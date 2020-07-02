@@ -283,11 +283,15 @@ public enum Square {
      */
     NONE;
 
+    private static final Square[] allSquares = Square.values();
+    private static final Rank[] rankValues = Rank.values();
+    private static final File[] fileValues = File.values();
+
     private static final EnumMap<Square, Square[]> sideSquare =
             new EnumMap<Square, Square[]>(Square.class);
 
     static {
-        for (Square sq : Square.values()) {
+        for (Square sq : allSquares) {
             if (!Square.NONE.equals(sq)) {
                 Square a[] = null;
                 if (File.FILE_A.equals(sq.getFile())) {
@@ -298,8 +302,8 @@ public enum Square {
                     a[0] = encode(sq.getRank(), File.FILE_G);
                 } else {
                     a = new Square[2];
-                    a[0] = encode(sq.getRank(), File.values()[sq.getFile().ordinal() - 1]);
-                    a[1] = encode(sq.getRank(), File.values()[sq.getFile().ordinal() + 1]);
+                    a[0] = encode(sq.getRank(), fileValues[sq.getFile().ordinal() - 1]);
+                    a[1] = encode(sq.getRank(), fileValues[sq.getFile().ordinal() + 1]);
                 }
                 sideSquare.put(sq, a);
             }
@@ -314,7 +318,7 @@ public enum Square {
      * @return square
      */
     public static Square encode(Rank rank, File file) {
-        return Square.values()[rank.ordinal() * 8 + file.ordinal()];
+        return allSquares[rank.ordinal() * 8 + file.ordinal()];
     }
 
     /**
@@ -334,10 +338,10 @@ public enum Square {
      * @return the square
      */
     public static Square squareAt(int index) {
-        if (index >= Square.values().length) {
+        if (index >= allSquares.length) {
             return Square.NONE;
         }
-        return Square.values()[index];
+        return allSquares[index];
     }
 
     /**
@@ -355,7 +359,7 @@ public enum Square {
      * @return the rank
      */
     public Rank getRank() {
-        return Rank.values()[this.ordinal() / 8];
+        return rankValues[this.ordinal() / 8];
     }
 
     /**
@@ -364,7 +368,7 @@ public enum Square {
      * @return the file
      */
     public File getFile() {
-        return File.values()[this.ordinal() % 8];
+        return fileValues[this.ordinal() % 8];
     }
 
     /**

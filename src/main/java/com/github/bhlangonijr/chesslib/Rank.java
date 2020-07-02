@@ -58,6 +58,7 @@ public enum Rank {
      */
     NONE("");
 
+    public static Rank[] allRanks = values();
     /**
      * The Notation.
      */
