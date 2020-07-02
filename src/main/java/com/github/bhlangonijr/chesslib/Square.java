@@ -293,7 +293,7 @@ public enum Square {
     static {
         for (Square sq : allSquares) {
             if (!Square.NONE.equals(sq)) {
-                Square a[] = null;
+                Square[] a = null;
                 if (File.FILE_A.equals(sq.getFile())) {
                     a = new Square[1];
                     a[0] = encode(sq.getRank(), File.FILE_B);

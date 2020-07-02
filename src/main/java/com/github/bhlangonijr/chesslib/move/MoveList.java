@@ -86,8 +86,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     private final String startFEN;
     private boolean dirty = true;
 
-    private String sanArray[];
-    private String fanArray[];
+    private String[] sanArray;
+    private String[] fanArray;
     private int parent;
     private int index;
 
@@ -480,7 +480,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         try {
             Side side = b.getSideToMove();
             text = StringUtil.normalize(text);
-            String m[] = text.split(" ");
+            String[] m = text.split(" ");
             int i = 0;
             for (String strMove : m) {
                 Move move = new Move(strMove, side);
@@ -549,7 +549,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         }
         try {
             text = StringUtil.normalize(text);
-            String m[] = text.split(" ");
+            String[] m = text.split(" ");
             for (String strMove : m) {
                 if (strMove.startsWith("$")) {
                     continue;

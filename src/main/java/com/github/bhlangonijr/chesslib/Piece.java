@@ -88,7 +88,7 @@ public enum Piece {
      */
     static EnumMap<Piece, Side> pieceSide =
             new EnumMap<Piece, Side>(Piece.class);
-    private static Piece pieceMake[][] = {
+    private static Piece[][] pieceMake = {
             {WHITE_PAWN, BLACK_PAWN},
             {WHITE_KNIGHT, BLACK_KNIGHT},
             {WHITE_BISHOP, BLACK_BISHOP},

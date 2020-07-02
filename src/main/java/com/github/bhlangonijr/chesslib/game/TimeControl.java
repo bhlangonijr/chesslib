@@ -73,7 +73,7 @@ public class TimeControl {
     }
 
     private static void parseTM(String s, TimeControl tc) {
-        String tm[] = s.split("\\+");
+        String[] tm = s.split("\\+");
         tc.setIncrement(Integer.parseInt(tm[1]) * 1000);
         if (tm[0].indexOf("/") >= 0) {
             parseMT(tm[0], tc);
@@ -84,7 +84,7 @@ public class TimeControl {
     }
 
     private static void parseMT(String s, TimeControl tc) {
-        String tm[] = s.split("/");
+        String[] tm = s.split("/");
         int moves = Integer.parseInt(tm[0]);
         int milliseconds = Integer.parseInt(tm[1]) * 1000;
         if (tc.getHalfMoves() == 0) {

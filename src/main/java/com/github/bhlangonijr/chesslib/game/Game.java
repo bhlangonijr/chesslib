@@ -420,7 +420,7 @@ public class Game {
             } else {
                 sb.append(". ");
             }
-            final String sanArray[] = getHalfMoves().toSanArray();
+            final String[] sanArray = getHalfMoves().toSanArray();
             for (int i = 0; i < sanArray.length; i++) {
                 String san = sanArray[i];
                 index++;
@@ -484,7 +484,7 @@ public class Game {
             int i = 0;
             int mc = moveCounter;
             int idx = index;
-            String sanArray[] = variation.toSanArray();
+            String[] sanArray = variation.toSanArray();
             for (i = 0; i < sanArray.length; i++) {
                 String sanMove = sanArray[i];
                 if (i == 0) {

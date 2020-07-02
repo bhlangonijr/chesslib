@@ -33,7 +33,7 @@ public class StringUtil {
      * @return string
      */
     public static String lastSequence(final String str, int size) {
-        return str.substring(str.length() - size, str.length());
+        return str.substring(str.length() - size);
     }
 
     /**
@@ -64,7 +64,7 @@ public class StringUtil {
         if (idx == 0) {
             return "";
         }
-        return str.substring(idx, str.length());
+        return str.substring(idx);
     }
 
     /**

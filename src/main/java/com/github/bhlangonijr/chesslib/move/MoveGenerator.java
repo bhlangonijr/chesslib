@@ -18,8 +18,6 @@ package com.github.bhlangonijr.chesslib.move;
 
 import com.github.bhlangonijr.chesslib.*;
 
-import java.util.List;
-
 import static com.github.bhlangonijr.chesslib.Bitboard.bitScanForward;
 import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
 
@@ -45,7 +43,7 @@ public class MoveGenerator {
             pieces = extractLsb(pieces);
             Square sqSource = Square.squareAt(sourceIndex);
             long attacks = Bitboard.getPawnCaptures(side, sqSource,
-                            board.getBitboard(), board.getEnPassantTarget()) & ~board.getBitboard(side);
+                    board.getBitboard(), board.getEnPassantTarget()) & ~board.getBitboard(side);
             while (attacks != 0L) {
                 int targetIndex = bitScanForward(attacks);
                 attacks = extractLsb(attacks);
@@ -162,7 +160,7 @@ public class MoveGenerator {
      */
     public static void generateBishopMoves(Board board, MoveList moves) {
 
-        generateBishopMoves(board, moves,  ~board.getBitboard(board.getSideToMove()));
+        generateBishopMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
     }
 
     /**

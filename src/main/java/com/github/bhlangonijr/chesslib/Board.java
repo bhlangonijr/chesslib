@@ -36,8 +36,8 @@ public class Board implements Cloneable, BoardEvent {
 
     private final LinkedList<MoveBackup> backup;
     private final EnumMap<BoardEventType, List<BoardEventListener>> eventListener;
-    private final long bitboard[];
-    private final long bbSide[];
+    private final long[] bitboard;
+    private final long[] bbSide;
     private final EnumMap<Side, CastleRight> castleRight;
     private final LinkedList<Integer> history = new LinkedList<Integer>();
     private Side sideToMove;
@@ -57,7 +57,7 @@ public class Board implements Cloneable, BoardEvent {
      * (3) no xor of three keys collides with another single key
      */
 
-    private static final int shortKeys[] = {
+    private static final int[] shortKeys = {
             -702565069, -651716404, -90772002, 139827217, -818005229, 1941803680, -1748144377, 596276289,
             1921378528, 1368035031, -1425636917, -575780564, 1409290471, 845303300, 1136883922, -1430851484,
             924912986, 92095816, -1065598504, -748528041, 1089599880, -723160118, 598513820, -1833342420,
@@ -510,7 +510,7 @@ public class Board implements Cloneable, BoardEvent {
      * @param location the location
      * @return boolean
      */
-    public boolean hasPiece(Piece piece, Square location[]) {
+    public boolean hasPiece(Piece piece, Square[] location) {
         for (Square sq : location) {
             if (piece.equals(getPiece(sq))) {
                 return true;
@@ -579,7 +579,7 @@ public class Board implements Cloneable, BoardEvent {
         String squares = fen.substring(0, fen.indexOf(' '));
         String state = fen.substring(fen.indexOf(' ') + 1);
 
-        String ranks[] = squares.split("/");
+        String[] ranks = squares.split("/");
         int file;
         int rank = 7;
         for (String r : ranks) {
@@ -619,7 +619,7 @@ public class Board implements Cloneable, BoardEvent {
             castleRight.put(Side.BLACK, CastleRight.NONE);
         }
 
-        String flags[] = state.split(" ");
+        String[] flags = state.split(" ");
 
         if (flags.length >= 3) {
             String s = flags[2].toUpperCase().trim();
@@ -990,7 +990,7 @@ public class Board implements Cloneable, BoardEvent {
      */
     public Piece[] boardToArray() {
 
-        final Piece pieces[] = new Piece[65];
+        final Piece[] pieces = new Piece[65];
         pieces[64] = Piece.NONE;
 
         for (Square square : Square.values()) {
