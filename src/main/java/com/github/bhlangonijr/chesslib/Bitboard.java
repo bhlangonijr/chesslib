@@ -55,10 +55,6 @@ public class Bitboard {
     };
 
     /**
-     * The constant ms1bTable.
-     */
-    final static int ms1bTable[] = new int[257];
-    /**
      * The constant bbTable.
      */
     final static long bbTable[] = new long[64];
@@ -274,9 +270,6 @@ public class Bitboard {
     };
 
     static {
-        for (int x = 0; x <= 256; x++) {
-            ms1bTable[x] = slowMs1b8bits(x);
-        }
         for (int x = 0; x < 64; x++) {
             bbTable[x] = sq2Bb(Square.squareAt(x));
         }
@@ -330,23 +323,6 @@ public class Bitboard {
      */
     final static long sq2H1(Square x) {
         return (diagonalH1A8BB[squareToDiagonalH1A8[x.ordinal()].ordinal()] ^ sq2Bb(x));
-    }
-
-    /**
-     * Slow ms 1 b 8 bits int.
-     *
-     * @param bb the bb
-     * @return the int
-     */
-    final static int slowMs1b8bits(int bb) {
-        if (bb > 0) {
-            for (int i = 8; i >= 0; i--) {
-                if (((1 << i) & bb) > 0) {
-                    return i;
-                }
-            }
-        }
-        return 0;
     }
 
     /**
