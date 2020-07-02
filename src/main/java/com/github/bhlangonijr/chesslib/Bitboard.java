@@ -404,10 +404,8 @@ public class Bitboard {
         long m = bbTable[index] - 1L;
         long lowerMask = occ & m;
         long upperMask = occ & ~m;
-        int minor = lowerMask == 0L ? minor = 0 :
-                bitScanReverse(lowerMask);
-        int major = upperMask == 0L ? major = 63 :
-                bitScanForward(upperMask);
+        int minor = lowerMask == 0L ? 0 : bitScanReverse(lowerMask);
+        int major = upperMask == 0L ? 63 : bitScanForward(upperMask);
         return bitsBetween(attacks, minor, major);
     }
 
@@ -522,6 +520,17 @@ public class Bitboard {
     }
 
     /**
+     * return a bitboard with attacked squares by the King in the given square
+     *
+     * @param square   the square
+     * @param occupied the occupied
+     * @return the king attacks
+     */
+    public static long getKingAttacks(Square square, long occupied) {
+        return adjacentSquares[square.ordinal()] & occupied;
+    }
+
+    /**
      * Converts a bitboard to a list of squares
      *
      * @param pieces the pieces
@@ -551,17 +560,6 @@ public class Bitboard {
             squares[index++] = Square.squareAt(sq);
         }
         return squares;
-    }
-
-    /**
-     * return a bitboard with attacked squares by the King in the given square
-     *
-     * @param square   the square
-     * @param occupied the occupied
-     * @return the king attacks
-     */
-    public static long getKingAttacks(Square square, long occupied) {
-        return adjacentSquares[square.ordinal()] & occupied;
     }
 
     /**

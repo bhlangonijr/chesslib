@@ -20,6 +20,9 @@ import com.github.bhlangonijr.chesslib.*;
 
 import java.util.List;
 
+import static com.github.bhlangonijr.chesslib.Bitboard.bitScanForward;
+import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
+
 /**
  * The Move generator.
  */
@@ -37,30 +40,17 @@ public class MoveGenerator {
     public static void generatePawnCaptures(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.PAWN));
-        if (pieces != 0L) {
-            Square[] source = Bitboard.bbToSquareArray(pieces);
-            for (Square sqSource : source) {
-                Square[] target = Bitboard.bbToSquareArray(
-                        Bitboard.getPawnCaptures(side, sqSource,
-                                board.getBitboard(), board.getEnPassantTarget())
-                                & ~board.getBitboard(side));
-                for (Square sqTarget : target) {
-                    if (Side.WHITE.equals(side) &&
-                            Rank.RANK_8.equals(sqTarget.getRank())) {
-                        moves.add(new Move(sqSource, sqTarget, Piece.WHITE_QUEEN));
-                        moves.add(new Move(sqSource, sqTarget, Piece.WHITE_ROOK));
-                        moves.add(new Move(sqSource, sqTarget, Piece.WHITE_BISHOP));
-                        moves.add(new Move(sqSource, sqTarget, Piece.WHITE_KNIGHT));
-                    } else if (Side.BLACK.equals(side) &&
-                            Rank.RANK_1.equals(sqTarget.getRank())) {
-                        moves.add(new Move(sqSource, sqTarget, Piece.BLACK_QUEEN));
-                        moves.add(new Move(sqSource, sqTarget, Piece.BLACK_ROOK));
-                        moves.add(new Move(sqSource, sqTarget, Piece.BLACK_BISHOP));
-                        moves.add(new Move(sqSource, sqTarget, Piece.BLACK_KNIGHT));
-                    } else {
-                        moves.add(new Move(sqSource, sqTarget, Piece.NONE));
-                    }
-                }
+        while (pieces != 0L) {
+            int sourceIndex = bitScanForward(pieces);
+            pieces = extractLsb(pieces);
+            Square sqSource = Square.squareAt(sourceIndex);
+            long attacks = Bitboard.getPawnCaptures(side, sqSource,
+                            board.getBitboard(), board.getEnPassantTarget()) & ~board.getBitboard(side);
+            while (attacks != 0L) {
+                int targetIndex = bitScanForward(attacks);
+                attacks = extractLsb(attacks);
+                Square sqTarget = Square.squareAt(targetIndex);
+                addPromotions(moves, side, sqTarget, sqSource);
             }
         }
     }
@@ -74,49 +64,92 @@ public class MoveGenerator {
     public static void generatePawnMoves(Board board, MoveList moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.PAWN));
-        if (pieces != 0L) {
-            Square[] source = Bitboard.bbToSquareArray(pieces);
-            for (Square sqSource : source) {
-                Square[] target = Bitboard.bbToSquareArray(
-                        Bitboard.getPawnMoves(side, sqSource, board.getBitboard()));
-                for (Square sqTarget : target) {
-                    if (Side.WHITE.equals(side) &&
-                            Rank.RANK_8.equals(sqTarget.getRank())) {
-                        moves.add(new Move(sqSource, sqTarget, Piece.WHITE_QUEEN));
-                        moves.add(new Move(sqSource, sqTarget, Piece.WHITE_ROOK));
-                        moves.add(new Move(sqSource, sqTarget, Piece.WHITE_BISHOP));
-                        moves.add(new Move(sqSource, sqTarget, Piece.WHITE_KNIGHT));
-                    } else if (Side.BLACK.equals(side) &&
-                            Rank.RANK_1.equals(sqTarget.getRank())) {
-                        moves.add(new Move(sqSource, sqTarget, Piece.BLACK_QUEEN));
-                        moves.add(new Move(sqSource, sqTarget, Piece.BLACK_ROOK));
-                        moves.add(new Move(sqSource, sqTarget, Piece.BLACK_BISHOP));
-                        moves.add(new Move(sqSource, sqTarget, Piece.BLACK_KNIGHT));
-                    } else {
-                        moves.add(new Move(sqSource, sqTarget, Piece.NONE));
-                    }
-                }
+        while (pieces != 0L) {
+            int sourceIndex = bitScanForward(pieces);
+            pieces = extractLsb(pieces);
+            Square sqSource = Square.squareAt(sourceIndex);
+            long attacks = Bitboard.getPawnMoves(side, sqSource, board.getBitboard());
+            while (attacks != 0L) {
+                int targetIndex = bitScanForward(attacks);
+                attacks = extractLsb(attacks);
+                Square sqTarget = Square.squareAt(targetIndex);
+                addPromotions(moves, side, sqTarget, sqSource);
+            }
+        }
+    }
+
+    private static void addPromotions(MoveList moves, Side side, Square sqTarget, Square sqSource) {
+
+        if (Side.WHITE.equals(side) && Rank.RANK_8.equals(sqTarget.getRank())) {
+            moves.add(new Move(sqSource, sqTarget, Piece.WHITE_QUEEN));
+            moves.add(new Move(sqSource, sqTarget, Piece.WHITE_ROOK));
+            moves.add(new Move(sqSource, sqTarget, Piece.WHITE_BISHOP));
+            moves.add(new Move(sqSource, sqTarget, Piece.WHITE_KNIGHT));
+        } else if (Side.BLACK.equals(side) && Rank.RANK_1.equals(sqTarget.getRank())) {
+            moves.add(new Move(sqSource, sqTarget, Piece.BLACK_QUEEN));
+            moves.add(new Move(sqSource, sqTarget, Piece.BLACK_ROOK));
+            moves.add(new Move(sqSource, sqTarget, Piece.BLACK_BISHOP));
+            moves.add(new Move(sqSource, sqTarget, Piece.BLACK_KNIGHT));
+        } else {
+            moves.add(new Move(sqSource, sqTarget, Piece.NONE));
+        }
+    }
+
+    /**
+     * generate knight moves on the target squares allowed in mask param
+     *
+     * @param board
+     * @param moves
+     * @param mask
+     */
+    public static void generateKnightMoves(Board board, MoveList moves, long mask) {
+        Side side = board.getSideToMove();
+        long pieces = board.getBitboard(Piece.make(side, PieceType.KNIGHT));
+        while (pieces != 0L) {
+            int knightIndex = bitScanForward(pieces);
+            pieces = extractLsb(pieces);
+            Square sqSource = Square.squareAt(knightIndex);
+            long attacks = Bitboard.getKnightAttacks(sqSource, mask);
+            while (attacks != 0L) {
+                int attackIndex = bitScanForward(attacks);
+                attacks = extractLsb(attacks);
+                Square sqTarget = Square.squareAt(attackIndex);
+                moves.add(new Move(sqSource, sqTarget, Piece.NONE));
             }
         }
     }
 
     /**
-     * Get knight moves
+     * Get knight moves & captures
      *
      * @param board the board
      * @param moves the moves
      */
     public static void generateKnightMoves(Board board, MoveList moves) {
+
+        generateKnightMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
+    }
+
+    /**
+     * generate bishop moves on the target squares allowed in mask param
+     *
+     * @param board
+     * @param moves
+     * @param mask
+     */
+    public static void generateBishopMoves(Board board, MoveList moves, long mask) {
         Side side = board.getSideToMove();
-        long pieces = board.getBitboard(Piece.make(side, PieceType.KNIGHT));
-        if (pieces != 0L) {
-            Square[] source = Bitboard.bbToSquareArray(pieces);
-            for (Square sqSource : source) {
-                Square[] target = Bitboard.bbToSquareArray(
-                        Bitboard.getKnightAttacks(sqSource, ~board.getBitboard(side)));
-                for (Square sqTarget : target) {
-                    moves.add(new Move(sqSource, sqTarget, Piece.NONE));
-                }
+        long pieces = board.getBitboard(Piece.make(side, PieceType.BISHOP));
+        while (pieces != 0L) {
+            int sourceIndex = bitScanForward(pieces);
+            pieces = extractLsb(pieces);
+            Square sqSource = Square.squareAt(sourceIndex);
+            long attacks = Bitboard.getBishopAttacks(board.getBitboard(), sqSource) & mask;
+            while (attacks != 0L) {
+                int attackIndex = bitScanForward(attacks);
+                attacks = extractLsb(attacks);
+                Square sqTarget = Square.squareAt(attackIndex);
+                moves.add(new Move(sqSource, sqTarget, Piece.NONE));
             }
         }
     }
@@ -128,17 +161,30 @@ public class MoveGenerator {
      * @param moves the moves
      */
     public static void generateBishopMoves(Board board, MoveList moves) {
+
+        generateBishopMoves(board, moves,  ~board.getBitboard(board.getSideToMove()));
+    }
+
+    /**
+     * generate rook moves on the target squares allowed in mask param
+     *
+     * @param board
+     * @param moves
+     * @param mask
+     */
+    public static void generateRookMoves(Board board, MoveList moves, long mask) {
         Side side = board.getSideToMove();
-        long pieces = board.getBitboard(Piece.make(side, PieceType.BISHOP));
-        if (pieces != 0L) {
-            Square[] source = Bitboard.bbToSquareArray(pieces);
-            for (Square sqSource : source) {
-                Square[] target = Bitboard.bbToSquareArray(
-                        Bitboard.getBishopAttacks(board.getBitboard(), sqSource)
-                                & ~board.getBitboard(side));
-                for (Square sqTarget : target) {
-                    moves.add(new Move(sqSource, sqTarget, Piece.NONE));
-                }
+        long pieces = board.getBitboard(Piece.make(side, PieceType.ROOK));
+        while (pieces != 0L) {
+            int sourceIndex = bitScanForward(pieces);
+            pieces = extractLsb(pieces);
+            Square sqSource = Square.squareAt(sourceIndex);
+            long attacks = Bitboard.getRookAttacks(board.getBitboard(), sqSource) & mask;
+            while (attacks != 0L) {
+                int attackIndex = bitScanForward(attacks);
+                attacks = extractLsb(attacks);
+                Square sqTarget = Square.squareAt(attackIndex);
+                moves.add(new Move(sqSource, sqTarget, Piece.NONE));
             }
         }
     }
@@ -150,17 +196,30 @@ public class MoveGenerator {
      * @param moves the moves
      */
     public static void generateRookMoves(Board board, MoveList moves) {
+
+        generateRookMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
+    }
+
+    /**
+     * generate queen moves on the target squares allowed in mask param
+     *
+     * @param board
+     * @param moves
+     * @param mask
+     */
+    public static void generateQueenMoves(Board board, MoveList moves, long mask) {
         Side side = board.getSideToMove();
-        long pieces = board.getBitboard(Piece.make(side, PieceType.ROOK));
-        if (pieces != 0L) {
-            Square[] source = Bitboard.bbToSquareArray(pieces);
-            for (Square sqSource : source) {
-                Square[] target = Bitboard.bbToSquareArray(
-                        Bitboard.getRookAttacks(board.getBitboard(), sqSource)
-                                & ~board.getBitboard(side));
-                for (Square sqTarget : target) {
-                    moves.add(new Move(sqSource, sqTarget, Piece.NONE));
-                }
+        long pieces = board.getBitboard(Piece.make(side, PieceType.QUEEN));
+        while (pieces != 0L) {
+            int sourceIndex = bitScanForward(pieces);
+            pieces = extractLsb(pieces);
+            Square sqSource = Square.squareAt(sourceIndex);
+            long attacks = Bitboard.getQueenAttacks(board.getBitboard(), sqSource) & mask;
+            while (attacks != 0L) {
+                int attackIndex = bitScanForward(attacks);
+                attacks = extractLsb(attacks);
+                Square sqTarget = Square.squareAt(attackIndex);
+                moves.add(new Move(sqSource, sqTarget, Piece.NONE));
             }
         }
     }
@@ -172,17 +231,30 @@ public class MoveGenerator {
      * @param moves the moves
      */
     public static void generateQueenMoves(Board board, MoveList moves) {
+
+        generateQueenMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
+    }
+
+    /**
+     * generate king moves on the target squares allowed in mask param
+     *
+     * @param board
+     * @param moves
+     * @param mask
+     */
+    public static void generateKingMoves(Board board, MoveList moves, long mask) {
         Side side = board.getSideToMove();
-        long pieces = board.getBitboard(Piece.make(side, PieceType.QUEEN));
-        if (pieces != 0L) {
-            Square[] source = Bitboard.bbToSquareArray(pieces);
-            for (Square sqSource : source) {
-                Square[] target = Bitboard.bbToSquareArray(
-                        Bitboard.getQueenAttacks(board.getBitboard(), sqSource)
-                                & ~board.getBitboard(side));
-                for (Square sqTarget : target) {
-                    moves.add(new Move(sqSource, sqTarget, Piece.NONE));
-                }
+        long pieces = board.getBitboard(Piece.make(side, PieceType.KING));
+        while (pieces != 0L) {
+            int sourceIndex = bitScanForward(pieces);
+            pieces = extractLsb(pieces);
+            Square sqSource = Square.squareAt(sourceIndex);
+            long attacks = Bitboard.getKingAttacks(sqSource, mask);
+            while (attacks != 0L) {
+                int attackIndex = bitScanForward(attacks);
+                attacks = extractLsb(attacks);
+                Square sqTarget = Square.squareAt(attackIndex);
+                moves.add(new Move(sqSource, sqTarget, Piece.NONE));
             }
         }
     }
@@ -194,19 +266,7 @@ public class MoveGenerator {
      * @param moves the moves
      */
     public static void generateKingMoves(Board board, MoveList moves) {
-        Side side = board.getSideToMove();
-        long pieces = board.getBitboard(Piece.make(side, PieceType.KING));
-        if (pieces != 0L) {
-            Square[] source = Bitboard.bbToSquareArray(pieces);
-            for (Square sqSource : source) {
-                Square[] target = Bitboard.bbToSquareArray(
-                        Bitboard.getKingAttacks(
-                                sqSource, ~board.getBitboard(side)));
-                for (Square sqTarget : target) {
-                    moves.add(new Move(sqSource, sqTarget, Piece.NONE));
-                }
-            }
-        }
+        generateKingMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
     }
 
     /**
@@ -254,6 +314,24 @@ public class MoveGenerator {
         generateQueenMoves(board, moves);
         generateKingMoves(board, moves);
         generateCastleMoves(board, moves);
+        return moves;
+    }
+
+    /**
+     * Generate all pseudo-legal captures
+     *
+     * @param board the board
+     * @return move list
+     */
+    public static MoveList generatePseudoLegalCaptures(Board board) {
+        MoveList moves = new MoveList();
+        Side other = board.getSideToMove().flip();
+        generatePawnCaptures(board, moves);
+        generateKnightMoves(board, moves, board.getBitboard(other));
+        generateBishopMoves(board, moves, board.getBitboard(other));
+        generateRookMoves(board, moves, board.getBitboard(other));
+        generateQueenMoves(board, moves, board.getBitboard(other));
+        generateKingMoves(board, moves, board.getBitboard(other));
         return moves;
     }
 
