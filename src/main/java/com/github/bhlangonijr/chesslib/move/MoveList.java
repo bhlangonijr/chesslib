@@ -134,7 +134,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @return the string
      * @throws MoveConversionException the move conversion exception
      */
-// encode the move to SAN move and update thread local board
+    // encode the move to SAN move and update thread local board
     protected static String encodeToSan(final Board board, Move move) throws MoveConversionException {
         return encode(board, move, sanNotation);
     }
@@ -147,7 +147,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @return the string
      * @throws MoveConversionException the move conversion exception
      */
-// encode the move to SAN move and update thread local board
+    // encode the move to SAN move and update thread local board
     protected static String encodeToFan(final Board board, Move move) throws MoveConversionException {
         return encode(board, move, fanNotation);
     }
@@ -218,9 +218,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             san.append("x");
         }
         san.append(move.getTo().toString().toLowerCase());
-        if (isCapture) {
-
-        }
         if (!move.getPromotion().equals(Piece.NONE)) {
             san.append("=");
             san.append(notation.get(move.getPromotion()));
@@ -339,6 +336,30 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         return super.addAll(arg0, arg1);
     }
 
+    @Override
+    public Move removeFirst() {
+        dirty = true;
+        return super.removeFirst();
+    }
+
+    @Override
+    public Move removeLast() {
+        dirty = true;
+        return super.removeLast();
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        dirty = true;
+        return super.remove(o);
+    }
+
+    @Override
+    public Move remove(int index) {
+        dirty = true;
+        return super.remove(index);
+    }
+
     /* (non-Javadoc)
      * @see java.util.ArrayList#clear()
      */
@@ -390,17 +411,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         if (!dirty && sanArray != null) {
             return sanArray;
         }
-        sanArray = new String[this.size()];
-        final Board b = getBoard();
-        if (!b.getFen().equals(getStartFen())) {
-            b.loadFromFen(getStartFen());
-        }
-        int i = 0;
-        for (Move move : this) {
-            String sanMove = encodeToSan(b, move);
-            sanArray[i++] = sanMove;
-        }
-        dirty = false;
+        updateSanArray();
+        updateFanArray();
         return sanArray;
     }
 
@@ -414,6 +426,25 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         if (!dirty && fanArray != null) {
             return fanArray;
         }
+        updateSanArray();
+        updateFanArray();
+        return fanArray;
+    }
+
+    private void updateSanArray() throws MoveConversionException {
+        sanArray = new String[this.size()];
+        final Board b = getBoard();
+        if (!b.getFen().equals(getStartFen())) {
+            b.loadFromFen(getStartFen());
+        }
+        int i = 0;
+        for (Move move : this) {
+            sanArray[i++] = encodeToSan(b, move);
+        }
+        dirty = false;
+    }
+
+    private void updateFanArray() throws MoveConversionException {
         fanArray = new String[this.size()];
         final Board b = getBoard();
         if (!b.getFen().equals(getStartFen())) {
@@ -421,11 +452,9 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         }
         int i = 0;
         for (Move move : this) {
-            String sanMove = encodeToFan(b, move);
-            fanArray[i++] = sanMove;
+            fanArray[i++] = encodeToFan(b, move);
         }
         dirty = false;
-        return fanArray;
     }
 
     /**
