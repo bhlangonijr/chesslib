@@ -16,8 +16,7 @@
 
 package com.github.bhlangonijr.chesslib.util;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.Iterator;
 
 /**
@@ -34,6 +33,15 @@ public class LargeFile implements Iterable<String> {
      */
     public LargeFile(String filePath) throws Exception {
         reader = new BufferedReader(new FileReader(filePath));
+    }
+
+    /**
+     * Instantiates a new Large file.
+     *
+     * @param inputStream the input stream
+     */
+    public LargeFile(InputStream inputStream) {
+        reader = new BufferedReader(new InputStreamReader(inputStream));
     }
 
     /**
