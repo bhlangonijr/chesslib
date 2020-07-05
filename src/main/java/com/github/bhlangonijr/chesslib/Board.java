@@ -21,10 +21,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
@@ -160,7 +157,7 @@ public class Board implements Cloneable, BoardEvent {
      * Instantiates a new Board.
      */
     public Board() {
-        this(new GameContext(), false);
+        this(new GameContext(), true);
     }
 
     /**
@@ -399,7 +396,9 @@ public class Board implements Cloneable, BoardEvent {
         incrementalHashKey ^= getSideToMove().hashCode();
         setSideToMove(side.flip());
         incrementalHashKey ^= getSideToMove().hashCode();
-
+        if (updateHistory) {
+            getHistory().addLast(this.hashCode());
+        }
         backup.add(backupMove);
         return true;
     }
@@ -530,12 +529,8 @@ public class Board implements Cloneable, BoardEvent {
         setHalfMoveCounter(0);
         getHistory().clear();
 
-        for (int i = 0; i < bitboard.length; i++) {
-            bitboard[i] = 0L;
-        }
-        for (int i = 0; i < bbSide.length; i++) {
-            bbSide[i] = 0L;
-        }
+        Arrays.fill(bitboard, 0L);
+        Arrays.fill(bbSide, 0L);
         backup.clear();
         incrementalHashKey = 0;
     }
@@ -640,6 +635,9 @@ public class Board implements Cloneable, BoardEvent {
         }
 
         incrementalHashKey = getZobristKey();
+        if (updateHistory) {
+            getHistory().addLast(this.hashCode());
+        }
         //call listeners
         if (isEnableEvents() &&
                 eventListener.get(BoardEventType.ON_LOAD).size() > 0) {
@@ -1321,33 +1319,42 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * verify draw by 50th move rule, 3 fold rep and insuficient material
+     * verify draw by 3 fold rep, insufficient material, 50th move rule and stale mate
      *
      * @return the boolean
      */
     public boolean isDraw() {
-        final int i = Math.min(getHistory().size() - 1, getHalfMoveCounter());
-        int rept = 0;
-        if (getHistory().size() >= 4) {
-            final int lastKey = getHistory().get(getHistory().size() - 1);
-            for (int x = 2; x <= i; x += 2) {
-                final int k = getHistory().get(getHistory().size() - x - 1);
-                if (k == lastKey) {
-                    rept++;
-                    if (rept >= 2) {
-                        return true;
-                    }
-                }
-            }
+        if (isRepetition()) {
+            return true;
         }
         if (isInsufficientMaterial()) {
             return true;
         }
-        if (isStaleMate()) {
+        if (getHalfMoveCounter() >= 100) {
             return true;
         }
-        return getHalfMoveCounter() >= 100;
+        return isStaleMate();
 
+    }
+
+    /**
+     * Verify threefold repetition
+     *
+     * @return boolean
+     */
+    public boolean isRepetition() {
+        final int i = Math.min(getHistory().size() - 1, getHalfMoveCounter());
+        if (getHistory().size() >= 4) {
+            int lastKey = getHistory().get(getHistory().size() - 1);
+            int rep = 0;
+            for (int x = 4; x <= i; x += 2) {
+                final int k = getHistory().get(getHistory().size() - x - 1);
+                if (k == lastKey && ++rep >= 2) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

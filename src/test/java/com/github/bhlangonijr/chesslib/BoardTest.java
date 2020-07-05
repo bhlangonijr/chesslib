@@ -410,4 +410,62 @@ public class BoardTest {
         assertEquals(b.hashCode(), b2.hashCode());
 
     }
+
+    @Test
+    public void testDraws() {
+
+        Board b = new Board();
+        b.loadFromFen("rnbqkbnr/p1pppppp/8/8/1p2P3/1P6/P1PP1PPP/RNBQKBNR w KQkq - 0 1");
+
+        b.doMove(new Move(Square.D1, Square.E2));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.C8, Square.B7));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.E2, Square.D1));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.B7, Square.C8));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.D1, Square.E2));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.C8, Square.B7));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.E2, Square.D1));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.B7, Square.C8));
+        assertTrue(b.isDraw());
+
+        b.loadFromFen("1kr5/8/Q7/8/8/7q/4r3/6K1 w - - 0 1");
+
+        b.doMove(new Move(Square.A6, Square.B6));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.B8, Square.A8));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.B6, Square.A6));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.A8, Square.B8));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.A6, Square.B6));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.B8, Square.A8));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.B6, Square.A6));
+        assertFalse(b.isDraw());
+
+        b.doMove(new Move(Square.A8, Square.B8));
+        assertTrue(b.isDraw());
+
+    }
 }
