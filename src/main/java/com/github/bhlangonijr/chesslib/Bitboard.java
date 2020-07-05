@@ -549,8 +549,8 @@ public class Bitboard {
     /**
      * Converts bitboard to array of squares
      *
-     * @param pieces
-     * @return
+     * @param pieces the pieces
+     * @return array of squares
      */
     public static Square[] bbToSquareArray(long pieces) {
         Square[] squares = new Square[Long.bitCount(pieces)];

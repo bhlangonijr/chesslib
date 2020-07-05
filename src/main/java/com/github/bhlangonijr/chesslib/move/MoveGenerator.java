@@ -96,9 +96,9 @@ public class MoveGenerator {
     /**
      * generate knight moves on the target squares allowed in mask param
      *
-     * @param board
-     * @param moves
-     * @param mask
+     * @param board the board
+     * @param moves the moves
+     * @param mask  mask of allowed targets
      */
     public static void generateKnightMoves(Board board, MoveList moves, long mask) {
         Side side = board.getSideToMove();
@@ -118,7 +118,7 @@ public class MoveGenerator {
     }
 
     /**
-     * Get knight moves & captures
+     * Get knight moves and captures
      *
      * @param board the board
      * @param moves the moves
@@ -131,9 +131,9 @@ public class MoveGenerator {
     /**
      * generate bishop moves on the target squares allowed in mask param
      *
-     * @param board
-     * @param moves
-     * @param mask
+     * @param board the board
+     * @param moves the moves
+     * @param mask  mask of allowed targets
      */
     public static void generateBishopMoves(Board board, MoveList moves, long mask) {
         Side side = board.getSideToMove();
@@ -166,9 +166,9 @@ public class MoveGenerator {
     /**
      * generate rook moves on the target squares allowed in mask param
      *
-     * @param board
-     * @param moves
-     * @param mask
+     * @param board the board
+     * @param moves the moves
+     * @param mask  mask of allowed targets
      */
     public static void generateRookMoves(Board board, MoveList moves, long mask) {
         Side side = board.getSideToMove();
@@ -201,9 +201,9 @@ public class MoveGenerator {
     /**
      * generate queen moves on the target squares allowed in mask param
      *
-     * @param board
-     * @param moves
-     * @param mask
+     * @param board the board
+     * @param moves the moves
+     * @param mask  mask of allowed targets
      */
     public static void generateQueenMoves(Board board, MoveList moves, long mask) {
         Side side = board.getSideToMove();
@@ -236,9 +236,9 @@ public class MoveGenerator {
     /**
      * generate king moves on the target squares allowed in mask param
      *
-     * @param board
-     * @param moves
-     * @param mask
+     * @param board the board
+     * @param moves the moves
+     * @param mask  mask of allowed targets
      */
     public static void generateKingMoves(Board board, MoveList moves, long mask) {
         Side side = board.getSideToMove();
