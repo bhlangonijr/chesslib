@@ -16,9 +16,11 @@
 
 package com.github.bhlangonijr.chesslib.pgn;
 
-import com.github.bhlangonijr.chesslib.game.*;
+import com.github.bhlangonijr.chesslib.game.Event;
+import com.github.bhlangonijr.chesslib.game.Game;
+import com.github.bhlangonijr.chesslib.game.Player;
+import com.github.bhlangonijr.chesslib.game.Round;
 import com.github.bhlangonijr.chesslib.util.LargeFile;
-import com.github.bhlangonijr.chesslib.util.StringUtil;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,18 +29,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * The type Pgn holder.
  */
 public class PgnHolder {
 
-    private final static Pattern propertyPattern = Pattern.compile("\\[.* \".*\"\\]");
-    private final static String UTF8_BOM = "\uFEFF";
     private final Map<String, Event> event = new HashMap<String, Event>();
     private final Map<String, Player> player = new HashMap<String, Player>();
-    private final List<Game> game = new ArrayList<Game>();
+    private final List<Game> games = new ArrayList<Game>();
     private final List<PgnLoadListener> listener = new ArrayList<PgnLoadListener>();
     private String fileName;
     private Integer size;
@@ -54,33 +53,13 @@ public class PgnHolder {
         setLazyLoad(false);
     }
 
-    private static boolean isProperty(String line) {
-        return propertyPattern.matcher(line).matches();
-    }
-
-    private static PgnProperty parsePgnProperty(String line) {
-        try {
-
-            String l = line.replace("[", "");
-            l = l.replace("]", "");
-            l = l.replace("\"", "");
-
-            return new PgnProperty(StringUtil.beforeSequence(l, " "),
-                    StringUtil.afterSequence(l, " "));
-        } catch (Exception e) {
-            // do nothing
-        }
-
-        return null;
-    }
-
     /**
      * Clean up.
      */
     public void cleanUp() {
         event.clear();
         player.clear();
-        game.clear();
+        games.clear();
         listener.clear();
         size = 0;
     }
@@ -122,14 +101,23 @@ public class PgnHolder {
     }
 
     /**
-     * Gets game.
+     * Get list of games.
      *
      * @return the game
      */
-    public List<Game> getGame() {
-        return game;
+    public List<Game> getGames() {
+        return games;
     }
 
+    /**
+     * Gets game.
+     *
+     * @return the game
+     * @deprecated fixed typo - use {@link #getGames()} instead
+     */
+    public List<Game> getGame() {
+        return games;
+    }
 
     /**
      * Load the PGN file
@@ -147,260 +135,36 @@ public class PgnHolder {
      * @throws Exception the exception
      */
     public void loadPgn(LargeFile file) throws Exception {
+
         size = 0;
-        Event event = null;
-        Round round = null;
-        Game game = null;
-        Player whitePlayer = null;
-        Player blackPlayer = null;
-        StringBuilder moveText = null;
-        boolean moveTextParsing = false;
+
+        PgnIterator games = new PgnIterator(file);
         try {
-            for (String line : file) {
-                try {
-                    line = line.trim();
-                    if (line.startsWith(UTF8_BOM)) {
-                        line = line.substring(1);
-                    }
-                    if (isProperty(line)) {
-                        PgnProperty p = parsePgnProperty(line);
-                        if (p != null) {
-                            String tag = p.name.toLowerCase().trim();
-                            //begin
-                            switch (tag) {
-                                case "event":
-                                    if (moveTextParsing && moveText != null && game != null &&
-                                            game.getHalfMoves().size() == 0) {
-                                        setMoveText(game, moveText);
-                                    }
-                                    size++;
-                                    for (PgnLoadListener l : getListener()) {
-                                        l.notifyProgress(size);
-                                    }
-                                    game = null;
-                                    round = null;
-                                    whitePlayer = null;
-                                    blackPlayer = null;
-                                    event = getEvent().get(p.value);
-                                    if (event == null) {
-                                        event = GameFactory.newEvent(p.value);
-                                        event.setPgnHolder(this);
-                                        getEvent().put(p.value, event);
-                                    }
-                                    moveText = new StringBuilder();
-
-                                    break;
-                                case "site":
-                                    if (event != null) {
-                                        event.setSite(p.value);
-                                    }
-                                    break;
-                                case "date":
-                                    if (event != null) {
-                                        event.setStartDate(p.value);
-                                    }
-                                    break;
-                                case "round":
-                                    if (event != null) {
-                                        int r = 1;
-                                        try {
-                                            r = Integer.parseInt(p.value);
-                                        } catch (Exception e1) {
-                                        }
-                                        r = Math.max(0, r);
-                                        round = event.getRound().get(r);
-                                        if (round == null) {
-                                            round = GameFactory.newRound(event, r);
-                                            event.getRound().put(r, round);
-                                        }
-                                    }
-                                    break;
-                                case "white": {
-                                    if (round == null) {
-                                        round = GameFactory.newRound(event, 1);
-                                        event.getRound().put(1, round);
-                                    }
-                                    if (game == null) {
-                                        game = GameFactory.newGame((size - 1) + "", round);
-                                        game.setDate(event.getStartDate());
-                                        round.getGame().add(game);
-                                        getGame().add(size - 1, game);
-                                    }
-
-                                    Player player = getPlayer().get(p.value);
-                                    if (player == null) {
-                                        player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
-                                        player.setId(p.value);
-                                        player.setDescription(p.value);
-                                        getPlayer().put(p.value, player);
-                                    }
-                                    game.setWhitePlayer(player);
-                                    whitePlayer = player;
-
-                                    break;
-                                }
-                                case "black": {
-                                    if (round == null) {
-                                        round = GameFactory.newRound(event, 1);
-                                        event.getRound().put(1, round);
-                                    }
-                                    if (game == null) {
-                                        game = GameFactory.newGame((size - 1) + "", round);
-                                        game.setDate(event.getStartDate());
-                                        round.getGame().add(game);
-                                        getGame().add(size - 1, game);
-                                    }
-                                    Player player = getPlayer().get(p.value);
-                                    if (player == null) {
-                                        player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
-                                        player.setId(p.value);
-                                        player.setDescription(p.value);
-                                        getPlayer().put(p.value, player);
-                                    }
-                                    game.setBlackPlayer(player);
-                                    blackPlayer = player;
-
-                                    break;
-                                }
-                                case "result":
-                                    if (game != null) {
-                                        GameResult r = GameResult.fromNotation(p.value);
-                                        game.setResult(r);
-                                    }
-                                    break;
-                                case "plycount":
-                                    if (game != null) {
-                                        game.setPlyCount(p.value);
-                                    }
-                                    break;
-                                case "termination":
-                                    if (game != null) {
-                                        try {
-                                            game.setTermination(Termination.fromValue(p.value.toUpperCase()));
-                                        } catch (Exception e1) {
-                                            game.setTermination(Termination.UNTERMINATED);
-                                        }
-                                    }
-                                    break;
-                                case "timecontrol":
-                                    if (event != null && event.getTimeControl() == null) {
-                                        try {
-                                            event.setTimeControl(TimeControl.parseFromString(p.value.toUpperCase()));
-                                        } catch (Exception e1) {
-                                            throw new PgnException("Error parsing TimeControl Tag [" + (round != null ? round.getNumber() : 1) +
-                                                    ", " + event.getName() + "]: " + e1.getMessage());
-                                        }
-                                    }
-                                    break;
-                                case "annotator":
-                                    if (game != null) {
-                                        game.setAnnotator(p.value);
-                                    }
-                                    break;
-                                case "fen":
-                                    if (game != null) {
-                                        game.setFen(p.value);
-                                    }
-                                    break;
-                                case "eco":
-                                    if (game != null) {
-                                        game.setEco(p.value);
-                                    }
-                                    break;
-                                case "opening":
-                                    if (game != null) {
-                                        game.setOpening(p.value);
-                                    }
-                                    break;
-                                case "variation":
-                                    if (game != null) {
-                                        game.setVariation(p.value);
-                                    }
-                                    break;
-                                case "whiteelo":
-                                    if (whitePlayer != null) {
-                                        try {
-                                            whitePlayer.setElo(Integer.parseInt(p.value));
-                                        } catch (NumberFormatException e) {
-
-                                        }
-                                    }
-                                    break;
-                                case "blackelo":
-                                    if (blackPlayer != null) {
-                                        try {
-                                            blackPlayer.setElo(Integer.parseInt(p.value));
-                                        } catch (NumberFormatException e) {
-
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    if (game != null) {
-                                        if (game.getProperty() == null) {
-                                            game.setProperty(new HashMap<String, String>());
-                                        }
-                                        game.getProperty().put(p.name, p.value);
-                                    }
-                                    break;
-                            }
-                        }
-                    } else if (!line.trim().equals("") && moveText != null) {
-                        moveText.append(line);
-                        moveText.append('\n');
-                        moveTextParsing = true;
-                        if (line.endsWith("1-0") ||
-                                line.endsWith("0-1") ||
-                                line.endsWith("1/2-1/2") ||
-                                line.endsWith("*")) {
-                            //end of PGN
-                            if (game != null) {
-                                setMoveText(game, moveText);
-                            }
-                            moveText = null;
-                            moveTextParsing = false;
-                        }
-                    }
-
-                } catch (Exception e) {
-                    String name = "";
-                    int r = 0;
-                    try {
-                        r = round.getNumber();
-                        name = event.getName();
-                    } catch (Exception e2) {
-
-                    }
-                    throw new PgnException("Error parsing PGN[" + r + ", " + name + "]: ", e);
+            for (Game game : games) {
+                Event event = getEvent().get(game.getRound().getEvent().getName());
+                if (event == null) {
+                    getEvent().put(game.getRound().getEvent().getName(), game.getRound().getEvent());
                 }
-
+                Player whitePlayer = getPlayer().get(game.getWhitePlayer().getId());
+                if (whitePlayer == null) {
+                    getPlayer().put(game.getWhitePlayer().getId(), game.getWhitePlayer());
+                }
+                Player blackPlayer = getPlayer().get(game.getBlackPlayer().getId());
+                if (blackPlayer == null) {
+                    getPlayer().put(game.getBlackPlayer().getId(), game.getBlackPlayer());
+                }
+                this.games.add(game);
             }
+
         } finally {
             file.close();
         }
     }
 
-    private void setMoveText(Game game, StringBuilder moveText) throws Exception {
-
-        //clear game result
-        StringUtil.replaceAll(moveText, "1-0", "");
-        StringUtil.replaceAll(moveText, "0-1", "");
-        StringUtil.replaceAll(moveText, "1/2-1/2", "");
-        StringUtil.replaceAll(moveText, "*", "");
-
-        if (isLazyLoad()) {
-            game.loadMoveText(moveText);
-        } else {
-            game.setMoveText(moveText);
-        }
-        game.setPlyCount(game.getHalfMoves().size() + "");
-
-    }
-
     /**
      * Save the PGN
      */
-    public void savePGN() {
+    public void savePgn() {
 
         try {
             FileWriter outFile = new FileWriter(getFileName());
@@ -478,38 +242,4 @@ public class PgnHolder {
         }
         return sb.toString();
     }
-
-    /**
-     * The type Pgn property.
-     */
-    static class PgnProperty {
-        /**
-         * The Name.
-         */
-        public String name;
-
-        /**
-         * The Value.
-         */
-        public String value;
-
-        /**
-         * Instantiates a new Pgn property.
-         */
-        public PgnProperty() {
-        }
-
-        /**
-         * Instantiates a new Pgn property.
-         *
-         * @param name  the name
-         * @param value the value
-         */
-        public PgnProperty(String name, String value) {
-            this.name = name;
-            this.value = value;
-        }
-    }
-
-
 }

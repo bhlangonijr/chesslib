@@ -747,18 +747,16 @@ public class Game {
                 continue;
             }
             if (!(onLineCommentBlock || onCommentBlock) &&
-                    token.indexOf("...") > -1) {
+                    token.contains("...")) {
                 token = StringUtil.afterSequence(token, "...");
-                if (token == null ||
-                        token.trim().length() == 0) {
+                if (token.trim().length() == 0) {
                     continue;
                 }
             }
             if (!(onLineCommentBlock || onCommentBlock) &&
-                    token.indexOf(".") > -1) {
+                    token.contains(".")) {
                 token = StringUtil.afterSequence(token, ".");
-                if (token == null ||
-                        token.trim().length() == 0) {
+                if (token.trim().length() == 0) {
                     continue;
                 }
             }
@@ -831,7 +829,7 @@ public class Game {
                         }
                         getVariations().put(last.index, var);
                     } catch (Exception e) {
-                        if (last != null && currentLine != null) {
+                        if (last != null) {
                             throw new PgnException("Error while reading variation: " +
                                     getMovesAt(currentLine.toString(), last.index) + " - " +
                                     last.text.toString(), e);
@@ -839,7 +837,6 @@ public class Game {
                             throw new PgnException("Error while reading variation: ", e);
                         }
                     }
-                    currentLine = null;
                 }
                 continue;
             }

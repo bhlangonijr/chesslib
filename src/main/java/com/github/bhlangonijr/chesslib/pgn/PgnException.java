@@ -19,7 +19,7 @@ package com.github.bhlangonijr.chesslib.pgn;
 /**
  * The type Pgn exception.
  */
-public class PgnException extends Exception {
+public class PgnException extends RuntimeException {
 
     private static final long serialVersionUID = 6523240383760826752L;
 
