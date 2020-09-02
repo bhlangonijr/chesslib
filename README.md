@@ -188,7 +188,7 @@ You could achieve the same by loading the move list final FEN position:
 ```
 Iterating over a PGN file games using the `PgnIterator`:
 ```java
-    PgnIterator games = new PgnIterator(("/opt/games/linares_2002.pgn");
+    PgnIterator games = new PgnIterator("/opt/games/linares_2002.pgn");
     for (Game game: games) {
         System.out.println("Game: " + game);
     }
