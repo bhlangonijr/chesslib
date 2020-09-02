@@ -17,7 +17,7 @@ public class PgnIteratorTest {
         PgnIterator games = new PgnIterator("src/test/resources/cct131.pgn");
 
         int count = 0;
-        for (Game game: games) {
+        for (Game game : games) {
             count++;
             switch (count) {
                 case 1: {
@@ -77,9 +77,9 @@ public class PgnIteratorTest {
                     assertEquals("E62", game.getEco());
                     assertEquals(64, game.getHalfMoves().size());
                     assertEquals("d2d4 g8f6 c2c4 g7g6 g1f3 f8g7 g2g3 e8g8 b1c3 d7d6 f1g2 b8c6 e1g1 c8g4 " +
-                            "d4d5 c6a5 b2b3 f6d5 c3d5 g7a1 c1d2 g4f3 g2f3 a5c4 b3c4 a1g7 d1b3 c7c6 d5b4 e7e5 f1d1 " +
-                            "f7f5 d2c3 f8f7 c4c5 d6d5 b4d5 c6d5 f3d5 d8c7 d5e6 g8f8 c3b4 f7e7 c5c6 c7c6 e6g8 c6f6 " +
-                            "g8h7 f8e8 b3g8 g7f8 h7g6 f6g6 g8g6 e7f7 g6e6 f7e7 b4e7 f8e7 d1d7 e8f8 e6e7 f8g8",
+                                    "d4d5 c6a5 b2b3 f6d5 c3d5 g7a1 c1d2 g4f3 g2f3 a5c4 b3c4 a1g7 d1b3 c7c6 d5b4 e7e5 f1d1 " +
+                                    "f7f5 d2c3 f8f7 c4c5 d6d5 b4d5 c6d5 f3d5 d8c7 d5e6 g8f8 c3b4 f7e7 c5c6 c7c6 e6g8 c6f6 " +
+                                    "g8h7 f8e8 b3g8 g7f8 h7g6 f6g6 g8g6 e7f7 g6e6 f7e7 b4e7 f8e7 d1d7 e8f8 e6e7 f8g8",
                             game.getHalfMoves().toString());
                     break;
                 }
@@ -89,6 +89,5 @@ public class PgnIteratorTest {
 
             }
         }
-
     }
 }

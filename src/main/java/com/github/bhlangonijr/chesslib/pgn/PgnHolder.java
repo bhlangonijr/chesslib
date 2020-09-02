@@ -25,10 +25,7 @@ import com.github.bhlangonijr.chesslib.util.LargeFile;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The type Pgn holder.
@@ -139,25 +136,27 @@ public class PgnHolder {
         size = 0;
 
         PgnIterator games = new PgnIterator(file);
+
         try {
             for (Game game : games) {
-                Event event = getEvent().get(game.getRound().getEvent().getName());
-                if (event == null) {
-                    getEvent().put(game.getRound().getEvent().getName(), game.getRound().getEvent());
-                }
-                Player whitePlayer = getPlayer().get(game.getWhitePlayer().getId());
-                if (whitePlayer == null) {
-                    getPlayer().put(game.getWhitePlayer().getId(), game.getWhitePlayer());
-                }
-                Player blackPlayer = getPlayer().get(game.getBlackPlayer().getId());
-                if (blackPlayer == null) {
-                    getPlayer().put(game.getBlackPlayer().getId(), game.getBlackPlayer());
-                }
-                this.games.add(game);
+                addGame(game);
             }
-
         } finally {
             file.close();
+        }
+    }
+
+    /**
+     * Load a PGN from a string
+     *
+     * @param pgn string to be loaded
+     */
+    public void loadPgn(String pgn) {
+
+        Iterable<String> iterable = Arrays.asList(pgn.split("\n"));
+        PgnIterator games = new PgnIterator(iterable.iterator());
+        for (Game game : games) {
+            addGame(game);
         }
     }
 
@@ -241,5 +240,22 @@ public class PgnHolder {
             }
         }
         return sb.toString();
+    }
+
+    private void addGame(Game game) {
+
+        Event event = getEvent().get(game.getRound().getEvent().getName());
+        if (event == null) {
+            getEvent().put(game.getRound().getEvent().getName(), game.getRound().getEvent());
+        }
+        Player whitePlayer = getPlayer().get(game.getWhitePlayer().getId());
+        if (whitePlayer == null) {
+            getPlayer().put(game.getWhitePlayer().getId(), game.getWhitePlayer());
+        }
+        Player blackPlayer = getPlayer().get(game.getBlackPlayer().getId());
+        if (blackPlayer == null) {
+            getPlayer().put(game.getBlackPlayer().getId(), game.getBlackPlayer());
+        }
+        this.games.add(game);
     }
 }
