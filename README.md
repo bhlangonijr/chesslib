@@ -36,7 +36,7 @@ Chesslib dependency can be added via the jitpack repository.
 <dependency>
   <groupId>com.github.bhlangonijr</groupId>
   <artifactId>chesslib</artifactId>
-  <version>1.1.20</version>
+  <version>1.1.21</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ repositories {
 ```
 dependencies {
     ...
-    implementation 'com.github.bhlangonijr:chesslib:1.1.20'
+    implementation 'com.github.bhlangonijr:chesslib:1.1.21'
     ...
 }
 ```
@@ -186,7 +186,15 @@ You could achieve the same by loading the move list final FEN position:
     board.loadFromFen(moves.getFen());
 
 ```
-
+Iterating over a PGN file games using the `PgnIterator`:
+```java
+    PgnIterator games = new PgnIterator(("/opt/games/linares_2002.pgn");
+    for (Game game: games) {
+        System.out.println("Game: " + game);
+    }
+```
+Note: The iterator is highly recommended for processing large PGN files as it is not retaining 
+intermediate objects loaded during the process of each iteration.
 # Advanced usage
 
 ## Sanity checking of chesslib move generation with Perft

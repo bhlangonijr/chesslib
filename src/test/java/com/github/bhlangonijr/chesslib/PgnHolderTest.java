@@ -277,12 +277,6 @@ public class PgnHolderTest {
         }
     }
 
-
-    /**
-     * Test pgn load 1.
-     *
-     * @throws Exception the exception
-     */
     @Test
     public void testPGNLoadInputStream() throws Exception {
 
@@ -308,6 +302,73 @@ public class PgnHolderTest {
                 "c6e5 d4e5 f6d7 d2b3 g7g6 b3d4 c7c5 d4f3 b7b5 c1h6 c8b7 h2h4 e7h4 a2a4 b5b4 c3b4 c5b4 d1c1 h4e7 c1f4 " +
                 "d7c5 a1d1 b7c6 e5e6 f7f6 f3h4 c6a4 h4g6 c5e6 e1e6 e7d6 f4g4 d6h2 g1h2 d8c7 h2g1 c7g7 e6e7 e8e7 g6e7 " +
                 "g8f7 g4g7 f7e8 e7d5 a8a7 d3b5 a6b5 d5f6", game.getHalfMoves().toString());
+    }
 
+    @Test
+    public void testPGNLoadFromString() throws Exception {
+
+        String lines = "[Event \"CCT 13\"]\n" +
+                "[Site \"FICS, San Jose, California US\"]\n" +
+                "[Date \"2011.01.29\"]\n" +
+                "[Round \"2\"]\n" +
+                "[White \"Rookie\"]\n" +
+                "[Black \"JabbaChess\"]\n" +
+                "[Result \"1-0\"]\n" +
+                "[ECO \"C00\"]\n" +
+                "[WhiteElo \"2285\"]\n" +
+                "[BlackElo \"1680\"]\n" +
+                "[Annotator \"Albert Silver\"]\n" +
+                "[PlyCount \"67\"]\n" +
+                "[EventDate \"2011.??.??\"]\n" +
+                "[TimeControl \"3000+3\"]\n" +
+                "\n" +
+                "1. e4 e6 2. d4 a6 3. Nf3 d5 4. exd5 exd5 5. Bd3 Nc6 6. O-O Nf6 7. Re1+ Be7 8.\n" +
+                "c3 O-O 9. Nbd2 Re8 10. Ne5 Nxe5 11. dxe5 Nd7 12. Nb3 g6 13. Nd4 c5 14. Nf3 b5\n" +
+                "15. Bh6 Bb7 16. h4 Bxh4 17. a4 b4 18. cxb4 cxb4 19. Qc1 Be7 20. Qf4 Nc5 21.\n" +
+                "Rad1 Bc6 {#} 22. e6 $1 {A nice combination that takes apart Black's position\n" +
+                "with exemplary precision. The variations are no less interesting than the game\n" +
+                "continuation, as is typical.} f6 ({The engine obviously goes for the most\n" +
+                "resistant defense, however the question is what would happen if Black were to\n" +
+                "play a more fallible and human continuation such as} 22... Nxe6 $2 {The answer\n" +
+                "is} 23. Rxe6 $1 fxe6 24. Ne5 $1 {The double attack between mate and the bishop\n" +
+                "on c6 is decisive.} Rf8 25. Qg4 $1 {and JabbaChess would be forced to leave\n" +
+                "the bishop since} Be8 {trying to protect g6, fails to} 26. Bxg6 hxg6 27. Nxg6\n" +
+                "Kh7 28. Nxf8+ Bxf8 29. Bxf8 Bg6 30. Bxb4) 23. Nh4 Bxa4 $2 {This is certainly\n" +
+                "one of the more suicidal ways to go down.} ({but even the better} 23... Bf8 {\n" +
+                "would not hold.} 24. Nxg6 hxg6 25. Qg4 g5 (25... Bxh6 26. Qxg6+ Bg7 27. Qf7+\n" +
+                "Kh8 28. Re3 f5 29. Rh3+) 26. Qh5 Qe7 27. Bg6 Nxe6 28. Bxf8 Rxf8 29. Rxe6 Qxe6\n" +
+                "30. Qh7#) (23... g5 24. Bxh7+ Kh8 25. Qf5 Rg8 26. Bxg8 Qxg8 27. Ng6+ Kh7 28.\n" +
+                "Nxe7+) 24. Nxg6 Nxe6 25. Rxe6 Bd6 26. Qg4 {As the Borg famously said,\n" +
+                "\"Resistance is futile\". (Star Trek Next Gen for those who have no idea what I\n" +
+                "am talking about).} Bh2+ 27. Kxh2 Qc7+ 28. Kg1 Qg7 {#} 29. Re7 {Typical\n" +
+                "computer weirdness. Any normal person would take the queen, but then again,\n" +
+                "any normal player would have resigned instead of playing Qg7...} Rxe7 ({Just\n" +
+                "in case you wondered how White would finish off Black if the bishop was\n" +
+                "captured with} 29... Qxh6 30. Qe6#) 30. Nxe7+ Kf7 31. Qxg7+ Ke8 32. Nxd5 Ra7\n" +
+                "33. Bb5+ axb5 34. Nxf6# 1-0\n\n";
+
+
+        PgnHolder pgn = new PgnHolder(null);
+        pgn.loadPgn(lines);
+        Game game = pgn.getGames().get(0);
+        game.loadMoveText();
+
+        assertEquals(1, pgn.getGames().size());
+        assertEquals("Rookie", game.getWhitePlayer().getName());
+        assertEquals("JabbaChess", game.getBlackPlayer().getName());
+        assertEquals("2011.01.29", game.getDate());
+        assertEquals(2, game.getRound().getNumber());
+        assertEquals("1-0", game.getResult().getDescription());
+        assertEquals("67", game.getPlyCount());
+        assertEquals("Albert Silver", game.getAnnotator());
+        assertEquals(2285, game.getWhitePlayer().getElo());
+        assertEquals(1680, game.getBlackPlayer().getElo());
+
+        assertEquals("C00", game.getEco());
+        assertEquals(67, game.getHalfMoves().size());
+        assertEquals("e2e4 e7e6 d2d4 a7a6 g1f3 d7d5 e4d5 e6d5 f1d3 b8c6 e1g1 g8f6 f1e1 f8e7 c2c3 e8g8 b1d2 f8e8 f3e5 " +
+                "c6e5 d4e5 f6d7 d2b3 g7g6 b3d4 c7c5 d4f3 b7b5 c1h6 c8b7 h2h4 e7h4 a2a4 b5b4 c3b4 c5b4 d1c1 h4e7 c1f4 " +
+                "d7c5 a1d1 b7c6 e5e6 f7f6 f3h4 c6a4 h4g6 c5e6 e1e6 e7d6 f4g4 d6h2 g1h2 d8c7 h2g1 c7g7 e6e7 e8e7 g6e7 " +
+                "g8f7 g4g7 f7e8 e7d5 a8a7 d3b5 a6b5 d5f6", game.getHalfMoves().toString());
     }
 }
