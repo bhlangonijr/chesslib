@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -88,4 +89,15 @@ public class MoveGeneratorTest {
         assertEquals(0, moves.size());
     }
 
+    @Test
+    public void testIlegalEnPassant() throws MoveGeneratorException {
+        Board board = new Board();
+
+        board.loadFromFen("8/1pp3p1/4pq1p/PP1bp3/1Q2pPk1/4P1P1/2B5/6K1 b - f3 0 34");
+
+        MoveList moves = MoveGenerator.generateLegalMoves(board);
+        assertEquals(25, moves.size());
+        assertFalse("Illegal move generated", moves.contains(new Move(Square.E4, Square.F3)));
+
+    }
 }
