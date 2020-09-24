@@ -183,6 +183,12 @@ public class PerftTest {
         assertEquals(23527, nodes);
     }
 
+    @Test
+    public void testPerft15() throws MoveGeneratorException {
+        long nodes = testPerft("8/1pp3p1/4pq1p/PP1bpk2/1Q2p3/4P1P1/2B2P2/6K1 b - - 2 33", 5);
+        assertEquals(6421514, nodes);
+    }
+
     /**
      * Test perft long.
      *

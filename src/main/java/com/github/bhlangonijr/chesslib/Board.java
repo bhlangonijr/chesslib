@@ -1217,7 +1217,7 @@ public class Board implements Cloneable, BoardEvent {
         long moveFrom = move.getFrom().getBitboard();
         long ep = getEnPassantTarget() != Square.NONE && move.getTo() == getEnPassant() &&
                 (fromType.equals(PieceType.PAWN)) ? getEnPassantTarget().getBitboard() : 0;
-        long allPieces = (getBitboard() ^ moveFrom) | moveTo;
+        long allPieces = (getBitboard() ^ moveFrom ^ ep) | moveTo;
 
         long bishopAndQueens = ((getBitboard(Piece.make(other, PieceType.BISHOP)) |
                 getBitboard(Piece.make(other, PieceType.QUEEN)))) & ~moveTo;
