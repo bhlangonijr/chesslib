@@ -1364,27 +1364,27 @@ public class Board implements Cloneable, BoardEvent {
      */
     public boolean isInsufficientMaterial() {
         boolean result = false;
-        final long pawns = getBitboard(Piece.WHITE_PAWN) |
-                getBitboard(Piece.BLACK_PAWN);
+
+        if ((getBitboard(Piece.WHITE_QUEEN) +
+                getBitboard(Piece.BLACK_QUEEN) +
+                getBitboard(Piece.WHITE_ROOK) +
+                getBitboard(Piece.BLACK_ROOK)) != 0L) {
+            return false;
+        }
+
+        final long pawns = getBitboard(Piece.WHITE_PAWN) | getBitboard(Piece.BLACK_PAWN);
         if (pawns == 0L) {
-            if ((getBitboard(Piece.WHITE_QUEEN) +
-                    getBitboard(Piece.BLACK_QUEEN) +
-                    getBitboard(Piece.WHITE_ROOK) +
-                    getBitboard(Piece.BLACK_ROOK)) != 0L) {
-                result = false;
-            } else {
-                long count = Long.bitCount(getBitboard());
-                if (count == 4) {
-                    if (Long.bitCount(getBitboard(Side.WHITE)) > 1 &&
-                            Long.bitCount(getBitboard(Side.BLACK)) > 1) {
-                        result = true;
-                    } else if (Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
-                            Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2) {
-                        result = true;
-                    }
-                } else if (count < 4) {
-                    return true;
+            long count = Long.bitCount(getBitboard());
+            if (count == 4) {
+                if (Long.bitCount(getBitboard(Side.WHITE)) > 1 &&
+                        Long.bitCount(getBitboard(Side.BLACK)) > 1) {
+                    result = true;
+                } else if (Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
+                        Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2) {
+                    result = true;
                 }
+            } else if (count < 4) {
+                return true;
             }
         }
 
