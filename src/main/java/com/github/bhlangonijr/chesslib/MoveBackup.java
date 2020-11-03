@@ -79,9 +79,9 @@ public class MoveBackup implements BoardEvent {
         getCastleRight().put(Side.BLACK, board.getCastleRight(Side.BLACK));
         setCapturedPiece(board.getPiece(move.getTo()));
         setCapturedSquare(move.getTo());
-        Piece moving = move.getPromotion() == Piece.NONE ? board.getPiece(move.getFrom()) : move.getPromotion();
+        Piece moving = board.getPiece(move.getFrom());
         setMovingPiece(moving);
-        if (board.getContext().isCastleMove(move)) {
+        if (board.getContext().isCastleMove(move) && movingPiece == Piece.make(board.getSideToMove(), PieceType.KING)) {
             CastleRight c = board.getContext().isKingSideCastle(move) ? CastleRight.KING_SIDE :
                     CastleRight.QUEEN_SIDE;
             Move rookMove = board.getContext().getRookCastleMove(board.getSideToMove(), c);
@@ -104,7 +104,7 @@ public class MoveBackup implements BoardEvent {
         board.setEnPassant(getEnPassant());
         board.setMoveCounter(getMoveCounter());
         board.setHalfMoveCounter(getHalfMoveCounter());
-        Piece movingPiece = getMovingPiece();
+        Piece movingPiece = move.getPromotion() == Piece.NONE ? getMovingPiece() : move.getPromotion();
         board.getCastleRight().put(Side.WHITE, getCastleRight().get(Side.WHITE));
         board.getCastleRight().put(Side.BLACK, getCastleRight().get(Side.BLACK));
 
