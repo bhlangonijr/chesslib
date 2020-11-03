@@ -468,4 +468,42 @@ public class BoardTest {
         assertTrue(b.isDraw());
 
     }
+
+    @Test
+    public void testCastleMove() {
+
+        final Board board = new Board();
+        board.loadFromFen("r1bqk1nr/pppp1ppp/2n5/2b1p3/4P3/5N2/PPPPBPPP/RNBQK2R w KQkq - 0 1");
+        assertEquals(CastleRight.KING_AND_QUEEN_SIDE, board.getCastleRight(Side.WHITE));
+        board.doMove(new Move(Square.E1, Square.G1)); // castle
+        final MoveBackup moveBackup = board.getBackup().getLast();
+        assertTrue(moveBackup.isCastleMove());
+        assertEquals(new Move(Square.H1, Square.F1), moveBackup.getRookCastleMove());
+    }
+
+    @Test
+    public void testInvalidCastleMove() {
+
+        final Board board = new Board();
+        board.loadFromFen("8/5k2/8/8/8/8/5K2/4R3 w - - 0 1");
+
+        final Move whiteRookMoveE1G1 = new Move("e1g1", Side.WHITE);
+        board.doMove(whiteRookMoveE1G1);
+        final MoveBackup moveBackup = board.getBackup().getLast();
+        assertFalse(moveBackup.isCastleMove());
+        assertNull(moveBackup.getRookCastleMove());
+    }
+
+    @Test
+    public void testInsufficientMaterial() {
+
+        final Board board = new Board();
+        board.loadFromFen("8/8/8/4k3/8/3K4/8/2BB4 w - - 0 1");
+
+        assertFalse(board.isInsufficientMaterial());
+
+        board.loadFromFen("8/8/8/4k3/5b2/3K4/8/2B5 w - - 0 1");
+
+        assertTrue(board.isInsufficientMaterial());
+    }
 }
