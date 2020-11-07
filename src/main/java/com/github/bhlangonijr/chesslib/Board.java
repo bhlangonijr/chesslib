@@ -322,8 +322,8 @@ public class Board implements Cloneable, BoardEvent {
             setHalfMoveCounter(0);
         }
 
-        if (getEnPassant() != Square.NONE) {
-            incrementalHashKey ^= shortKeys[3 * getEnPassant().ordinal() + 250];
+        if (getEnPassantTarget() != Square.NONE) {
+            incrementalHashKey ^= shortKeys[3 * getEnPassantTarget().ordinal() + 250];
         }
         setEnPassantTarget(Square.NONE);
         setEnPassant(Square.NONE);
@@ -340,8 +340,9 @@ public class Board implements Cloneable, BoardEvent {
             }
             setHalfMoveCounter(0);
         }
-        if (getEnPassant() != Square.NONE) {
-            incrementalHashKey ^= shortKeys[3 * getEnPassant().ordinal() + 250];
+        if (getEnPassantTarget() != Square.NONE &&
+                squareAttackedByPieceType(getEnPassantTarget(), getSideToMove(), PieceType.PAWN) != 0) {
+            incrementalHashKey ^= shortKeys[3 * getEnPassantTarget().ordinal() + 250];
         }
         if (side == Side.BLACK) {
             setMoveCounter(getMoveCounter() + 1);
@@ -379,8 +380,8 @@ public class Board implements Cloneable, BoardEvent {
 
         setHalfMoveCounter(getHalfMoveCounter() + 1);
 
-        if (!Square.NONE.equals(getEnPassant())) {
-            incrementalHashKey ^= shortKeys[3 * getEnPassant().ordinal() + 250];
+        if (Square.NONE != getEnPassantTarget()) {
+            incrementalHashKey ^= shortKeys[3 * getEnPassantTarget().ordinal() + 250];
         }
         setEnPassantTarget(Square.NONE);
         setEnPassant(Square.NONE);
@@ -1476,8 +1477,9 @@ public class Board implements Cloneable, BoardEvent {
         }
         hash ^= shortKeys[3 * getSideToMove().ordinal() + 300];
 
-        if (!Square.NONE.equals(getEnPassant())) {
-            hash ^= shortKeys[3 * getEnPassant().ordinal() + 250];
+        if (Square.NONE != getEnPassantTarget()
+                && squareAttackedByPieceType(getEnPassantTarget(), getSideToMove(), PieceType.PAWN) != 0) {
+            hash ^= shortKeys[3 * getEnPassantTarget().ordinal() + 250];
         }
         return hash;
     }
