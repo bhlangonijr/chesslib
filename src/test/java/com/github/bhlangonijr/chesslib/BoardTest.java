@@ -531,4 +531,17 @@ public class BoardTest {
         assertTrue(board.isRepetition());
     }
 
+    @Test
+    public void testInsufficientMaterial2() {
+
+        final Board board = new Board();
+
+        final String bishopOnSameColorSquares = "8/8/8/4k3/5b2/3K4/8/2B5 w - - 0 1";
+        board.loadFromFen(bishopOnSameColorSquares);
+        assertTrue(board.isInsufficientMaterial());
+        final String bishopOnDifferentColorSquares = "8/8/8/4k3/5b2/3K4/2B5/8 w - - 0 1";
+        board.loadFromFen(bishopOnDifferentColorSquares);
+        assertFalse(board.isInsufficientMaterial());
+    }
+
 }

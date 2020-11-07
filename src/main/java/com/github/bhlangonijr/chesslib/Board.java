@@ -1355,7 +1355,6 @@ public class Board implements Cloneable, BoardEvent {
      * @return boolean
      */
     public boolean isInsufficientMaterial() {
-        boolean result = false;
 
         if ((getBitboard(Piece.WHITE_QUEEN) +
                 getBitboard(Piece.BLACK_QUEEN) +
@@ -1370,17 +1369,16 @@ public class Board implements Cloneable, BoardEvent {
             if (count == 4) {
                 if (Long.bitCount(getBitboard(Side.WHITE)) > 1 &&
                         Long.bitCount(getBitboard(Side.BLACK)) > 1) {
-                    result = true;
-                } else if (Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
-                        Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2) {
-                    result = true;
-                }
-            } else if (count < 4) {
-                return true;
-            }
+                    return !((Long.bitCount(getBitboard(Piece.WHITE_BISHOP)) == 1 &&
+                            Long.bitCount(getBitboard(Piece.BLACK_BISHOP)) == 1) &&
+                            getPieceLocation(Piece.WHITE_BISHOP).get(0).isLightSquare() !=
+                                    getPieceLocation(Piece.BLACK_BISHOP).get(0).isLightSquare());
+                } else return Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
+                        Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2;
+            } else return count < 4;
         }
 
-        return result;
+        return false;
     }
 
     /**
