@@ -62,6 +62,14 @@ public class PgnIterator implements Iterable<Game> {
         return new GameIterator();
     }
 
+    @Override
+    protected void finalize() throws Throwable {
+        if (pgnLines instanceof LargeFile) {
+            ((LargeFile) (pgnLines)).close();
+        }
+        super.finalize();
+    }
+
     private class GameIterator implements Iterator<Game> {
         private Game game;
 
@@ -77,13 +85,5 @@ public class PgnIterator implements Iterable<Game> {
 
         public void remove() {
         }
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        if (pgnLines instanceof LargeFile) {
-            ((LargeFile) (pgnLines)).close();
-        }
-        super.finalize();
     }
 }

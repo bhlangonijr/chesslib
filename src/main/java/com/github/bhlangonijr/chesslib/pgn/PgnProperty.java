@@ -12,16 +12,10 @@ public class PgnProperty {
     public final static String UTF8_BOM = "\uFEFF";
 
     private final static Pattern propertyPattern = Pattern.compile("\\[.* \".*\"\\]");
-
-    public static boolean isProperty(String line) {
-        return propertyPattern.matcher(line).matches();
-    }
-
     /**
      * The Name.
      */
     public String name;
-
     /**
      * The Value.
      */
@@ -42,6 +36,10 @@ public class PgnProperty {
     public PgnProperty(String name, String value) {
         this.name = name;
         this.value = value;
+    }
+
+    public static boolean isProperty(String line) {
+        return propertyPattern.matcher(line).matches();
     }
 
     /**

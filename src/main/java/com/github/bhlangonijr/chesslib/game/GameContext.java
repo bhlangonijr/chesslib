@@ -153,6 +153,14 @@ public class GameContext {
         }
     }
 
+    private static long squareListToBb(List<Square> list) {
+        long r = 0L;
+        for (Square s : list) {
+            r |= s.getBitboard();
+        }
+        return r;
+    }
+
     private void loadDefaults() {
         //load standard values
         setWhiteoo(Constants.DEFAULT_WHITE_OO);
@@ -181,14 +189,6 @@ public class GameContext {
         setBlackoooAllSquaresBb(squareListToBb(Constants.DEFAULT_BLACK_OOO_ALL_SQUARES));
 
         setStartFEN(Constants.startStandardFENPosition);
-    }
-
-    private static long squareListToBb(List<Square> list) {
-        long r = 0L;
-        for (Square s : list) {
-            r |= s.getBitboard();
-        }
-        return r;
     }
 
     /**
