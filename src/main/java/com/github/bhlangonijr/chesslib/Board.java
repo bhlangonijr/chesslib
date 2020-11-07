@@ -31,22 +31,6 @@ import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
  */
 public class Board implements Cloneable, BoardEvent {
 
-    private final LinkedList<MoveBackup> backup;
-    private final EnumMap<BoardEventType, List<BoardEventListener>> eventListener;
-    private final long[] bitboard;
-    private final long[] bbSide;
-    private final EnumMap<Side, CastleRight> castleRight;
-    private final LinkedList<Integer> history = new LinkedList<Integer>();
-    private Side sideToMove;
-    private Square enPassantTarget;
-    private Square enPassant;
-    private Integer moveCounter;
-    private Integer halfMoveCounter;
-    private GameContext context;
-    private boolean enableEvents;
-    private boolean updateHistory;
-    private int incrementalHashKey;
-
     /**
      * 32-bit hash keys for repetition detection. They have been tested so that
      * (1) no xor'ed pair of keys collides with another existing key
@@ -152,6 +136,21 @@ public class Board implements Cloneable, BoardEvent {
             2084080181, 368153161, 964257884, 912710436, 597074072, 1234873272, -355403114, -76697025,
             918219555, -181174754, 1015084871, 266192105, 1262689892, -513119737, -1335274479, 430841744,
             123456789};
+    private final LinkedList<MoveBackup> backup;
+    private final EnumMap<BoardEventType, List<BoardEventListener>> eventListener;
+    private final long[] bitboard;
+    private final long[] bbSide;
+    private final EnumMap<Side, CastleRight> castleRight;
+    private final LinkedList<Integer> history = new LinkedList<Integer>();
+    private Side sideToMove;
+    private Square enPassantTarget;
+    private Square enPassant;
+    private Integer moveCounter;
+    private Integer halfMoveCounter;
+    private GameContext context;
+    private boolean enableEvents;
+    private boolean updateHistory;
+    private int incrementalHashKey;
 
     /**
      * Instantiates a new Board.
@@ -251,6 +250,13 @@ public class Board implements Cloneable, BoardEvent {
         MoveBackup backupMove = new MoveBackup(this, move);
         final boolean isCastle = context.isCastleMove(move);
 
+        if (getCastleRight(Side.WHITE) != CastleRight.NONE) {
+            incrementalHashKey ^= shortKeys[3 * getCastleRight(Side.WHITE).ordinal() + 200];
+        }
+        if (getCastleRight(Side.BLACK) != CastleRight.NONE) {
+            incrementalHashKey ^= shortKeys[3 * getCastleRight(Side.BLACK).ordinal() + 200];
+        }
+
         if (PieceType.KING.equals(movingPiece.getPieceType())) {
             if (isCastle) {
                 if (context.hasCastleRight(move, getCastleRight(side))) {
@@ -262,9 +268,6 @@ public class Board implements Cloneable, BoardEvent {
                     return false;
                 }
             }
-            if (getCastleRight().get(side) != CastleRight.NONE) {
-                incrementalHashKey ^= getCastleRight(side).hashCode();
-            }
             getCastleRight().put(side, CastleRight.NONE);
         } else if (PieceType.ROOK.equals(movingPiece.getPieceType())
                 && !CastleRight.NONE.equals(getCastleRight(side))) {
@@ -273,25 +276,15 @@ public class Board implements Cloneable, BoardEvent {
 
             if (move.getFrom().equals(oo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
-                    if (getCastleRight().get(side) != CastleRight.NONE) {
-                        incrementalHashKey ^= getCastleRight(side).hashCode();
-                    }
                     getCastleRight().put(side, CastleRight.QUEEN_SIDE);
-                    incrementalHashKey ^= getCastleRight(side).hashCode();
                 } else if (CastleRight.KING_SIDE.equals(getCastleRight(side))) {
                     getCastleRight().put(side, CastleRight.NONE);
-                    incrementalHashKey ^= getCastleRight(side).hashCode();
                 }
             } else if (move.getFrom().equals(ooo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side))) {
-                    if (getCastleRight().get(side) != CastleRight.NONE) {
-                        incrementalHashKey ^= getCastleRight(side).hashCode();
-                    }
                     getCastleRight().put(side, CastleRight.KING_SIDE);
-                    incrementalHashKey ^= getCastleRight(side).hashCode();
                 } else if (CastleRight.QUEEN_SIDE.equals(getCastleRight(side))) {
                     getCastleRight().put(side, CastleRight.NONE);
-                    incrementalHashKey ^= getCastleRight(side).hashCode();
                 }
             }
         }
@@ -303,27 +296,24 @@ public class Board implements Cloneable, BoardEvent {
             final Move ooo = context.getRookooo(side.flip());
             if (move.getTo().equals(oo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side.flip()))) {
-                    if (getCastleRight().get(side.flip()) != CastleRight.NONE) {
-                        incrementalHashKey ^= getCastleRight(side.flip()).hashCode();
-                    }
                     getCastleRight().put(side.flip(), CastleRight.QUEEN_SIDE);
-                    incrementalHashKey ^= getCastleRight(side.flip()).hashCode();
                 } else if (CastleRight.KING_SIDE.equals(getCastleRight(side.flip()))) {
-                    incrementalHashKey ^= getCastleRight(side.flip()).hashCode();
                     getCastleRight().put(side.flip(), CastleRight.NONE);
                 }
             } else if (move.getTo().equals(ooo.getFrom())) {
                 if (CastleRight.KING_AND_QUEEN_SIDE.equals(getCastleRight(side.flip()))) {
-                    if (getCastleRight().get(side.flip()) != CastleRight.NONE) {
-                        incrementalHashKey ^= getCastleRight(side.flip()).hashCode();
-                    }
                     getCastleRight().put(side.flip(), CastleRight.KING_SIDE);
-                    incrementalHashKey ^= getCastleRight(side.flip()).hashCode();
                 } else if (CastleRight.QUEEN_SIDE.equals(getCastleRight(side.flip()))) {
-                    incrementalHashKey ^= getCastleRight(side.flip()).hashCode();
                     getCastleRight().put(side.flip(), CastleRight.NONE);
                 }
             }
+        }
+
+        if (getCastleRight(Side.WHITE) != CastleRight.NONE) {
+            incrementalHashKey ^= shortKeys[3 * getCastleRight(Side.WHITE).ordinal() + 200];
+        }
+        if (getCastleRight(Side.BLACK) != CastleRight.NONE) {
+            incrementalHashKey ^= shortKeys[3 * getCastleRight(Side.BLACK).ordinal() + 200];
         }
 
         if (Piece.NONE.equals(capturedPiece)) {
@@ -332,8 +322,8 @@ public class Board implements Cloneable, BoardEvent {
             setHalfMoveCounter(0);
         }
 
-        if (!Square.NONE.equals(getEnPassant())) {
-            incrementalHashKey ^= getEnPassant().hashCode();
+        if (getEnPassant() != Square.NONE) {
+            incrementalHashKey ^= shortKeys[3 * getEnPassant().ordinal() + 250];
         }
         setEnPassantTarget(Square.NONE);
         setEnPassant(Square.NONE);
@@ -347,18 +337,20 @@ public class Board implements Cloneable, BoardEvent {
                     setEnPassantTarget(move.getTo());
                 }
                 setEnPassant(findEnPassant(move.getTo(), side));
-                incrementalHashKey ^= getEnPassant().hashCode();
             }
             setHalfMoveCounter(0);
         }
-
+        if (getEnPassant() != Square.NONE) {
+            incrementalHashKey ^= shortKeys[3 * getEnPassant().ordinal() + 250];
+        }
         if (side == Side.BLACK) {
             setMoveCounter(getMoveCounter() + 1);
         }
 
-        incrementalHashKey ^= getSideToMove().hashCode();
+        incrementalHashKey ^= shortKeys[3 * getSideToMove().ordinal() + 300];
         setSideToMove(side.flip());
-        incrementalHashKey ^= getSideToMove().hashCode();
+        incrementalHashKey ^= shortKeys[3 * getSideToMove().ordinal() + 300];
+
         if (updateHistory) {
             getHistory().addLast(this.hashCode());
         }
@@ -388,14 +380,14 @@ public class Board implements Cloneable, BoardEvent {
         setHalfMoveCounter(getHalfMoveCounter() + 1);
 
         if (!Square.NONE.equals(getEnPassant())) {
-            incrementalHashKey ^= getEnPassant().hashCode();
+            incrementalHashKey ^= shortKeys[3 * getEnPassant().ordinal() + 250];
         }
         setEnPassantTarget(Square.NONE);
         setEnPassant(Square.NONE);
 
-        incrementalHashKey ^= getSideToMove().hashCode();
+        incrementalHashKey ^= shortKeys[3 * getSideToMove().ordinal() + 300];
         setSideToMove(side.flip());
-        incrementalHashKey ^= getSideToMove().hashCode();
+        incrementalHashKey ^= shortKeys[3 * getSideToMove().ordinal() + 300];
         if (updateHistory) {
             getHistory().addLast(this.hashCode());
         }
@@ -1445,25 +1437,20 @@ public class Board implements Cloneable, BoardEvent {
      */
     @Override
     public boolean equals(Object obj) {
-        boolean result = false;
-        if (obj instanceof Board) {
 
+        if (obj instanceof Board) {
             Board board = (Board) obj;
-            result = true;
-            for (Square sq : Square.values()) {
-                if (!getPiece(sq).equals(board.getPiece(sq))) {
-                    result = false;
-                    break;
+            for (Piece piece : Piece.allPieces) {
+                if (piece != Piece.NONE && getBitboard(piece) != board.getBitboard(piece)) {
+                    return false;
                 }
             }
-            if (result) {
-                result = getSideToMove().equals(board.getSideToMove());
-                result = result || getCastleRight(Side.WHITE).equals(board.getCastleRight(Side.WHITE));
-                result = result || getCastleRight(Side.BLACK).equals(board.getCastleRight(Side.BLACK));
-                result = result || getEnPassant().equals(board.getEnPassant());
-            }
+            return getSideToMove() == board.getSideToMove()
+                    && getCastleRight(Side.WHITE) == board.getCastleRight(Side.WHITE)
+                    && getCastleRight(Side.BLACK) == board.getCastleRight(Side.BLACK)
+                    && getEnPassant() == board.getEnPassant();
         }
-        return result;
+        return false;
     }
 
     /* (non-Javadoc)
@@ -1477,10 +1464,10 @@ public class Board implements Cloneable, BoardEvent {
     public int getZobristKey() {
         int hash = 0;
         if (getCastleRight(Side.WHITE) != CastleRight.NONE) {
-            hash ^= getCastleRight(Side.WHITE).hashCode();
+            hash ^= shortKeys[3 * getCastleRight(Side.WHITE).ordinal() + 200];
         }
         if (getCastleRight(Side.BLACK) != CastleRight.NONE) {
-            hash ^= getCastleRight(Side.BLACK).hashCode();
+            hash ^= shortKeys[3 * getCastleRight(Side.BLACK).ordinal() + 200];
         }
         for (Square sq : Square.values()) {
             Piece piece = getPiece(sq);
@@ -1489,10 +1476,10 @@ public class Board implements Cloneable, BoardEvent {
                 hash ^= shortKeys[11 * piece.ordinal() + sq.ordinal()];
             }
         }
-        hash ^= getSideToMove().hashCode();
+        hash ^= shortKeys[3 * getSideToMove().ordinal() + 300];
 
         if (!Square.NONE.equals(getEnPassant())) {
-            hash ^= getEnPassant().hashCode();
+            hash ^= shortKeys[3 * getEnPassant().ordinal() + 250];
         }
         return hash;
     }

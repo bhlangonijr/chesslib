@@ -1,9 +1,6 @@
 package com.github.bhlangonijr.chesslib;
 
-import com.github.bhlangonijr.chesslib.move.Move;
-import com.github.bhlangonijr.chesslib.move.MoveGenerator;
-import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
-import com.github.bhlangonijr.chesslib.move.MoveList;
+import com.github.bhlangonijr.chesslib.move.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -338,6 +335,7 @@ public class BoardTest {
 
         assertEquals(initialHash, b.hashCode());
         assertEquals(b.hashCode(), b2.hashCode());
+        assertEquals(b, b2);
     }
 
     @Test
@@ -392,6 +390,8 @@ public class BoardTest {
 
         assertEquals(initialHash, b.hashCode());
         assertEquals(b.hashCode(), b2.hashCode());
+
+        assertEquals(b, b2);
     }
 
     @Test
@@ -506,4 +506,29 @@ public class BoardTest {
 
         assertTrue(board.isInsufficientMaterial());
     }
+
+    @Test
+    public void testThreeFoldRepetition() throws MoveConversionException {
+        final MoveList moveList = new MoveList();
+        moveList.loadFromSan("1. e4 e5 2. Be2 Be7 3. Bf1 Bf8 4. Bd3 Bd6 5. Bf1 Bf8 6. Bd3 Bd6 7. Bf1 Bf8");
+
+        final Board board = new Board();
+        for (Move move : moveList) {
+            board.doMove(move);
+        }
+        assertTrue(board.isRepetition());
+    }
+
+    @Test
+    public void testThreeFoldRepetition1() throws MoveConversionException {
+        final MoveList moveList = new MoveList();
+        moveList.loadFromSan("1. e4 e5 2. Nf3 Nf6 3. Ng1 Ng8 4. Ke2 Ke7 5. Ke1 Ke8 6. Na3 Na6 7. Nb1 Nb8");
+
+        final Board board = new Board();
+        for (Move move : moveList) {
+            board.doMove(move);
+        }
+        assertTrue(board.isRepetition());
+    }
+
 }
