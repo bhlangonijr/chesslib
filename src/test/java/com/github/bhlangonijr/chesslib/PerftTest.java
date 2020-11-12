@@ -1,10 +1,10 @@
 package com.github.bhlangonijr.chesslib;
 
 import com.github.bhlangonijr.chesslib.move.Move;
-import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
-import com.github.bhlangonijr.chesslib.move.MoveList;
 import org.junit.Test;
+
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -220,7 +220,7 @@ public class PerftTest {
         long partialNodes;
         int hash = 0;
         if (CHECK_BOARD_STATE) hash = board.hashCode();
-        MoveList moves = MoveGenerator.generateLegalMoves(board);
+        List<Move> moves = board.legalMoves();
         for (Move move : moves) {
             try {
                 if (!board.doMove(move, false)) {
@@ -247,28 +247,6 @@ public class PerftTest {
             System.out.println("Time: " + (System.currentTimeMillis() - time));
         }
         return nodes;
-    }
-
-    private void test() {
-
-        Board board = new Board();
-        board.addEventListener(BoardEventType.ON_MOVE, new MyBoardListener());
-
-
-    }
-
-    /**
-     * The type My board listener.
-     */
-    class MyBoardListener implements BoardEventListener {
-
-        public void onEvent(BoardEvent event) {
-
-            if (event.getType() == BoardEventType.ON_MOVE) {
-                Move move = (Move) event;
-                System.out.println("Move " + move + " was played");
-            }
-        }
     }
 
 }

@@ -165,7 +165,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     protected static String encode(final Board board, Move move, EnumMap<Piece, String> notation)
             throws MoveConversionException {
         StringBuilder san = new StringBuilder();
-
         Piece piece = board.getPiece(move.getFrom());
         if (piece.getPieceType().equals(PieceType.KING)) {
             int delta = move.getTo().getFile().ordinal() -
@@ -192,6 +191,14 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                     board.getSideToMove(), piece.getPieceType());
             amb &= ~move.getFrom().getBitboard();
             if (amb != 0L) {
+                List<Square> fromList = Bitboard.bbToSquareList(amb);
+                for (Square from : fromList) {
+                    if (!board.isMoveLegal(new Move(from, move.getTo()), false)) {
+                        amb ^= from.getBitboard();
+                    }
+                }
+            }
+            if (amb != 0L) {
                 if ((Bitboard.getFilebb(move.getFrom()) & amb) == 0L) {
                     san.append(move.getFrom().getFile().getNotation().toLowerCase());
                 } else if ((Bitboard.getRankbb(move.getFrom()) & amb) == 0L) {
@@ -208,7 +215,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                     move.toString() + "] for current setup: " + board.getFen());
         }
 
-        Piece captured = board.getBackup().removeLast().getCapturedPiece();
+
+        Piece captured = board.getBackup().getLast().getCapturedPiece();
         boolean isCapture = !captured.equals(Piece.NONE);
         if (isCapture) {
             if (!ambResolved &&
@@ -229,7 +237,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                 san.append("+");
             }
         }
-
         return san.toString();
     }
 
@@ -278,8 +285,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         if (fen == null) {
             fen = b.getFen();
         }
-        MoveList moves = new MoveList(fen);
-        return moves;
+        return new MoveList(fen);
     }
 
     /**
@@ -513,7 +519,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      */
     public void addSanMove(String san, boolean replay, boolean fullValidation) throws MoveConversionException {
         final Board b = getBoard();
-        if (replay) {
+        if (replay || fullValidation) {
             if (!b.getFen().equals(getStartFen())) {
                 b.loadFromFen(getStartFen());
             }
@@ -524,7 +530,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                 }
             }
         }
-        Move move = encodeSanToMove(b, san, b.getSideToMove());
+        Move move = decodeSan(b, san, b.getSideToMove());
         if (move == nullMove) {
             return;
         }
@@ -573,7 +579,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Encode san to move move.
+     * Decode san to Move move.
      *
      * @param board the board
      * @param san   the san
@@ -584,17 +590,12 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /*
      * encode san to move
      */
-    protected Move encodeSanToMove(Board board, String san, Side side) throws MoveConversionException {
+    protected Move decodeSan(Board board, String san, Side side) throws MoveConversionException {
 
         if (san.equalsIgnoreCase("Z0")) {
             return nullMove;
         }
-        san = san.replace("+", "");
-        san = san.replace("#", "");
-        san = san.replace("!", "");
-        san = san.replace("?", "");
-        san = san.replace("ep", "");
-        san = san.replace("\n", " ");
+        san = normalizeSan(san);
 
         String strPromotion = StringUtil.afterSequence(san, "=", 1);
         san = StringUtil.beforeSequence(san, "=");
@@ -823,5 +824,12 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         return false;
     }
 
-
+    private String normalizeSan(String san) {
+        return san.replace("+", "")
+                .replace("#", "")
+                .replace("!", "")
+                .replace("?", "")
+                .replace("ep", "")
+                .replace("\n", " ");
+    }
 }

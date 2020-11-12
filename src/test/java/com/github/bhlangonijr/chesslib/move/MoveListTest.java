@@ -1,5 +1,6 @@
 package com.github.bhlangonijr.chesslib.move;
 
+import com.github.bhlangonijr.chesslib.Square;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -141,4 +142,28 @@ public class MoveListTest {
         assertEquals("8/8/4k3/4r3/7r/4BP2/3R1KP1/8 b - - 1 58", list.getFen());
 
     }
+
+    @Test
+    public void testEncodingSanAmbiguityResolution() {
+
+        final MoveList moveList = new MoveList("4k3/8/8/8/1b6/2N5/8/4K1N1 w - - 0 1");
+        moveList.add(new Move(Square.G1, Square.E2)); // Ne2
+        assertEquals("Ne2", moveList.toSan().trim());
+    }
+
+    @Test
+    public void testDecodingSanAmbiguityResolution() {
+
+        final MoveList moveList = new MoveList("4k3/8/8/8/1b6/2N5/8/4K1N1 w - - 0 1");
+        moveList.addSanMove("Nge2", false, true);
+        assertEquals("Ne2", moveList.toSanArray()[moveList.size() - 1]);
+    }
+
+    @Test(expected = MoveConversionException.class)
+    public void testInvalidSan() {
+
+        final MoveList moveList = new MoveList("4k3/8/8/8/1b6/2N5/8/4K1N1 w - - 0 1");
+        moveList.addSanMove("Nce2", false, true);
+    }
+
 }

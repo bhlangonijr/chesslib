@@ -36,7 +36,7 @@ Chesslib dependency can be added via the jitpack repository.
 <dependency>
   <groupId>com.github.bhlangonijr</groupId>
   <artifactId>chesslib</artifactId>
-  <version>1.1.25</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ repositories {
 ```
 dependencies {
     ...
-    implementation 'com.github.bhlangonijr:chesslib:1.1.25'
+    implementation 'com.github.bhlangonijr:chesslib:1.2.0'
     ...
 }
 ```
@@ -86,7 +86,7 @@ Side: BLACK
 ## Undo a move
 
 ```java
-    // Undo a move from the stack and return it
+    // Undo the last move from the stack and return it
     Move move = board.undoMove();
 
 ```
@@ -132,7 +132,7 @@ position of a regular chess game. Arbitrary moves from a chess game can be loade
 ```java
     // Generate legal chess moves for the current position
     Board board = new Board();
-    MoveList moves = MoveGenerator.generateLegalMoves(board);
+    List<Move> moves = board.legalMoves();
     System.out.println("Legal moves: " + moves);
 ```
 Result:
@@ -193,7 +193,7 @@ Iterating over a PGN file games using the `PgnIterator`:
         System.out.println("Game: " + game);
     }
 ```
-Note: The iterator is highly recommended for processing large PGN files as it is not retaining 
+Note: The iterator is highly recommended for processing large PGN files as it is not retaining in the memory
 intermediate objects loaded during the process of each iteration.
 # Advanced usage
 
@@ -210,7 +210,7 @@ Example of a perft function using chesslib:
             return 1;
         }
         long nodes = 0;      
-        MoveList moves = MoveGenerator.generateLegalMoves(board);
+        List<Move> moves = board.legalModes();
         for (Move move : moves) {
             board.doMove(move);
             nodes += perft(board, depth - 1, ply + 1);
@@ -239,6 +239,11 @@ keeping the `Board` in a consistent state, e.g.:
 
 It's known that from the initial standard chess position, there should have exactly 4865609 positions
 for depth 5. Deviation from this number would imply a bug in move generation or keeping the board state. 
+
+## Creating a full fledged chess engine
+
+[kengine](https://github.com/bhlangonijr/kengine) is a minimalistic chess engine built on top of kotlin and chesslib to 
+to showcase a more advanced use case.
 
 ## Capturing and reacting to events
 

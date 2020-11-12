@@ -19,7 +19,6 @@ package com.github.bhlangonijr.chesslib;
 import com.github.bhlangonijr.chesslib.game.GameContext;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
-import com.github.bhlangonijr.chesslib.move.MoveList;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -185,6 +184,18 @@ public class Board implements Cloneable, BoardEvent {
         setEnableEvents(true);
     }
 
+    /*
+     * does move lead to a promotion?
+     */
+    private static boolean isPromoRank(Side side, Move move) {
+        if (side.equals(Side.WHITE) &&
+                move.getTo().getRank().equals(Rank.RANK_8)) {
+            return true;
+        } else return side.equals(Side.BLACK) &&
+                move.getTo().getRank().equals(Rank.RANK_1);
+
+    }
+
     private static Square findEnPassantTarget(Square sq, Side side) {
         Square ep = Square.NONE;
         if (!Square.NONE.equals(sq)) {
@@ -203,22 +214,6 @@ public class Board implements Cloneable, BoardEvent {
                     Square.encode(Rank.RANK_6, sq.getFile());
         }
         return ep;
-    }
-
-    /**
-     * Is promo rank boolean.
-     *
-     * @param side the side
-     * @param move the move
-     * @return the boolean
-     */
-    public static boolean isPromoRank(Side side, Move move) {
-        if (side.equals(Side.WHITE) &&
-                move.getTo().getRank().equals(Rank.RANK_8)) {
-            return true;
-        } else return side.equals(Side.BLACK) &&
-                move.getTo().getRank().equals(Rank.RANK_1);
-
     }
 
     /**
@@ -339,31 +334,12 @@ public class Board implements Cloneable, BoardEvent {
 
         backup.add(backupMove);
         //call listeners
-        if (isEnableEvents() &&
-                eventListener.get(BoardEventType.ON_MOVE).size() > 0) {
-            for (BoardEventListener evl :
-                    eventListener.get(BoardEventType.ON_MOVE)) {
+        if (isEnableEvents() && eventListener.get(BoardEventType.ON_MOVE).size() > 0) {
+            for (BoardEventListener evl : eventListener.get(BoardEventType.ON_MOVE)) {
                 evl.onEvent(move);
             }
         }
         return true;
-    }
-
-    private void updateZobrist(boolean init) {
-
-        incrementalHashKey ^= shortKeys[3 * getSideToMove().ordinal() + 300];
-
-        if (getCastleRight(Side.WHITE) != CastleRight.NONE) {
-            incrementalHashKey ^= shortKeys[3 * getCastleRight(Side.WHITE).ordinal() + 200];
-        }
-        if (getCastleRight(Side.BLACK) != CastleRight.NONE) {
-            incrementalHashKey ^= shortKeys[3 * getCastleRight(Side.BLACK).ordinal() + 200];
-        }
-        // TODO I should come back to it,
-//        if (getEnPassantTarget() != Square.NONE && (init ||
-//                squareAttackedByPieceType(getEnPassantTarget(), getSideToMove(), PieceType.PAWN) != 0)) {
-//            incrementalHashKey ^= shortKeys[3 * getEnPassantTarget().getFile().ordinal() + 250];
-//        }
     }
 
     /**
@@ -507,6 +483,209 @@ public class Board implements Cloneable, BoardEvent {
             }
         }
         return false;
+    }
+
+    /**
+     * Get the piece on the given square
+     *
+     * @param sq the sq
+     * @return piece
+     */
+    public Piece getPiece(Square sq) {
+        for (int i = 0; i < bitboard.length - 1; i++) {
+            if ((sq.getBitboard() & bitboard[i]) != 0L) {
+                return Piece.allPieces[i];
+            }
+        }
+        return Piece.NONE;
+    }
+
+    /**
+     * Gets bitboard.
+     *
+     * @return the bitboard
+     */
+    public long getBitboard() {
+        return bbSide[0] | bbSide[1];
+    }
+
+    /**
+     * Gets bitboard.
+     *
+     * @param piece the piece
+     * @return the bitboard of a given piece
+     */
+    public long getBitboard(Piece piece) {
+        return bitboard[piece.ordinal()];
+    }
+
+    /**
+     * Gets bitboard.
+     *
+     * @param side the side
+     * @return the bitboard of a given side
+     */
+    public long getBitboard(Side side) {
+        return bbSide[side.ordinal()];
+    }
+
+    /**
+     * Get bb side long [ ].
+     *
+     * @return the bbSide
+     */
+    public long[] getBbSide() {
+        return bbSide;
+    }
+
+    /**
+     * Get the square(s) location of the given piece
+     *
+     * @param piece the piece
+     * @return piece location
+     */
+    public List<Square> getPieceLocation(Piece piece) {
+        if (getBitboard(piece) != 0L) {
+            return Bitboard.bbToSquareList(getBitboard(piece));
+        }
+        return Collections.emptyList();
+
+    }
+
+    /**
+     * Gets side to move.
+     *
+     * @return the sideToMove
+     */
+    public Side getSideToMove() {
+        return sideToMove;
+    }
+
+    /**
+     * Sets side to move.
+     *
+     * @param sideToMove the sideToMove to set
+     */
+    public void setSideToMove(Side sideToMove) {
+        this.sideToMove = sideToMove;
+    }
+
+    /**
+     * Gets en passant target.
+     *
+     * @return the enPassantTarget
+     */
+    public Square getEnPassantTarget() {
+        return enPassantTarget;
+    }
+
+    /**
+     * Sets en passant target.
+     *
+     * @param enPassant the enPassantTarget to set
+     */
+    public void setEnPassantTarget(Square enPassant) {
+        this.enPassantTarget = enPassant;
+    }
+
+    /**
+     * Gets en passant.
+     *
+     * @return the enPassant
+     */
+    public Square getEnPassant() {
+        return enPassant;
+    }
+
+    /**
+     * Sets en passant.
+     *
+     * @param enPassant the enPassant to set
+     */
+    public void setEnPassant(Square enPassant) {
+        this.enPassant = enPassant;
+    }
+
+    /**
+     * Gets move counter.
+     *
+     * @return the moveCounter
+     */
+    public Integer getMoveCounter() {
+        return moveCounter;
+    }
+
+    /**
+     * Sets move counter.
+     *
+     * @param moveCounter the moveCounter to set
+     */
+    public void setMoveCounter(Integer moveCounter) {
+        this.moveCounter = moveCounter;
+    }
+
+    /**
+     * Gets half move counter.
+     *
+     * @return the halfMoveCounter
+     */
+    public Integer getHalfMoveCounter() {
+        return halfMoveCounter;
+    }
+
+    /**
+     * Sets half move counter.
+     *
+     * @param halfMoveCounter the halfMoveCounter to set
+     */
+    public void setHalfMoveCounter(Integer halfMoveCounter) {
+        this.halfMoveCounter = halfMoveCounter;
+    }
+
+    /**
+     * Gets castle right.
+     *
+     * @param side the side
+     * @return the castleRight
+     */
+    public CastleRight getCastleRight(Side side) {
+        return castleRight.get(side);
+    }
+
+    /**
+     * Gets castle right.
+     *
+     * @return the castleRight
+     */
+    public EnumMap<Side, CastleRight> getCastleRight() {
+        return castleRight;
+    }
+
+    /**
+     * Gets context.
+     *
+     * @return the context
+     */
+    public GameContext getContext() {
+        return context;
+    }
+
+    /**
+     * Sets context.
+     *
+     * @param context the context to set
+     */
+    public void setContext(GameContext context) {
+        this.context = context;
+    }
+
+    /**
+     * Gets backup.
+     *
+     * @return the backup
+     */
+    public LinkedList<MoveBackup> getBackup() {
+        return backup;
     }
 
     /**
@@ -745,234 +924,6 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Get the piece on the given square
-     *
-     * @param sq the sq
-     * @return piece
-     */
-    public Piece getPiece(Square sq) {
-        for (int i = 0; i < bitboard.length - 1; i++) {
-            if ((sq.getBitboard() & bitboard[i]) != 0L) {
-                return Piece.allPieces[i];
-            }
-        }
-        return Piece.NONE;
-    }
-
-    /**
-     * Gets bitboard.
-     *
-     * @return the bitboard
-     */
-    public long getBitboard() {
-        return bbSide[0] | bbSide[1];
-    }
-
-    /**
-     * Gets bitboard.
-     *
-     * @param piece the piece
-     * @return the bitboard of a given piece
-     */
-    public long getBitboard(Piece piece) {
-        return bitboard[piece.ordinal()];
-    }
-
-    /**
-     * Gets bitboard.
-     *
-     * @param side the side
-     * @return the bitboard of a given side
-     */
-    public long getBitboard(Side side) {
-        return bbSide[side.ordinal()];
-    }
-
-    /**
-     * Get bb side long [ ].
-     *
-     * @return the bbSide
-     */
-    public long[] getBbSide() {
-        return bbSide;
-    }
-
-    /**
-     * Get the square(s) location of the given piece
-     *
-     * @param piece the piece
-     * @return piece location
-     */
-    public List<Square> getPieceLocation(Piece piece) {
-        if (getBitboard(piece) != 0L) {
-            return Bitboard.bbToSquareList(getBitboard(piece));
-        }
-        return Collections.emptyList();
-
-    }
-
-    /**
-     * Gets side to move.
-     *
-     * @return the sideToMove
-     */
-    public Side getSideToMove() {
-        return sideToMove;
-    }
-
-    /**
-     * Sets side to move.
-     *
-     * @param sideToMove the sideToMove to set
-     */
-    public void setSideToMove(Side sideToMove) {
-        this.sideToMove = sideToMove;
-    }
-
-    /**
-     * Gets en passant target.
-     *
-     * @return the enPassantTarget
-     */
-    public Square getEnPassantTarget() {
-        return enPassantTarget;
-    }
-
-    /**
-     * Sets en passant target.
-     *
-     * @param enPassant the enPassantTarget to set
-     */
-    public void setEnPassantTarget(Square enPassant) {
-        this.enPassantTarget = enPassant;
-    }
-
-    /**
-     * Gets en passant.
-     *
-     * @return the enPassant
-     */
-    public Square getEnPassant() {
-        return enPassant;
-    }
-
-    /**
-     * Sets en passant.
-     *
-     * @param enPassant the enPassant to set
-     */
-    public void setEnPassant(Square enPassant) {
-        this.enPassant = enPassant;
-    }
-
-    /**
-     * Gets move counter.
-     *
-     * @return the moveCounter
-     */
-    public Integer getMoveCounter() {
-        return moveCounter;
-    }
-
-    /**
-     * Sets move counter.
-     *
-     * @param moveCounter the moveCounter to set
-     */
-    public void setMoveCounter(Integer moveCounter) {
-        this.moveCounter = moveCounter;
-    }
-
-    /**
-     * Gets half move counter.
-     *
-     * @return the halfMoveCounter
-     */
-    public Integer getHalfMoveCounter() {
-        return halfMoveCounter;
-    }
-
-    /**
-     * Sets half move counter.
-     *
-     * @param halfMoveCounter the halfMoveCounter to set
-     */
-    public void setHalfMoveCounter(Integer halfMoveCounter) {
-        this.halfMoveCounter = halfMoveCounter;
-    }
-
-    /**
-     * Gets castle right.
-     *
-     * @param side the side
-     * @return the castleRight
-     */
-    public CastleRight getCastleRight(Side side) {
-        return castleRight.get(side);
-    }
-
-    /**
-     * Gets castle right.
-     *
-     * @return the castleRight
-     */
-    public EnumMap<Side, CastleRight> getCastleRight() {
-        return castleRight;
-    }
-
-    /**
-     * Gets context.
-     *
-     * @return the context
-     */
-    public GameContext getContext() {
-        return context;
-    }
-
-    /**
-     * Sets context.
-     *
-     * @param context the context to set
-     */
-    public void setContext(GameContext context) {
-        this.context = context;
-    }
-
-    /**
-     * Gets backup.
-     *
-     * @return the backup
-     */
-    public LinkedList<MoveBackup> getBackup() {
-        return backup;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 7; i >= 0; i--) {
-            Rank r = Rank.allRanks[i];
-            for (int n = 0; n <= 7; n++) {
-                File f = File.allFiles[n];
-                if (!File.NONE.equals(f) && !Rank.NONE.equals(r)) {
-                    Square sq = Square.encode(r, f);
-                    Piece piece = getPiece(sq);
-                    if (Piece.NONE.equals(piece)) {
-                        sb.append(" ");
-                    } else {
-                        sb.append(Constants.getPieceNotation(piece));
-                    }
-                }
-            }
-            sb.append("\n");
-        }
-        sb.append("Side: " + getSideToMove());
-
-        return sb.toString();
-    }
-
-    /**
      * Board to array piece [ ].
      *
      * @return the piece [ ]
@@ -1038,8 +989,19 @@ public class Board implements Cloneable, BoardEvent {
      * @return true if the square is attacked
      */
     public long squareAttackedBy(Square square, Side side) {
+        return squareAttackedBy(square, side, getBitboard());
+    }
+
+    /**
+     * Returns if the the bitboard with pieces which can attack the given square
+     *
+     * @param square the square
+     * @param side   the side
+     * @param occ    occupied squares
+     * @return true if the square is attacked
+     */
+    public long squareAttackedBy(Square square, Side side, long occ) {
         long result;
-        long occ = getBitboard();
         result = Bitboard.getPawnAttacks(side.flip(), square) &
                 getBitboard(Piece.make(side, PieceType.PAWN));
         result |= Bitboard.getKnightAttacks(square, occ) &
@@ -1140,16 +1102,17 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Verify if a move is legal within this board context
+     * Verify if the move to be played leaves the resulting board in a legal position
      *
      * @param move           the move
-     * @param fullValidation the full validation
+     * @param fullValidation performs a full validation on the move, not only if it leaves own king on check, but also if
+     *                       castling is legal, based on attacked pieces and squares, if board is in a consistent state:
+     *                       e.g.: Occupancy of source square by a piece that belongs to playing side, etc.
      * @return the boolean
      */
     public boolean isMoveLegal(Move move, boolean fullValidation) {
 
         final Piece fromPiece = getPiece(move.getFrom());
-        final Piece toPiece = getPiece(move.getTo());
         final Side side = getSideToMove();
         final PieceType fromType = fromPiece.getPieceType();
         final Piece capturedPiece = getPiece(move.getTo());
@@ -1298,7 +1261,7 @@ public class Board implements Cloneable, BoardEvent {
     public boolean isMated() {
         try {
             if (isKingAttacked()) {
-                final MoveList l = MoveGenerator.generateLegalMoves(this);
+                final List<Move> l = MoveGenerator.generateLegalMoves(this);
                 if (l.size() == 0) {
                     return true;
                 }
@@ -1388,7 +1351,7 @@ public class Board implements Cloneable, BoardEvent {
     public boolean isStaleMate() {
         try {
             if (!isKingAttacked()) {
-                MoveList l = MoveGenerator.generateLegalMoves(this);
+                List<Move> l = MoveGenerator.generateLegalMoves(this);
                 if (l.size() == 0) {
                     return true;
                 }
@@ -1425,6 +1388,36 @@ public class Board implements Cloneable, BoardEvent {
      */
     public String getPositionId() {
         return getFen(false);
+    }
+
+    /**
+     * The legal moves for the current board
+     *
+     * @return list of only legal moves
+     */
+    public List<Move> legalMoves() {
+
+        return MoveGenerator.generateLegalMoves(this);
+    }
+
+    /**
+     * The pseudo-legal moves for the current board
+     *
+     * @return list of pseud-legal moves
+     */
+    public List<Move> pseudoLegalMoves() {
+
+        return MoveGenerator.generatePseudoLegalMoves(this);
+    }
+
+    /**
+     * The pseudo-legal captures for the current board
+     *
+     * @return list of pseud-legal captures
+     */
+    public List<Move> pseudoLegalCaptures() {
+
+        return MoveGenerator.generatePseudoLegalCaptures(this);
     }
 
     /**
@@ -1482,8 +1475,30 @@ public class Board implements Cloneable, BoardEvent {
         return hash;
     }
 
-    public void setIncrementalHashKey(int hashKey) {
-        incrementalHashKey = hashKey;
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 7; i >= 0; i--) {
+            Rank r = Rank.allRanks[i];
+            for (int n = 0; n <= 7; n++) {
+                File f = File.allFiles[n];
+                if (!File.NONE.equals(f) && !Rank.NONE.equals(r)) {
+                    Square sq = Square.encode(r, f);
+                    Piece piece = getPiece(sq);
+                    if (Piece.NONE.equals(piece)) {
+                        sb.append(" ");
+                    } else {
+                        sb.append(Constants.getPieceNotation(piece));
+                    }
+                }
+            }
+            sb.append("\n");
+        }
+        sb.append("Side: ");
+        sb.append(getSideToMove());
+
+        return sb.toString();
     }
 
     @Override
@@ -1493,5 +1508,38 @@ public class Board implements Cloneable, BoardEvent {
         return copy;
     }
 
+    public long getIncrementalHashKey() {
+        return incrementalHashKey;
+    }
 
+    public void setIncrementalHashKey(int hashKey) {
+        incrementalHashKey = hashKey;
+    }
+
+    private void updateZobrist(boolean remove) {
+
+        incrementalHashKey ^= shortKeys[3 * getSideToMove().ordinal() + 300];
+
+        if (getCastleRight(Side.WHITE) != CastleRight.NONE) {
+            incrementalHashKey ^= shortKeys[3 * getCastleRight(Side.WHITE).ordinal() + 200];
+        }
+        if (getCastleRight(Side.BLACK) != CastleRight.NONE) {
+            incrementalHashKey ^= shortKeys[3 * getCastleRight(Side.BLACK).ordinal() + 200];
+        }
+        if (getEnPassantTarget() != Square.NONE && verifyPinnedPiece(remove ? sideToMove.flip() : sideToMove)) {
+            incrementalHashKey ^= shortKeys[3 * getEnPassantTarget().getFile().ordinal() + 250];
+        }
+    }
+
+    private boolean verifyPinnedPiece(Side side) {
+
+        return squareAttackedByPieceType(getEnPassant(), side, PieceType.PAWN) != 0 &&
+                squareAttackedBy(getKingSquare(side), side.flip(), removePinningPieces(side)) == 0L;
+    }
+
+    private long removePinningPieces(Side side) {
+
+        return (getBitboard() ^ (Bitboard.getPawnAttacks(side.flip(), getEnPassant()) & getBitboard(side)))
+                | getEnPassant().getBitboard();
+    }
 }

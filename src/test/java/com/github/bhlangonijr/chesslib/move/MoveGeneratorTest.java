@@ -39,7 +39,7 @@ public class MoveGeneratorTest {
         Board board = new Board();
 
         assertEquals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", board.getFen());
-        MoveList moves = MoveGenerator.generateLegalMoves(board);
+        List<Move> moves = MoveGenerator.generateLegalMoves(board);
         assertEquals(moves.size(), 20);
 
         String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0";
@@ -62,8 +62,7 @@ public class MoveGeneratorTest {
         Board board = new Board();
         board.loadFromFen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0");
 
-        MoveList moves = MoveGenerator.generatePseudoLegalCaptures(board);
-
+        List<Move> moves = MoveGenerator.generatePseudoLegalCaptures(board);
 
         assertTrue(moves.contains(new Move("g2h3", Side.WHITE)));
         assertTrue(moves.contains(new Move("d5e6", Side.WHITE)));
@@ -95,7 +94,7 @@ public class MoveGeneratorTest {
 
         board.loadFromFen("8/1pp3p1/4pq1p/PP1bp3/1Q2pPk1/4P1P1/2B5/6K1 b - f3 0 34");
 
-        MoveList moves = MoveGenerator.generateLegalMoves(board);
+        List<Move> moves = MoveGenerator.generateLegalMoves(board);
         assertEquals(25, moves.size());
         assertFalse("Illegal move generated", moves.contains(new Move(Square.E4, Square.F3)));
 
