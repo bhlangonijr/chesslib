@@ -18,6 +18,9 @@ package com.github.bhlangonijr.chesslib.move;
 
 import com.github.bhlangonijr.chesslib.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static com.github.bhlangonijr.chesslib.Bitboard.bitScanForward;
 import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
 
@@ -35,7 +38,7 @@ public class MoveGenerator {
      * @param board the board
      * @param moves the moves
      */
-    public static void generatePawnCaptures(Board board, MoveList moves) {
+    public static void generatePawnCaptures(Board board, List<Move> moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.PAWN));
         while (pieces != 0L) {
@@ -59,7 +62,7 @@ public class MoveGenerator {
      * @param board the board
      * @param moves the moves
      */
-    public static void generatePawnMoves(Board board, MoveList moves) {
+    public static void generatePawnMoves(Board board, List<Move> moves) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.PAWN));
         while (pieces != 0L) {
@@ -76,7 +79,7 @@ public class MoveGenerator {
         }
     }
 
-    private static void addPromotions(MoveList moves, Side side, Square sqTarget, Square sqSource) {
+    private static void addPromotions(List<Move> moves, Side side, Square sqTarget, Square sqSource) {
 
         if (Side.WHITE.equals(side) && Rank.RANK_8.equals(sqTarget.getRank())) {
             moves.add(new Move(sqSource, sqTarget, Piece.WHITE_QUEEN));
@@ -100,7 +103,7 @@ public class MoveGenerator {
      * @param moves the moves
      * @param mask  mask of allowed targets
      */
-    public static void generateKnightMoves(Board board, MoveList moves, long mask) {
+    public static void generateKnightMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.KNIGHT));
         while (pieces != 0L) {
@@ -123,7 +126,7 @@ public class MoveGenerator {
      * @param board the board
      * @param moves the moves
      */
-    public static void generateKnightMoves(Board board, MoveList moves) {
+    public static void generateKnightMoves(Board board, List<Move> moves) {
 
         generateKnightMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
     }
@@ -135,7 +138,7 @@ public class MoveGenerator {
      * @param moves the moves
      * @param mask  mask of allowed targets
      */
-    public static void generateBishopMoves(Board board, MoveList moves, long mask) {
+    public static void generateBishopMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.BISHOP));
         while (pieces != 0L) {
@@ -158,7 +161,7 @@ public class MoveGenerator {
      * @param board the board
      * @param moves the moves
      */
-    public static void generateBishopMoves(Board board, MoveList moves) {
+    public static void generateBishopMoves(Board board, List<Move> moves) {
 
         generateBishopMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
     }
@@ -170,7 +173,7 @@ public class MoveGenerator {
      * @param moves the moves
      * @param mask  mask of allowed targets
      */
-    public static void generateRookMoves(Board board, MoveList moves, long mask) {
+    public static void generateRookMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.ROOK));
         while (pieces != 0L) {
@@ -193,7 +196,7 @@ public class MoveGenerator {
      * @param board the board
      * @param moves the moves
      */
-    public static void generateRookMoves(Board board, MoveList moves) {
+    public static void generateRookMoves(Board board, List<Move> moves) {
 
         generateRookMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
     }
@@ -205,7 +208,7 @@ public class MoveGenerator {
      * @param moves the moves
      * @param mask  mask of allowed targets
      */
-    public static void generateQueenMoves(Board board, MoveList moves, long mask) {
+    public static void generateQueenMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.QUEEN));
         while (pieces != 0L) {
@@ -228,7 +231,7 @@ public class MoveGenerator {
      * @param board the board
      * @param moves the moves
      */
-    public static void generateQueenMoves(Board board, MoveList moves) {
+    public static void generateQueenMoves(Board board, List<Move> moves) {
 
         generateQueenMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
     }
@@ -240,7 +243,7 @@ public class MoveGenerator {
      * @param moves the moves
      * @param mask  mask of allowed targets
      */
-    public static void generateKingMoves(Board board, MoveList moves, long mask) {
+    public static void generateKingMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
         long pieces = board.getBitboard(Piece.make(side, PieceType.KING));
         while (pieces != 0L) {
@@ -263,7 +266,7 @@ public class MoveGenerator {
      * @param board the board
      * @param moves the moves
      */
-    public static void generateKingMoves(Board board, MoveList moves) {
+    public static void generateKingMoves(Board board, List<Move> moves) {
         generateKingMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
     }
 
@@ -273,7 +276,7 @@ public class MoveGenerator {
      * @param board the board
      * @param moves the moves
      */
-    public static void generateCastleMoves(Board board, MoveList moves) {
+    public static void generateCastleMoves(Board board, List<Move> moves) {
         Side side = board.getSideToMove();
         if (board.isKingAttacked()) {
             return;
@@ -302,8 +305,8 @@ public class MoveGenerator {
      * @param board the board
      * @return move list
      */
-    public static MoveList generatePseudoLegalMoves(Board board) {
-        MoveList moves = new MoveList();
+    public static List<Move> generatePseudoLegalMoves(Board board) {
+        List<Move> moves = new LinkedList<>();
         generatePawnCaptures(board, moves);
         generatePawnMoves(board, moves);
         generateKnightMoves(board, moves);
@@ -321,8 +324,8 @@ public class MoveGenerator {
      * @param board the board
      * @return move list
      */
-    public static MoveList generatePseudoLegalCaptures(Board board) {
-        MoveList moves = new MoveList();
+    public static List<Move> generatePseudoLegalCaptures(Board board) {
+        List<Move> moves = new LinkedList<>();
         Side other = board.getSideToMove().flip();
         generatePawnCaptures(board, moves);
         generateKnightMoves(board, moves, board.getBitboard(other));
@@ -340,20 +343,14 @@ public class MoveGenerator {
      * @return move list
      * @throws MoveGeneratorException the move generator exception
      */
-    public static MoveList generateLegalMoves(Board board) throws MoveGeneratorException {
-        MoveList legalMoves = new MoveList();
+    public static List<Move> generateLegalMoves(Board board) throws MoveGeneratorException {
         try {
-            MoveList moves = generatePseudoLegalMoves(board);
-            for (Move move : moves) {
-                if (board.isMoveLegal(move, false)) {
-                    legalMoves.add(move);
-                }
-            }
+            List<Move> moves = generatePseudoLegalMoves(board);
+            moves.removeIf(move -> !board.isMoveLegal(move, false));
+            return moves;
         } catch (Exception e) {
             throw new MoveGeneratorException("Couldn't generate Legal moves: ", e);
         }
-
-        return legalMoves;
     }
 
 }

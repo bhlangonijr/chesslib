@@ -19,7 +19,7 @@ package com.github.bhlangonijr.chesslib.move;
 /**
  * The type Move exception.
  */
-public class MoveException extends Exception {
+public class MoveException extends RuntimeException {
 
     private static final long serialVersionUID = 6523240383760826752L;
 
