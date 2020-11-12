@@ -1,7 +1,12 @@
 package com.github.bhlangonijr.chesslib;
 
-import com.github.bhlangonijr.chesslib.move.*;
+import com.github.bhlangonijr.chesslib.move.Move;
+import com.github.bhlangonijr.chesslib.move.MoveConversionException;
+import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
+import com.github.bhlangonijr.chesslib.move.MoveList;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -182,7 +187,7 @@ public class BoardTest {
         Board b1 = new Board();
         b1.loadFromFen(fen1);
 
-        MoveList moves = MoveGenerator.generateLegalMoves(b1);
+        List<Move> moves = b1.legalMoves();
 
         assertEquals(47, moves.size());
     }
@@ -198,7 +203,7 @@ public class BoardTest {
         Board b = new Board();
         b.loadFromFen(fen);
 
-        MoveList moves = MoveGenerator.generateLegalMoves(b);
+        List<Move> moves = b.legalMoves();
 
         assertEquals(new Move(Square.A4, Square.A3), moves.get(0));
 
@@ -215,7 +220,7 @@ public class BoardTest {
         Board b = new Board();
         b.loadFromFen(fen);
 
-        MoveList moves = MoveGenerator.generateLegalMoves(b);
+        List<Move> moves = b.legalMoves();
 
         assertTrue(moves.contains(new Move(Square.E4, Square.F5)));
         assertTrue(moves.contains(new Move(Square.G4, Square.F3)));
@@ -235,7 +240,7 @@ public class BoardTest {
         Board b = new Board();
         b.loadFromFen(fen);
 
-        MoveList moves = MoveGenerator.generateLegalMoves(b);
+        List<Move> moves = b.legalMoves();
 
         assertTrue(moves.contains(new Move(Square.D5, Square.C6)));
         assertTrue(moves.contains(new Move(Square.D4, Square.C3)));
@@ -541,7 +546,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testThreefoldRepetition4() throws MoveConversionException {
+    public void testThreefoldRepetition2() throws MoveConversionException {
 
         final MoveList moves = new MoveList();
         moves.loadFromSan("1. e4 e5 2. Nf3 Nf6 3. Ng1 Ng8 4. Ke2 Ke7 5. Ke1 Ke8 6. Na3 Na6 7. Nb1 Nb8");
@@ -554,7 +559,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testThreefoldRepetition5() throws MoveConversionException {
+    public void testThreefoldRepetition3() throws MoveConversionException {
 
         final MoveList moves = new MoveList();
         moves.loadFromSan("1. Nf3 Nf6 2. Nc3 c5 3. e3 d5 4. Be2 Ne4 5. Bf1 Nf6 6. Be2 Ne4 7. Bf1 Nf6");
@@ -567,7 +572,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testThreefoldRepetition6() throws MoveConversionException {
+    public void testThreefoldRepetition4() throws MoveConversionException {
 
         final MoveList moves = new MoveList();
         moves.loadFromSan("1. d4 d5 2. Nf3 Nf6 3. c4 e6 4. Bg5 Nbd7 5. e3 Be7 6. Nc3 O-O 7. Rc1 b6 8. cxd5 exd5 9. Qa4 c5 10. Qc6 Rb8 11. Nxd5 Bb7 12. Nxe7+ Qxe7 13. Qa4 Rbc8 14. Qa3 Qe6 15. Bxf6 Qxf6 16. Ba6 Bxf3 17. Bxc8 Rxc8 18. gxf3 Qxf3 19. Rg1 Re8 20. Qd3 g6 21. Kf1 Re4 22. Qd1 Qh3+ 23. Rg2 Nf6 24. Kg1 cxd4 25. Rc4 dxe3 26. Rxe4 Nxe4 27. Qd8+ Kg7 28. Qd4+ Nf6 29. fxe3 Qe6 30. Rf2 g5 31. h4 gxh4 32. Qxh4 Ng4 33. Qg5+ Kf8 34. Rf5 h5 35. Qd8+ Kg7 36. Qg5+ Kf8 37. Qd8+ Kg7 38. Qg5+ Kf8");
@@ -581,7 +586,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testThreefoldRepetition7() throws MoveConversionException {
+    public void testThreefoldRepetition5() throws MoveConversionException {
 
         // en passant capture not possible for would expose own king to check
         final Board board = new Board();
@@ -603,7 +608,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testThreefoldRepetition8() throws MoveConversionException {
+    public void testThreefoldRepetition6() throws MoveConversionException {
 
         // en passant capture not possible for own king in check
         final Board board = new Board();
@@ -623,5 +628,19 @@ public class BoardTest {
 
         board.doMove(new Move(Square.A3, Square.A2)); // threefold repetiton
         assertTrue(board.isRepetition());
+
+    }
+
+    @Test
+    public void testThreefoldRepetition7() throws MoveConversionException {
+
+        final MoveList moves = new MoveList();
+        moves.loadFromSan("1. e4 Nf6 2. e5 d5 3. Bc4 Nc6 4. Bf1 Nb8 5. Bc4 Nc6 6. Bf1 Nb8");
+
+        final Board board = new Board();
+        for (Move move : moves) {
+            board.doMove(move);
+        }
+        assertFalse(board.isRepetition());
     }
 }
