@@ -243,7 +243,7 @@ for depth 5. Deviation from this number would imply a bug in move generation or 
 ## Creating a full fledged chess engine
 
 [kengine](https://github.com/bhlangonijr/kengine) is a minimalistic chess engine built on top of kotlin and chesslib to 
-to showcase a more advanced use case.
+showcase a more advanced use case.
 
 ## Capturing and reacting to events
 
