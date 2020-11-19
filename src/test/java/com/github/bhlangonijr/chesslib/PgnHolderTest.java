@@ -278,6 +278,23 @@ public class PgnHolderTest {
     }
 
     @Test
+    public void testLongMoves() throws Exception {
+
+        long init = System.currentTimeMillis();
+        PgnHolder pgn = new PgnHolder("src/test/resources/longest.pgn");
+        pgn.loadPgn();
+        for (Game game : pgn.getGames()) {
+            game.loadMoveText();
+            MoveList moves = game.getHalfMoves();
+            Board board = new Board();
+            for (Move move : moves) {
+                board.doMove(move);
+            }
+        }
+        System.out.println("Time: " + (System.currentTimeMillis() - init));
+    }
+
+    @Test
     public void testPGNLoadInputStream() throws Exception {
 
         PgnHolder pgn = new PgnHolder(null);

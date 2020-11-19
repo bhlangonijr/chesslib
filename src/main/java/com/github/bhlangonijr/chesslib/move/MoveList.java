@@ -519,7 +519,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      */
     public void addSanMove(String san, boolean replay, boolean fullValidation) throws MoveConversionException {
         final Board b = getBoard();
-        if (replay || fullValidation) {
+        if (replay) {
             if (!b.getFen().equals(getStartFen())) {
                 b.loadFromFen(getStartFen());
             }

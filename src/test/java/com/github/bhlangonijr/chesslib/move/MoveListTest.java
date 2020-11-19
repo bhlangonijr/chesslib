@@ -155,7 +155,7 @@ public class MoveListTest {
     public void testDecodingSanAmbiguityResolution() {
 
         final MoveList moveList = new MoveList("4k3/8/8/8/1b6/2N5/8/4K1N1 w - - 0 1");
-        moveList.addSanMove("Nge2", false, true);
+        moveList.addSanMove("Nge2", true, true);
         assertEquals("Ne2", moveList.toSanArray()[moveList.size() - 1]);
     }
 
