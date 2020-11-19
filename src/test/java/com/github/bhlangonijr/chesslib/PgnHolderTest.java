@@ -9,6 +9,7 @@ import com.github.bhlangonijr.chesslib.util.LargeFile;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * The type Pgn holder test.
@@ -291,7 +292,27 @@ public class PgnHolderTest {
                 board.doMove(move);
             }
         }
-        System.out.println("Time: " + (System.currentTimeMillis() - init));
+        long timeSpent = System.currentTimeMillis() - init;
+        assertTrue(timeSpent < 5000);
+    }
+
+    @Test
+    public void testRepetition() throws Exception {
+
+        //8/4Q3/1K6/5rk1/8/2bN1n2/8/8 b
+        //4Q3/1K6/8/5rk1/8/2bN1n2/8/8 b
+        //4Q3/1K6/8/5rk1/8/2bN1n2/8/8 b
+        final PgnHolder pgn = new PgnHolder("src/test/resources/test.pgn");
+        pgn.loadPgn();
+        final Game game = pgn.getGames().get(0);
+        game.loadMoveText();
+
+        final Board board = new Board();
+        for (final Move move : game.getHalfMoves()) {
+            board.doMove(move);
+            System.out.println(board.getFen() + " - " + board.hashCode() + " - " + board.getZobristKey());
+        }
+        System.out.println(board.isRepetition()); // prints true but is only twofold repetition
     }
 
     @Test
