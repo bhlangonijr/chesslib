@@ -166,4 +166,17 @@ public class MoveListTest {
         moveList.addSanMove("Nce2", false, true);
     }
 
+    @Test
+    public void testSanCastleWithMate() {
+
+        final String san = "1. d4 e6 2. Nf3 f5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 6. e4 fxe4 7. Nxe4 b6 "
+                + "8. Ne5 O-O 9. Bd3 Bb7 10. Qh5 Qe7 11. Qxh7+ Kxh7 12. Nxf6+ Kh6 13. Neg4+ Kg5 14. h4+ Kf4 "
+                + "15. g3+ Kf3 16. Be2+ Kg2 17. Rh2+ Kg1 18. O-O-O#";
+
+        final MoveList moveList = new MoveList();
+        moveList.loadFromSan(san);
+        final String sanGeneratedLastMove = moveList.toSanArray()[moveList.toSanArray().length - 1];
+        assertEquals("O-O-O#", sanGeneratedLastMove);
+    }
+
 }

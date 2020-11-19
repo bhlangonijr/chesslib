@@ -1432,7 +1432,7 @@ public class Board implements Cloneable, BoardEvent {
                     Square sq = Square.encode(r, f);
                     Piece piece = getPiece(sq);
                     if (Piece.NONE.equals(piece)) {
-                        sb.append(" ");
+                        sb.append(".");
                     } else {
                         sb.append(Constants.getPieceNotation(piece));
                     }

@@ -174,11 +174,9 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                     throw new MoveConversionException("Invalid move [" +
                             move.toString() + "] for current setup: " + board.getFen());
                 }
-                if (delta > 0) {
-                    return "O-O";
-                } else {
-                    return "O-O-O";
-                }
+                san.append(delta > 0 ? "O-O":"O-O-O");
+                addCheckFlag(board, san);
+                return san.toString();
             }
         }
         boolean pawnMove = piece.getPieceType().equals(PieceType.PAWN) &&
@@ -230,6 +228,12 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             san.append("=");
             san.append(notation.get(move.getPromotion()));
         }
+        addCheckFlag(board, san);
+        return san.toString();
+    }
+
+    private static void addCheckFlag(Board board, StringBuilder san) {
+
         if (board.isKingAttacked()) {
             if (board.isMated()) {
                 san.append("#");
@@ -237,7 +241,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                 san.append("+");
             }
         }
-        return san.toString();
     }
 
     private static long findLegalSquares(Board board, Square to, Piece promotion, long pieces) {
