@@ -8,6 +8,7 @@ import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
 import com.github.bhlangonijr.chesslib.util.LargeFile;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -299,9 +300,6 @@ public class PgnHolderTest {
     @Test
     public void testRepetition() throws Exception {
 
-        //8/4Q3/1K6/5rk1/8/2bN1n2/8/8 b
-        //4Q3/1K6/8/5rk1/8/2bN1n2/8/8 b
-        //4Q3/1K6/8/5rk1/8/2bN1n2/8/8 b
         final PgnHolder pgn = new PgnHolder("src/test/resources/test.pgn");
         pgn.loadPgn();
         final Game game = pgn.getGames().get(0);
@@ -310,9 +308,68 @@ public class PgnHolderTest {
         final Board board = new Board();
         for (final Move move : game.getHalfMoves()) {
             board.doMove(move);
-            System.out.println(board.getFen() + " - " + board.hashCode() + " - " + board.getZobristKey());
         }
-        System.out.println(board.isRepetition()); // prints true but is only twofold repetition
+        assertFalse(board.isRepetition());
+    }
+
+    @Test
+    public void testRepetition2() throws Exception {
+
+        final PgnHolder pgn = new PgnHolder("src/test/resources/alekseenko_grachev_2017.pgn");
+        pgn.loadPgn();
+        final Game game = pgn.getGames().get(0);
+        game.loadMoveText();
+
+        final Board board = new Board();
+        for (final Move move : game.getHalfMoves()) {
+            board.doMove(move);
+        }
+        assertFalse(board.isRepetition());
+    }
+
+    @Test
+    public void testRepetition3() throws Exception {
+
+        final PgnHolder pgn = new PgnHolder("src/test/resources/nikolic_arsovic_1989.pgn");
+        pgn.loadPgn();
+        final Game game = pgn.getGames().get(0);
+        game.loadMoveText();
+
+        final Board board = new Board();
+        for (final Move move : game.getHalfMoves()) {
+            board.doMove(move);
+        }
+        assertFalse(board.isRepetition());
+    }
+
+    @Test
+    public void testRepetition4() throws Exception {
+
+        final PgnHolder pgn = new PgnHolder("src/test/resources/no_repetition_1.pgn");
+        pgn.loadPgn();
+        final Game game = pgn.getGames().get(0);
+        game.loadMoveText();
+
+        final Board board = new Board();
+        for (final Move move : game.getHalfMoves()) {
+            board.doMove(move);
+        }
+        assertFalse(board.isRepetition());
+    }
+
+    @Test
+    public void testRepetition5() throws Exception {
+
+        final PgnHolder pgn = new PgnHolder("src/test/resources/no_repetition_2.pgn");
+        pgn.loadPgn();
+        final Game game = pgn.getGames().get(0);
+        game.loadMoveText();
+
+        final Board board = new Board();
+        for (final Move move : game.getHalfMoves()) {
+            board.doMove(move);
+        }
+        assertFalse(board.isRepetition());
     }
 
     @Test

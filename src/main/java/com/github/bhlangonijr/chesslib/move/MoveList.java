@@ -174,7 +174,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                     throw new MoveConversionException("Invalid move [" +
                             move.toString() + "] for current setup: " + board.getFen());
                 }
-                san.append(delta > 0 ? "O-O":"O-O-O");
+                san.append(delta > 0 ? "O-O" : "O-O-O");
                 addCheckFlag(board, san);
                 return san.toString();
             }

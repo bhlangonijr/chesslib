@@ -554,7 +554,7 @@ public class BoardTest {
         final Board board = new Board();
         for (Move move : moves) {
             board.doMove(move);
-            System.out.println(board.hashCode() + "\t = " + move + "\n = " + board.getFen());
+            System.out.println(board.getZobristKey() + "\t = " + move + "\n = " + board.getFen());
         }
         assertFalse(board.isRepetition());
     }
