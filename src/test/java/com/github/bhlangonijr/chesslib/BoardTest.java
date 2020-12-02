@@ -38,8 +38,8 @@ public class BoardTest {
         assertEquals(Piece.BLACK_ROOK, board.getPiece(Square.H8));
         assertEquals(Piece.WHITE_ROOK, board.getPiece(Square.H1));
 
-        assertEquals(new Integer(0), board.getHalfMoveCounter());
-        assertEquals(new Integer(1), board.getMoveCounter());
+        assertEquals(Integer.valueOf(0), board.getHalfMoveCounter());
+        assertEquals(Integer.valueOf(1), board.getMoveCounter());
         assertEquals(Square.E3, board.getEnPassant());
         assertEquals(Square.E4, board.getEnPassantTarget());
 

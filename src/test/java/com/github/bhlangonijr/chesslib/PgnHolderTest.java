@@ -8,6 +8,9 @@ import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
 import com.github.bhlangonijr.chesslib.util.LargeFile;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -465,5 +468,51 @@ public class PgnHolderTest {
                 "c6e5 d4e5 f6d7 d2b3 g7g6 b3d4 c7c5 d4f3 b7b5 c1h6 c8b7 h2h4 e7h4 a2a4 b5b4 c3b4 c5b4 d1c1 h4e7 c1f4 " +
                 "d7c5 a1d1 b7c6 e5e6 f7f6 f3h4 c6a4 h4g6 c5e6 e1e6 e7d6 f4g4 d6h2 g1h2 d8c7 h2g1 c7g7 e6e7 e8e7 g6e7 " +
                 "g8f7 g4g7 f7e8 e7d5 a8a7 d3b5 a6b5 d5f6", game.getHalfMoves().toString());
+    }
+
+    @Test
+    public void testBoardHashKeyConsistency() throws Exception {
+
+        final PgnHolder pgn = new PgnHolder("src/test/resources/Stockfish_DD_64-bit_4CPU.pgn");
+        pgn.loadPgn();
+
+        int numberOfInconsistencies = 0;
+
+        for (Game game : pgn.getGames()) {
+            game.loadMoveText();
+            StringBuilder s = new StringBuilder();
+            Map<Long, Integer> map = new HashMap<>();
+            Map<String, Integer> map2 = new HashMap<>();
+            Map<String, Long> map3 = new HashMap<>();
+            final Board board = new Board();
+            int i = 0;
+            for (final Move move : game.getHalfMoves()) {
+                board.doMove(move);
+                assertEquals(board.getIncrementalHashKey(), board.getZobristKey());
+                s.append(i++);
+                s.append(" -> ");
+                s.append(board.getFen());
+                s.append(" -> ");
+                s.append(move);
+                s.append(" -> ");
+                s.append(board.getIncrementalHashKey());
+                s.append("\n");
+                map.compute(board.getIncrementalHashKey(), (a, b) -> (b == null) ? 1 : b + 1);
+                String key = board.getPositionId();
+                map2.compute(key, (a, b) -> (b == null) ? 1 : b + 1);
+                map3.put(key, board.getIncrementalHashKey());
+            }
+
+            for (Map.Entry<String, Long> entry : map3.entrySet()) {
+                if (map.get(entry.getValue()).intValue() != map2.get(entry.getKey()).intValue()) {
+                    System.out.println("----------------");
+                    System.out.println(entry.getKey() + ":" + entry.getValue() + " [" + map2.get(entry.getKey()) +
+                            " - " + map.get(entry.getValue()) + "]");
+                    System.out.println(s.toString());
+                    numberOfInconsistencies++;
+                }
+            }
+        }
+        assertEquals(0, numberOfInconsistencies);
     }
 }
