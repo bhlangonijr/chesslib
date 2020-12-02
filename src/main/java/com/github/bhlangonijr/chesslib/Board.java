@@ -1085,7 +1085,6 @@ public class Board implements Cloneable, BoardEvent {
                 }
             }
         }
-
         if (fromType.equals(PieceType.KING)) {
             if (squareAttackedBy(move.getTo(), side.flip()) != 0L) {
                 return false;
@@ -1323,14 +1322,14 @@ public class Board implements Cloneable, BoardEvent {
      * Get the unique position ID for the board state,
      * which is the actual FEN representation of the board without counters
      * <p>
-     * This is a reliable why of identifying a unique position, although much more slower
+     * This is a reliable way of identifying a unique position, although much more slower
      * than using the {@code Board#hashcode()}, or {@code Board#getZobristKey()}
      *
      * @return position id
      */
     public String getPositionId() {
         String[] parts = this.getFen(false).split(" ");
-        return parts[0] + parts[1] + parts[2] +
+        return parts[0] + " " + parts[1] + " " + parts[2] +
                 (this.getEnPassantTarget() != Square.NONE ? parts[3] : "-");
     }
 

@@ -515,4 +515,20 @@ public class PgnHolderTest {
         }
         assertEquals(0, numberOfInconsistencies);
     }
+
+    @Test
+    public void testLoadFromStartPosition() throws Exception {
+
+        final PgnHolder pgn = new PgnHolder("src/test/resources/teststartpos.pgn");
+        pgn.loadPgn();
+        final Game game = pgn.getGames().get(0);
+        game.loadMoveText();
+
+        final Board board = new Board();
+        board.loadFromFen(game.getFen());
+        for (final Move move : game.getHalfMoves()) {
+            board.doMove(move);
+        }
+        assertEquals("8/8/2k5/4R3/3K4/8/8/8 w - - 19 102", board.getFen());
+    }
 }
