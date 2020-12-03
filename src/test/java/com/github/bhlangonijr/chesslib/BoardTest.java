@@ -38,10 +38,10 @@ public class BoardTest {
         assertEquals(Piece.BLACK_ROOK, board.getPiece(Square.H8));
         assertEquals(Piece.WHITE_ROOK, board.getPiece(Square.H1));
 
-        assertEquals(new Integer(0), board.getHalfMoveCounter());
-        assertEquals(new Integer(1), board.getMoveCounter());
+        assertEquals(Integer.valueOf(0), board.getHalfMoveCounter());
+        assertEquals(Integer.valueOf(1), board.getMoveCounter());
         assertEquals(Square.E3, board.getEnPassant());
-        assertEquals(Square.E4, board.getEnPassantTarget());
+        assertEquals(Square.NONE, board.getEnPassantTarget());
 
         assertEquals(fen1, board.getFen());
 
@@ -656,6 +656,27 @@ public class BoardTest {
 
         //print the chessboard in a human-readable form
         System.out.println(board.toString());
+    }
+
+    @Test
+    public void testBoardStrictEquals() throws MoveConversionException {
+
+        Board board = new Board();
+
+        board.doMove(new Move(Square.E2, Square.E4));
+        board.doMove(new Move(Square.E7, Square.E5));
+
+        Board board2 = board.clone();
+
+        assertEquals(board, board2);
+        assertTrue(board.strictEquals(board2));
+
+        Board board3 = new Board();
+        board3.loadFromFen(board.getFen());
+
+        assertEquals(board, board3);
+        assertFalse(board.strictEquals(board3));
+
     }
 
 

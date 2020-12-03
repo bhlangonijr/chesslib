@@ -297,7 +297,11 @@ public class Game {
      */
     public MoveList getHalfMoves() {
         if (halfMoves == null) {
-            setHalfMoves(new MoveList());
+            if (getFen() != null && !getFen().trim().equals("")) {
+                halfMoves = new MoveList(getFen());
+            } else {
+                halfMoves = new MoveList();
+            }
         }
         return halfMoves;
     }
@@ -703,7 +707,6 @@ public class Game {
      */
     public void loadMoveText(StringBuilder moveText) throws Exception {
 
-        getHalfMoves().clear();
         if (getVariations() != null) {
             getVariations().clear();
         }
@@ -721,16 +724,13 @@ public class Game {
         StringUtil.replaceAll(moveText, ")", " ) ");
 
         String text = moveText.toString();
-        if (text == null) {
-            return;
+
+        if (getFen() != null && !getFen().trim().equals("")) {
+            setHalfMoves(new MoveList(getFen()));
+        } else {
+            setHalfMoves(new MoveList());
         }
-        if (getHalfMoves() == null) {
-            if (getFen() != null && !getFen().trim().equals("")) {
-                setHalfMoves(new MoveList(getFen()));
-            } else {
-                setHalfMoves(new MoveList());
-            }
-        }
+
         StringBuilder moves = new StringBuilder();
         StringBuilder comment = null;
         LinkedList<RTextEntry> variation =
@@ -865,7 +865,6 @@ public class Game {
         }
 
         StringUtil.replaceAll(moves, "\n", " ");
-        getHalfMoves().clear();
         getHalfMoves().loadFromSan(moves.toString());
     }
 

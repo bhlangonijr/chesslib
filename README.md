@@ -36,7 +36,7 @@ Chesslib dependency can be added via the jitpack repository.
 <dependency>
   <groupId>com.github.bhlangonijr</groupId>
   <artifactId>chesslib</artifactId>
-  <version>1.2.3</version>
+  <version>1.2.4</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ repositories {
 ```
 dependencies {
     ...
-    compile 'com.github.bhlangonijr:chesslib:1.2.3'
+    compile 'com.github.bhlangonijr:chesslib:1.2.4'
     ...
 }
 ```
@@ -163,6 +163,14 @@ Chessboard situation can be checked using the methods:
   - `board.isMated()`
   - `board.getSideToMove()`
   - ...
+  
+  
+## Comparing boards
+
+There are two methods for comparing boards:
+ 
+  - `board.equals(board2)`: Compares ignoring the board history
+  - `board.strictEquals(board2)`: Compares the board and its history
 
 ## Load a chess game collection from a [PGN](https://en.wikipedia.org/wiki/Portable_Game_Notation) file
 
