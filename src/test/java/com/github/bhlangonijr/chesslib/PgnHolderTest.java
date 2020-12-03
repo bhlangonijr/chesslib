@@ -8,7 +8,9 @@ import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
 import com.github.bhlangonijr.chesslib.util.LargeFile;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertFalse;
@@ -341,8 +343,9 @@ public class PgnHolderTest {
         final Board board = new Board();
         for (final Move move : game.getHalfMoves()) {
             board.doMove(move);
+            if (board.isRepetition()) break;
         }
-        assertFalse(board.isRepetition());
+        assertTrue(board.isRepetition());
     }
 
     @Test
@@ -352,12 +355,14 @@ public class PgnHolderTest {
         pgn.loadPgn();
         final Game game = pgn.getGames().get(0);
         game.loadMoveText();
-
+        List<String> keys = new ArrayList<>();
         final Board board = new Board();
         for (final Move move : game.getHalfMoves()) {
             board.doMove(move);
+            assertFalse(keys.contains(board.getPositionId()));
+            keys.add(board.getPositionId());
+            assertFalse(board.isRepetition());
         }
-        assertFalse(board.isRepetition());
     }
 
     @Test
@@ -367,12 +372,14 @@ public class PgnHolderTest {
         pgn.loadPgn();
         final Game game = pgn.getGames().get(0);
         game.loadMoveText();
-
+        List<String> keys = new ArrayList<>();
         final Board board = new Board();
         for (final Move move : game.getHalfMoves()) {
             board.doMove(move);
+            assertFalse(keys.contains(board.getPositionId()));
+            keys.add(board.getPositionId());
+            assertFalse(board.isRepetition());
         }
-        assertFalse(board.isRepetition());
     }
 
     @Test
