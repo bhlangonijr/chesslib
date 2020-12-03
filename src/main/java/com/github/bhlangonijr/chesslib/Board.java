@@ -719,6 +719,10 @@ public class Board implements Cloneable, BoardEvent {
                 Square ep = Square.valueOf(s);
                 setEnPassant(ep);
                 setEnPassantTarget(findEnPassantTarget(ep, sideToMove));
+                if (!(squareAttackedByPieceType(getEnPassant(), getSideToMove(), PieceType.PAWN) != 0 &&
+                        verifyNotPinnedPiece(getSideToMove().flip(), getEnPassant(), getEnPassantTarget()))) {
+                    setEnPassantTarget(Square.NONE);
+                }
             } else {
                 setEnPassant(Square.NONE);
                 setEnPassantTarget(Square.NONE);
@@ -1381,7 +1385,24 @@ public class Board implements Cloneable, BoardEvent {
             return getSideToMove() == board.getSideToMove()
                     && getCastleRight(Side.WHITE) == board.getCastleRight(Side.WHITE)
                     && getCastleRight(Side.BLACK) == board.getCastleRight(Side.BLACK)
-                    && getEnPassant() == board.getEnPassant();
+                    && getEnPassant() == board.getEnPassant()
+                    && getEnPassantTarget() == board.getEnPassantTarget();
+
+        }
+        return false;
+    }
+
+    /**
+     * Strict equals is equivalent to the {@code Board#equals()} function plus it also compares if history
+     * on both boards are the same
+     *
+     * @param obj board object
+     * @return
+     */
+    public boolean strictEquals(Object obj) {
+        if (obj instanceof Board) {
+            Board board = (Board) obj;
+            return equals(board) && board.getHistory().equals(this.getHistory());
         }
         return false;
     }
@@ -1464,6 +1485,11 @@ public class Board implements Cloneable, BoardEvent {
     public Board clone() {
         Board copy = new Board(getContext(), this.updateHistory);
         copy.loadFromFen(this.getFen());
+        copy.setEnPassantTarget(this.getEnPassantTarget());
+        copy.getHistory().clear();
+        for (long key: getHistory()) {
+            copy.getHistory().add(key);
+        }
         return copy;
     }
 
