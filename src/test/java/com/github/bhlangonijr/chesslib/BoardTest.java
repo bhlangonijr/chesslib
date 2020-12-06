@@ -510,6 +510,16 @@ public class BoardTest {
     }
 
     @Test
+    public void testInsufficientMaterial1() {
+
+        final Board board = new Board();
+        board.loadFromFen("B3k3/8/8/8/8/8/8/4KB2 w - - 0 1");
+        assertTrue(board.isInsufficientMaterial());
+        board.loadFromFen("B1b1k3/3b4/4b3/8/8/8/8/4KB2 w - - 0 1");
+        assertTrue(board.isInsufficientMaterial());
+    }
+
+    @Test
     public void testInsufficientMaterial2() {
 
         final Board board = new Board();

@@ -477,6 +477,20 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Get the square first location of the given piece
+     *
+     * @param piece the piece
+     * @return piece location
+     */
+    public Square getFistPieceLocation(Piece piece) {
+        if (getBitboard(piece) != 0L) {
+            return  Square.squareAt(Bitboard.bitScanForward(getBitboard(piece)));
+        }
+        return Square.NONE;
+
+    }
+
+    /**
      * Gets side to move.
      *
      * @return the sideToMove
@@ -1270,16 +1284,37 @@ public class Board implements Cloneable, BoardEvent {
         final long pawns = getBitboard(Piece.WHITE_PAWN) | getBitboard(Piece.BLACK_PAWN);
         if (pawns == 0L) {
             long count = Long.bitCount(getBitboard());
+            int whiteCount = Long.bitCount(getBitboard(Side.WHITE));
+            int blackCount = Long.bitCount(getBitboard(Side.BLACK));
             if (count == 4) {
-                if (Long.bitCount(getBitboard(Side.WHITE)) > 1 &&
-                        Long.bitCount(getBitboard(Side.BLACK)) > 1) {
-                    return !((Long.bitCount(getBitboard(Piece.WHITE_BISHOP)) == 1 &&
-                            Long.bitCount(getBitboard(Piece.BLACK_BISHOP)) == 1) &&
-                            getPieceLocation(Piece.WHITE_BISHOP).get(0).isLightSquare() !=
-                                    getPieceLocation(Piece.BLACK_BISHOP).get(0).isLightSquare());
-                } else return Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
-                        Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2;
-            } else return count < 4;
+                int whiteBishopCount = Long.bitCount(getBitboard(Piece.WHITE_BISHOP));
+                int blackBishopCount = Long.bitCount(getBitboard(Piece.BLACK_BISHOP));
+                if (whiteCount > 1 && blackCount > 1) {
+                    return !((whiteBishopCount == 1 && blackBishopCount == 1) &&
+                            getFistPieceLocation(Piece.WHITE_BISHOP).isLightSquare() !=
+                                    getFistPieceLocation(Piece.BLACK_BISHOP).isLightSquare());
+                } if (whiteCount == 3 || blackCount == 3) {
+                    if (whiteBishopCount == 2 &&
+                            ((Bitboard.lightSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L ||
+                                    (Bitboard.darkSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L)) {
+                        return true;
+                    } else return blackBishopCount == 2 &&
+                            ((Bitboard.lightSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L ||
+                                    (Bitboard.darkSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L);
+                } else {
+                    return Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
+                            Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2;
+                }
+            } else {
+                if ((getBitboard(Piece.WHITE_KING) | getBitboard(Piece.WHITE_BISHOP)) == getBitboard(Side.WHITE) &&
+                        ((getBitboard(Piece.BLACK_KING) | getBitboard(Piece.BLACK_BISHOP)) == getBitboard(Side.BLACK))) {
+                    return (((Bitboard.lightSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L) &&
+                            ((Bitboard.lightSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L)) ||
+                            ((Bitboard.darkSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L) &&
+                                    ((Bitboard.darkSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L);
+                }
+                return count < 4;
+            }
         }
 
         return false;
