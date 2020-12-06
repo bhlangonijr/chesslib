@@ -679,5 +679,23 @@ public class BoardTest {
 
     }
 
+    @Test
+    public void testBoardConsistencyAfterUndoingMove() throws MoveConversionException {
+
+        final Board board = new Board();
+        final Move e2e4 = new Move(Square.E2, Square.E4);
+        final Move e7e5 = new Move(Square.E7, Square.E5);
+        board.doMove(e2e4);
+        board.doMove(e7e5);
+        long initialKey = board.getIncrementalHashKey();
+
+        board.undoMove();
+        board.doMove(e7e5);
+        assertEquals(initialKey, board.getIncrementalHashKey());
+        assertEquals((long) board.getHistory().getLast(), board.getIncrementalHashKey());
+        assertEquals(board.getZobristKey(), initialKey);
+
+    }
+
 
 }

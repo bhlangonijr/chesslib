@@ -40,13 +40,13 @@ public class MoveBackup implements BoardEvent {
     private Piece movingPiece;
     private boolean castleMove;
     private boolean enPassantMove;
-    private int incrementalHashKey;
+    private long incrementalHashKey;
 
     /**
      * Instantiates a new Move backup.
      */
     public MoveBackup() {
-        castleRight = new EnumMap<Side, CastleRight>(Side.class);
+        castleRight = new EnumMap<>(Side.class);
     }
 
     /**
@@ -68,7 +68,7 @@ public class MoveBackup implements BoardEvent {
      */
     public void makeBackup(Board board, Move move) {
 
-        setIncrementalHashKey(board.hashCode());
+        setIncrementalHashKey(board.getIncrementalHashKey());
         setSideToMove(board.getSideToMove());
         setEnPassantTarget(board.getEnPassantTarget());
         setEnPassant(board.getEnPassant());
@@ -356,11 +356,11 @@ public class MoveBackup implements BoardEvent {
         this.enPassantMove = enPassantMove;
     }
 
-    public int getIncrementalHashKey() {
+    public long getIncrementalHashKey() {
         return incrementalHashKey;
     }
 
-    public void setIncrementalHashKey(int incrementalHashKey) {
+    public void setIncrementalHashKey(long incrementalHashKey) {
         this.incrementalHashKey = incrementalHashKey;
     }
 }

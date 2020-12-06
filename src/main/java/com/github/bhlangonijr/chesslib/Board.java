@@ -48,6 +48,7 @@ public class Board implements Cloneable, BoardEvent {
     private final EnumMap<BoardEventType, List<BoardEventListener>> eventListener;
     private final long[] bitboard;
     private final long[] bbSide;
+    private final Piece[] occupation;
     private final EnumMap<Side, CastleRight> castleRight;
     private final LinkedList<Long> history = new LinkedList<>();
     private Side sideToMove;
@@ -77,6 +78,7 @@ public class Board implements Cloneable, BoardEvent {
 
         bitboard = new long[Piece.allPieces.length];
         bbSide = new long[Side.allSides.length];
+        occupation = new Piece[Square.values().length];
         castleRight = new EnumMap<>(Side.class);
         backup = new LinkedList<>();
         context = gameContext;
@@ -404,7 +406,7 @@ public class Board implements Cloneable, BoardEvent {
      */
     public boolean hasPiece(Piece piece, Square[] location) {
         for (Square sq : location) {
-            if (piece.equals(getPiece(sq))) {
+            if ((getBitboard(piece) & sq.getBitboard()) != 0L) {
                 return true;
             }
         }
@@ -418,12 +420,8 @@ public class Board implements Cloneable, BoardEvent {
      * @return piece
      */
     public Piece getPiece(Square sq) {
-        for (int i = 0; i < bitboard.length - 1; i++) {
-            if ((sq.getBitboard() & bitboard[i]) != 0L) {
-                return Piece.allPieces[i];
-            }
-        }
-        return Piece.NONE;
+
+        return occupation[sq.ordinal()];
     }
 
     /**
@@ -627,6 +625,7 @@ public class Board implements Cloneable, BoardEvent {
 
         Arrays.fill(bitboard, 0L);
         Arrays.fill(bbSide, 0L);
+        Arrays.fill(occupation, Piece.NONE);
         backup.clear();
         incrementalHashKey = 0;
     }
@@ -640,9 +639,9 @@ public class Board implements Cloneable, BoardEvent {
     public void setPiece(Piece piece, Square sq) {
         bitboard[piece.ordinal()] |= sq.getBitboard();
         bbSide[piece.getPieceSide().ordinal()] |= sq.getBitboard();
+        occupation[sq.ordinal()] = piece;
         if (piece != Piece.NONE && sq != Square.NONE) {
             incrementalHashKey ^= getPieceSquareKey(piece, sq);
-            ;
         }
     }
 
@@ -655,6 +654,7 @@ public class Board implements Cloneable, BoardEvent {
     public void unsetPiece(Piece piece, Square sq) {
         bitboard[piece.ordinal()] ^= sq.getBitboard();
         bbSide[piece.getPieceSide().ordinal()] ^= sq.getBitboard();
+        occupation[sq.ordinal()] = Piece.NONE;
         if (piece != Piece.NONE && sq != Square.NONE) {
             incrementalHashKey ^= getPieceSquareKey(piece, sq);
         }
@@ -1487,7 +1487,7 @@ public class Board implements Cloneable, BoardEvent {
         copy.loadFromFen(this.getFen());
         copy.setEnPassantTarget(this.getEnPassantTarget());
         copy.getHistory().clear();
-        for (long key: getHistory()) {
+        for (long key : getHistory()) {
             copy.getHistory().add(key);
         }
         return copy;
