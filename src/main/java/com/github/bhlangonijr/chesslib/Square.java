@@ -286,12 +286,14 @@ public enum Square {
     private static final Square[] allSquares = Square.values();
     private static final Rank[] rankValues = Rank.values();
     private static final File[] fileValues = File.values();
+    private static final long bitboard[] = new long[allSquares.length];
 
     private static final EnumMap<Square, Square[]> sideSquare =
             new EnumMap<Square, Square[]>(Square.class);
 
     static {
         for (Square sq : allSquares) {
+            bitboard[sq.ordinal()] = 1L << sq.ordinal();
             if (!Square.NONE.equals(sq)) {
                 Square[] a = null;
                 if (File.FILE_A.equals(sq.getFile())) {
@@ -389,7 +391,7 @@ public enum Square {
         if (this == NONE) {
             return 0L;
         }
-        return Bitboard.getBbtable(this);
+        return bitboard[this.ordinal()];
     }
 
     /**

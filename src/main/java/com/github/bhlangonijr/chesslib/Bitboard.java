@@ -55,9 +55,9 @@ public class Bitboard {
     };
 
     /**
-     * The constant bbTable.
+     * The constant bits between Table.
      */
-    final static long[] bbTable = new long[64];
+    final static long[][] bbTable = new long[64][64];
     /**
      * The constant squareToDiagonalA1H8.
      */
@@ -271,18 +271,20 @@ public class Bitboard {
 
     static {
         for (int x = 0; x < 64; x++) {
-            bbTable[x] = sq2Bb(Square.squareAt(x));
+            for (int y = 0; y < 64; y++) {
+                bbTable[x][y] = ((1L << y) | ((1L << y) - (1L << x)));
+            }
         }
     }
 
     /**
      * Sq 2 bb long.
      *
-     * @param x the x
+     * @param sq the square
      * @return the long
      */
-    final static long sq2Bb(Square x) {
-        return 1L << x.ordinal();
+    final static long sq2Bb(Square sq) {
+        return sq.getBitboard();
     }
 
     /**
@@ -302,7 +304,7 @@ public class Bitboard {
      * @return the long
      */
     final static long sq2FA(Square x) {
-        return (fileBB[x.getFile().ordinal()] ^ sq2Bb(x));
+        return (fileBB[x.getFile().ordinal()] ^ x.getBitboard());
     }
 
     /**
@@ -354,7 +356,7 @@ public class Bitboard {
      * @return long
      */
     public static long bitsBetween(long bb, int sq1, int sq2) {
-        return (((bbTable[sq2] | (bbTable[sq2] - bbTable[sq1]))) & bb);
+        return bbTable[sq1][sq2] & bb;
     }
 
     /**
@@ -384,7 +386,7 @@ public class Bitboard {
      * @return the bbtable
      */
     public static long getBbtable(Square sq) {
-        return bbTable[sq.ordinal()];
+        return 1L << sq.ordinal();
     }
 
     /**
@@ -401,7 +403,7 @@ public class Bitboard {
         if (occ == 0L) {
             return attacks;
         }
-        long m = bbTable[index] - 1L;
+        long m = (1L << index) - 1L;
         long lowerMask = occ & m;
         long upperMask = occ & ~m;
         int minor = lowerMask == 0L ? 0 : bitScanReverse(lowerMask);
@@ -630,7 +632,7 @@ public class Bitboard {
     public static String bitboardToString(long bb) {
         StringBuilder b = new StringBuilder();
         for (int x = 0; x < 64; x++) {
-            if (((bbTable[x]) & bb) != 0L) {
+            if (((1L << x) & bb) != 0L) {
                 b.append("1");
             } else {
                 b.append("0");

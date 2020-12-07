@@ -48,6 +48,7 @@ public class Board implements Cloneable, BoardEvent {
     private final EnumMap<BoardEventType, List<BoardEventListener>> eventListener;
     private final long[] bitboard;
     private final long[] bbSide;
+    private final Piece[] occupation;
     private final EnumMap<Side, CastleRight> castleRight;
     private final LinkedList<Long> history = new LinkedList<>();
     private Side sideToMove;
@@ -77,6 +78,7 @@ public class Board implements Cloneable, BoardEvent {
 
         bitboard = new long[Piece.allPieces.length];
         bbSide = new long[Side.allSides.length];
+        occupation = new Piece[Square.values().length];
         castleRight = new EnumMap<>(Side.class);
         backup = new LinkedList<>();
         context = gameContext;
@@ -404,7 +406,7 @@ public class Board implements Cloneable, BoardEvent {
      */
     public boolean hasPiece(Piece piece, Square[] location) {
         for (Square sq : location) {
-            if (piece.equals(getPiece(sq))) {
+            if ((getBitboard(piece) & sq.getBitboard()) != 0L) {
                 return true;
             }
         }
@@ -418,12 +420,8 @@ public class Board implements Cloneable, BoardEvent {
      * @return piece
      */
     public Piece getPiece(Square sq) {
-        for (int i = 0; i < bitboard.length - 1; i++) {
-            if ((sq.getBitboard() & bitboard[i]) != 0L) {
-                return Piece.allPieces[i];
-            }
-        }
-        return Piece.NONE;
+
+        return occupation[sq.ordinal()];
     }
 
     /**
@@ -475,6 +473,20 @@ public class Board implements Cloneable, BoardEvent {
             return Bitboard.bbToSquareList(getBitboard(piece));
         }
         return Collections.emptyList();
+
+    }
+
+    /**
+     * Get the square first location of the given piece
+     *
+     * @param piece the piece
+     * @return piece location
+     */
+    public Square getFistPieceLocation(Piece piece) {
+        if (getBitboard(piece) != 0L) {
+            return  Square.squareAt(Bitboard.bitScanForward(getBitboard(piece)));
+        }
+        return Square.NONE;
 
     }
 
@@ -627,6 +639,7 @@ public class Board implements Cloneable, BoardEvent {
 
         Arrays.fill(bitboard, 0L);
         Arrays.fill(bbSide, 0L);
+        Arrays.fill(occupation, Piece.NONE);
         backup.clear();
         incrementalHashKey = 0;
     }
@@ -640,9 +653,9 @@ public class Board implements Cloneable, BoardEvent {
     public void setPiece(Piece piece, Square sq) {
         bitboard[piece.ordinal()] |= sq.getBitboard();
         bbSide[piece.getPieceSide().ordinal()] |= sq.getBitboard();
+        occupation[sq.ordinal()] = piece;
         if (piece != Piece.NONE && sq != Square.NONE) {
             incrementalHashKey ^= getPieceSquareKey(piece, sq);
-            ;
         }
     }
 
@@ -655,6 +668,7 @@ public class Board implements Cloneable, BoardEvent {
     public void unsetPiece(Piece piece, Square sq) {
         bitboard[piece.ordinal()] ^= sq.getBitboard();
         bbSide[piece.getPieceSide().ordinal()] ^= sq.getBitboard();
+        occupation[sq.ordinal()] = Piece.NONE;
         if (piece != Piece.NONE && sq != Square.NONE) {
             incrementalHashKey ^= getPieceSquareKey(piece, sq);
         }
@@ -1270,16 +1284,37 @@ public class Board implements Cloneable, BoardEvent {
         final long pawns = getBitboard(Piece.WHITE_PAWN) | getBitboard(Piece.BLACK_PAWN);
         if (pawns == 0L) {
             long count = Long.bitCount(getBitboard());
+            int whiteCount = Long.bitCount(getBitboard(Side.WHITE));
+            int blackCount = Long.bitCount(getBitboard(Side.BLACK));
             if (count == 4) {
-                if (Long.bitCount(getBitboard(Side.WHITE)) > 1 &&
-                        Long.bitCount(getBitboard(Side.BLACK)) > 1) {
-                    return !((Long.bitCount(getBitboard(Piece.WHITE_BISHOP)) == 1 &&
-                            Long.bitCount(getBitboard(Piece.BLACK_BISHOP)) == 1) &&
-                            getPieceLocation(Piece.WHITE_BISHOP).get(0).isLightSquare() !=
-                                    getPieceLocation(Piece.BLACK_BISHOP).get(0).isLightSquare());
-                } else return Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
-                        Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2;
-            } else return count < 4;
+                int whiteBishopCount = Long.bitCount(getBitboard(Piece.WHITE_BISHOP));
+                int blackBishopCount = Long.bitCount(getBitboard(Piece.BLACK_BISHOP));
+                if (whiteCount > 1 && blackCount > 1) {
+                    return !((whiteBishopCount == 1 && blackBishopCount == 1) &&
+                            getFistPieceLocation(Piece.WHITE_BISHOP).isLightSquare() !=
+                                    getFistPieceLocation(Piece.BLACK_BISHOP).isLightSquare());
+                } if (whiteCount == 3 || blackCount == 3) {
+                    if (whiteBishopCount == 2 &&
+                            ((Bitboard.lightSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L ||
+                                    (Bitboard.darkSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L)) {
+                        return true;
+                    } else return blackBishopCount == 2 &&
+                            ((Bitboard.lightSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L ||
+                                    (Bitboard.darkSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L);
+                } else {
+                    return Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
+                            Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2;
+                }
+            } else {
+                if ((getBitboard(Piece.WHITE_KING) | getBitboard(Piece.WHITE_BISHOP)) == getBitboard(Side.WHITE) &&
+                        ((getBitboard(Piece.BLACK_KING) | getBitboard(Piece.BLACK_BISHOP)) == getBitboard(Side.BLACK))) {
+                    return (((Bitboard.lightSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L) &&
+                            ((Bitboard.lightSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L)) ||
+                            ((Bitboard.darkSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L) &&
+                                    ((Bitboard.darkSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L);
+                }
+                return count < 4;
+            }
         }
 
         return false;
@@ -1487,7 +1522,7 @@ public class Board implements Cloneable, BoardEvent {
         copy.loadFromFen(this.getFen());
         copy.setEnPassantTarget(this.getEnPassantTarget());
         copy.getHistory().clear();
-        for (long key: getHistory()) {
+        for (long key : getHistory()) {
             copy.getHistory().add(key);
         }
         return copy;
