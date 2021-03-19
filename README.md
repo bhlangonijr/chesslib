@@ -177,7 +177,7 @@ There are two methods for comparing boards:
 ```java
     PgnHolder pgn = new PgnHolder("/opt/games/linares_2002.pgn");
     pgn.loadPgn();
-    for (Game game: pgn.getGame()) {
+    for (Game game: pgn.getGames()) {
         game.loadMoveText();
         MoveList moves = game.getHalfMoves();
         Board board = new Board();
@@ -218,7 +218,7 @@ Example of a perft function using chesslib:
             return 1;
         }
         long nodes = 0;      
-        List<Move> moves = board.legalModes();
+        List<Move> moves = board.legalMoves();
         for (Move move : moves) {
             board.doMove(move);
             nodes += perft(board, depth - 1, ply + 1);
@@ -266,10 +266,7 @@ Create your listener:
 class MyListener implements PgnLoadListener {
     
     private int games = 0;
-    @Override
-    protected void done() {
-        System.out.println("Finished loading " + games + " games");
-    }
+
      @Override
     public void notifyProgress(int games) {
         System.out.println("Loaded " + games + " games...");
@@ -343,7 +340,8 @@ Moves played and game statuses are emitted by the `Board` whenever these actions
 Implement your `Board` listener:
 ```java
 class MyBoardListener implements BoardEventListener {
-    
+
+    @Override
     public void onEvent(BoardEvent event) {
 
         if (event.getType() == BoardEventType.ON_MOVE) {
