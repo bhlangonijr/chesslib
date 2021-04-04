@@ -707,5 +707,18 @@ public class BoardTest {
 
     }
 
+    @Test
+    public void testDoSanMove() {
+
+        Board board = new Board();
+        board.loadFromFen("4k3/8/8/8/1b6/2N5/8/4K1N1 w - - 0 1");
+        board.doMove("Ne2");
+        assertEquals("4k3/8/8/8/1b6/2N5/4N3/4K3 b - - 1 1", board.getFen());
+        board.doMove("Bxc3");
+        assertEquals("4k3/8/8/8/8/2b5/4N3/4K3 w - - 0 2", board.getFen());
+        board.doMove("Nxc3");
+        assertEquals("4k3/8/8/8/8/2N5/8/4K3 b - - 0 2", board.getFen());
+    }
+
 
 }

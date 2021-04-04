@@ -19,6 +19,7 @@ package com.github.bhlangonijr.chesslib;
 import com.github.bhlangonijr.chesslib.game.GameContext;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
+import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.util.XorShiftRandom;
 
 import java.util.*;
@@ -129,7 +130,20 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Execute the move in the board
+     * Execute the move on the board using SAN notation
+     *
+     * @param move the move in SAN (e.g.: Nc3)
+     * @return true if operation was successful
+     */
+    public boolean doMove(final String move) {
+
+        MoveList moves = new MoveList(this.getFen());
+        moves.addSanMove(move, true, true);
+        return doMove(moves.removeLast(), true);
+    }
+
+    /**
+     * Execute the move on the board
      *
      * @param move the move
      * @return true if operation was successful
@@ -484,7 +498,7 @@ public class Board implements Cloneable, BoardEvent {
      */
     public Square getFistPieceLocation(Piece piece) {
         if (getBitboard(piece) != 0L) {
-            return  Square.squareAt(Bitboard.bitScanForward(getBitboard(piece)));
+            return Square.squareAt(Bitboard.bitScanForward(getBitboard(piece)));
         }
         return Square.NONE;
 
@@ -1293,7 +1307,8 @@ public class Board implements Cloneable, BoardEvent {
                     return !((whiteBishopCount == 1 && blackBishopCount == 1) &&
                             getFistPieceLocation(Piece.WHITE_BISHOP).isLightSquare() !=
                                     getFistPieceLocation(Piece.BLACK_BISHOP).isLightSquare());
-                } if (whiteCount == 3 || blackCount == 3) {
+                }
+                if (whiteCount == 3 || blackCount == 3) {
                     if (whiteBishopCount == 2 &&
                             ((Bitboard.lightSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L ||
                                     (Bitboard.darkSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L)) {
