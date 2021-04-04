@@ -720,5 +720,13 @@ public class BoardTest {
         assertEquals("4k3/8/8/8/8/2N5/8/4K3 b - - 0 2", board.getFen());
     }
 
+    @Test
+    public void testDoSanMove2() {
+
+        Board board = new Board();
+        board.doMove("e4");
+        assertEquals("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1", board.getFen());
+    }
+
 
 }
