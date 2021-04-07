@@ -24,6 +24,8 @@ import com.github.bhlangonijr.chesslib.util.XorShiftRandom;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
 import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
@@ -1505,13 +1507,25 @@ public class Board implements Cloneable, BoardEvent {
         return keys.get(57 * piece.ordinal() + 13 * square.ordinal());
     }
 
-    @Override
-    public String toString() {
+    public String toStringFromWhiteViewPoint() {
+        return toStringFromViewPoint(Side.WHITE);
+    }
+
+    public String toStringFromBlackViewPoint() {
+        return toStringFromViewPoint(Side.BLACK);
+    }
+
+    public String toStringFromViewPoint(Side side) {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 7; i >= 0; i--) {
+        final Supplier<IntStream> rankIterator = side == Side.WHITE
+                ? Board::sevenToZero : Board::zeroToSeven;
+        final Supplier<IntStream> fileIterator = side == Side.WHITE
+                ? Board::zeroToSeven : Board::sevenToZero;
+
+        rankIterator.get().forEach(i -> {
             Rank r = Rank.allRanks[i];
-            for (int n = 0; n <= 7; n++) {
+            fileIterator.get().forEach(n -> {
                 File f = File.allFiles[n];
                 if (!File.NONE.equals(f) && !Rank.NONE.equals(r)) {
                     Square sq = Square.encode(r, f);
@@ -1522,13 +1536,24 @@ public class Board implements Cloneable, BoardEvent {
                         sb.append(Constants.getPieceNotation(piece));
                     }
                 }
-            }
+            });
             sb.append("\n");
-        }
-        sb.append("Side: ");
-        sb.append(getSideToMove());
+        });
 
         return sb.toString();
+    }
+
+    private static IntStream zeroToSeven() {
+        return IntStream.iterate(0, i -> i + 1).limit(8);
+    }
+
+    private static IntStream sevenToZero() {
+        return IntStream.iterate(7, i -> i - 1).limit(8);
+    }
+
+    @Override
+    public String toString() {
+        return toStringFromWhiteViewPoint() + "Side: " + getSideToMove();
     }
 
     @Override

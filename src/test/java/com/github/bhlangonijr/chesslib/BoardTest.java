@@ -682,6 +682,52 @@ public class BoardTest {
     }
 
     @Test
+    public void testToStringFromWhiteViewPoint() throws MoveConversionException {
+
+        // Creates a new chessboard in the standard initial position
+        Board board = new Board();
+
+        board.doMove("e4");
+        board.doMove("Nc6");
+        board.doMove("Bc4");
+
+        final String expected =
+                "r.bqkbnr\n" +
+                "pppppppp\n" +
+                "..n.....\n" +
+                "........\n" +
+                "..B.P...\n" +
+                "........\n" +
+                "PPPP.PPP\n" +
+                "RNBQK.NR\n";
+        assertEquals(expected, board.toStringFromWhiteViewPoint());
+        assertEquals(expected, board.toStringFromViewPoint(Side.WHITE));
+    }
+
+    @Test
+    public void testToStringFromBlackViewPoint() throws MoveConversionException {
+
+        // Creates a new chessboard in the standard initial position
+        Board board = new Board();
+
+        board.doMove("e4");
+        board.doMove("Nc6");
+        board.doMove("Bc4");
+
+        final String expected =
+                "RN.KQBNR\n" +
+                "PPP.PPPP\n" +
+                "........\n" +
+                "...P.B..\n" +
+                "........\n" +
+                ".....n..\n" +
+                "pppppppp\n" +
+                "rnbkqb.r\n";
+        assertEquals(expected, board.toStringFromBlackViewPoint());
+        assertEquals(expected, board.toStringFromViewPoint(Side.BLACK));
+    }
+
+    @Test
     public void testBoardStrictEquals() throws MoveConversionException {
 
         Board board = new Board();
