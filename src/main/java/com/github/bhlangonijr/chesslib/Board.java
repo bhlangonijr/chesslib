@@ -1507,14 +1507,34 @@ public class Board implements Cloneable, BoardEvent {
         return keys.get(57 * piece.ordinal() + 13 * square.ordinal());
     }
 
+    /**
+     * Returns a string representation of the board with the 1st rank at the bottom,
+     * similarly to the {@link #toString()} method but without the info on whose turn it is.
+     *
+     * @return A string representation of the board from the White player's point of view.
+     * @since 1.4.0
+     */
     public String toStringFromWhiteViewPoint() {
         return toStringFromViewPoint(Side.WHITE);
     }
 
+    /**
+     * Returns a string representation of the board with the 8th rank at the bottom
+     *
+     * @return A string representation of the board from the Black player's point of view.
+     * @since 1.4.0
+     */
     public String toStringFromBlackViewPoint() {
         return toStringFromViewPoint(Side.BLACK);
     }
 
+    /**
+     * Returns a string representation of the board from the given player's point of view.
+     *
+     * @param side The side whose home rank should be at the bottom of the resulting representation.
+     * @return A string representation of the board from the given player's point of view.
+     * @since 1.4.0
+     */
     public String toStringFromViewPoint(Side side) {
         StringBuilder sb = new StringBuilder();
 
