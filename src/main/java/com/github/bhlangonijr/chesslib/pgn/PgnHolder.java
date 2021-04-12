@@ -25,6 +25,8 @@ import com.github.bhlangonijr.chesslib.util.LargeFile;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -123,6 +125,20 @@ public class PgnHolder {
      */
     public void loadPgn() throws Exception {
         loadPgn(new LargeFile(getFileName()));
+    }
+
+    /**
+     * Count games in PGN file.
+     * For this all lines in the PGN file are counted, which start with the string "[Event "
+     * because this field is mandatory by PGN definition.
+     *
+     * @return number of games in PGN file
+     * @throws IOException if PGN file set via constructor was not found
+     */
+    public long countGamesInPgnFile() throws IOException {
+        return Files.lines(Paths.get(this.fileName))
+                .filter(s -> s.startsWith("[Event "))
+                .count();
     }
 
     /**
