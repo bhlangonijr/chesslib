@@ -389,12 +389,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @see #toSanWithMoveNumbers()
      */
     public String toSan() throws MoveConversionException {
-        StringBuilder sb = new StringBuilder();
-        for (String sanMove : this.toSanArray()) {
-            sb.append(sanMove);
-            sb.append(" ");
-        }
-        return sb.toString();
+        return toStringWithoutMoveNumbers(toSanArray());
     }
 
     /**
@@ -407,15 +402,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @since 1.4.0
      */
     public String toSanWithMoveNumbers() throws MoveConversionException {
-        StringBuilder sb = new StringBuilder();
-        final String[] sanArray = this.toSanArray();
-        for (int halfMove = 0; halfMove < sanArray.length; halfMove++) {
-            if (halfMove % 2 == 0) {
-                sb.append((halfMove / 2) + 1).append(". ");
-            }
-            sb.append(sanArray[halfMove]).append(" ");
-        }
-        return sb.toString();
+        return toStringWithMoveNumbers(toSanArray());
     }
 
     /**
@@ -427,12 +414,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @see #toFanWithMoveNumbers()
      */
     public String toFan() throws MoveConversionException {
-        StringBuilder sb = new StringBuilder();
-        for (String fanMove : this.toFanArray()) {
-            sb.append(fanMove);
-            sb.append(" ");
-        }
-        return sb.toString();
+        return toStringWithoutMoveNumbers(toFanArray());
     }
 
     /**
@@ -445,13 +427,26 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @since 1.4.0
      */
     public String toFanWithMoveNumbers() throws MoveConversionException {
+        return toStringWithMoveNumbers(toFanArray());
+    }
+
+
+    private String toStringWithoutMoveNumbers(String[] moveArray) throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
-        final String[] fanArray = this.toFanArray();
-        for (int halfMove = 0; halfMove < fanArray.length; halfMove++) {
+        for (String move : moveArray) {
+            sb.append(move);
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
+    private String toStringWithMoveNumbers(String[] moveArray) throws MoveConversionException {
+        StringBuilder sb = new StringBuilder();
+        for (int halfMove = 0; halfMove < moveArray.length; halfMove++) {
             if (halfMove % 2 == 0) {
                 sb.append((halfMove / 2) + 1).append(". ");
             }
-            sb.append(fanArray[halfMove]).append(" ");
+            sb.append(moveArray[halfMove]).append(" ");
         }
         return sb.toString();
     }
