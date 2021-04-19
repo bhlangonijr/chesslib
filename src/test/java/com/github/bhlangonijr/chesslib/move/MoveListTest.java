@@ -71,6 +71,38 @@ public class MoveListTest {
     }
 
     /**
+     * Test that a move list can be returned with move numbers.
+     */
+    @Test
+    public void testToSanWithMoveNumbers() {
+        // No moves yet:
+        String s = "";
+        String expectedSan = "";
+        MoveList list = new MoveList();
+        assertEquals(expectedSan, list.toSan());
+        assertEquals(expectedSan, list.toSanWithMoveNumbers());
+
+        // Ends with a move by Black:
+        s = "e2e4 b8c6 d2d4 g8f6 d4d5 c6e5 g1f3 d7d6 f3e5 d6e5 f1b5 c8d7 b5d7 d8d7 b1c3 e7e6";
+        expectedSan = "1. e4 Nc6 2. d4 Nf6 3. d5 Ne5 4. Nf3 d6 5. Nxe5 dxe5 6. Bb5+ Bd7 7. Bxd7+ Qxd7 8. Nc3 e6 ";
+        list = new MoveList();
+        list.loadFromText(s);
+        assertEquals(expectedSan, list.toSanWithMoveNumbers());
+
+        // Ends with a move by White:
+        s = "e2e4 b8c6 d2d4 g8f6 d4d5 c6e5 g1f3 d7d6 f3e5 d6e5 f1b5 c8d7 b5d7 d8d7 b1c3";
+        expectedSan = "1. e4 Nc6 2. d4 Nf6 3. d5 Ne5 4. Nf3 d6 5. Nxe5 dxe5 6. Bb5+ Bd7 7. Bxd7+ Qxd7 8. Nc3 ";
+        list = new MoveList();
+        list.loadFromText(s);
+        assertEquals(expectedSan, list.toSanWithMoveNumbers());
+
+        // Read a SAN string with numbers, assert that the same string is returned:
+        list = new MoveList();
+        list.loadFromSan(expectedSan);
+        assertEquals(expectedSan, list.toSanWithMoveNumbers());
+    }
+
+    /**
      * Test move list pgn 1.
      *
      * @throws MoveConversionException the move conversion exception

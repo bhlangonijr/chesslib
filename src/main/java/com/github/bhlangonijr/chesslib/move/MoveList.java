@@ -382,15 +382,38 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
 
     /**
      * Converts the MoveList into short algebraic notation (SAN) representation
+     * without move numbers, e.g. "e4 e5 Nf3 Bc5".
      *
      * @return string
      * @throws MoveConversionException the move conversion exception
+     * @see #toSanWithMoveNumbers()
      */
     public String toSan() throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
         for (String sanMove : this.toSanArray()) {
             sb.append(sanMove);
             sb.append(" ");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Converts the MoveList into short algebraic notation (SAN) representation
+     * with move numbers, e.g. "1. e4 e5 2. Nf3 Bc5".
+     *
+     * @return string
+     * @throws MoveConversionException the move conversion exception
+     * @see #toSan()
+     * @since 1.4.0
+     */
+    public String toSanWithMoveNumbers() throws MoveConversionException {
+        StringBuilder sb = new StringBuilder();
+        final String[] sanArray = this.toSanArray();
+        for (int halfMove = 0; halfMove < sanArray.length; halfMove++) {
+            if (halfMove % 2 == 0) {
+                sb.append((halfMove / 2) + 1).append(". ");
+            }
+            sb.append(sanArray[halfMove]).append(" ");
         }
         return sb.toString();
     }
