@@ -381,7 +381,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Converts the MoveList into SAN representation
+     * Converts the MoveList into short algebraic notation (SAN) representation
      *
      * @return string
      * @throws MoveConversionException the move conversion exception
@@ -396,7 +396,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Converts the MoveList into FAN representation
+     * Converts the MoveList into figurine algebraic notation (FAN) representation
      *
      * @return string
      * @throws MoveConversionException the move conversion exception
@@ -411,7 +411,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Converts the MoveList into SAN Array representation
+     * Converts the MoveList into short algebraic notation (SAN) array representation
      *
      * @return string [ ]
      * @throws MoveConversionException the move conversion exception
@@ -426,7 +426,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Converts the MoveList into FAN Array representation
+     * Converts the MoveList into figurine algebraic notation (FAN) array representation
      *
      * @return string [ ]
      * @throws MoveConversionException the move conversion exception
@@ -467,7 +467,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Gets start fen.
+     * Gets start board position as a Forsyth–Edwards Notation (FEN) string.
      *
      * @return the startFEN
      */
@@ -476,7 +476,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * load from long algebraic text
+     * Load from long algebraic text
      *
      * @param text the text
      * @throws MoveConversionException the move conversion exception
@@ -503,7 +503,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Add a move in the SAN format
+     * Add a move in the short algebraic notation (SAN) format
      *
      * @param san the san
      * @throws MoveConversionException the move conversion exception
@@ -513,7 +513,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Add a move in the SAN format
+     * Add a move in the short algebraic notation (SAN) format
      *
      * @param san            the san
      * @param replay         the replay
@@ -546,7 +546,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * load from SAN text
+     * Load from short algebraic notation (SAN) text
      *
      * @param text the text
      * @throws MoveConversionException the move conversion exception
@@ -582,7 +582,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Decode san to Move move.
+     * Decode short algebraic notation (SAN) to a {@link Move].
      *
      * @param board the board
      * @param san   the san
