@@ -420,15 +420,38 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
 
     /**
      * Converts the MoveList into figurine algebraic notation (FAN) representation
+     * without move numbers, e.g. "♙e4 ♟e5 ♘f3 ♝c5".
      *
      * @return string
      * @throws MoveConversionException the move conversion exception
+     * @see #toFanWithMoveNumbers()
      */
     public String toFan() throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
         for (String fanMove : this.toFanArray()) {
             sb.append(fanMove);
             sb.append(" ");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Converts the MoveList into figurine algebraic notation (FAN) representation
+     * with move numbers, e.g. "1. ♙e4 ♟e5 2. ♘f3 ♝c5".
+     *
+     * @return string
+     * @throws MoveConversionException the move conversion exception
+     * @see #toFan()
+     * @since 1.4.0
+     */
+    public String toFanWithMoveNumbers() throws MoveConversionException {
+        StringBuilder sb = new StringBuilder();
+        final String[] fanArray = this.toFanArray();
+        for (int halfMove = 0; halfMove < fanArray.length; halfMove++) {
+            if (halfMove % 2 == 0) {
+                sb.append((halfMove / 2) + 1).append(". ");
+            }
+            sb.append(fanArray[halfMove]).append(" ");
         }
         return sb.toString();
     }

@@ -71,7 +71,7 @@ public class MoveListTest {
     }
 
     /**
-     * Test that a move list can be returned with move numbers.
+     * Test that a SAN move list can be returned with move numbers.
      */
     @Test
     public void testToSanWithMoveNumbers() {
@@ -100,6 +100,33 @@ public class MoveListTest {
         list = new MoveList();
         list.loadFromSan(expectedSan);
         assertEquals(expectedSan, list.toSanWithMoveNumbers());
+    }
+
+    /**
+     * Test that a FAN move list can be returned with move numbers.
+     */
+    @Test
+    public void testToFanWithMoveNumbers() {
+        // No moves yet:
+        String s = "";
+        String expectedFan = "";
+        MoveList list = new MoveList();
+        assertEquals(expectedFan, list.toFan());
+        assertEquals(expectedFan, list.toFanWithMoveNumbers());
+
+        // Ends with a move by Black:
+        s = "e2e4 b8c6 d2d4 g8f6 d4d5 c6e5 g1f3 d7d6 f3e5 d6e5 f1b5 c8d7 b5d7 d8d7 b1c3 e7e6";
+        expectedFan = "1. ♙e4 ♞c6 2. ♙d4 ♞f6 3. ♙d5 ♞e5 4. ♘f3 ♟d6 5. ♘xe5 ♟dxe5 6. ♗b5+ ♝d7 7. ♗xd7+ ♛xd7 8. ♘c3 ♟e6 ";
+        list = new MoveList();
+        list.loadFromText(s);
+        assertEquals(expectedFan, list.toFanWithMoveNumbers());
+
+        // Ends with a move by White:
+        s = "e2e4 b8c6 d2d4 g8f6 d4d5 c6e5 g1f3 d7d6 f3e5 d6e5 f1b5 c8d7 b5d7 d8d7 b1c3";
+        expectedFan = "1. ♙e4 ♞c6 2. ♙d4 ♞f6 3. ♙d5 ♞e5 4. ♘f3 ♟d6 5. ♘xe5 ♟dxe5 6. ♗b5+ ♝d7 7. ♗xd7+ ♛xd7 8. ♘c3 ";
+        list = new MoveList();
+        list.loadFromText(s);
+        assertEquals(expectedFan, list.toFanWithMoveNumbers());
     }
 
     /**
