@@ -16,8 +16,6 @@
 
 package com.github.bhlangonijr.chesslib;
 
-import java.util.EnumMap;
-
 /**
  * The enum Piece.
  */
@@ -26,55 +24,55 @@ public enum Piece {
     /**
      * White pawn piece.
      */
-    WHITE_PAWN(Side.WHITE, PieceType.PAWN),
+    WHITE_PAWN(Side.WHITE, PieceType.PAWN, "♙"),
     /**
      * White knight piece.
      */
-    WHITE_KNIGHT(Side.WHITE, PieceType.KNIGHT),
+    WHITE_KNIGHT(Side.WHITE, PieceType.KNIGHT, "♘"),
     /**
      * White bishop piece.
      */
-    WHITE_BISHOP(Side.WHITE, PieceType.BISHOP),
+    WHITE_BISHOP(Side.WHITE, PieceType.BISHOP, "♗"),
     /**
      * White rook piece.
      */
-    WHITE_ROOK(Side.WHITE, PieceType.ROOK),
+    WHITE_ROOK(Side.WHITE, PieceType.ROOK, "♖"),
     /**
      * White queen piece.
      */
-    WHITE_QUEEN(Side.WHITE, PieceType.QUEEN),
+    WHITE_QUEEN(Side.WHITE, PieceType.QUEEN, "♕"),
     /**
      * White king piece.
      */
-    WHITE_KING(Side.WHITE, PieceType.KING),
+    WHITE_KING(Side.WHITE, PieceType.KING, "♔"),
     /**
      * Black pawn piece.
      */
-    BLACK_PAWN(Side.BLACK, PieceType.PAWN),
+    BLACK_PAWN(Side.BLACK, PieceType.PAWN, "♟"),
     /**
      * Black knight piece.
      */
-    BLACK_KNIGHT(Side.BLACK, PieceType.KNIGHT),
+    BLACK_KNIGHT(Side.BLACK, PieceType.KNIGHT, "♞"),
     /**
      * Black bishop piece.
      */
-    BLACK_BISHOP(Side.BLACK, PieceType.BISHOP),
+    BLACK_BISHOP(Side.BLACK, PieceType.BISHOP, "♝"),
     /**
      * Black rook piece.
      */
-    BLACK_ROOK(Side.BLACK, PieceType.ROOK),
+    BLACK_ROOK(Side.BLACK, PieceType.ROOK, "♜"),
     /**
      * Black queen piece.
      */
-    BLACK_QUEEN(Side.BLACK, PieceType.QUEEN),
+    BLACK_QUEEN(Side.BLACK, PieceType.QUEEN, "♛"),
     /**
      * Black king piece.
      */
-    BLACK_KING(Side.BLACK, PieceType.KING),
+    BLACK_KING(Side.BLACK, PieceType.KING, "♚"),
     /**
      * None piece.
      */
-    NONE(null, null);
+    NONE(null, null, "NONE");
 
     public static Piece[] allPieces = values();
 
@@ -90,10 +88,12 @@ public enum Piece {
 
     private final Side side;
     private final PieceType type;
+    private String fanSymbol;
 
-    Piece(Side side, PieceType type) {
+    Piece(Side side, PieceType type, String fanSymbol) {
         this.side = side;
         this.type = type;
+        this.fanSymbol = fanSymbol;
     }
 
     /**
@@ -143,5 +143,27 @@ public enum Piece {
      */
     public Side getPieceSide() {
         return side;
+    }
+
+    /**
+     * Returns the short algebraic notation (SAN) symbol for this piece type.
+     * For example, "R" for a rook, "K" for a king, and an empty string for a pawn.
+     *
+     * @return The short algebraic notation symbol of this piece type.
+     * @since 1.4.0
+     */
+    public String getSanSymbol() {
+        return type.getSanSymbol();
+    }
+
+    /**
+     * Returns the figurine algebraic notation (FAN) symbol for this piece.
+     * For example, "♜" for a black rook, and "♙" for a white pawn.
+     *
+     * @return The figurine algebraic notation symbol of this piece type.
+     * @since 1.4.0
+     */
+    public String getFanSymbol() {
+        return fanSymbol;
     }
 }
