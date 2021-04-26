@@ -91,4 +91,29 @@ public class PieceTest {
         assertEquals("BLACK_KING", Piece.BLACK_KING.value());
         assertEquals("NONE", Piece.NONE.value());
     }
+
+    @Test
+    public void fromFenSymbol() {
+        assertEquals(Piece.WHITE_PAWN, Piece.fromFenSymbol("P"));
+        assertEquals(Piece.WHITE_KNIGHT, Piece.fromFenSymbol("N"));
+        assertEquals(Piece.WHITE_BISHOP, Piece.fromFenSymbol("B"));
+        assertEquals(Piece.WHITE_ROOK, Piece.fromFenSymbol("R"));
+        assertEquals(Piece.WHITE_QUEEN, Piece.fromFenSymbol("Q"));
+        assertEquals(Piece.WHITE_KING, Piece.fromFenSymbol("K"));
+        assertEquals(Piece.BLACK_PAWN, Piece.fromFenSymbol("p"));
+        assertEquals(Piece.BLACK_KNIGHT, Piece.fromFenSymbol("n"));
+        assertEquals(Piece.BLACK_BISHOP, Piece.fromFenSymbol("b"));
+        assertEquals(Piece.BLACK_ROOK, Piece.fromFenSymbol("r"));
+        assertEquals(Piece.BLACK_QUEEN, Piece.fromFenSymbol("q"));
+        assertEquals(Piece.BLACK_KING, Piece.fromFenSymbol("k"));
+        assertEquals(Piece.NONE, Piece.fromFenSymbol("."));
+
+        try {
+            Piece.fromFenSymbol("X");
+            fail("There should have been an exception");
+        } catch (Exception expected) {
+            assertTrue(expected instanceof IllegalArgumentException);
+            assertEquals("Unknown piece 'X'", expected.getMessage());
+        }
+    }
 }

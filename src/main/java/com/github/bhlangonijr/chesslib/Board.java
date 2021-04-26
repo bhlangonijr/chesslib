@@ -712,7 +712,7 @@ public class Board implements Cloneable, BoardEvent {
                     file += Integer.parseInt(c + "");
                 } else {
                     Square sq = Square.encode(Rank.allRanks[rank], File.allFiles[file]);
-                    setPiece(Constants.getPieceByNotation(c + ""), sq);
+                    setPiece(Piece.fromFenSymbol(String.valueOf(c)), sq);
                     file++;
                 }
             }
@@ -811,7 +811,7 @@ public class Board implements Cloneable, BoardEvent {
                         if (count > 0) {
                             fen.append(count);
                         }
-                        fen.append(Constants.getPieceNotation(piece));
+                        fen.append(piece.getFenSymbol());
                         count = 0;
                     } else {
                         count++;
@@ -1550,11 +1550,7 @@ public class Board implements Cloneable, BoardEvent {
                 if (!File.NONE.equals(f) && !Rank.NONE.equals(r)) {
                     Square sq = Square.encode(r, f);
                     Piece piece = getPiece(sq);
-                    if (Piece.NONE.equals(piece)) {
-                        sb.append(".");
-                    } else {
-                        sb.append(Constants.getPieceNotation(piece));
-                    }
+                    sb.append(piece.getFenSymbol());
                 }
             });
             sb.append("\n");

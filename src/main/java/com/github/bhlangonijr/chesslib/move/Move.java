@@ -61,9 +61,9 @@ public class Move implements BoardEvent {
         this(Square.valueOf(move.substring(0, 2).toUpperCase()),
                 Square.valueOf(move.substring(2, 4).toUpperCase()),
                 move.length() < 5 ? Piece.NONE : Side.WHITE.equals(side) ?
-                        Constants.getPieceByNotation(
+                        Piece.fromFenSymbol(
                                 move.substring(4, 5).toUpperCase()) :
-                        Constants.getPieceByNotation(
+                        Piece.fromFenSymbol(
                                 move.substring(4, 5).toLowerCase()));
     }
 
@@ -115,7 +115,7 @@ public class Move implements BoardEvent {
     public String toString() {
         String promo = "";
         if (!Piece.NONE.equals(promotion)) {
-            promo = Constants.getPieceNotation(promotion);
+            promo = promotion.getFenSymbol();
         }
         return from.toString().toLowerCase() +
                 to.toString().toLowerCase() +

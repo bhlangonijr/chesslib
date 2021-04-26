@@ -16,6 +16,9 @@
 
 package com.github.bhlangonijr.chesslib;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The enum Piece.
  */
@@ -24,55 +27,55 @@ public enum Piece {
     /**
      * White pawn piece.
      */
-    WHITE_PAWN(Side.WHITE, PieceType.PAWN, "♙"),
+    WHITE_PAWN(Side.WHITE, PieceType.PAWN, "♙", "P"),
     /**
      * White knight piece.
      */
-    WHITE_KNIGHT(Side.WHITE, PieceType.KNIGHT, "♘"),
+    WHITE_KNIGHT(Side.WHITE, PieceType.KNIGHT, "♘", "N"),
     /**
      * White bishop piece.
      */
-    WHITE_BISHOP(Side.WHITE, PieceType.BISHOP, "♗"),
+    WHITE_BISHOP(Side.WHITE, PieceType.BISHOP, "♗", "B"),
     /**
      * White rook piece.
      */
-    WHITE_ROOK(Side.WHITE, PieceType.ROOK, "♖"),
+    WHITE_ROOK(Side.WHITE, PieceType.ROOK, "♖", "R"),
     /**
      * White queen piece.
      */
-    WHITE_QUEEN(Side.WHITE, PieceType.QUEEN, "♕"),
+    WHITE_QUEEN(Side.WHITE, PieceType.QUEEN, "♕", "Q"),
     /**
      * White king piece.
      */
-    WHITE_KING(Side.WHITE, PieceType.KING, "♔"),
+    WHITE_KING(Side.WHITE, PieceType.KING, "♔", "K"),
     /**
      * Black pawn piece.
      */
-    BLACK_PAWN(Side.BLACK, PieceType.PAWN, "♟"),
+    BLACK_PAWN(Side.BLACK, PieceType.PAWN, "♟", "p"),
     /**
      * Black knight piece.
      */
-    BLACK_KNIGHT(Side.BLACK, PieceType.KNIGHT, "♞"),
+    BLACK_KNIGHT(Side.BLACK, PieceType.KNIGHT, "♞", "n"),
     /**
      * Black bishop piece.
      */
-    BLACK_BISHOP(Side.BLACK, PieceType.BISHOP, "♝"),
+    BLACK_BISHOP(Side.BLACK, PieceType.BISHOP, "♝", "b"),
     /**
      * Black rook piece.
      */
-    BLACK_ROOK(Side.BLACK, PieceType.ROOK, "♜"),
+    BLACK_ROOK(Side.BLACK, PieceType.ROOK, "♜", "r"),
     /**
      * Black queen piece.
      */
-    BLACK_QUEEN(Side.BLACK, PieceType.QUEEN, "♛"),
+    BLACK_QUEEN(Side.BLACK, PieceType.QUEEN, "♛", "q"),
     /**
      * Black king piece.
      */
-    BLACK_KING(Side.BLACK, PieceType.KING, "♚"),
+    BLACK_KING(Side.BLACK, PieceType.KING, "♚", "k"),
     /**
      * None piece.
      */
-    NONE(null, null, "NONE");
+    NONE(null, null, "NONE", ".");
 
     public static Piece[] allPieces = values();
 
@@ -86,14 +89,24 @@ public enum Piece {
             {NONE, NONE},
     };
 
+    private static final Map<String, Piece> fenToPiece = new HashMap<>(13);
+
+    static {
+        for (final Piece piece : Piece.values()) {
+            fenToPiece.put(piece.getFenSymbol(), piece);
+        }
+    }
+
     private final Side side;
     private final PieceType type;
     private String fanSymbol;
+    private String fenSymbol;
 
-    Piece(Side side, PieceType type, String fanSymbol) {
+    Piece(Side side, PieceType type, String fanSymbol, String fenSymbol) {
         this.side = side;
         this.type = type;
         this.fanSymbol = fanSymbol;
+        this.fenSymbol = fenSymbol;
     }
 
     /**
@@ -166,4 +179,32 @@ public enum Piece {
     public String getFanSymbol() {
         return fanSymbol;
     }
+
+    /**
+     * Returns the Forsyth-Edwards notation (FEN) symbol for this piece.
+     * For example, "r" for a black rook, and "P" for a white pawn.
+     *
+     * @return The Forsyth-Edwards Notation symbol of this piece.
+     * @since 1.4.0
+     */
+    public String getFenSymbol() {
+        return fenSymbol;
+    }
+
+    /**
+     * Returns the {@code Piece} corresponding to the given Forsyth-Edwards notation symbol.
+     *
+     * @param fenSymbol A piece symbol, such as "K", "b" or "p".
+     * @return the piece, such as {@code WHITE_KING}, {@code BLACK_BISHOP}, or {@code BLACK_PAWN}.
+     * throws IllegalArgumentException Thrown if the input does not correspond to any standard chess piece.
+     * @since 1.4.0
+     */
+    public static Piece fromFenSymbol(String fenSymbol) {
+        final Piece piece = fenToPiece.get(fenSymbol);
+        if (piece == null) {
+            throw new IllegalArgumentException(String.format("Unknown piece '%s'", fenSymbol));
+        }
+        return piece;
+    }
+
 }

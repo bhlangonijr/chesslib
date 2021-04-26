@@ -97,12 +97,18 @@ public class Constants {
 
     /**
      * The constant pieceNotation.
+     *
+     * @deprecated Use {@link Piece#getFenSymbol()} instead.
      */
+    @Deprecated
     public static final EnumMap<Piece, String> pieceNotation =
             new EnumMap<Piece, String>(Piece.class);
     /**
      * The constant pieceNotationR.
+     *
+     * @deprecated Use {@link Piece#fromFenSymbol(String)} instead.
      */
+    @Deprecated
     public static final Map<String, Piece> pieceNotationR =
             new HashMap<String, Piece>(12);
 
@@ -163,22 +169,26 @@ public class Constants {
     }
 
     /**
-     * gets the notation of a piece
+     * Gets the Forsyth-Edwards notation of a piece
      *
      * @param piece the piece
      * @return piece notation
+     * @deprecated Use {@link Piece#getFenSymbol()} instead.
      */
+    @Deprecated
     public static String getPieceNotation(Piece piece) {
-        return pieceNotation.get(piece);
+        return piece.getFenSymbol();
     }
 
     /**
-     * gets the piece by its notation
+     * Gets the piece by its Forsyth-Edwards notation
      *
      * @param notation the notation
      * @return piece by notation
+     * @deprecated Use {@link Piece#fromFenSymbol(String)} instead.
      */
+    @Deprecated
     public static Piece getPieceByNotation(String notation) {
-        return pieceNotationR.get(notation);
+        return Piece.fromFenSymbol(notation);
     }
 }

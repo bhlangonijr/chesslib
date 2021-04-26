@@ -627,7 +627,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                     san.toUpperCase());
         }
         Piece promotion = strPromotion.equals("") ? Piece.NONE :
-                Constants.getPieceByNotation(side.equals(Side.WHITE) ?
+                Piece.fromFenSymbol(side.equals(Side.WHITE) ?
                         strPromotion.toUpperCase() : strPromotion.toLowerCase());
 
         if (san.length() == 2) { //is pawn move
