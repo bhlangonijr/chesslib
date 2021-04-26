@@ -257,5 +257,8 @@ public class PgnHolder {
             getPlayer().put(game.getBlackPlayer().getId(), game.getBlackPlayer());
         }
         this.games.add(game);
+
+        // Notify all registered Listener about added game
+        this.getListener().forEach(pgnLoadListener -> pgnLoadListener.notifyProgress(this.games.size()));
     }
 }

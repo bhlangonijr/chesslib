@@ -5,6 +5,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnException;
 import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
+import com.github.bhlangonijr.chesslib.pgn.PgnLoadListener;
 import com.github.bhlangonijr.chesslib.util.LargeFile;
 import org.junit.Test;
 
@@ -538,4 +539,67 @@ public class PgnHolderTest {
         }
         assertEquals("8/8/2k5/4R3/3K4/8/8/8 w - - 19 102", board.getFen());
     }
+
+    /**
+     * Validate Notify Progess Call List with assertions.
+     *
+     * @param notifyProgressCallList Notify Progess Call List to validate
+     */
+    private void validateNotifyProgressCalls(List<Integer> notifyProgressCallList) {
+
+        int index = 0;
+
+        for (Integer notifyProgressCall : notifyProgressCallList) {
+            assertEquals(Integer.valueOf(++index), notifyProgressCall);
+        }
+    }
+
+    /**
+     * Test PgnLoadListener with 3 events.
+     *
+     * @throws Exception the Exception
+     */
+    @Test
+    public void testPgnLoadListenerWith3Events() throws Exception {
+        final PgnHolder pgn = new PgnHolder("src/test/resources/3_events.pgn");
+
+        final List<Integer> notifyProgressCallList = new ArrayList<>();
+
+        pgn.getListener().add(new PgnLoadListener() {
+            @Override
+            public void notifyProgress(int games) {
+                notifyProgressCallList.add(games);
+            }
+        });
+
+        pgn.loadPgn();
+
+        assertEquals(3, notifyProgressCallList.size());
+        validateNotifyProgressCalls(notifyProgressCallList);
+    }
+
+    /**
+     * Test PgnLoadListener with 31 events.
+     *
+     * @throws Exception the Exception
+     */
+    @Test
+    public void testPgnLoadListenerWith31Events() throws Exception {
+        final PgnHolder pgn = new PgnHolder("src/test/resources/31_events.pgn");
+
+        final List<Integer> notifyProgressCallList = new ArrayList<>();
+
+        pgn.getListener().add(new PgnLoadListener() {
+            @Override
+            public void notifyProgress(int games) {
+                notifyProgressCallList.add(games);
+            }
+        });
+
+        pgn.loadPgn();
+
+        assertEquals(31, notifyProgressCallList.size());
+        validateNotifyProgressCalls(notifyProgressCallList);
+    }
+
 }

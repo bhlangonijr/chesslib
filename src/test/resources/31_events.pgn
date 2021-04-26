@@ -1,0 +1,1209 @@
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
+[Event "Test Event"]
+[Site "Test Event Site"]
+[Date "2021.04.12"]
+[Round "1"]
+[Board "1"]
+[White "Test Event White"]
+[Black "Test Event Black"]
+[Result "1-0"]
+[ECO ""]
+[WhiteElo "2765"]
+[BlackElo "2460"]
+[PlyCount "0"]
+[EventDate "2021.04.12"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "GRE"]
+[WhiteTeam "Test Event White Team"]
+[BlackTeam "Test Event Black Team"]
+
+1. d4 {[%clk 1:30:57]} Nf6 {[%clk 1:30:50]} 2. c4 {[%clk 1:31:11]} e6 {[%clk
+1:31:15]} 3. g3 {[%clk 1:31:33]} d5 {[%clk 1:29:03]} 4. Bg2 {[%clk 1:31:52]} Bb4+
+{[%clk 1:28:25]} 5. Nd2 {[%clk 1:30:57]} O-O {[%clk 1:27:29]} 6. Nf3 {[%clk
+1:30:53]} Nbd7 {[%clk 1:21:09]} 7. O-O {[%clk 1:31:10]} b6 {[%clk 1:18:52]} 8. b3
+{[%clk 1:28:14]} Bb7 {[%clk 1:16:54]} 9. Bb2 {[%clk 1:28:37]} Ne4 {[%clk
+1:12:31]} 10. Qc2 {[%clk 1:25:34]} f5 {[%clk 1:05:14]} 11. e3 {[%clk 1:19:05]} a5
+{[%clk 0:56:52]} 12. a3 {[%clk 1:15:11]} Bd6 {[%clk 0:52:25]} 13. Ne5 {[%clk
+1:07:44]} Bxe5 {[%clk 0:43:44]} 14. dxe5 {[%clk 1:06:58]} Nxd2 {[%clk 0:43:17]}
+15. Qxd2 {[%clk 1:06:44]} Nc5 {[%clk 0:43:31]} 16. Qc2 {[%clk 1:02:03]} Ne4
+{[%clk 0:39:08]} 17. f3 {[%clk 0:56:51]} Ng5 {[%clk 0:38:51]} 18. c5 {[%clk
+0:54:01]} b5 {[%clk 0:34:56]} 19. c6 {[%clk 0:51:09]} Ba6 {[%clk 0:35:16]} 20.
+Rfc1 {[%clk 0:49:05]} Qe8 {[%clk 0:34:04]} 21. h4 {[%clk 0:47:15]} Nf7 {[%clk
+0:31:14]} 22. Bd4 {[%clk 0:46:34]} a4 {[%clk 0:28:50]} 23. b4 {[%clk 0:44:24]}
+Nd8 {[%clk 0:28:36]} 24. Bf1 {[%clk 0:42:51]} Qh5 {[%clk 0:25:57]} 25. Be2 {[%clk
+0:41:19]} Nf7 {[%clk 0:25:10]} 26. Kg2 {[%clk 0:40:30]} Rfb8 {[%clk 0:24:28]} 27.
+Ra2 {[%clk 0:37:01]} Nd8 {[%clk 0:24:13]} 28. Qd1 {[%clk 0:36:24]} Qe8 {[%clk
+0:23:27]} 29. Rac2 {[%clk 0:36:47]} Bc8 {[%clk 0:21:13]} 30. Qf1 {[%clk 0:36:46]}
+Ba6 {[%clk 0:21:37]} 31. Bd3 {[%clk 0:36:44]} Qh5 {[%clk 0:20:59]} 32. Qe2 {[%clk
+0:36:36]}  1-0
+
