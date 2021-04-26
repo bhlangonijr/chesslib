@@ -381,37 +381,78 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Converts the MoveList into SAN representation
+     * Converts the MoveList into short algebraic notation (SAN) representation
+     * without move numbers, e.g. "e4 e5 Nf3 Bc5".
      *
      * @return string
      * @throws MoveConversionException the move conversion exception
+     * @see #toSanWithMoveNumbers()
      */
     public String toSan() throws MoveConversionException {
-        StringBuilder sb = new StringBuilder();
-        for (String sanMove : this.toSanArray()) {
-            sb.append(sanMove);
-            sb.append(" ");
-        }
-        return sb.toString();
+        return toStringWithoutMoveNumbers(toSanArray());
     }
 
     /**
-     * Converts the MoveList into FAN representation
+     * Converts the MoveList into short algebraic notation (SAN) representation
+     * with move numbers, e.g. "1. e4 e5 2. Nf3 Bc5".
      *
      * @return string
      * @throws MoveConversionException the move conversion exception
+     * @see #toSan()
+     * @since 1.4.0
+     */
+    public String toSanWithMoveNumbers() throws MoveConversionException {
+        return toStringWithMoveNumbers(toSanArray());
+    }
+
+    /**
+     * Converts the MoveList into figurine algebraic notation (FAN) representation
+     * without move numbers, e.g. "♙e4 ♟e5 ♘f3 ♝c5".
+     *
+     * @return string
+     * @throws MoveConversionException the move conversion exception
+     * @see #toFanWithMoveNumbers()
      */
     public String toFan() throws MoveConversionException {
+        return toStringWithoutMoveNumbers(toFanArray());
+    }
+
+    /**
+     * Converts the MoveList into figurine algebraic notation (FAN) representation
+     * with move numbers, e.g. "1. ♙e4 ♟e5 2. ♘f3 ♝c5".
+     *
+     * @return string
+     * @throws MoveConversionException the move conversion exception
+     * @see #toFan()
+     * @since 1.4.0
+     */
+    public String toFanWithMoveNumbers() throws MoveConversionException {
+        return toStringWithMoveNumbers(toFanArray());
+    }
+
+
+    private String toStringWithoutMoveNumbers(String[] moveArray) throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
-        for (String fanMove : this.toFanArray()) {
-            sb.append(fanMove);
+        for (String move : moveArray) {
+            sb.append(move);
             sb.append(" ");
         }
         return sb.toString();
     }
 
+    private String toStringWithMoveNumbers(String[] moveArray) throws MoveConversionException {
+        StringBuilder sb = new StringBuilder();
+        for (int halfMove = 0; halfMove < moveArray.length; halfMove++) {
+            if (halfMove % 2 == 0) {
+                sb.append((halfMove / 2) + 1).append(". ");
+            }
+            sb.append(moveArray[halfMove]).append(" ");
+        }
+        return sb.toString();
+    }
+
     /**
-     * Converts the MoveList into SAN Array representation
+     * Converts the MoveList into short algebraic notation (SAN) array representation
      *
      * @return string [ ]
      * @throws MoveConversionException the move conversion exception
@@ -426,7 +467,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Converts the MoveList into FAN Array representation
+     * Converts the MoveList into figurine algebraic notation (FAN) array representation
      *
      * @return string [ ]
      * @throws MoveConversionException the move conversion exception
@@ -467,7 +508,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Gets start fen.
+     * Gets start board position as a Forsyth–Edwards Notation (FEN) string.
      *
      * @return the startFEN
      */
@@ -476,7 +517,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * load from long algebraic text
+     * Load from long algebraic text
      *
      * @param text the text
      * @throws MoveConversionException the move conversion exception
@@ -503,7 +544,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Add a move in the SAN format
+     * Add a move in the short algebraic notation (SAN) format
      *
      * @param san the san
      * @throws MoveConversionException the move conversion exception
@@ -513,7 +554,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Add a move in the SAN format
+     * Add a move in the short algebraic notation (SAN) format
      *
      * @param san            the san
      * @param replay         the replay
@@ -546,7 +587,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * load from SAN text
+     * Load from short algebraic notation (SAN) text
      *
      * @param text the text
      * @throws MoveConversionException the move conversion exception
@@ -582,7 +623,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Decode san to Move move.
+     * Decode short algebraic notation (SAN) to a {@link Move].
      *
      * @param board the board
      * @param san   the san
