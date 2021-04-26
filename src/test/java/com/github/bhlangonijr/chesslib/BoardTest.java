@@ -531,6 +531,433 @@ public class BoardTest {
         assertFalse(board.isInsufficientMaterial());
     }
 
+	@Test
+	public void testInsufficientMaterialEssentialCombinations() {
+
+		final Board board = new Board();
+
+		board.loadFromFen("6k1/8/3K4/8/8/8/3BB3/8 b - - 0 33"); // KBwBbvK
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/6k1/3K4/4N3/8/7B/8/8 w - - 0 36"); // KBwNvK
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/6k1/3K4/8/8/5N2/8/2B5 b - - 0 33"); // KBbNvK
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/3K2k1/8/8/8/8/5B2 b - - 0 33"); // KBwvK
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/8/4k3/8/4K3/8/2B5 w - - 0 35"); // KBbvK
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/3b2k1/8/3K2B1/8/8/8 b - - 0 35"); // KBwvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/k3b3/8/5K2/8/8/2B5 b - - 0 35"); // KBbvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5K2/8/8/1B6/8/k7/6b1/8 w - - 0 39"); // KBwvKBw
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/8/4k3/5b2/3K4/8/2B5 w - - 0 33"); // KBbvKBb
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/4K3/8/1n6/8/5k1N/8 w - - 0 37"); // KNvKN
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5k2/8/5N2/2K5/8/5N2/8/8 w - - 0 34"); // KNNvK
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4k3/8/8/2K5/8/5N2/8/8 w - - 0 35"); // KNvK
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/5k2/8/2K5/8/8/8/8 w - - 0 37"); // KvK
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("2b5/8/2k5/8/4K3/8/8/8 b - - 0 34"); // KvKBw
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/8/2b5/2K5/8/4k3/8 w - - 0 34"); // KvKBb
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4k3/8/8/4K3/8/b7/4b3/8 b - - 0 34"); // KvKBwBb
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4k3/8/8/2K1n3/8/8/4b3/8 b - - 0 35"); // KvKBwN
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1n2k3/8/8/8/8/b4K2/8/8 b - - 0 33"); // KvKBbN
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4k3/8/8/1K2n3/8/8/8/8 b - - 0 36"); // KvKN
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1n2k3/8/3n4/8/8/8/3K4/8 b - - 0 35"); // KvKNN
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("2B5/3B4/8/6K1/8/1k6/8/8 w - - 0 32"); // KBwBwvK
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5B2/8/2k5/8/8/1K6/8/2B5 b - - 0 36"); // KBbBbvK
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("3k4/1b6/2b5/8/8/8/3K4/8 w - - 0 27"); // KvKBwBw
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5b2/3k4/8/8/5K2/2b5/8/8 b - - 0 25"); // KvKBbBb
+		assertTrue(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("7r/3k4/8/8/8/8/3K4/1N6 w - - 0 21"); // KNvKR
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/k2b4/8/8/2K5/8/8/1N6 w - - 0 23"); // KNvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5b2/8/3k4/8/8/4K3/8/1N6 w - - 0 24"); // KNvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4k3/8/8/8/8/5K2/3q4/1N6 w - - 0 24"); // KNvKQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("3k4/8/3p4/8/8/4K3/8/1N6 w - - 0 23"); // KNvKP
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("r7/8/3K4/8/8/2k5/8/5B2 w - - 0 28"); // KBwvKR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1n6/8/8/2k1K3/8/8/8/5B2 w - - 0 26"); // KBwvKN
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("3K4/8/8/4q3/k7/8/8/5B2 b - - 0 30"); // KBwvKQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/8/2p1K3/8/1k6/8/5B2 w - - 0 27"); // KBwvKP
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/8/r7/k7/8/1K6/2B5 b - - 0 25"); // KBbvKR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1n6/8/8/8/4K3/1k6/1B6/8 b - - 3 27"); // KBbvKN
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/8/2q5/8/2BK4/k7/8 b - - 0 28"); // KBbvKQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/6B1/8/2p5/8/1k6/8/1K6 b - - 0 26"); // KBbvKP
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1n6/8/8/2k5/4K3/8/7R/8 b - - 0 22"); // KRvKN
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1n6/8/8/4Q3/k3K3/8/8/8 b - - 0 24"); // KQvKN
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1n6/7Q/8/2Q5/8/k2K4/8/8 b - - 0 28"); // KQQvKN
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1n6/8/8/2k5/8/8/6KP/8 b - - 0 24"); // KPvKN
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("2b5/8/8/8/2k5/8/8/2K4R w - - 0 24"); // KRvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("2b5/8/8/1k6/3R4/8/4K3/1b6 b - - 0 26"); // KRvKBwBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("2b5/2Q5/8/8/8/k7/8/2K5 w - - 0 25"); // KQvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4B3/8/1k6/8/4b3/2K5/7Q/8 w - - 0 30"); // KQBwvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("3Q4/2Q5/b7/8/k7/8/8/2K5 b - - 0 26"); // KQQvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("2b5/8/8/8/k7/8/K7/3b3Q b - - 0 27"); // KQvKBwBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1Qb5/7Q/8/8/k7/2K5/8/3b4 b - - 0 30"); // KQQvKBwBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/8/3P4/k5b1/8/8/2K5 w - - 0 27"); // KPvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/5kb1/8/8/8/3K4/8/7R w - - 0 24"); // KRvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5b2/8/6k1/8/8/R1K5/8/4b3 w - - 0 29"); // KRvKBbBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/7k/4Q3/8/b2K4/8/8 w - - 0 24"); // KQvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5B2/3Q4/7b/3K3k/8/8/8/8 b - - 0 29"); // KQBbvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4Qb2/6k1/8/8/Q7/3K4/8/8 w - - 0 29"); // KQQvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5b2/7k/8/8/K7/1Q6/8/4b3 w - - 0 31"); // KQvKBbBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5b2/Q7/8/8/7k/1K6/3Q4/4b3 w - - 0 34"); // KQQvKBbBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5b2/8/4P3/3K2k1/8/8/8/8 b - - 0 25"); // KPvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/1b2q3/8/k4K2/8/8/8/5B2 w - - 0 25"); // KBwvKBwQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("r1b5/8/8/8/1k6/8/3K4/5B2 b - - 0 24"); // KBwvKBwR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("r7/3B4/8/8/1k3q2/8/8/1K6 b - - 0 24"); // KBwvKQR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("r1b5/8/8/8/1k3q2/8/8/1K3B2 w - - 0 23"); // KBwvKBwQR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4kb2/6q1/8/8/8/8/3K4/2B5 w - - 0 28"); // KBbvKBbQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4kb2/8/8/8/4r3/8/3K4/2B5 w - - 0 28"); // KBbvKBbR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/3k3r/8/8/5q2/8/3K4/2B5 w - - 0 28"); // KBbvKQR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("4kb2/7r/8/3q4/8/8/3K4/2B5 w - - 0 27"); // KBbvKBbQR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5b2/5k2/8/4q3/2K5/8/8/2B5 b - - 1 31"); // KBbvKQBb
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/4k3/7q/8/K7/3B1q2/8 b - - 0 32"); // KBbvKQQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("7B/4k3/8/8/8/1q6/3BK3/8 b - - 0 34"); // KBbBbvKQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/3q4/8/8/k2B4/B5K1/3q4/8 b - - 0 29"); // KBbBbvKQQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/7B/k7/8/8/1B4r1/4K3 b - - 1 32"); // KBbBbvKR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("Q7/8/8/1k6/8/8/3K4/b1B5 w - - 0 28"); // KBbQvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("3R3Q/8/7b/8/k7/8/4K3/2B5 b - - 0 31"); // KBbQRvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("3R1b2/8/8/8/k7/8/4K3/2B5 w - - 0 33"); // KBbRvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/8/8/5q2/1k1B4/8/1b1K4 w - - 0 31"); // KBwvKQBw
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1q6/8/8/8/5q2/1k6/6K1/5B2 w - - 0 29"); // KBwvKQQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("q3B3/8/8/8/8/1k4K1/8/5B2 b - - 0 34"); // KBwBwvKQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("q1B5/8/4B1q1/8/1k6/8/8/5K2 w - - 0 32"); // KBwBwvKQQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("r1B5/8/8/8/8/2k5/8/3K1B2 b - - 0 32"); // KBwBwvKR
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/k7/8/6B1/5b2/3Q4/2K5 w - - 0 35"); // KBwQvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("5R1Q/1b1B4/8/8/2k5/8/8/2K5 b - - 0 38"); // KBwQRvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1R6/8/3k4/8/5K2/7B/4b3/8 w - - 0 30"); // KBwRvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("8/8/3k4/6q1/8/5K2/8/1Nq5 w - - 0 27"); // KNvKQQ
+		assertFalse(board.isInsufficientMaterial());
+		assertTrue(board.isInsufficientMaterial(Side.WHITE));
+		assertFalse(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1R6/3k4/8/b7/8/8/5K2/1Q6 w - - 0 30"); // KQRvKBb
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+		board.loadFromFen("1R6/8/4k3/8/8/3b4/3Q4/4K3 w - - 0 27"); // KQRvKBw
+		assertFalse(board.isInsufficientMaterial());
+		assertFalse(board.isInsufficientMaterial(Side.WHITE));
+		assertTrue(board.isInsufficientMaterial(Side.BLACK));
+
+	}
+    
     @Test
     public void testThreefoldRepetition() throws MoveConversionException {
         final MoveList moveList = new MoveList();

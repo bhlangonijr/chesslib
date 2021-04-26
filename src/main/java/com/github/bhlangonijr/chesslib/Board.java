@@ -1283,60 +1283,157 @@ public class Board implements Cloneable, BoardEvent {
         return isRepetition(3);
     }
 
+    
     /**
      * Verify if there is enough material left in the board
      *
      * @return boolean
      */
     public boolean isInsufficientMaterial() {
-
-        if ((getBitboard(Piece.WHITE_QUEEN) +
-                getBitboard(Piece.BLACK_QUEEN) +
-                getBitboard(Piece.WHITE_ROOK) +
-                getBitboard(Piece.BLACK_ROOK)) != 0L) {
-            return false;
-        }
-
-        final long pawns = getBitboard(Piece.WHITE_PAWN) | getBitboard(Piece.BLACK_PAWN);
-        if (pawns == 0L) {
-            long count = Long.bitCount(getBitboard());
-            int whiteCount = Long.bitCount(getBitboard(Side.WHITE));
-            int blackCount = Long.bitCount(getBitboard(Side.BLACK));
-            if (count == 4) {
-                int whiteBishopCount = Long.bitCount(getBitboard(Piece.WHITE_BISHOP));
-                int blackBishopCount = Long.bitCount(getBitboard(Piece.BLACK_BISHOP));
-                if (whiteCount > 1 && blackCount > 1) {
-                    return !((whiteBishopCount == 1 && blackBishopCount == 1) &&
-                            getFistPieceLocation(Piece.WHITE_BISHOP).isLightSquare() !=
-                                    getFistPieceLocation(Piece.BLACK_BISHOP).isLightSquare());
-                }
-                if (whiteCount == 3 || blackCount == 3) {
-                    if (whiteBishopCount == 2 &&
-                            ((Bitboard.lightSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L ||
-                                    (Bitboard.darkSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L)) {
-                        return true;
-                    } else return blackBishopCount == 2 &&
-                            ((Bitboard.lightSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L ||
-                                    (Bitboard.darkSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L);
-                } else {
-                    return Long.bitCount(getBitboard(Piece.WHITE_KNIGHT)) == 2 ||
-                            Long.bitCount(getBitboard(Piece.BLACK_KNIGHT)) == 2;
-                }
-            } else {
-                if ((getBitboard(Piece.WHITE_KING) | getBitboard(Piece.WHITE_BISHOP)) == getBitboard(Side.WHITE) &&
-                        ((getBitboard(Piece.BLACK_KING) | getBitboard(Piece.BLACK_BISHOP)) == getBitboard(Side.BLACK))) {
-                    return (((Bitboard.lightSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L) &&
-                            ((Bitboard.lightSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L)) ||
-                            ((Bitboard.darkSquares & getBitboard(Piece.WHITE_BISHOP)) == 0L) &&
-                                    ((Bitboard.darkSquares & getBitboard(Piece.BLACK_BISHOP)) == 0L);
-                }
-                return count < 4;
-            }
-        }
-
-        return false;
+		// this is the current python chess 1.5.0 implementation
+        return isInsufficientMaterial(Side.WHITE) && isInsufficientMaterial(Side.BLACK);
     }
 
+    
+	/**
+	 * Verify if one player has insufficient material
+	 * 
+	 * @param side The player side for which to test if having insufficient material
+	 * @return True if the player is having insufficient material, false otherwise
+	 */
+	public boolean isInsufficientMaterial(Side side) {
+		// this is the current python chess 1.5.0 implementation
+		if (calculateHasPiece(side, PieceType.PAWN, this) || calculateHasPiece(side, PieceType.ROOK, this)
+				|| calculateHasPiece(side, PieceType.QUEEN, this)) {
+			return false;
+		}
+
+		// king and knight
+		final Side oppositeSide = side == Side.WHITE ? Side.BLACK : Side.WHITE;
+		if (calculateHasPiece(side, PieceType.KNIGHT, this)) {
+			final int numberOfPieces = calculateNumberOfPieces(side, this);
+			final boolean hasAtMostTwoPieces = numberOfPieces <= 2;
+			if (hasAtMostTwoPieces) {
+				return !calculateHasPiece(oppositeSide, PieceType.PAWN, this)
+						&& !calculateHasPiece(oppositeSide, PieceType.KNIGHT, this)
+						&& !calculateHasPiece(oppositeSide, PieceType.BISHOP, this)
+						&& !calculateHasPiece(oppositeSide, PieceType.ROOK, this);
+			}
+			return false;
+		}
+
+		// now we have at most king and zero or more bishops left
+		if (calculateHasPiece(side, PieceType.BISHOP, this)) {
+			final boolean hasLightSquareBishop = calculateHasBishopForColorSquare(side, true, this);
+			final boolean hasDarkSquareBishop = calculateHasBishopForColorSquare(side, false, this);
+			if (hasLightSquareBishop && hasDarkSquareBishop) {
+				return false;
+			}
+			final boolean hasLightSquareBishopOpponent = calculateHasBishopForColorSquare(oppositeSide, true, this);
+			final boolean hasDarkSquareBishopOpponent = calculateHasBishopForColorSquare(oppositeSide, false, this);
+
+			if (hasLightSquareBishop && hasDarkSquareBishopOpponent) {
+				return false;
+			}
+			if (hasDarkSquareBishop && hasLightSquareBishopOpponent) {
+				return false;
+			}
+			return !calculateHasPiece(oppositeSide, PieceType.PAWN, this)
+					&& !calculateHasPiece(oppositeSide, PieceType.KNIGHT, this);
+		}
+
+		// bare king
+		return true;
+	}
+
+	/**
+	 * Helper method to implement the python chess specification.
+	 * 
+	 * @param side The side to check for pieces
+	 * @param pieceType The piece type to check for
+	 * @param board The board to look at
+	 * @return True if the side to check has the piece, false otherwise
+	 */
+	private static boolean calculateHasPiece(Side side, PieceType pieceType, Board board) {
+		switch (side) {
+		case BLACK:
+			switch (pieceType) {
+			case BISHOP:
+				return board.getBitboard(Piece.BLACK_BISHOP) != 0L;
+			case KING:
+				return board.getBitboard(Piece.BLACK_KING) != 0L;
+			case KNIGHT:
+				return board.getBitboard(Piece.BLACK_KNIGHT) != 0L;
+			case PAWN:
+				return board.getBitboard(Piece.BLACK_PAWN) != 0L;
+			case QUEEN:
+				return board.getBitboard(Piece.BLACK_QUEEN) != 0L;
+			case ROOK:
+				return board.getBitboard(Piece.BLACK_ROOK) != 0L;
+			case NONE:
+			default:
+				throw new IllegalArgumentException();
+			}
+		case WHITE:
+			switch (pieceType) {
+			case BISHOP:
+				return board.getBitboard(Piece.WHITE_BISHOP) != 0L;
+			case KING:
+				return board.getBitboard(Piece.WHITE_KING) != 0L;
+			case KNIGHT:
+				return board.getBitboard(Piece.WHITE_KNIGHT) != 0L;
+			case PAWN:
+				return board.getBitboard(Piece.WHITE_PAWN) != 0L;
+			case QUEEN:
+				return board.getBitboard(Piece.WHITE_QUEEN) != 0L;
+			case ROOK:
+				return board.getBitboard(Piece.WHITE_ROOK) != 0L;
+			case NONE:
+			default:
+				throw new IllegalArgumentException();
+			}
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
+
+	/**
+	 * Helper method to implement the python chess specification.
+	 * 
+	 * @param side The side to calculate the number of pieces
+	 * @param board The board to look at
+	 * @return The number of pieces for the side
+	 */
+	private static int calculateNumberOfPieces(Side side, Board board) {
+		return Long.bitCount(board.getBitboard(side));
+	}
+
+	/**
+	 * Helper method to implement the python chess specification.
+	 * 
+	 * @param side The side to check for the bishop
+	 * @param isLightSquare True to check for light-square bishop, false to check for dark-square bishop
+	 * @param board The board to look at
+	 * @return True if the side has a bishop for the designated light-square or dark-square, false otherwise 
+	 */
+	private static boolean calculateHasBishopForColorSquare(Side side, boolean isLightSquare, Board board) {
+		switch (side) {
+		case BLACK:
+			if (isLightSquare) {
+				return (Bitboard.lightSquares & board.getBitboard(Piece.BLACK_BISHOP)) != 0L;
+			}
+			return (Bitboard.darkSquares & board.getBitboard(Piece.BLACK_BISHOP)) != 0L;
+		case WHITE:
+			if (isLightSquare) {
+				return (Bitboard.lightSquares & board.getBitboard(Piece.WHITE_BISHOP)) != 0L;
+			}
+			return (Bitboard.darkSquares & board.getBitboard(Piece.WHITE_BISHOP)) != 0L;
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
+
+    
     /**
      * Is stale mate
      *
