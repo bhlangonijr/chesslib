@@ -602,4 +602,33 @@ public class PgnHolderTest {
         validateNotifyProgressCalls(notifyProgressCallList);
     }
 
+
+    /**
+     * Test CountGamesInPgnFile method with 3 games.
+     *
+     * @throws Exception the Exception
+     */
+    @Test
+    public void testCountGamesInPgnFileWith3Games() throws Exception {
+        final PgnHolder pgn = new PgnHolder("src/test/resources/3_games.pgn");
+
+        assertEquals(3, pgn.countGamesInPgnFile());
+        pgn.loadPgn();
+        assertEquals(3, pgn.getGames().size());
+    }
+
+    /**
+     * Test CountGamesInPgnFile method with 31 games.
+     *
+     * @throws Exception the Exception
+     */
+    @Test
+    public void testCountGamesInPgnFileWith31Games() throws Exception {
+        final PgnHolder pgn = new PgnHolder("src/test/resources/31_games.pgn");
+
+        assertEquals(31, pgn.countGamesInPgnFile());
+        pgn.loadPgn();
+        assertEquals(31, pgn.getGames().size());
+    }
+
 }
