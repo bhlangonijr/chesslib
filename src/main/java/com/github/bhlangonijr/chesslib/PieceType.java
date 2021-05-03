@@ -16,6 +16,9 @@
 
 package com.github.bhlangonijr.chesslib;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The enum Piece type.
  */
@@ -24,31 +27,56 @@ public enum PieceType {
     /**
      * Pawn piece type.
      */
-    PAWN,
+    PAWN(""),
     /**
      * Knight piece type.
      */
-    KNIGHT,
+    KNIGHT("N"),
     /**
      * Bishop piece type.
      */
-    BISHOP,
+    BISHOP("B"),
     /**
      * Rook piece type.
      */
-    ROOK,
+    ROOK("R"),
     /**
      * Queen piece type.
      */
-    QUEEN,
+    QUEEN("Q"),
     /**
      * King piece type.
      */
-    KING,
+    KING("K"),
     /**
      * None piece type.
      */
-    NONE;
+    NONE("NONE");
+
+    private static final Map<String, PieceType> sanToType = new HashMap<>(7);
+
+    static {
+        for (final PieceType type : PieceType.values()) {
+            sanToType.put(type.getSanSymbol(), type);
+        }
+    }
+
+    private String sanSymbol;
+
+    PieceType(String sanSymbol) {
+        this.sanSymbol = sanSymbol;
+    }
+
+    /**
+     * Returns the short algebraic notation (SAN) symbol for this piece type.
+     * For example, "R" for a rook, "K" for a king, and an empty string for a pawn.
+     *
+     * @return The short algebraic notation symbol of this piece type.
+     * @since 1.4.0
+     */
+    public String getSanSymbol() {
+        return sanSymbol;
+    }
 
     /**
      * From value piece type.
@@ -58,6 +86,22 @@ public enum PieceType {
      */
     public static PieceType fromValue(String v) {
         return valueOf(v);
+    }
+
+    /**
+     * Returns the {@code PieceType} corresponding to the given short algebraic notation symbol.
+     *
+     * @param sanSymbol A piece symbol, such as "K", "B" or "".
+     * @return the piece type, such as {@code KING}, {@code BISHOP}, or {@code PAWN}.
+     * @throws IllegalArgumentException Thrown if the input does not correspond to any standard chess piece type.
+     * @since 1.4.0
+     */
+    public static PieceType fromSanSymbol(String sanSymbol) {
+        final PieceType pieceType = sanToType.get(sanSymbol);
+        if (pieceType == null) {
+            throw new IllegalArgumentException(String.format("Unknown piece '%s'", sanSymbol));
+        }
+        return pieceType;
     }
 
     /**

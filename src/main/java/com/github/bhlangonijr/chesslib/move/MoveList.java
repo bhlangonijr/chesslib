@@ -20,6 +20,7 @@ import com.github.bhlangonijr.chesslib.*;
 import com.github.bhlangonijr.chesslib.util.StringUtil;
 
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * The type Move list.
@@ -34,54 +35,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         }
     };
     private static final Move nullMove = new Move(Square.NONE, Square.NONE);
-
-    private static EnumMap<Piece, String> sanNotation =
-            new EnumMap<Piece, String>(Piece.class);
-
-    private static EnumMap<Piece, String> fanNotation =
-            new EnumMap<Piece, String>(Piece.class);
-
-    private static Map<String, PieceType> sanNotationR =
-            new HashMap<String, PieceType>(7);
-
-
-    static {
-        sanNotation.put(Piece.WHITE_PAWN, "");
-        sanNotation.put(Piece.BLACK_PAWN, "");
-        sanNotation.put(Piece.WHITE_KNIGHT, "N");
-        sanNotation.put(Piece.BLACK_KNIGHT, "N");
-        sanNotation.put(Piece.WHITE_BISHOP, "B");
-        sanNotation.put(Piece.BLACK_BISHOP, "B");
-        sanNotation.put(Piece.WHITE_ROOK, "R");
-        sanNotation.put(Piece.BLACK_ROOK, "R");
-        sanNotation.put(Piece.WHITE_QUEEN, "Q");
-        sanNotation.put(Piece.BLACK_QUEEN, "Q");
-        sanNotation.put(Piece.WHITE_KING, "K");
-        sanNotation.put(Piece.BLACK_KING, "K");
-        sanNotation.put(Piece.NONE, "NONE");
-
-        fanNotation.put(Piece.WHITE_PAWN, "♙");
-        fanNotation.put(Piece.BLACK_PAWN, "♟");
-        fanNotation.put(Piece.WHITE_KNIGHT, "♘");
-        fanNotation.put(Piece.BLACK_KNIGHT, "♞");
-        fanNotation.put(Piece.WHITE_BISHOP, "♗");
-        fanNotation.put(Piece.BLACK_BISHOP, "♝");
-        fanNotation.put(Piece.WHITE_ROOK, "♖");
-        fanNotation.put(Piece.BLACK_ROOK, "♜");
-        fanNotation.put(Piece.WHITE_QUEEN, "♕");
-        fanNotation.put(Piece.BLACK_QUEEN, "♛");
-        fanNotation.put(Piece.WHITE_KING, "♔");
-        fanNotation.put(Piece.BLACK_KING, "♚");
-        fanNotation.put(Piece.NONE, "NONE");
-
-        sanNotationR.put("", PieceType.PAWN);
-        sanNotationR.put("N", PieceType.KNIGHT);
-        sanNotationR.put("B", PieceType.BISHOP);
-        sanNotationR.put("R", PieceType.ROOK);
-        sanNotationR.put("Q", PieceType.QUEEN);
-        sanNotationR.put("K", PieceType.KING);
-        sanNotationR.put("NONE", PieceType.NONE);
-    }
 
     private final String startFEN;
     private boolean dirty = true;
@@ -136,7 +89,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      */
     // encode the move to SAN move and update thread local board
     protected static String encodeToSan(final Board board, Move move) throws MoveConversionException {
-        return encode(board, move, sanNotation);
+        return encode(board, move, Piece::getSanSymbol);
     }
 
     /**
@@ -149,7 +102,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      */
     // encode the move to SAN move and update thread local board
     protected static String encodeToFan(final Board board, Move move) throws MoveConversionException {
-        return encode(board, move, fanNotation);
+        return encode(board, move, Piece::getFanSymbol);
     }
 
     /**
@@ -162,7 +115,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @throws MoveConversionException the move conversion exception
      */
     // encode the move to SAN/FAN move and update thread local board
-    protected static String encode(final Board board, Move move, EnumMap<Piece, String> notation)
+    protected static String encode(final Board board, Move move, Function<Piece, String> notation)
             throws MoveConversionException {
         StringBuilder san = new StringBuilder();
         Piece piece = board.getPiece(move.getFrom());
@@ -182,7 +135,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         boolean pawnMove = piece.getPieceType().equals(PieceType.PAWN) &&
                 move.getFrom().getFile().equals(move.getTo().getFile());
         boolean ambResolved = false;
-        san.append(notation.get(piece));
+        san.append(notation.apply(piece));
         if (!pawnMove) {
             //resolving ambiguous move
             long amb = board.squareAttackedByPieceType(move.getTo(),
@@ -226,7 +179,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         san.append(move.getTo().toString().toLowerCase());
         if (!move.getPromotion().equals(Piece.NONE)) {
             san.append("=");
-            san.append(notation.get(move.getPromotion()));
+            san.append(notation.apply(move.getPromotion()));
         }
         addCheckFlag(board, san);
         return san.toString();
@@ -674,7 +627,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                     san.toUpperCase());
         }
         Piece promotion = strPromotion.equals("") ? Piece.NONE :
-                Constants.getPieceByNotation(side.equals(Side.WHITE) ?
+                Piece.fromFenSymbol(side.equals(Side.WHITE) ?
                         strPromotion.toUpperCase() : strPromotion.toLowerCase());
 
         if (san.length() == 2) { //is pawn move
@@ -700,7 +653,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             PieceType fromPiece = PieceType.PAWN;
 
             if (Character.isUpperCase(strFrom.charAt(0))) {
-                fromPiece = sanNotationR.get(strFrom.charAt(0) + "");
+                fromPiece = PieceType.fromSanSymbol(strFrom.charAt(0) + "");
             }
 
             if (strFrom.length() == 3) {

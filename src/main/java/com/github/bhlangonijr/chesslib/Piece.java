@@ -16,7 +16,8 @@
 
 package com.github.bhlangonijr.chesslib;
 
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The enum Piece.
@@ -26,68 +27,58 @@ public enum Piece {
     /**
      * White pawn piece.
      */
-    WHITE_PAWN,
+    WHITE_PAWN(Side.WHITE, PieceType.PAWN, "♙", "P"),
     /**
      * White knight piece.
      */
-    WHITE_KNIGHT,
+    WHITE_KNIGHT(Side.WHITE, PieceType.KNIGHT, "♘", "N"),
     /**
      * White bishop piece.
      */
-    WHITE_BISHOP,
+    WHITE_BISHOP(Side.WHITE, PieceType.BISHOP, "♗", "B"),
     /**
      * White rook piece.
      */
-    WHITE_ROOK,
+    WHITE_ROOK(Side.WHITE, PieceType.ROOK, "♖", "R"),
     /**
      * White queen piece.
      */
-    WHITE_QUEEN,
+    WHITE_QUEEN(Side.WHITE, PieceType.QUEEN, "♕", "Q"),
     /**
      * White king piece.
      */
-    WHITE_KING,
+    WHITE_KING(Side.WHITE, PieceType.KING, "♔", "K"),
     /**
      * Black pawn piece.
      */
-    BLACK_PAWN,
+    BLACK_PAWN(Side.BLACK, PieceType.PAWN, "♟", "p"),
     /**
      * Black knight piece.
      */
-    BLACK_KNIGHT,
+    BLACK_KNIGHT(Side.BLACK, PieceType.KNIGHT, "♞", "n"),
     /**
      * Black bishop piece.
      */
-    BLACK_BISHOP,
+    BLACK_BISHOP(Side.BLACK, PieceType.BISHOP, "♝", "b"),
     /**
      * Black rook piece.
      */
-    BLACK_ROOK,
+    BLACK_ROOK(Side.BLACK, PieceType.ROOK, "♜", "r"),
     /**
      * Black queen piece.
      */
-    BLACK_QUEEN,
+    BLACK_QUEEN(Side.BLACK, PieceType.QUEEN, "♛", "q"),
     /**
      * Black king piece.
      */
-    BLACK_KING,
+    BLACK_KING(Side.BLACK, PieceType.KING, "♚", "k"),
     /**
      * None piece.
      */
-    NONE;
+    NONE(null, null, "NONE", ".");
 
     public static Piece[] allPieces = values();
 
-    /**
-     * The Piece type.
-     */
-    static EnumMap<Piece, PieceType> pieceType =
-            new EnumMap<Piece, PieceType>(Piece.class);
-    /**
-     * The Piece side.
-     */
-    static EnumMap<Piece, Side> pieceSide =
-            new EnumMap<Piece, Side>(Piece.class);
     private static Piece[][] pieceMake = {
             {WHITE_PAWN, BLACK_PAWN},
             {WHITE_KNIGHT, BLACK_KNIGHT},
@@ -98,36 +89,24 @@ public enum Piece {
             {NONE, NONE},
     };
 
+    private static final Map<String, Piece> fenToPiece = new HashMap<>(13);
+
     static {
-        pieceType.put(Piece.WHITE_PAWN, PieceType.PAWN);
-        pieceType.put(Piece.WHITE_KNIGHT, PieceType.KNIGHT);
-        pieceType.put(Piece.WHITE_BISHOP, PieceType.BISHOP);
-        pieceType.put(Piece.WHITE_ROOK, PieceType.ROOK);
-        pieceType.put(Piece.WHITE_QUEEN, PieceType.QUEEN);
-        pieceType.put(Piece.WHITE_KING, PieceType.KING);
+        for (final Piece piece : Piece.values()) {
+            fenToPiece.put(piece.getFenSymbol(), piece);
+        }
+    }
 
-        pieceType.put(Piece.BLACK_PAWN, PieceType.PAWN);
-        pieceType.put(Piece.BLACK_KNIGHT, PieceType.KNIGHT);
-        pieceType.put(Piece.BLACK_BISHOP, PieceType.BISHOP);
-        pieceType.put(Piece.BLACK_ROOK, PieceType.ROOK);
-        pieceType.put(Piece.BLACK_QUEEN, PieceType.QUEEN);
-        pieceType.put(Piece.BLACK_KING, PieceType.KING);
+    private final Side side;
+    private final PieceType type;
+    private String fanSymbol;
+    private String fenSymbol;
 
-        pieceSide.put(Piece.WHITE_PAWN, Side.WHITE);
-        pieceSide.put(Piece.WHITE_KNIGHT, Side.WHITE);
-        pieceSide.put(Piece.WHITE_BISHOP, Side.WHITE);
-        pieceSide.put(Piece.WHITE_ROOK, Side.WHITE);
-        pieceSide.put(Piece.WHITE_QUEEN, Side.WHITE);
-        pieceSide.put(Piece.WHITE_KING, Side.WHITE);
-
-        pieceSide.put(Piece.BLACK_PAWN, Side.BLACK);
-        pieceSide.put(Piece.BLACK_KNIGHT, Side.BLACK);
-        pieceSide.put(Piece.BLACK_BISHOP, Side.BLACK);
-        pieceSide.put(Piece.BLACK_ROOK, Side.BLACK);
-        pieceSide.put(Piece.BLACK_QUEEN, Side.BLACK);
-        pieceSide.put(Piece.BLACK_KING, Side.BLACK);
-
-
+    Piece(Side side, PieceType type, String fanSymbol, String fenSymbol) {
+        this.side = side;
+        this.type = type;
+        this.fanSymbol = fanSymbol;
+        this.fenSymbol = fenSymbol;
     }
 
     /**
@@ -167,7 +146,7 @@ public enum Piece {
      * @return the piece type
      */
     public PieceType getPieceType() {
-        return pieceType.get(this);
+        return type;
     }
 
     /**
@@ -176,6 +155,56 @@ public enum Piece {
      * @return the piece side
      */
     public Side getPieceSide() {
-        return pieceSide.get(this);
+        return side;
     }
+
+    /**
+     * Returns the short algebraic notation (SAN) symbol for this piece type.
+     * For example, "R" for a rook, "K" for a king, and an empty string for a pawn.
+     *
+     * @return The short algebraic notation symbol of this piece type.
+     * @since 1.4.0
+     */
+    public String getSanSymbol() {
+        return type.getSanSymbol();
+    }
+
+    /**
+     * Returns the figurine algebraic notation (FAN) symbol for this piece.
+     * For example, "♜" for a black rook, and "♙" for a white pawn.
+     *
+     * @return The figurine algebraic notation symbol of this piece type.
+     * @since 1.4.0
+     */
+    public String getFanSymbol() {
+        return fanSymbol;
+    }
+
+    /**
+     * Returns the Forsyth-Edwards notation (FEN) symbol for this piece.
+     * For example, "r" for a black rook, and "P" for a white pawn.
+     *
+     * @return The Forsyth-Edwards Notation symbol of this piece.
+     * @since 1.4.0
+     */
+    public String getFenSymbol() {
+        return fenSymbol;
+    }
+
+    /**
+     * Returns the {@code Piece} corresponding to the given Forsyth-Edwards notation symbol.
+     *
+     * @param fenSymbol A piece symbol, such as "K", "b" or "p".
+     * @return the piece, such as {@code WHITE_KING}, {@code BLACK_BISHOP}, or {@code BLACK_PAWN}.
+     * throws IllegalArgumentException Thrown if the input does not correspond to any standard chess piece.
+     * @since 1.4.0
+     */
+    public static Piece fromFenSymbol(String fenSymbol) {
+        final Piece piece = fenToPiece.get(fenSymbol);
+        if (piece == null) {
+            throw new IllegalArgumentException(String.format("Unknown piece '%s'", fenSymbol));
+        }
+        return piece;
+    }
+
 }
