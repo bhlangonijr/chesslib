@@ -576,7 +576,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Decode short algebraic notation (SAN) to a {@link Move].
+     * Decode short algebraic notation (SAN) to a {@link Move}.
      *
      * @param board the board
      * @param san   the san

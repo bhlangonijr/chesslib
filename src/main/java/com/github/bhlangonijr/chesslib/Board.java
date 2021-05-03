@@ -1449,7 +1449,7 @@ public class Board implements Cloneable, BoardEvent {
      * on both boards are the same
      *
      * @param obj board object
-     * @return
+     * @return if board compared is strictly equal including history
      */
     public boolean strictEquals(Object obj) {
         if (obj instanceof Board) {
