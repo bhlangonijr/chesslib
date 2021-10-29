@@ -42,7 +42,6 @@ public class GameLoader {
         StringBuilder moveText = null;
         boolean moveTextParsing = false;
 
-
         while (iterator.hasNext()) {
             String line = iterator.next();
             try {
