@@ -230,7 +230,7 @@ public class TimeControl {
             s.append(getHalfMoves());
             s.append("/");
             s.append(getMilliseconds() / 1000);
-        } else if (getMilliseconds() > 0) {
+        } else if (getMilliseconds() >= 0) {
             s.append(getMilliseconds() / 1000);
         }
         if (getIncrement() > 0) {
@@ -257,7 +257,7 @@ public class TimeControl {
             s.append(" Moves / ");
             s.append(getMilliseconds() / 1000);
             s.append(" Sec");
-        } else if (getMilliseconds() > 0) {
+        } else if (getMilliseconds() >= 0) {
             s.append(getMilliseconds() / 1000 / 60);
             s.append(" Min");
         }
