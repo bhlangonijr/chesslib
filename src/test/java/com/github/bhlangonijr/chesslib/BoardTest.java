@@ -127,6 +127,48 @@ public class BoardTest {
     }
 
     /**
+     * Test FEN formatting with `onlyOutputEnPassantIfCapturable` set to true,
+     * in a position where capturing en passant is possible.
+     */
+    @Test
+    public void testFENFormattingOnlyOutputEnPassantIfCapturable_EnPassantPossible() {
+        String fenWhereEnPassantPossible = "rnbqkbnr/1pp1pppp/p7/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3";
+        String expectedOutputFen = "rnbqkbnr/1pp1pppp/p7/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6";
+        Board board = new Board();
+        board.loadFromFen(fenWhereEnPassantPossible);
+        assertEquals(expectedOutputFen, board.getFen(false, true));
+    }
+
+    /**
+     * Test FEN formatting with `onlyOutputEnPassantIfCapturable` set to true,
+     * in a position where capturing en passant is not possible.
+     */
+    @Test
+    public void testFENFormattingOnlyOutputEnPassantIfCapturable_EnPassantNotPossible() {
+        String fenWhereEnPassantNotPossible = "rnbqkbnr/1pp1pppp/p7/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3";
+        String expectedOutputFen = "rnbqkbnr/1pp1pppp/p7/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq -";
+        Board board = new Board();
+        board.loadFromFen(fenWhereEnPassantNotPossible);
+        assertEquals(expectedOutputFen, board.getFen(false, true));
+    }
+
+    /**
+     * Test FEN formatting with `onlyOutputEnPassantIfCapturable` set to true,
+     * in a position where a 2-square pawn move just happened, but capturing en
+     * passant is not possible.
+     */
+    @Test
+    public void testFENFormattingOnlyOutputEnPassantIfCapturable_2SquarePawnMoveButEnPassantPossible() {
+        String fenWithTwoSquarePawnMoveNoEnPassantPossible = 
+            "rnbqkbnr/1pp1pppp/p7/3pP3/3P4/8/PPP2PPP/RNBQKBNR b KQkq d3 0 3";
+        String expectedOutputFen = "rnbqkbnr/1pp1pppp/p7/3pP3/3P4/8/PPP2PPP/RNBQKBNR b KQkq -";
+        Board board = new Board();
+        board.loadFromFen(fenWithTwoSquarePawnMoveNoEnPassantPossible);
+        assertEquals(expectedOutputFen, board.getFen(false, true));
+    }        
+        
+
+    /**
      * Test clone.
      */
     @Test
