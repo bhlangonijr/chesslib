@@ -42,7 +42,6 @@ public class GameLoader {
         StringBuilder moveText = null;
         boolean moveTextParsing = false;
 
-
         while (iterator.hasNext()) {
             String line = iterator.next();
             try {
@@ -159,8 +158,7 @@ public class GameLoader {
                                     try {
                                         event.setTimeControl(TimeControl.parseFromString(p.value.toUpperCase()));
                                     } catch (Exception e1) {
-                                        throw new PgnException("Error parsing TimeControl Tag [" + (round != null ? round.getNumber() : 1) +
-                                                ", " + event.getName() + "]: " + e1.getMessage());
+                                        //ignore errors in time control tag as it's not required by standards
                                     }
                                 }
                                 break;

@@ -26,9 +26,11 @@ import java.util.Iterator;
  * <p>
  * The pgn iterator permits iterating over large PGN files without piling up every game in the memory
  */
-public class PgnIterator implements Iterable<Game> {
+public class PgnIterator implements Iterable<Game>, AutoCloseable {
 
-    private Iterator<String> pgnLines;
+    private final Iterator<String> pgnLines;
+
+    private Game game;
 
     /**
      * Instantiates a new Pgn holder.
@@ -44,18 +46,20 @@ public class PgnIterator implements Iterable<Game> {
     public PgnIterator(LargeFile file) {
 
         this.pgnLines = file.iterator();
+        loadNextGame();
     }
 
     public PgnIterator(Iterable<String> pgnLines) {
 
         this.pgnLines = pgnLines.iterator();
+        loadNextGame();
     }
 
     public PgnIterator(Iterator<String> pgnLines) {
 
         this.pgnLines = pgnLines;
+        loadNextGame();
     }
-
 
     @Override
     public Iterator<Game> iterator() {
@@ -63,24 +67,30 @@ public class PgnIterator implements Iterable<Game> {
     }
 
     @Override
-    protected void finalize() throws Throwable {
+    public void close() throws Exception {
+
         if (pgnLines instanceof LargeFile) {
             ((LargeFile) (pgnLines)).close();
         }
-        super.finalize();
+    }
+
+    private void loadNextGame() {
+
+        game = GameLoader.loadNextGame(pgnLines);
     }
 
     private class GameIterator implements Iterator<Game> {
-        private Game game;
 
         public boolean hasNext() {
 
-            game = GameLoader.loadNextGame(pgnLines);
             return game != null;
         }
 
         public Game next() {
-            return game;
+
+            Game current = game;
+            loadNextGame();
+            return current;
         }
 
         public void remove() {

@@ -25,8 +25,11 @@ import java.util.Iterator;
 /**
  * The type Large file.
  */
-public class LargeFile implements Iterable<String> {
-    private BufferedReader reader;
+public class LargeFile implements Iterable<String>, AutoCloseable {
+
+    private final BufferedReader reader;
+
+    private String nextLine;
 
     /**
      * Instantiates a new Large file.
@@ -35,7 +38,9 @@ public class LargeFile implements Iterable<String> {
      * @throws Exception the exception
      */
     public LargeFile(String filePath) throws Exception {
+
         reader = new BufferedReader(new FileReader(filePath));
+        readNextLine();
     }
 
     /**
@@ -44,12 +49,12 @@ public class LargeFile implements Iterable<String> {
      * @param inputStream the input stream
      */
     public LargeFile(InputStream inputStream) {
+
         reader = new BufferedReader(new InputStreamReader(inputStream));
+        readNextLine();
     }
 
-    /**
-     * Close.
-     */
+    @Override
     public void close() {
         try {
             reader.close();
@@ -61,21 +66,27 @@ public class LargeFile implements Iterable<String> {
         return new FileIterator();
     }
 
+    private void readNextLine() {
+
+        try {
+            nextLine = reader.readLine();
+        } catch (Exception ex) {
+            nextLine = null;
+            throw new IllegalStateException("Error reading file", ex);
+        }
+    }
+
     private class FileIterator implements Iterator<String> {
-        private String currentLine;
 
         public boolean hasNext() {
-            try {
-                currentLine = reader.readLine();
-            } catch (Exception ex) {
-                currentLine = null;
-                ex.printStackTrace();
-            }
 
-            return currentLine != null;
+            return nextLine != null;
         }
 
         public String next() {
+
+            String currentLine = nextLine;
+            readNextLine();
             return currentLine;
         }
 

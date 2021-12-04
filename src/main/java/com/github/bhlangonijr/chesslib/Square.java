@@ -286,7 +286,7 @@ public enum Square {
     private static final Square[] allSquares = Square.values();
     private static final Rank[] rankValues = Rank.values();
     private static final File[] fileValues = File.values();
-    private static final long bitboard[] = new long[allSquares.length];
+    private static final long[] bitboard = new long[allSquares.length];
 
     private static final EnumMap<Square, Square[]> sideSquare =
             new EnumMap<Square, Square[]>(Square.class);

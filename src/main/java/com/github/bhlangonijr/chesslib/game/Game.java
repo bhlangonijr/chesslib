@@ -46,7 +46,7 @@ public class Game {
     private GameResult result;
     private MoveList halfMoves = new MoveList();
     private Map<Integer, MoveList> variations;
-    private Map<Integer, String> commentary;
+    private Map<Integer, String> comments;
     private Map<Integer, String> nag;
     private Map<String, String> property;
 
@@ -259,17 +259,17 @@ public class Game {
      *
      * @return the commentary
      */
-    public Map<Integer, String> getCommentary() {
-        return commentary;
+    public Map<Integer, String> getComments() {
+        return comments;
     }
 
     /**
      * Sets commentary.
      *
-     * @param commentary the commentary
+     * @param comments the commentary
      */
-    public void setCommentary(Map<Integer, String> commentary) {
-        this.commentary = commentary;
+    public void setComments(Map<Integer, String> comments) {
+        this.comments = comments;
     }
 
     /**
@@ -448,8 +448,8 @@ public class Game {
                     }
                 }
 
-                if (getCommentary() != null) {
-                    String comment = getCommentary().get(variantIndex);
+                if (getComments() != null) {
+                    String comment = getComments().get(variantIndex);
                     if (comment != null) {
                         sb.append("{");
                         sb.append(comment);
@@ -713,8 +713,8 @@ public class Game {
         if (getVariations() != null) {
             getVariations().clear();
         }
-        if (getCommentary() != null) {
-            getCommentary().clear();
+        if (getComments() != null) {
+            getComments().clear();
         }
         if (getNag() != null) {
             getNag().clear();
@@ -779,10 +779,10 @@ public class Game {
             } else if (token.equals("}") && !onLineCommentBlock) {
                 onCommentBlock = false;
                 if (comment != null) {
-                    if (getCommentary() == null) {
-                        setCommentary(new HashMap<Integer, String>());
+                    if (getComments() == null) {
+                        setComments(new HashMap<Integer, String>());
                     }
-                    getCommentary().put(variantIndex, comment.toString());
+                    getComments().put(variantIndex, comment.toString());
                 }
                 comment = null;
                 continue;
@@ -793,7 +793,7 @@ public class Game {
             } else if (token.equals("\n") && onLineCommentBlock) {
                 onLineCommentBlock = false;
                 if (comment != null) {
-                    getCommentary().put(variantIndex, comment.toString());
+                    getComments().put(variantIndex, comment.toString());
                 }
                 comment = null;
                 continue;

@@ -61,7 +61,7 @@ public class Board implements Cloneable, BoardEvent {
     private Integer halfMoveCounter;
     private GameContext context;
     private boolean enableEvents;
-    private boolean updateHistory;
+    private final boolean updateHistory;
     private long incrementalHashKey;
 
     /**
@@ -129,6 +129,14 @@ public class Board implements Cloneable, BoardEvent {
                     Square.encode(Rank.RANK_6, sq.getFile());
         }
         return ep;
+    }
+
+    private static IntStream zeroToSeven() {
+        return IntStream.iterate(0, i -> i + 1).limit(8);
+    }
+
+    private static IntStream sevenToZero() {
+        return IntStream.iterate(7, i -> i - 1).limit(8);
     }
 
     /**
@@ -1570,14 +1578,6 @@ public class Board implements Cloneable, BoardEvent {
         });
 
         return sb.toString();
-    }
-
-    private static IntStream zeroToSeven() {
-        return IntStream.iterate(0, i -> i + 1).limit(8);
-    }
-
-    private static IntStream sevenToZero() {
-        return IntStream.iterate(7, i -> i - 1).limit(8);
     }
 
     @Override

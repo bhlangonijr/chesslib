@@ -77,9 +77,9 @@ public enum Piece {
      */
     NONE(null, null, "NONE", ".");
 
+    private static final Map<String, Piece> fenToPiece = new HashMap<>(13);
     public static Piece[] allPieces = values();
-
-    private static Piece[][] pieceMake = {
+    private static final Piece[][] pieceMake = {
             {WHITE_PAWN, BLACK_PAWN},
             {WHITE_KNIGHT, BLACK_KNIGHT},
             {WHITE_BISHOP, BLACK_BISHOP},
@@ -89,8 +89,6 @@ public enum Piece {
             {NONE, NONE},
     };
 
-    private static final Map<String, Piece> fenToPiece = new HashMap<>(13);
-
     static {
         for (final Piece piece : Piece.values()) {
             fenToPiece.put(piece.getFenSymbol(), piece);
@@ -99,8 +97,8 @@ public enum Piece {
 
     private final Side side;
     private final PieceType type;
-    private String fanSymbol;
-    private String fenSymbol;
+    private final String fanSymbol;
+    private final String fenSymbol;
 
     Piece(Side side, PieceType type, String fanSymbol, String fenSymbol) {
         this.side = side;
@@ -129,6 +127,22 @@ public enum Piece {
     public static Piece make(Side side, PieceType type) {
         //return Piece.valueOf(side+"_"+type);
         return pieceMake[type.ordinal()][side.ordinal()];
+    }
+
+    /**
+     * Returns the {@code Piece} corresponding to the given Forsyth-Edwards notation symbol.
+     *
+     * @param fenSymbol A piece symbol, such as "K", "b" or "p".
+     * @return the piece, such as {@code WHITE_KING}, {@code BLACK_BISHOP}, or {@code BLACK_PAWN}.
+     * throws IllegalArgumentException Thrown if the input does not correspond to any standard chess piece.
+     * @since 1.4.0
+     */
+    public static Piece fromFenSymbol(String fenSymbol) {
+        final Piece piece = fenToPiece.get(fenSymbol);
+        if (piece == null) {
+            throw new IllegalArgumentException(String.format("Unknown piece '%s'", fenSymbol));
+        }
+        return piece;
     }
 
     /**
@@ -189,22 +203,6 @@ public enum Piece {
      */
     public String getFenSymbol() {
         return fenSymbol;
-    }
-
-    /**
-     * Returns the {@code Piece} corresponding to the given Forsyth-Edwards notation symbol.
-     *
-     * @param fenSymbol A piece symbol, such as "K", "b" or "p".
-     * @return the piece, such as {@code WHITE_KING}, {@code BLACK_BISHOP}, or {@code BLACK_PAWN}.
-     * throws IllegalArgumentException Thrown if the input does not correspond to any standard chess piece.
-     * @since 1.4.0
-     */
-    public static Piece fromFenSymbol(String fenSymbol) {
-        final Piece piece = fenToPiece.get(fenSymbol);
-        if (piece == null) {
-            throw new IllegalArgumentException(String.format("Unknown piece '%s'", fenSymbol));
-        }
-        return piece;
     }
 
 }
