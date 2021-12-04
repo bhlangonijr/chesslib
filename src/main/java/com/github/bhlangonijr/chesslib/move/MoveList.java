@@ -814,6 +814,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                     return false;
                 }
             }
+            return true;
         }
         return false;
     }

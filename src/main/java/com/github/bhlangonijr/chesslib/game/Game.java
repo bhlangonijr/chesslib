@@ -397,6 +397,9 @@ public class Game {
         if (getEco() != null && !getEco().equals("")) {
             sb.append(makeProp("ECO", getEco()));
         }
+        if (getOpening() != null && !getOpening().equals("")) {
+            sb.append(makeProp("Opening", getOpening()));
+        }
         if (getWhitePlayer().getElo() > 0) {
             sb.append(makeProp("WhiteElo", getWhitePlayer().getElo() + ""));
         }

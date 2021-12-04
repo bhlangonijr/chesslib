@@ -757,8 +757,7 @@ public class Board implements Cloneable, BoardEvent {
                 Square ep = Square.valueOf(s);
                 setEnPassant(ep);
                 setEnPassantTarget(findEnPassantTarget(ep, sideToMove));
-                if (!(squareAttackedByPieceType(getEnPassant(), getSideToMove(), PieceType.PAWN) != 0 &&
-                        verifyNotPinnedPiece(getSideToMove().flip(), getEnPassant(), getEnPassantTarget()))) {
+                if (!pawnCanBeCapturedEnPassant()) {
                     setEnPassantTarget(Square.NONE);
                 }
             } else {
@@ -803,6 +802,19 @@ public class Board implements Cloneable, BoardEvent {
      * @return board fen
      */
     public String getFen(boolean includeCounters) {
+        return getFen(includeCounters, false);
+    }
+
+    /**
+     * Generates the current board FEN representation
+     *
+     * @param includeCounters if true include halfMove and fullMove counters
+     * @param onlyOutputEnPassentIfCapturable if true, only output the en passant 
+     *   square if the pawn that just moved is able to be captured. If false, always
+     *   output the en passant square if a pawn just moved 2 squares.
+     * @return board fen
+     */
+    public String getFen(boolean includeCounters, boolean onlyOutputEnPassantIfCapturable) {
 
         StringBuffer fen = new StringBuffer();
         int count = 0;
@@ -874,7 +886,9 @@ public class Board implements Cloneable, BoardEvent {
             fen.append(" " + rights);
         }
 
-        if (Square.NONE.equals(getEnPassant())) {
+        if (Square.NONE.equals(getEnPassant()) 
+            || (onlyOutputEnPassantIfCapturable 
+                && !pawnCanBeCapturedEnPassant())) {
             fen.append(" -");
         } else {
             fen.append(" ");
@@ -1492,8 +1506,7 @@ public class Board implements Cloneable, BoardEvent {
         hash ^= getSideKey(getSideToMove());
 
         if (Square.NONE != getEnPassantTarget() &&
-                squareAttackedByPieceType(getEnPassant(), getSideToMove(), PieceType.PAWN) != 0 &&
-                verifyNotPinnedPiece(getSideToMove().flip(), getEnPassant(), getEnPassantTarget())) {
+                pawnCanBeCapturedEnPassant()) {
             hash ^= getEnPassantKey(getEnPassantTarget());
         }
         return hash;
@@ -1590,6 +1603,12 @@ public class Board implements Cloneable, BoardEvent {
 
     public void setIncrementalHashKey(long hashKey) {
         incrementalHashKey = hashKey;
+    }
+
+    private boolean pawnCanBeCapturedEnPassant() {
+        return 
+            squareAttackedByPieceType(getEnPassant(), getSideToMove(), PieceType.PAWN) != 0 
+            && verifyNotPinnedPiece(getSideToMove().flip(), getEnPassant(), getEnPassantTarget());
     }
 
     private boolean verifyNotPinnedPiece(Side side, Square enPassant, Square target) {
