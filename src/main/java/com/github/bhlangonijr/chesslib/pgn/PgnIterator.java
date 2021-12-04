@@ -74,6 +74,11 @@ public class PgnIterator implements Iterable<Game>, AutoCloseable {
         }
     }
 
+    private void loadNextGame() {
+
+        game = GameLoader.loadNextGame(pgnLines);
+    }
+
     private class GameIterator implements Iterator<Game> {
 
         public boolean hasNext() {
@@ -90,10 +95,5 @@ public class PgnIterator implements Iterable<Game>, AutoCloseable {
 
         public void remove() {
         }
-    }
-
-    private void loadNextGame() {
-
-        game = GameLoader.loadNextGame(pgnLines);
     }
 }

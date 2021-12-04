@@ -19,7 +19,9 @@ package com.github.bhlangonijr.chesslib.move;
 import com.github.bhlangonijr.chesslib.*;
 import com.github.bhlangonijr.chesslib.util.StringUtil;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -28,12 +30,7 @@ import java.util.function.Function;
 public class MoveList extends LinkedList<Move> implements List<Move> {
 
     private static final long serialVersionUID = -6204280556340150806L;
-    private static final ThreadLocal<Board> boardHolder = new ThreadLocal<Board>() {
-        @Override
-        protected Board initialValue() {
-            return new Board();
-        }
-    };
+    private static final ThreadLocal<Board> boardHolder = ThreadLocal.withInitial(Board::new);
     private static final Move nullMove = new Move(Square.NONE, Square.NONE);
 
     private final String startFEN;
@@ -125,7 +122,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             if (Math.abs(delta) >= 2) { // is castle
                 if (!board.doMove(move, true)) {
                     throw new MoveConversionException("Invalid move [" +
-                            move.toString() + "] for current setup: " + board.getFen());
+                            move + "] for current setup: " + board.getFen());
                 }
                 san.append(delta > 0 ? "O-O" : "O-O-O");
                 addCheckFlag(board, san);
@@ -163,7 +160,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
 
         if (!board.doMove(move, true)) {
             throw new MoveConversionException("Invalid move [" +
-                    move.toString() + "] for current setup: " + board.getFen());
+                    move + "] for current setup: " + board.getFen());
         }
 
 

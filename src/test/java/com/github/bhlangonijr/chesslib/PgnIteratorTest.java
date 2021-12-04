@@ -1,8 +1,15 @@
 package com.github.bhlangonijr.chesslib;
 
 import com.github.bhlangonijr.chesslib.game.Game;
+import com.github.bhlangonijr.chesslib.move.Move;
+import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnIterator;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -89,5 +96,38 @@ public class PgnIteratorTest {
 
             }
         }
+    }
+
+    @Test
+    public void testPGNIterationWithComments() throws Exception {
+
+        PgnIterator games = new PgnIterator("src/test/resources/rav_alternative.pgn");
+        Map<String, String> commentedMoves = new HashMap<>();
+        for (Game game: games) {
+
+            String[] moves = game.getHalfMoves().toSanArray();
+            Map<Integer, String> comments = game.getComments();
+            for (int i = 0; i < moves.length; i++) {
+                String halfMove = ((i + 2) / 2) + (i % 2 != 0 ? ".." : " ");
+                String move = moves[i];
+                String comment = comments.get(i + 1) + "";
+                commentedMoves.put(halfMove + move, comment.trim());
+            }
+        }
+
+        assertEquals("Ponomariov plays 1. e4 in much the same way as any of the other top-level GMs.",
+                commentedMoves.get("1 e4"));
+        assertEquals("Now, along with Pe4 there is an indication Black will place pawns on light-color " +
+                        "squares to prevent Bf1 from ever being dangerous. White will probably have to meet 2...d5 " +
+                        "with e4-e5 to open the d3-h7 diagonal. So, White needs a Pd4 to support Pe5.",
+                commentedMoves.get("1..e6"));
+        assertEquals("While Black is moving the pawns in front of his king White aims to control f4, " +
+                        "leaving Black's center and king weak. Those two factors ( if achieved by White ) " +
+                        "could lead to a won position.",
+                commentedMoves.get("38..Nd2"));
+        assertEquals("Ponomariov prefers to simplify the position; rightly so I think. His pieces need " +
+                        "room to fight, before Black gets in ...e6-e5.",
+                commentedMoves.get("42..g4"));
+
     }
 }

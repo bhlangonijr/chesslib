@@ -16,7 +16,10 @@
 
 package com.github.bhlangonijr.chesslib.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 
 /**
@@ -63,6 +66,16 @@ public class LargeFile implements Iterable<String>, AutoCloseable {
         return new FileIterator();
     }
 
+    private void readNextLine() {
+
+        try {
+            nextLine = reader.readLine();
+        } catch (Exception ex) {
+            nextLine = null;
+            throw new IllegalStateException("Error reading file", ex);
+        }
+    }
+
     private class FileIterator implements Iterator<String> {
 
         public boolean hasNext() {
@@ -78,16 +91,6 @@ public class LargeFile implements Iterable<String>, AutoCloseable {
         }
 
         public void remove() {
-        }
-    }
-
-    private void readNextLine() {
-
-        try {
-            nextLine = reader.readLine();
-        } catch (Exception ex) {
-            nextLine = null;
-            throw new IllegalStateException("Error reading file", ex);
         }
     }
 }

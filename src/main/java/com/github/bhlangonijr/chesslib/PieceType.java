@@ -61,21 +61,10 @@ public enum PieceType {
         }
     }
 
-    private String sanSymbol;
+    private final String sanSymbol;
 
     PieceType(String sanSymbol) {
         this.sanSymbol = sanSymbol;
-    }
-
-    /**
-     * Returns the short algebraic notation (SAN) symbol for this piece type.
-     * For example, "R" for a rook, "K" for a king, and an empty string for a pawn.
-     *
-     * @return The short algebraic notation symbol of this piece type.
-     * @since 1.4.0
-     */
-    public String getSanSymbol() {
-        return sanSymbol;
     }
 
     /**
@@ -102,6 +91,17 @@ public enum PieceType {
             throw new IllegalArgumentException(String.format("Unknown piece '%s'", sanSymbol));
         }
         return pieceType;
+    }
+
+    /**
+     * Returns the short algebraic notation (SAN) symbol for this piece type.
+     * For example, "R" for a rook, "K" for a king, and an empty string for a pawn.
+     *
+     * @return The short algebraic notation symbol of this piece type.
+     * @since 1.4.0
+     */
+    public String getSanSymbol() {
+        return sanSymbol;
     }
 
     /**

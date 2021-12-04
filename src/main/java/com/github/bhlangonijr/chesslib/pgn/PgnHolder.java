@@ -189,7 +189,7 @@ public class PgnHolder {
                     for (Game game : round.getGame()) {
                         if (game != null) {
                             out.println();
-                            out.print(game.toString());
+                            out.print(game);
                             out.println();
                         }
                     }
@@ -249,7 +249,7 @@ public class PgnHolder {
                 for (Game game : round.getGame()) {
                     if (game != null) {
                         sb.append('\n');
-                        sb.append(game.toString());
+                        sb.append(game);
                         sb.append('\n');
                     }
                 }
