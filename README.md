@@ -7,7 +7,25 @@ Chesslib is a simple java chess library for generating
 legal chess moves given a chessboard [position](https://en.wikipedia.org/wiki/Chess#Setup),
 parse a chess game stored in [PGN](https://en.wikipedia.org/wiki/Portable_Game_Notation) or [FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation) format and many other things.
 
-# Building/Installing
+# Table of Contents
+
+1. [Building/Installing](#Building)
+2. [Usage](#Usage)
+3. [Create a chessboard and make a move](#Create_a_chessboard_and_make_a_move)
+4. [Undo a move](#Undo_a_move)
+5. [Get FEN string from chessboard](#Get_FEN_string_from_chessboard)
+6. [Load a chessboard position from FEN notation](#Load_a_chessboard_position_from_notation)
+7. [MoveList](#MoveList)
+8. [Generate all chess legal-moves for the current position](#Generate_all_chess_legal_moves_for_the_current_position)
+9. [Checking chessboard situation](#Checking_chessboard_situation)
+10. [Comparing boards](#Comparing_boards)
+11. [Load a chess game collection from a file](#Load_a_chess_game_collection_from_a_PGN_file)
+12. [Advanced usage](#Advanced_usage)
+13. [Sanity checking of chesslib move generation with Perft](#Sanity_checking_of_chesslib_move_generation_with_Perft)
+14. [Creating a full-fledged chess engine](#Creating_a_full_fledged_chess_engine)
+15. [Capturing and reacting to events](#Capturing_and_reacting_to_events)
+
+# <a name="Building"></a> Building/Installing
 ## From source
 
 ```
@@ -36,7 +54,7 @@ Chesslib dependency can be added via the jitpack repository.
 <dependency>
   <groupId>com.github.bhlangonijr</groupId>
   <artifactId>chesslib</artifactId>
-  <version>1.3.2</version>
+  <version>1.3.3</version>
 </dependency>
 ```
 
@@ -52,14 +70,14 @@ repositories {
 ```
 dependencies {
     ...
-    compile 'com.github.bhlangonijr:chesslib:1.3.2'
+    compile 'com.github.bhlangonijr:chesslib:1.3.3'
     ...
 }
 ```
 
-# Usage
+# <a name="Usage"></a> Usage
 
-## Create a chessboard and make a move
+## <a name="Create_a_chessboard_and_make_a_move"></a> Create a chessboard and make a move
 
 ```java
     // Creates a new chessboard in the standard initial position
@@ -90,7 +108,7 @@ PPPP PPP
 RNBQKBNR
 Side: BLACK
 ```
-## Undo a move
+## <a name="Undo_a_move"></a> Undo a move
 
 ```java
     // Undo the last move from the stack and return it
@@ -98,7 +116,7 @@ Side: BLACK
 
 ```
 
-## Get FEN string from chessboard
+## <a name="Get_FEN_string_from_chessboard"></a> Get FEN string from chessboard
 
 ```java
     System.out.println(board.getFen());
@@ -106,7 +124,7 @@ Side: BLACK
 ```
 
 
-## Load a chessboard position from [FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation) notation
+## <a name="Load_a_chessboard_position_from_notation"></a> Load a chessboard position from [FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation) notation
 
 ```java
     // Load a FEN position into the chessboard
@@ -120,7 +138,7 @@ Side: BLACK
     //Get the piece at A1 square...
     Piece piece = board.getPiece(Square.A1);
 ```
-## MoveList
+## <a name="MoveList"></a> MoveList
 
 `MoveList` stores a list of moves played in the chessboard. When created it assumes the initial 
 position of a regular chess game. Arbitrary moves from a chess game can be loaded using SAN or LAN string: 
@@ -134,7 +152,7 @@ position of a regular chess game. Arbitrary moves from a chess game can be loade
 
 ```
 
-## Generate all chess legal-moves for the current position
+## <a name="Generate_all_chess_legal_moves_for_the_current_position"></a> Generate all chess legal-moves for the current position
 
 ```java
     // Generate legal chess moves for the current position
@@ -159,7 +177,7 @@ Relaying the legal moves to the chessboard:
     System.out.println("Legal moves: " + moves);
 ```
 
-## Checking chessboard situation
+## <a name="Checking_chessboard_situation"></a> Checking chessboard situation
 
 Chessboard situation can be checked using the methods:
  
@@ -172,14 +190,14 @@ Chessboard situation can be checked using the methods:
   - ...
   
   
-## Comparing boards
+## <a name="Comparing_boards"></a> Comparing boards
 
 There are two methods for comparing boards:
  
   - `board.equals(board2)`: Compares ignoring the board history
   - `board.strictEquals(board2)`: Compares the board and its history
 
-## Load a chess game collection from a [PGN](https://en.wikipedia.org/wiki/Portable_Game_Notation) file
+## <a name="Load_a_chess_game_collection_from_a_PGN_file"></a> Load a chess game collection from a [PGN](https://en.wikipedia.org/wiki/Portable_Game_Notation) file
 
 ```java
     PgnHolder pgn = new PgnHolder("/opt/games/linares_2002.pgn");
@@ -210,9 +228,31 @@ Iterating over a PGN file games using the `PgnIterator`:
 ```
 Note: The iterator is highly recommended for processing large PGN files as it is not retaining in the memory
 intermediate objects loaded during the process of each iteration.
-# Advanced usage
 
-## Sanity checking of chesslib move generation with Perft
+Capturing the comments from each move:
+
+```java
+        PgnIterator games = new PgnIterator("src/test/resources/rav_alternative.pgn");
+        for (Game game: games) {
+            String[] moves = game.getHalfMoves().toSanArray();
+            Map<Integer, String> comments = game.getComments();
+            for (int i = 0; i < moves.length; i++) {
+            String halfMove = ((i + 2) / 2) + (i % 2 != 0 ? ".." : " ");
+            String move = moves[i];
+            String comment = comments.get(i + 1) + "";
+            System.out.println(halfMove + move + " " + comment.trim());
+            }
+        }    
+```
+The output should be something like: 
+```text
+1 e4 Ponomariov plays 1. e4 in much the same way as any of the other top-level GMs.
+1..e6 Now, along with Pe4 there is an indication Black will place pawns on light-color squares to prevent Bf1 from ever being dangerous. White will probably have to meet 2...d5 with e4-e5 to open the d3-h7 diagonal. So, White needs a Pd4 to support Pe5.
+```
+
+# <a name="Advanced_usage"></a> Advanced usage
+
+## <a name="Sanity_checking_of_chesslib_move_generation_with_Perft"></a> Sanity checking of chesslib move generation with Perft
 
 Perft, (performance test, move path enumeration) is a debugging function to walk the 
 move generation tree of strictly legal moves to count all the leaf nodes of a certain depth.
@@ -255,17 +295,17 @@ keeping the `Board` in a consistent state, e.g.:
 It's known that from the initial standard chess position, there should have exactly 4865609 positions
 for depth 5. Deviation from this number would imply a bug in move generation or keeping the board state. 
 
-## Creating a full fledged chess engine
+## <a name="Creating_a_full_fledged_chess_engine"></a> Creating a full-fledged chess engine
 
 [kengine](https://github.com/bhlangonijr/kengine) is a minimalistic chess engine built on top of kotlin and chesslib to 
 showcase a more advanced use case.
 
-## Capturing and reacting to events
+## <a name="Capturing_and_reacting_to_events"></a> Capturing and reacting to events
 
 Actions occurring in the chessboard or when loading a PGN file are emitted as events by the library so that it can
 be captured by a GUI, for example:
 
-### Listening to PGN loading progress
+### <a name="Listening_to_PGN_loading_progress"></a> Listening to PGN loading progress
 
 Create your listener:
 
@@ -340,7 +380,7 @@ private class LoadPGNWorker extends SwingWorker<Integer, Integer> implements Pgn
 }
 ```
 
-### Listening to chessboard events
+### <a name="Listening_to_chessboard_events"></a> Listening to chessboard events
 
 Moves played and game statuses are emitted by the `Board` whenever these actions happen.
 
