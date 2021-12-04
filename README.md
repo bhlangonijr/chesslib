@@ -232,17 +232,17 @@ intermediate objects loaded during the process of each iteration.
 Capturing the comments from each move:
 
 ```java
-        PgnIterator games = new PgnIterator("src/test/resources/rav_alternative.pgn");
-        for (Game game: games) {
-            String[] moves = game.getHalfMoves().toSanArray();
-            Map<Integer, String> comments = game.getComments();
-            for (int i = 0; i < moves.length; i++) {
-            String halfMove = ((i + 2) / 2) + (i % 2 != 0 ? ".." : " ");
-            String move = moves[i];
-            String comment = comments.get(i + 1) + "";
-            System.out.println(halfMove + move + " " + comment.trim());
-            }
-        }    
+    PgnIterator games = new PgnIterator("src/test/resources/rav_alternative.pgn");
+    for (Game game: games) {
+        String[] moves = game.getHalfMoves().toSanArray();
+        Map<Integer, String> comments = game.getComments();
+        for (int i = 0; i < moves.length; i++) {
+        String halfMove = ((i + 2) / 2) + (i % 2 != 0 ? ".." : " ");
+        String move = moves[i];
+        String comment = comments.get(i + 1) + "";
+        System.out.println(halfMove + move + " " + comment.trim());
+        }
+    }    
 ```
 The output should be something like: 
 ```text
