@@ -237,10 +237,10 @@ Capturing the comments from each move:
         String[] moves = game.getHalfMoves().toSanArray();
         Map<Integer, String> comments = game.getComments();
         for (int i = 0; i < moves.length; i++) {
-        String halfMove = ((i + 2) / 2) + (i % 2 != 0 ? ".." : " ");
-        String move = moves[i];
-        String comment = comments.get(i + 1) + "";
-        System.out.println(halfMove + move + " " + comment.trim());
+            String ply = ((i + 2) / 2) + (i % 2 != 0 ? ".." : " ");
+            String move = moves[i];
+            String comment = comments.get(i + 1) + "";
+            System.out.println(ply + move + " " + comment.trim());
         }
     }    
 ```
