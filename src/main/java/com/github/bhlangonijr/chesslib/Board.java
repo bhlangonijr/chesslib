@@ -809,7 +809,7 @@ public class Board implements Cloneable, BoardEvent {
      * Generates the current board FEN representation
      *
      * @param includeCounters if true include halfMove and fullMove counters
-     * @param onlyOutputEnPassentIfCapturable if true, only output the en passant 
+     * @param onlyOutputEnPassantIfCapturable if true, only output the en passant 
      *   square if the pawn that just moved is able to be captured. If false, always
      *   output the en passant square if a pawn just moved 2 squares.
      * @return board fen
