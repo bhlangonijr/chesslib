@@ -817,36 +817,36 @@ public class Board implements Cloneable, BoardEvent {
     public String getFen(boolean includeCounters, boolean onlyOutputEnPassantIfCapturable) {
 
         StringBuffer fen = new StringBuffer();
-        int count = 0;
-        int rankCounter = 1;
-        int sqCount = 0;
+        int emptySquares = 0;
         for (int i = 7; i >= 0; i--) {
             Rank r = Rank.allRanks[i];
-            for (int n = 0; n <= 7; n++) {
-                File f = File.allFiles[n];
-                if (!File.NONE.equals(f) && !Rank.NONE.equals(r)) {
-                    Square sq = Square.encode(r, f);
-                    Piece piece = getPiece(sq);
-                    if (!Piece.NONE.equals(piece)) {
-                        if (count > 0) {
-                            fen.append(count);
-                        }
-                        fen.append(piece.getFenSymbol());
-                        count = 0;
-                    } else {
-                        count++;
+            if (r == Rank.NONE) {
+                continue;
+            }
+            for (File f : File.allFiles) {
+                if (f == File.NONE) {
+                    continue;
+                }
+                Square sq = Square.encode(r, f);
+                Piece piece = getPiece(sq);
+                if (Piece.NONE.equals(piece)) {
+                    emptySquares++;
+                } else {
+                    if (emptySquares > 0) {
+                        fen.append(emptySquares);
+                        emptySquares = 0;
                     }
-                    if ((sqCount + 1) % 8 == 0) {
-                        if (count > 0) {
-                            fen.append(count);
-                            count = 0;
-                        }
-                        if (rankCounter < 8) {
-                            fen.append("/");
-                        }
-                        rankCounter++;
-                    }
-                    sqCount++;
+                    fen.append(piece.getFenSymbol());
+                }
+                if (f != File.FILE_H) {
+                    continue;
+                }
+                if (emptySquares > 0) {
+                    fen.append(emptySquares);
+                    emptySquares = 0;
+                }
+                if (r != Rank.RANK_1) {
+                    fen.append("/");
                 }
             }
         }
