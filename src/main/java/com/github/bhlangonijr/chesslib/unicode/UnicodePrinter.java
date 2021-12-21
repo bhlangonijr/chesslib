@@ -34,45 +34,10 @@ public class UnicodePrinter {
     public void print(Board board) {
         int row = 0;
         for (Piece p : board.boardToArray()) {
-            switch (p) {
-                case BLACK_BISHOP:
-                    printStream.print('\u265D');
-                    break;
-                case BLACK_KING:
-                    printStream.print('\u265A');
-                    break;
-                case BLACK_KNIGHT:
-                    printStream.print('\u265E');
-                    break;
-                case BLACK_PAWN:
-                    printStream.print('\u265F');
-                    break;
-                case BLACK_QUEEN:
-                    printStream.print('\u265B');
-                    break;
-                case BLACK_ROOK:
-                    printStream.print('\u265C');
-                    break;
-                case WHITE_BISHOP:
-                    printStream.print('\u2657');
-                    break;
-                case WHITE_KING:
-                    printStream.print('\u2654');
-                    break;
-                case WHITE_KNIGHT:
-                    printStream.print('\u2658');
-                    break;
-                case WHITE_PAWN:
-                    printStream.print('\u2659');
-                    break;
-                case WHITE_QUEEN:
-                    printStream.print('\u2655');
-                    break;
-                case WHITE_ROOK:
-                    printStream.print('\u2656');
-                    break;
-                default:
-                    printStream.print(" ");
+            if (p == Piece.NONE) {
+                printStream.print(' ');
+            } else {
+                printStream.print(p.getFanSymbol());
             }
             if (++row % 8 == 0) {
                 printStream.println();
