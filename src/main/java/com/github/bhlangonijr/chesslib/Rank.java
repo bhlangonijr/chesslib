@@ -17,80 +17,83 @@
 package com.github.bhlangonijr.chesslib;
 
 /**
- * The enum Rank.
+ * The ranks in a board. A <i>rank</i> is a raw in the chessboard, and it is identified as a number from 1 to 8.
+ * <p/>
+ * Each value defines a single rank, except for the special value {@link Rank#NONE} which represents no rank.
  */
 public enum Rank {
 
     /**
-     * Rank 1 rank.
+     * The 1st rank.
      */
     RANK_1("1"),
     /**
-     * Rank 2 rank.
+     * The 2nd rank.
      */
     RANK_2("2"),
     /**
-     * Rank 3 rank.
+     * The 3rd rank.
      */
     RANK_3("3"),
     /**
-     * Rank 4 rank.
+     * The 4th rank.
      */
     RANK_4("4"),
     /**
-     * Rank 5 rank.
+     * The 5th rank.
      */
     RANK_5("5"),
     /**
-     * Rank 6 rank.
+     * The 6th rank.
      */
     RANK_6("6"),
     /**
-     * Rank 7 rank.
+     * The 7th rank.
      */
     RANK_7("7"),
     /**
-     * Rank 8 rank.
+     * The 8th rank.
      */
     RANK_8("8"),
     /**
-     * None rank.
+     * Special value that represents no rank in particular.
      */
     NONE("");
 
-    public static Rank[] allRanks = values();
-    /**
-     * The Notation.
-     */
-    String notation;
+    public static final Rank[] allRanks = values();
+
+    final String notation;
 
     Rank(String notation) {
         this.notation = notation;
     }
 
     /**
-     * From value rank.
+     * Returns a rank given its name.
+     * <p/>
+     * Same as invoking {@link Rank#valueOf(String)}.
      *
-     * @param v the v
-     * @return the rank
+     * @param v name of the rank
+     * @return the rank with the specified name
+     * @throws IllegalArgumentException if the name does not correspond to any rank
      */
     public static Rank fromValue(String v) {
         return valueOf(v);
     }
 
     /**
-     * Gets notation.
+     * Returns the number that identifies the rank in chess notations.
      *
-     * @return the notation
+     * @return the number used to represent the rank, as a string
      */
     public String getNotation() {
         return notation;
     }
 
     /**
-     * Value string.
+     * Returns the name of the rank.
      *
-     * @return the string
+     * @return the name of the rank
      */
     public String value() {
         return name();

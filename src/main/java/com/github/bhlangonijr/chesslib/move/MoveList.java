@@ -349,7 +349,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @return string
      * @throws MoveConversionException the move conversion exception
      * @see #toSan()
-     * @since 1.4.0
      */
     public String toSanWithMoveNumbers() throws MoveConversionException {
         return toStringWithMoveNumbers(toSanArray());
@@ -374,7 +373,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @return string
      * @throws MoveConversionException the move conversion exception
      * @see #toFan()
-     * @since 1.4.0
      */
     public String toFanWithMoveNumbers() throws MoveConversionException {
         return toStringWithMoveNumbers(toFanArray());

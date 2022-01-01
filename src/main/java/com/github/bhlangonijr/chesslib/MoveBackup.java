@@ -23,7 +23,9 @@ import java.util.EnumMap;
 import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
 
 /**
- * Move Backup structure
+ * A structure that can be used to cancel the effects of a move and to restore the board to a previous status. The
+ * board context is memorized at the <i>backup</i> is created, and it could be subsequently re-applied to the sourcing
+ * board.
  */
 public class MoveBackup implements BoardEvent {
 
@@ -43,17 +45,18 @@ public class MoveBackup implements BoardEvent {
     private long incrementalHashKey;
 
     /**
-     * Instantiates a new Move backup.
+     * Constructs a new empty move backup.
      */
     public MoveBackup() {
         castleRight = new EnumMap<>(Side.class);
     }
 
     /**
-     * Instantiates a new Move backup.
+     * Constructs a new move backup taking a board and a move. At the same time, it both instantiates the data structure
+     * and takes a snapshot of the board status for a later restore.
      *
-     * @param board the board
-     * @param move  the move
+     * @param board the board that describes the status at the time of the move
+     * @param move  the move which could be potentially restored later in time
      */
     public MoveBackup(Board board, Move move) {
         this();
@@ -61,10 +64,10 @@ public class MoveBackup implements BoardEvent {
     }
 
     /**
-     * make the board backup
+     * Creates a new move backup, possibly overwriting any previously existing backup.
      *
-     * @param board the board
-     * @param move  the move
+     * @param board the board that describes the status at the time of the move
+     * @param move  the move which could be potentially restored later in time
      */
     public void makeBackup(Board board, Move move) {
 
@@ -94,9 +97,14 @@ public class MoveBackup implements BoardEvent {
     }
 
     /**
-     * restore the board
+     * Restores the previously stored status backup to the board passed as an argument, effectively cancelling the
+     * consequences of the move memorized at the time the backup was created, as well as any potential move executed on
+     * the board after that moment.
+     * <p/>
+     * It is a responsibility of the caller to make sure the board used for creating the backup is also the board passed
+     * in input to this method. No check is performed to prevent another board is used instead.
      *
-     * @param board the board
+     * @param board the board to be restored to a previous status
      */
     public void restore(Board board) {
         board.setSideToMove(getSideToMove());
@@ -128,171 +136,174 @@ public class MoveBackup implements BoardEvent {
     }
 
     /**
-     * Gets side to move.
+     * Returns the next side to move used for restoring the board.
      *
-     * @return the sideToMove
+     * @return the next side to move
      */
     public Side getSideToMove() {
         return sideToMove;
     }
 
     /**
-     * Sets side to move.
+     * Sets the next side to move used for restoring the board.
      *
-     * @param sideToMove the sideToMove to set
+     * @param sideToMove the next side to move
      */
     public void setSideToMove(Side sideToMove) {
         this.sideToMove = sideToMove;
     }
 
     /**
-     * Gets en passant target.
+     * Returns the target square of an en passant capture used for restoring the board.
      *
-     * @return the enPassantTarget
+     * @return the en passant target square, or {@link Square#NONE} if en passant was not possible at the time the
+     * backup was created
      */
     public Square getEnPassantTarget() {
         return enPassantTarget;
     }
 
     /**
-     * Sets en passant target.
+     * Sets the target square of an en passant capture used for restoring the board.
      *
-     * @param enPassant the enPassantTarget to set
+     * @param enPassant the en passant target square
      */
     public void setEnPassantTarget(Square enPassant) {
         this.enPassantTarget = enPassant;
     }
 
     /**
-     * Gets en passant.
+     * Returns the destination square of an en passant capture used for restoring the board.
      *
-     * @return the enPassant
+     * @return the en passant destination square, or {@link Square#NONE} if en passant was not possible at the time the
+     * backup was created
      */
     public Square getEnPassant() {
         return enPassant;
     }
 
     /**
-     * Sets en passant.
+     * Sets the destination square of an en passant capture used for restoring the board.
      *
-     * @param enPassant the enPassant to set
+     * @param enPassant the en passant destination square
      */
     public void setEnPassant(Square enPassant) {
         this.enPassant = enPassant;
     }
 
     /**
-     * Gets move counter.
+     * Returns the counter of full moves used for restoring the board.
      *
-     * @return the moveCounter
+     * @return the counter of full moves
      */
     public Integer getMoveCounter() {
         return moveCounter;
     }
 
     /**
-     * Sets move counter.
+     * Sets the counter of full moves used for restoring the board.
      *
-     * @param moveCounter the moveCounter to set
+     * @param moveCounter the counter of full moves
      */
     public void setMoveCounter(Integer moveCounter) {
         this.moveCounter = moveCounter;
     }
 
     /**
-     * Gets half move counter.
+     * Returns the counter of half moves used for restoring the board.
      *
-     * @return the halfMoveCounter
+     * @return the counter of half moves
      */
     public Integer getHalfMoveCounter() {
         return halfMoveCounter;
     }
 
     /**
-     * Sets half move counter.
+     * Sets the counter of half moves used for restoring the board.
      *
-     * @param halfMoveCounter the halfMoveCounter to set
+     * @param halfMoveCounter the counter of half moves
      */
     public void setHalfMoveCounter(Integer halfMoveCounter) {
         this.halfMoveCounter = halfMoveCounter;
     }
 
     /**
-     * Gets move.
+     * Returns the move to revert in the case a board has to be restored.
      *
-     * @return the move
+     * @return the move to revert
      */
     public Move getMove() {
         return move;
     }
 
     /**
-     * Sets move.
+     * Sets the move to revert in the case a board has to be restored.
      *
-     * @param move the move to set
+     * @param move the move to revert
      */
     public void setMove(Move move) {
         this.move = move;
     }
 
     /**
-     * Gets rook castle move.
+     * Returns the rook move to apply in order to revert a castle move in the case a board has to be restored.
      *
-     * @return the rookCastleMove
+     * @return the rook move to apply to revert a castle move, or null if the move to revert is not a castle move
      */
     public Move getRookCastleMove() {
         return rookCastleMove;
     }
 
     /**
-     * Sets rook castle move.
+     * Sets the rook move to apply in order to revert a castle move in the case a board has to be restored.
      *
-     * @param rookCastleMove the rookCastleMove to set
+     * @param rookCastleMove the rook move to apply to revert a castle move
      */
     public void setRookCastleMove(Move rookCastleMove) {
         this.rookCastleMove = rookCastleMove;
     }
 
     /**
-     * Gets castle right.
+     * Returns the castle rights used for restoring the board.
      *
-     * @return the castleRight
+     * @return the castle rights
      */
     public EnumMap<Side, CastleRight> getCastleRight() {
         return castleRight;
     }
 
     /**
-     * Gets captured piece.
+     * Returns the piece captured with the move to revert in the case a board has to be restored.
      *
-     * @return the capturedPiece
+     * @return the captured piece, or {@link Piece#NONE} if no piece was captured at the time the backup was created
      */
     public Piece getCapturedPiece() {
         return capturedPiece;
     }
 
     /**
-     * Sets captured piece.
+     * Sets the captured piece used for restoring the board.
      *
-     * @param capturedPiece the capturedPiece to set
+     * @param capturedPiece the captured piece
      */
     public void setCapturedPiece(Piece capturedPiece) {
         this.capturedPiece = capturedPiece;
     }
 
     /**
-     * Gets captured square.
+     * Returns the square of the piece captured with the move to revert in the case a board has to be restored.
      *
-     * @return the capturedSquare
+     * @return the square of the captured piece, or {@link Square#NONE} if no piece was captured at the time the backup
+     * was created
      */
     public Square getCapturedSquare() {
         return capturedSquare;
     }
 
     /**
-     * Sets captured square.
+     * Sets the square of the captured piece used for restoring the board.
      *
-     * @param capturedSquare the capturedSquare to set
+     * @param capturedSquare the square of the captured piece
      */
     public void setCapturedSquare(Square capturedSquare) {
         this.capturedSquare = capturedSquare;
@@ -303,63 +314,73 @@ public class MoveBackup implements BoardEvent {
     }
 
     /**
-     * Gets moving piece.
+     * Returns the piece moved in the move to revert in the case a board has to be restored.
      *
-     * @return the movingPiece
+     * @return the moved piece
      */
     public Piece getMovingPiece() {
         return movingPiece;
     }
 
     /**
-     * Sets moving piece.
+     * Sets the moving piece used for restoring the board.
      *
-     * @param movingPiece the movingPiece to set
+     * @param movingPiece the moving piece
      */
     public void setMovingPiece(Piece movingPiece) {
         this.movingPiece = movingPiece;
     }
 
     /**
-     * Is castle move boolean.
+     * Checks if the move to revert in the case a board has to be restored is a castle move.
      *
-     * @return the castleMove
+     * @return {@code true} if the move is a castle move
      */
     public boolean isCastleMove() {
         return castleMove;
     }
 
     /**
-     * Sets castle move.
+     * Sets whether the move to revert in the case a board has to be restored is a castle move or not.
      *
-     * @param castleMove the castleMove to set
+     * @param castleMove whether the move to restore is a castle move or not
      */
     public void setCastleMove(boolean castleMove) {
         this.castleMove = castleMove;
     }
 
     /**
-     * Is en passant move boolean.
+     * Checks if the move to revert in the case a board has to be restored is an en passant move.
      *
-     * @return the enPassantMove
+     * @return {@code true} if the move is an en passant move
      */
     public boolean isEnPassantMove() {
         return enPassantMove;
     }
 
     /**
-     * Sets en passant move.
+     * Sets whether the move to revert in the case a board has to be restored is an en passant move or not.
      *
-     * @param enPassantMove the enPassantMove to set
+     * @param enPassantMove whether the move to restore is an en passant move or not
      */
     public void setEnPassantMove(boolean enPassantMove) {
         this.enPassantMove = enPassantMove;
     }
 
+    /**
+     * Returns the incremental hash key used for restoring the board.
+     *
+     * @return the incremental hash key
+     */
     public long getIncrementalHashKey() {
         return incrementalHashKey;
     }
 
+    /**
+     * Sets the incremental hash key used for restoring the board.
+     *
+     * @param incrementalHashKey the incremental hash key
+     */
     public void setIncrementalHashKey(long incrementalHashKey) {
         this.incrementalHashKey = incrementalHashKey;
     }

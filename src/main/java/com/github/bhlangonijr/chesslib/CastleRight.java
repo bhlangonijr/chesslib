@@ -17,40 +17,44 @@
 package com.github.bhlangonijr.chesslib;
 
 /**
- * The enum Castle right.
+ * The different combinations of castle rights for a side in a chess game. A side can castle only king-side (short
+ * castle), only queen-side (long castle), both, or neither king-side nor queen-side.
  */
 public enum CastleRight {
     /**
-     * King side castle right.
+     * The king-side castle right (short castle).
      */
     KING_SIDE,
     /**
-     * Queen side castle right.
+     * The queen-side castle right (long castle).
      */
     QUEEN_SIDE,
     /**
-     * King and queen side castle right.
+     * Both king and queen-side castle right.
      */
     KING_AND_QUEEN_SIDE,
     /**
-     * None castle right.
+     * No castle right, i.e. it is no possible to castle.
      */
     NONE;
 
     /**
-     * From value castle right.
+     * Returns a castle right given its name.
+     * <p/>
+     * Same as invoking {@link CastleRight#valueOf(String)}.
      *
-     * @param v the v
-     * @return the castle right
+     * @param v name of the castle right
+     * @return the castle right with the specified name
+     * @throws IllegalArgumentException if the name does not correspond to any castle right
      */
     public static CastleRight fromValue(String v) {
         return valueOf(v);
     }
 
     /**
-     * Value string.
+     * Returns the name of the castle right.
      *
-     * @return the string
+     * @return the name of the castle right
      */
     public String value() {
         return name();

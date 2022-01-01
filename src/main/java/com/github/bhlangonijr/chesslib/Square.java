@@ -19,267 +19,271 @@ package com.github.bhlangonijr.chesslib;
 import java.util.EnumMap;
 
 /**
- * The enum Square.
+ * All possible squares on a board.
+ * <p/>
+ * Each value defines a single square, except for the special value {@link Square#NONE} which identifies that no
+ * square is selected or assigned.
  */
 public enum Square {
+
     /**
-     * A 1 square.
+     * The {@code A1} square.
      */
     A1,
     /**
-     * B 1 square.
+     * The {@code B1} square.
      */
     B1,
     /**
-     * C 1 square.
+     * The {@code C1} square.
      */
     C1,
     /**
-     * D 1 square.
+     * The {@code D1} square.
      */
     D1,
     /**
-     * E 1 square.
+     * The {@code E1} square.
      */
     E1,
     /**
-     * F 1 square.
+     * The {@code F1} square.
      */
     F1,
     /**
-     * G 1 square.
+     * The {@code G1} square.
      */
     G1,
     /**
-     * H 1 square.
+     * The {@code H1} square.
      */
     H1,
     /**
-     * A 2 square.
+     * The {@code A2} square.
      */
     A2,
     /**
-     * B 2 square.
+     * The {@code B2} square.
      */
     B2,
     /**
-     * C 2 square.
+     * The {@code C2} square.
      */
     C2,
     /**
-     * D 2 square.
+     * The {@code D2} square.
      */
     D2,
     /**
-     * E 2 square.
+     * The {@code E2} square.
      */
     E2,
     /**
-     * F 2 square.
+     * The {@code F2} square.
      */
     F2,
     /**
-     * G 2 square.
+     * The {@code G2} square.
      */
     G2,
     /**
-     * H 2 square.
+     * The {@code H2} square.
      */
     H2,
     /**
-     * A 3 square.
+     * The {@code A3} square.
      */
     A3,
     /**
-     * B 3 square.
+     * The {@code B3} square.
      */
     B3,
     /**
-     * C 3 square.
+     * The {@code C3} square.
      */
     C3,
     /**
-     * D 3 square.
+     * The {@code D3} square.
      */
     D3,
     /**
-     * E 3 square.
+     * The {@code E3} square.
      */
     E3,
     /**
-     * F 3 square.
+     * The {@code F3} square.
      */
     F3,
     /**
-     * G 3 square.
+     * The {@code G3} square.
      */
     G3,
     /**
-     * H 3 square.
+     * The {@code H3} square.
      */
     H3,
     /**
-     * A 4 square.
+     * The {@code A4} square.
      */
     A4,
     /**
-     * B 4 square.
+     * The {@code B4} square.
      */
     B4,
     /**
-     * C 4 square.
+     * The {@code C4} square.
      */
     C4,
     /**
-     * D 4 square.
+     * The {@code D4} square.
      */
     D4,
     /**
-     * E 4 square.
+     * The {@code E4} square.
      */
     E4,
     /**
-     * F 4 square.
+     * The {@code F4} square.
      */
     F4,
     /**
-     * G 4 square.
+     * The {@code G4} square.
      */
     G4,
     /**
-     * H 4 square.
+     * The {@code H4} square.
      */
     H4,
     /**
-     * A 5 square.
+     * The {@code A5} square.
      */
     A5,
     /**
-     * B 5 square.
+     * The {@code B5} square.
      */
     B5,
     /**
-     * C 5 square.
+     * The {@code C5} square.
      */
     C5,
     /**
-     * D 5 square.
+     * The {@code D5} square.
      */
     D5,
     /**
-     * E 5 square.
+     * The {@code E5} square.
      */
     E5,
     /**
-     * F 5 square.
+     * The {@code F5} square.
      */
     F5,
     /**
-     * G 5 square.
+     * The {@code G5} square.
      */
     G5,
     /**
-     * H 5 square.
+     * The {@code H5} square.
      */
     H5,
     /**
-     * A 6 square.
+     * The {@code A6} square.
      */
     A6,
     /**
-     * B 6 square.
+     * The {@code B6} square.
      */
     B6,
     /**
-     * C 6 square.
+     * The {@code C6} square.
      */
     C6,
     /**
-     * D 6 square.
+     * The {@code D6} square.
      */
     D6,
     /**
-     * E 6 square.
+     * The {@code E6} square.
      */
     E6,
     /**
-     * F 6 square.
+     * The {@code F6} square.
      */
     F6,
     /**
-     * G 6 square.
+     * The {@code G6} square.
      */
     G6,
     /**
-     * H 6 square.
+     * The {@code H6} square.
      */
     H6,
     /**
-     * A 7 square.
+     * The {@code A7} square.
      */
     A7,
     /**
-     * B 7 square.
+     * The {@code B7} square.
      */
     B7,
     /**
-     * C 7 square.
+     * The {@code C7} square.
      */
     C7,
     /**
-     * D 7 square.
+     * The {@code D7} square.
      */
     D7,
     /**
-     * E 7 square.
+     * The {@code E7} square.
      */
     E7,
     /**
-     * F 7 square.
+     * The {@code F7} square.
      */
     F7,
     /**
-     * G 7 square.
+     * The {@code G7} square.
      */
     G7,
     /**
-     * H 7 square.
+     * The {@code H7} square.
      */
     H7,
     /**
-     * A 8 square.
+     * The {@code A8} square.
      */
     A8,
     /**
-     * B 8 square.
+     * The {@code B8} square.
      */
     B8,
     /**
-     * C 8 square.
+     * The {@code C8} square.
      */
     C8,
     /**
-     * D 8 square.
+     * The {@code D8} square.
      */
     D8,
     /**
-     * E 8 square.
+     * The {@code E8} square.
      */
     E8,
     /**
-     * F 8 square.
+     * The {@code F8} square.
      */
     F8,
     /**
-     * G 8 square.
+     * The {@code G8} square.
      */
     G8,
     /**
-     * H 8 square.
+     * The {@code H8} square.
      */
     H8,
     /**
-     * None square.
+     * Special value that represents no square in particular.
      */
     NONE;
 
@@ -313,79 +317,90 @@ public enum Square {
     }
 
     /**
-     * encode rank+file to square
+     * Encodes a rank and a file into a square, returning the square value corresponding to the input values.
      *
-     * @param rank the rank
-     * @param file the file
-     * @return square
+     * @param rank a rank in the board
+     * @param file a file in the board
+     * @return the square that corresponds to the rank and file provided in input
      */
     public static Square encode(Rank rank, File file) {
         return allSquares[rank.ordinal() * 8 + file.ordinal()];
     }
 
     /**
-     * From value square.
+     * Returns a square given its name.
+     * <p/>
+     * Same as invoking {@link Square#valueOf(String)}.
      *
-     * @param v the v
-     * @return the square
+     * @param v name of the square
+     * @return the square with the specified name
+     * @throws IllegalArgumentException if the name does not correspond to any square
      */
     public static Square fromValue(String v) {
         return valueOf(v);
     }
 
     /**
-     * Square at square.
+     * Returns the square at position {@code index} in the board, or {@link Square#NONE} if the index is invalid.
+     * Valid indexes are included between 0 ({@link Square#A1}) and 63 ({@link Square#H8}), increasing with files and
+     * ranks respectively. Thus, index 1 corresponds to {@link Square#B1} and index 8 to {@link Square#A2}.
      *
-     * @param index the index
-     * @return the square
+     * @param index the index of the square
+     * @return the corresponding square, if index is valid, otherwise {@link Square#NONE}
      */
     public static Square squareAt(int index) {
-        if (index >= allSquares.length) {
+        if (index < 0 || index >= allSquares.length) {
             return Square.NONE;
         }
         return allSquares[index];
     }
 
     /**
-     * Get side squares square [ ].
+     * Returns the squares on the side of the given square. A square on the side is on the same rank and in adjacent
+     * files. For instance, side squares of {@link Square#D4} are the two adjacent squares on the 4th rank,
+     * {@link Square#C4} and {@link Square#E4}.
+     * <p/>
+     * Note that squares on the edge files ({@code A} and {@code H}) have only one side square instead of two (on files
+     * {@code B} and {@code G} respectively).
      *
-     * @return the square [ ]
+     * @return the side squares of this square
      */
     public Square[] getSideSquares() {
         return sideSquare.get(this);
     }
 
     /**
-     * Gets rank.
+     * Returns the rank of the square.
      *
-     * @return the rank
+     * @return the rank of the square
      */
     public Rank getRank() {
         return rankValues[this.ordinal() / 8];
     }
 
     /**
-     * Gets file.
+     * Returns the file of the square.
      *
-     * @return the file
+     * @return the file of the square
      */
     public File getFile() {
         return fileValues[this.ordinal() % 8];
     }
 
     /**
-     * Value string.
+     * Returns the name of the square.
      *
-     * @return the string
+     * @return the name of the square
      */
     public String value() {
         return name();
     }
 
     /**
-     * Gets bitboard.
+     * Returns the bitboard representation of this square, that is, the single bit in a 64-bits bitmap at the same index
+     * of this square. If square is {@link Square#NONE}, an empty bitboard is returned.
      *
-     * @return the bitboard
+     * @return the bitboard representation of this square, as a long value
      */
     public long getBitboard() {
         if (this == NONE) {
@@ -395,9 +410,9 @@ public enum Square {
     }
 
     /**
-     * Is light square boolean.
+     * Returns whether this is a light-square or not (i.e. a dark-square).
      *
-     * @return the boolean
+     * @return {@code true} if the square is a light-square
      */
     public boolean isLightSquare() {
         return (getBitboard() & Bitboard.lightSquares) != 0L;
