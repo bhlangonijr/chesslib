@@ -550,8 +550,8 @@ public class Bitboard {
     }
 
     /**
-     * Returns the bitboard representing the possible moves by a pawn placed on the input square for a given side.
-     * The method expects a bitboard of occupied squares where the pawn can not move to.
+     * Returns the bitboard representing the possible moves, excluding captures, by a pawn placed on the input square
+     * for a given side. The method expects a bitboard of occupied squares where the pawn can not move to.
      *
      * @param side     the side to move
      * @param square   the square the pawn is placed

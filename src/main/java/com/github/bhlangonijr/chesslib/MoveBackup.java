@@ -16,16 +16,19 @@
 
 package com.github.bhlangonijr.chesslib;
 
-import com.github.bhlangonijr.chesslib.move.Move;
+import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
 
 import java.util.EnumMap;
 
-import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
+import com.github.bhlangonijr.chesslib.move.Move;
 
 /**
  * A structure that can be used to cancel the effects of a move and to restore the board to a previous status. The
  * board context is memorized at the <i>backup</i> is created, and it could be subsequently re-applied to the sourcing
  * board.
+ * <p/>
+ * The move backup is also a {@link BoardEvent}, and hence it can be passed to the observers of the
+ * {@link BoardEventType#ON_UNDO_MOVE} events, emitted when a move is reverted on a board.
  */
 public class MoveBackup implements BoardEvent {
 
@@ -64,7 +67,7 @@ public class MoveBackup implements BoardEvent {
     }
 
     /**
-     * Creates a new move backup, possibly overwriting any previously existing backup.
+     * Initiates a new move backup, possibly overwriting any previously existing backup.
      *
      * @param board the board that describes the status at the time of the move
      * @param move  the move which could be potentially restored later in time
@@ -309,6 +312,12 @@ public class MoveBackup implements BoardEvent {
         this.capturedSquare = capturedSquare;
     }
 
+    /**
+     * The type of board events this data structure represents when notified to its observers.
+     *
+     * @return the board event type {@link BoardEventType#ON_UNDO_MOVE}
+     */
+    @Override
     public BoardEventType getType() {
         return BoardEventType.ON_UNDO_MOVE;
     }

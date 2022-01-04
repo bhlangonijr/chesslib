@@ -17,23 +17,24 @@
 package com.github.bhlangonijr.chesslib.move;
 
 /**
- * The type Move exception.
+ * Thrown to indicate a failure executing a move, for instance because the move is considered illegal in the context of
+ * the game it is played.
  */
 public class MoveException extends RuntimeException {
 
     private static final long serialVersionUID = 6523240383760826752L;
 
     /**
-     * Instantiates a new Move exception.
+     * Constructs a new move exception.
      */
     public MoveException() {
         super();
     }
 
     /**
-     * Instantiates a new Move exception.
+     * Constructs a new move exception with the specified detail message and cause.
      *
-     * @param message the message
+     * @param message the error message
      * @param cause   the cause
      */
     public MoveException(String message, Throwable cause) {
@@ -41,16 +42,16 @@ public class MoveException extends RuntimeException {
     }
 
     /**
-     * Instantiates a new Move exception.
+     * Constructs a new move exception with the specified detail message.
      *
-     * @param message the message
+     * @param message the error message
      */
     public MoveException(String message) {
         super(message);
     }
 
     /**
-     * Instantiates a new Move exception.
+     * Constructs a new move exception with the specified cause.
      *
      * @param cause the cause
      */

@@ -197,8 +197,8 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Executes a move on the board. It returns {@code true} if the operation has been successful and the position
      * changed after the move. When a full validation is requested, additional checks are performed to assess the
-     * outcome of the operation, such as whether the side to move is the expected one, if castling or promotion moves
-     * are permitted, if the move replaces another piece of the same side, etc.
+     * outcome of the operation, such as if the side to move is the expected one, if castling or promotion moves are
+     * allowed, if the move replaces another piece of the same side, etc.
      * <p/>
      * <b>N.B.</b>: the method does not check whether the move is legal or not according to the standard chess rules,
      * but rather if the resulting configuration is valid. For instance, it is totally fine to move the king by two or
@@ -1001,6 +1001,7 @@ public class Board implements Cloneable, BoardEvent {
      *
      * @return the board event type {@link BoardEventType#ON_LOAD}
      */
+    @Override
     public BoardEventType getType() {
         return BoardEventType.ON_LOAD;
     }
@@ -1527,7 +1528,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Returns the list of all possible legal moves for the current position according to the standard rules of chess.
-     * If such a move is played, it is guaranteed the resulting position will also be legal.
+     * If such moves are played, it is guaranteed the resulting position will also be legal.
      *
      * @return the list of legal moves available in the current position
      */
