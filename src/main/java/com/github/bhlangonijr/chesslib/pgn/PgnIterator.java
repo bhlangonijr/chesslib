@@ -16,15 +16,15 @@
 
 package com.github.bhlangonijr.chesslib.pgn;
 
+import java.util.Iterator;
+
 import com.github.bhlangonijr.chesslib.game.Game;
 import com.github.bhlangonijr.chesslib.util.LargeFile;
 
-import java.util.Iterator;
-
 /**
- * The type Pgn Iterator.
- * <p>
- * The pgn iterator permits iterating over large PGN files without piling up every game in the memory
+ * A Portable Game Notation (PGN) iterator, used to navigate the games contained in PGN file.
+ * <p/>
+ * The iterator permits iterating over large PGN files without piling up every game into the memory.
  */
 public class PgnIterator implements Iterable<Game>, AutoCloseable {
 
@@ -33,39 +33,62 @@ public class PgnIterator implements Iterable<Game>, AutoCloseable {
     private Game game;
 
     /**
-     * Instantiates a new Pgn holder.
+     * Constructs a new PGN iterator from the filename of the PGN file.
      *
-     * @param filename the filename
-     * @throws Exception reading the file
+     * @param filename the PGN filename
+     * @throws Exception in case the PGN file can not be accessed
      */
     public PgnIterator(String filename) throws Exception {
 
         this(new LargeFile(filename));
     }
 
+    /**
+     * Constructs a new PGN iterator from the PGN file.
+     *
+     * @param file the PGN file
+     */
     public PgnIterator(LargeFile file) {
 
         this.pgnLines = file.iterator();
         loadNextGame();
     }
 
+    /**
+     * Constructs a new PGN iterator from an {@link Iterable} object that can iterate over the lines of the PGN file.
+     *
+     * @param pgnLines an iterable over the PGN lines
+     */
     public PgnIterator(Iterable<String> pgnLines) {
 
         this.pgnLines = pgnLines.iterator();
         loadNextGame();
     }
 
+    /**
+     * Constructs a new PGN iterator from another iterator over the lines of the PGN file.
+     *
+     * @param pgnLines an iterator over PGN lines
+     */
     public PgnIterator(Iterator<String> pgnLines) {
 
         this.pgnLines = pgnLines;
         loadNextGame();
     }
 
+    /**
+     * Returns an iterator over the games included in the PGN file.
+     *
+     * @return the iterator to navigate the games stored in the PGN file
+     */
     @Override
     public Iterator<Game> iterator() {
         return new GameIterator();
     }
 
+    /**
+     * Attempts to close the PGN file and releases any system resources associated with it.
+     */
     @Override
     public void close() throws Exception {
 

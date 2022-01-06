@@ -17,14 +17,14 @@
 package com.github.bhlangonijr.chesslib.pgn;
 
 /**
- * The interface Pgn load listener.
+ * An observer to PGN loading events, notified when games are extracted from a Portable Game Notation file.
  */
 public interface PgnLoadListener {
 
     /**
-     * Notify progress.
+     * Method invoked when a game is loaded from a PGN file.
      *
-     * @param games the games
+     * @param games the total number of games loaded from the PGN file
      */
     void notifyProgress(int games);
 

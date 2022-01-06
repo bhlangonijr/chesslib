@@ -17,23 +17,24 @@
 package com.github.bhlangonijr.chesslib.pgn;
 
 /**
- * The type Pgn exception.
+ * Thrown to indicate a failure reading a Portable Game Notation (PGN) file, for instance because the contents are
+ * invalid.
  */
 public class PgnException extends RuntimeException {
 
     private static final long serialVersionUID = 6523240383760826752L;
 
     /**
-     * Instantiates a new Pgn exception.
+     * Constructs a new PGN exception.
      */
     public PgnException() {
         super();
     }
 
     /**
-     * Instantiates a new Pgn exception.
+     * Constructs a new PGN exception with the specified detail message and cause.
      *
-     * @param message the message
+     * @param message the error message
      * @param cause   the cause
      */
     public PgnException(String message, Throwable cause) {
@@ -41,16 +42,16 @@ public class PgnException extends RuntimeException {
     }
 
     /**
-     * Instantiates a new Pgn exception.
+     * Constructs a new PGN exception with the specified detail message.
      *
-     * @param message the message
+     * @param message the error message
      */
     public PgnException(String message) {
         super(message);
     }
 
     /**
-     * Instantiates a new Pgn exception.
+     * Constructs a new PGN exception with the specified cause.
      *
      * @param cause the cause
      */
