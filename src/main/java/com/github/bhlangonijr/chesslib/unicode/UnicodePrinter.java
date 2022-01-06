@@ -5,29 +5,33 @@ import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 
 /**
- * Printer class for printing boards using Unicode chess sybols.
+ * A printer class for conveniently printing boards using Unicode chess symbols in a reliable and consistent way.
  */
 public class UnicodePrinter {
-    private PrintStream printStream;
+    private final PrintStream printStream;
 
     /**
-     * Construct a printer using your choice of PrintStream
+     * Construct a printer using the specified print stream.
      * 
-     * @param printStream the PrintStream to which the board represenation will be sent
+     * @param printStream the print stream where to output the board
      */
     public UnicodePrinter(PrintStream printStream) {
         this.printStream = printStream;
     }
 
     /**
-     * Construct a printer using System.out
+     * Construct a printer using {@code System.out} as a print stream.
+     * <p/>
+     * Same as invoking {@code new UnicodePrinter(System.out)}.
+     *
+     * @see UnicodePrinter#UnicodePrinter(PrintStream)
      */
     public UnicodePrinter() {
         this(System.out);
     }
 
     /**
-     * Print the board using Unicode chess symbols
+     * Prints the board using Unicode chess symbols.
      * 
      * @param board the board to print
      */
