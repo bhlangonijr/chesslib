@@ -17,31 +17,31 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * The enum Time control type.
+ * All possible types of time control.
  */
 public enum TimeControlType {
     /**
-     * Unknow time control type.
+     * An unknown type of time control, used when it is not possible to infer the type of time control.
      */
     UNKNOW,
     /**
-     * Time bonus time control type.
+     * The time bonus time control type, for example {@code "4500+60"}.
      */
     TIME_BONUS,
     /**
-     * Fixed depth time control type.
+     * The fixed depth time control type, for example {@code "4500"}.
      */
     FIXED_DEPTH,
     /**
-     * Time per move time control type.
+     * The time-per-move time control type, for example {@code "*180"}.
      */
     TIME_PER_MOVE,
     /**
-     * Moves per time time control type.
+     * The moves-per-time time control type, for example {@code "40/9000"}.
      */
     MOVES_PER_TIME,
     /**
-     * Nodes time control type.
+     * The nodes time control type.
      */
     NODES
 

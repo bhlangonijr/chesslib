@@ -16,6 +16,11 @@
 
 package com.github.bhlangonijr.chesslib.game;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveConversionException;
@@ -24,13 +29,8 @@ import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnException;
 import com.github.bhlangonijr.chesslib.util.StringUtil;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Map.Entry;
-
 /**
- * Game Data Holder
+ * A chess game, as defined by the specifications of the Portable Game Notation (PGN) format.
  */
 public class Game {
 
@@ -61,10 +61,10 @@ public class Game {
     private String variation;
 
     /**
-     * Instantiates a new Game.
+     * Constructs a new chess game.
      *
-     * @param gameId the game id
-     * @param round  the round
+     * @param gameId the game ID
+     * @param round  the round the game belongs to
      */
     public Game(String gameId, Round round) {
         this.gameId = gameId;
@@ -93,7 +93,7 @@ public class Game {
     }
 
     /**
-     * Gets date.
+     * Returns the date of the game, when the game was played.
      *
      * @return the date
      */
@@ -102,16 +102,17 @@ public class Game {
     }
 
     /**
-     * Sets date.
+     * Sets the date of the game.
      *
-     * @param date the date
+     * @param date the date to set
+     * @see Game#getDate()
      */
     public void setDate(String date) {
         this.date = date;
     }
 
     /**
-     * Gets time.
+     * Returns the time of the game, at what time the game was played.
      *
      * @return the time
      */
@@ -120,34 +121,35 @@ public class Game {
     }
 
     /**
-     * Sets time.
+     * Sets the time of the game.
      *
-     * @param time the time
+     * @param time the time to set
+     * @see Game#getTime()
      */
     public void setTime(String time) {
         this.time = time;
     }
 
     /**
-     * Gets termination.
+     * Returns the termination mode of the game.
      *
-     * @return the termination
+     * @return the termination mode
      */
     public Termination getTermination() {
         return termination;
     }
 
     /**
-     * Sets termination.
+     * Sets the termination of the game.
      *
-     * @param termination the termination
+     * @param termination the termination to set
      */
     public void setTermination(Termination termination) {
         this.termination = termination;
     }
 
     /**
-     * Gets white player.
+     * Returns the white player.
      *
      * @return the white player
      */
@@ -156,16 +158,16 @@ public class Game {
     }
 
     /**
-     * Sets white player.
+     * Sets the white player.
      *
-     * @param whitePlayer the white player
+     * @param whitePlayer the white player to set
      */
     public void setWhitePlayer(Player whitePlayer) {
         this.whitePlayer = whitePlayer;
     }
 
     /**
-     * Gets black player.
+     * Returns the black player.
      *
      * @return the black player
      */
@@ -174,16 +176,16 @@ public class Game {
     }
 
     /**
-     * Sets black player.
+     * Sets the black player.
      *
-     * @param blackPlayer the black player
+     * @param blackPlayer the black player to set
      */
     public void setBlackPlayer(Player blackPlayer) {
         this.blackPlayer = blackPlayer;
     }
 
     /**
-     * Gets annotator.
+     * Returns the annotator.
      *
      * @return the annotator
      */
@@ -192,16 +194,16 @@ public class Game {
     }
 
     /**
-     * Sets annotator.
+     * Sets the annotator.
      *
-     * @param annotator the annotator
+     * @param annotator the annotator to set
      */
     public void setAnnotator(String annotator) {
         this.annotator = annotator;
     }
 
     /**
-     * Gets ply count.
+     * Returns the ply count, that is, the number of moves played in the game.
      *
      * @return the ply count
      */
@@ -210,34 +212,36 @@ public class Game {
     }
 
     /**
-     * Sets ply count.
+     * Sets the ply count.
      *
-     * @param plyCount the ply count
+     * @param plyCount the ply count to set
+     * @see Game#getPlyCount()
      */
     public void setPlyCount(String plyCount) {
         this.plyCount = plyCount;
     }
 
     /**
-     * Gets result.
+     * Returns the game result.
      *
-     * @return the result
+     * @return the game result
      */
     public GameResult getResult() {
         return result;
     }
 
     /**
-     * Sets result.
+     * Sets the game result.
      *
-     * @param result the result
+     * @param result the result to set
      */
     public void setResult(GameResult result) {
         this.result = result;
     }
 
     /**
-     * Gets variations.
+     * Returns the variations present in the game. Each variation is defined by a {@link MoveList} indexed by an
+     * identifier of the move from which it branches out.
      *
      * @return the variations
      */
@@ -246,16 +250,17 @@ public class Game {
     }
 
     /**
-     * Sets variations.
+     * Sets the variations of the game.
      *
-     * @param variations the variations
+     * @param variations the variations to set
+     * @see Game#getVariations()
      */
     public void setVariations(Map<Integer, MoveList> variations) {
         this.variations = variations;
     }
 
     /**
-     * Gets commentary.
+     * Returns the commentary of the game. Each comment is indexed by an identifier of the move it refers to.
      *
      * @return the commentary
      */
@@ -264,36 +269,39 @@ public class Game {
     }
 
     /**
-     * Sets commentary.
+     * Sets the commentary of the game.
      *
-     * @param comments the commentary
+     * @param comments the commentary to set
+     * @see Game#getComments()
      */
     public void setComments(Map<Integer, String> comments) {
         this.comments = comments;
     }
 
     /**
-     * Gets nag.
+     * Returns the Numeric Annotation Glyphs (NAG) values present in the game, indexed by the identifiers of the moves
+     * they refer to.
      *
-     * @return the nag
+     * @return the nag values
      */
     public Map<Integer, String> getNag() {
         return nag;
     }
 
     /**
-     * Sets nag.
+     * Sets the Numeric Annotation Glyphs (NAG) values of the game.
      *
-     * @param nag the nag
+     * @param nag the nag values to set
+     * @see Game#getNag()
      */
     public void setNag(Map<Integer, String> nag) {
         this.nag = nag;
     }
 
     /**
-     * Gets half moves.
+     * Returns a reference to the {@link MoveList} that holds the moves of the game, its main variation.
      *
-     * @return the halfMoves
+     * @return the move list of the game
      */
     public MoveList getHalfMoves() {
         if (halfMoves == null) {
@@ -307,9 +315,9 @@ public class Game {
     }
 
     /**
-     * Sets half moves.
+     * Sets the moves of the game.
      *
-     * @param halfMoves the half moves
+     * @param halfMoves the moves to set
      */
     public void setHalfMoves(MoveList halfMoves) {
         this.halfMoves = halfMoves;
@@ -317,34 +325,34 @@ public class Game {
     }
 
     /**
-     * Gets fen.
+     * Returns the initial position of the game as a Forsyth-Edwards Notation (FEN) string.
      *
-     * @return the fen
+     * @return the initial position of the game in FEN notation
      */
     public String getFen() {
         return fen;
     }
 
     /**
-     * Sets fen.
+     * Sets the initial position of the game, provided as a Forsyth-Edwards Notation (FEN) string.
      *
-     * @param fen the fen to set
+     * @param fen the initial position to set
      */
     public void setFen(String fen) {
         this.fen = fen;
     }
 
     /**
-     * Gets board.
+     * Returns the board representing the updated position of the game.
      *
-     * @return the board
+     * @return the updated position of the game
      */
     public Board getBoard() {
         return board;
     }
 
     /**
-     * Sets board.
+     * Sets the board used to represent the updated position of the game.
      *
      * @param board the board to set
      */
@@ -353,21 +361,22 @@ public class Game {
     }
 
     /**
-     * Gets round.
+     * Returns the round of the event this game belongs to.
      *
-     * @return the round
+     * @return the round of the game
      */
     public Round getRound() {
         return round;
     }
 
     /**
-     * Convert the Game object to the PGN format
+     * Generates the Portable Game Notation (PGN) representation of this game and its data. Variations and comments are
+     * included by default.
      *
-     * @param includeVariations the include variations
-     * @param includeComments   the include comments
-     * @return string
-     * @throws MoveConversionException the move conversion exception
+     * @param includeVariations currently ignored: variations are included regardless the values of this flag
+     * @param includeComments   currently ignored: comments are included regardless the values of this flag
+     * @return the PGN representation of this game
+     * @throws MoveConversionException if the move conversion fails
      */
     public String toPgn(boolean includeVariations, boolean includeComments) throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
@@ -535,8 +544,13 @@ public class Game {
         return variantIndex;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
+    /**
+     * Returns a string representation of this chess game.
+     * <p/>
+     * The result of {@link Game#toPgn(boolean, boolean)} is used to represent this game.
+     *
+     * @return a string representation of this game
+     * @see Game#toPgn(boolean, boolean)
      */
     @Override
     public String toString() {
@@ -548,153 +562,159 @@ public class Game {
     }
 
     /**
-     * Gets game id.
+     * Returns the game ID.
      *
-     * @return the gameId
+     * @return the game ID
      */
     public String getGameId() {
         return gameId;
     }
 
     /**
-     * Sets game id.
+     * Sets the game ID.
      *
-     * @param gameId the gameId to set
+     * @param gameId the game ID to set
      */
     public void setGameId(String gameId) {
         this.gameId = gameId;
     }
 
     /**
-     * Gets position.
+     * Returns the index of the current move.
      *
-     * @return the position
+     * @return the index of the current move
      */
     public int getPosition() {
         return position;
     }
 
     /**
-     * Sets position.
+     * Sets the index of the current move.
      *
-     * @param position the position to set
+     * @param position the index of the current move to set
      */
     public void setPosition(int position) {
         this.position = position;
     }
 
     /**
-     * Gets initial position.
+     * Returns the index of the initial position.
      *
-     * @return the initial position
+     * @return the index of the initial position
      */
     public int getInitialPosition() {
         return initialPosition;
     }
 
     /**
-     * Sets initial position.
+     * Sets the index of the initial position.
      *
-     * @param initialPosition the initial position
+     * @param initialPosition the index of the initial position to set
      */
     public void setInitialPosition(int initialPosition) {
         this.initialPosition = initialPosition;
     }
 
     /**
-     * Gets current move list.
+     * Returns the current list of moves, used to navigate the game.
      *
-     * @return the currentMoveList
+     * @return the current list of moves
      */
     public MoveList getCurrentMoveList() {
         return currentMoveList;
     }
 
     /**
-     * Sets current move list.
+     * Sets the current list of moves.
      *
-     * @param currentMoveList the currentMoveList to set
+     * @param currentMoveList the current list of moves to set
      */
     public void setCurrentMoveList(MoveList currentMoveList) {
         this.currentMoveList = currentMoveList;
     }
 
     /**
-     * Gets eco.
+     * Returns the Encyclopedia of Chess Openings (ECO) code of the game.
      *
-     * @return the eco
+     * @return the ECO code
      */
     public String getEco() {
         return eco;
     }
 
     /**
-     * Sets eco.
+     * Sets the Encyclopedia of Chess Openings (ECO) code of the game.
      *
-     * @param eco the eco to set
+     * @param eco the ECO code to set
      */
     public void setEco(String eco) {
         this.eco = eco;
     }
 
     /**
-     * Gets opening.
+     * Returns the name of the opening.
      *
-     * @return the opening
+     * @return the opening name
      */
     public String getOpening() {
         return opening;
     }
 
     /**
-     * Sets opening.
+     * Sets the name of the opening.
      *
-     * @param opening the opening
+     * @param opening the opening name to set
      */
     public void setOpening(String opening) {
         this.opening = opening;
     }
 
     /**
-     * Gets variation.
+     * Returns the name of the variation.
      *
-     * @return the variation
+     * @return the variation name
      */
     public String getVariation() {
         return variation;
     }
 
     /**
-     * Sets variation.
+     * Sets the name of the variation.
      *
-     * @param variation the variation
+     * @param variation the variation name to set
      */
     public void setVariation(String variation) {
         this.variation = variation;
     }
 
     /**
-     * Gets move text.
+     * Returns the PGN textual representation of the moves of the game.
      *
-     * @return the moveText
+     * @return the moves of the game
      */
     public StringBuilder getMoveText() {
         return moveText;
     }
 
     /**
-     * Sets move text.
+     * Sets the moves of the game as a PGN textual representation.
      *
-     * @param moveText the moveText to set
+     * @param moveText the moves to set
      */
     public void setMoveText(StringBuilder moveText) {
         this.moveText = moveText;
     }
 
     /**
-     * Load a MoveText from a PGN file into the Game object
+     * Loads an already existing PGN textual representation of moves into this game data structure. The internal status
+     * of this instance is updated to reflect the loaded moves.
+     * <p/>
+     * It is possible to load a list of moves in their PGN textual representation without setting them in advance in the
+     * game invoking {@link Game#loadMoveText(StringBuilder)}.
      *
-     * @throws Exception the exception
+     * @throws Exception if it is not possible to load the moves
+     * @see Game#setMoveText(StringBuilder)
+     * @see Game#loadMoveText(StringBuilder)
      */
     public void loadMoveText() throws Exception {
         if (getMoveText() != null) {
@@ -703,10 +723,11 @@ public class Game {
     }
 
     /**
-     * Load a MoveText from a PGN file into the Game object
+     * Loads a PGN textual representation of moves into this game data structure. The internal status of this instance
+     * is updated to reflect the loaded moves.
      *
-     * @param moveText the move text
-     * @throws Exception the exception
+     * @param moveText the moves to load
+     * @throws Exception if it is not possible to load the moves
      */
     public void loadMoveText(StringBuilder moveText) throws Exception {
 
@@ -872,11 +893,15 @@ public class Game {
     }
 
     /**
-     * Goto move with the specified index
+     * Navigates the list of moves from the initial position of the game until a given position, defined by the provided
+     * index passed in input. In other words, updates the status of the board to reflect the game up to move
+     * {@code index} (included). The provided list of moves becomes active and the pointer to the current position is
+     * updated.
      *
-     * @param moves the moves
-     * @param index the index
-     * @throws MoveException the move exception
+     * @param moves the moves to navigate
+     * @param index the index of the move to reach
+     * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
+     * position
      */
     public void gotoMove(final MoveList moves, int index) throws MoveException {
         setCurrentMoveList(moves);
@@ -901,138 +926,173 @@ public class Game {
     }
 
     /**
-     * Goto first.
+     * Navigates the list of moves from the initial position of the game to the first move in the list. In other words,
+     * updates the status of the board to reflect the game up to the first move.
+     * <p/>
+     * Same as invoking {@code gotoMove(moves, 0)}.
      *
-     * @param moves the moves
-     * @throws MoveException the move exception
+     * @param moves the moves to navigate
+     * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
+     * position
+     * @see Game#gotoMove(MoveList, int)
      */
     public void gotoFirst(final MoveList moves) throws MoveException {
         gotoMove(moves, 0);
     }
 
     /**
-     * Goto last.
+     * Navigates the list of moves from the initial position of the game to the last move in the list. In other words,
+     * updates the status of the board to reflect the game up to the last move.
+     * <p/>
+     * Same as invoking {@code gotoMove(moves, moves.size() - 1)}.
      *
-     * @param moves the moves
-     * @throws MoveException the move exception
+     * @param moves the moves to navigate
+     * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
+     * position
+     * @see Game#gotoMove(MoveList, int)
      */
     public void gotoLast(final MoveList moves) throws MoveException {
         gotoMove(moves, getHalfMoves().size() - 1);
     }
 
     /**
-     * Goto next.
+     * Navigates the list of moves to the next one in the position.
+     * <p/>
+     * Same as invoking {@code gotoMove(moves, getPosition() + 1)}.
      *
-     * @param moves the moves
-     * @throws MoveException the move exception
+     * @param moves the moves to navigate
+     * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
+     * position
+     * @see Game#gotoMove(MoveList, int)
      */
     public void gotoNext(final MoveList moves) throws MoveException {
         gotoMove(moves, getPosition() + 1);
     }
 
     /**
-     * Goto prior.
+     * Navigates the list of moves to the previous one in the position.
+     * <p/>
+     * Same as invoking {@code gotoMove(moves, getPosition() - 1)}.
      *
-     * @param moves the moves
-     * @throws MoveException the move exception
+     * @param moves the moves to navigate
+     * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
+     * position
+     * @see Game#gotoMove(MoveList, int)
      */
     public void gotoPrior(final MoveList moves) throws MoveException {
         gotoMove(moves, getPosition() - 1);
     }
 
     /**
-     * Goto first.
+     * Navigates the current list of moves to the first one.
+     * <p/>
+     * Same as invoking {@code gotoMove(getCurrentMoveList(), 0)}.
      *
-     * @throws MoveException the move exception
+     * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
+     * position
+     * @see Game#gotoMove(MoveList, int)
      */
     public void gotoFirst() throws MoveException {
         gotoFirst(getCurrentMoveList());
     }
 
     /**
-     * Goto last.
+     * Navigates the current list of moves to the last one.
+     * <p/>
+     * Same as invoking {@code gotoMove(getCurrentMoveList(), getCurrentMoveList().size() - 1)}.
      *
-     * @throws MoveException the move exception
+     * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
+     * position
+     * @see Game#gotoMove(MoveList, int)
      */
     public void gotoLast() throws MoveException {
         gotoLast(getCurrentMoveList());
     }
 
     /**
-     * Goto next.
+     * Navigates the current list of moves to the next one in the position.
+     * <p/>
+     * Same as invoking {@code gotoMove(getCurrentMoveList(), getPosition() + 1)}.
      *
-     * @throws MoveException the move exception
+     * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
+     * position
+     * @see Game#gotoMove(MoveList, int)
      */
     public void gotoNext() throws MoveException {
         gotoNext(getCurrentMoveList());
     }
 
     /**
-     * Goto prior.
+     * Navigates the current list of moves to the previous one in the position.
+     * <p/>
+     * Same as invoking {@code gotoMove(getCurrentMoveList(), getPosition() - 1)}.
      *
-     * @throws MoveException the move exception
+     * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
+     * position
+     * @see Game#gotoMove(MoveList, int)
      */
     public void gotoPrior() throws MoveException {
         gotoPrior(getCurrentMoveList());
     }
 
     /**
-     * Is end of move list boolean.
+     * Checks if the current move in the position has reached the end of the active list of moves.
      *
-     * @return the boolean
+     * @return {@code true} if the position has reached the last move in the active list of moves, or the latter is
+     * empty
      */
     public boolean isEndOfMoveList() {
         return getCurrentMoveList() == null || getPosition() >= getCurrentMoveList().size() - 1;
     }
 
     /**
-     * Is start of move list boolean.
+     * Checks if the current move in the position points to the fist one in the active list of moves.
      *
-     * @return the boolean
+     * @return {@code true} if the current move is the first one in the active list of moves, or the latter is empty
      */
     public boolean isStartOfMoveList() {
         return getCurrentMoveList() == null && getPosition() == 0;
     }
 
     /**
-     * Gets property.
+     * Returns the PGN properties of the game.
      *
-     * @return the property
+     * @return the PGN properties
      */
     public Map<String, String> getProperty() {
         return property;
     }
 
     /**
-     * Sets property.
+     * Sets the PGN properties of the game.
      *
-     * @param property the property
+     * @param property the properties to set
      */
     public void setProperty(Map<String, String> property) {
         this.property = property;
     }
 
     /**
-     * The type R text entry.
+     * Internal game structure used to define text moves variations.
      */
-    class RTextEntry {
+    static class RTextEntry {
         /**
-         * The Index.
+         * The index in the parent line from which this variation branches out.
          */
         int index;
         /**
-         * The Size.
+         * The size of this variation.
          */
         int size;
         /**
-         * The Text.
+         * The textual representation of moves of this variation.
          */
         StringBuilder text = new StringBuilder();
 
         /**
-         * Instantiates a new R text entry.
+         * Constructs a new variation.
          *
-         * @param index the index
+         * @param index the move index in the parent line from which the variation branches out
          */
         public RTextEntry(int index) {
             this.index = index;

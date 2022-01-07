@@ -17,82 +17,82 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * The interface Player.
+ * A player of a chess game.
  */
 public interface Player {
 
     /**
-     * Gets id.
+     * Returns the ID of the player.
      *
-     * @return the id
+     * @return the ID
      */
     String getId();
 
     /**
-     * Sets id.
+     * Sets the ID of the player.
      *
-     * @param id the id
+     * @param id the ID to set
      */
     void setId(String id);
 
     /**
-     * Gets elo.
+     * Returns the ELO rating of the player.
      *
-     * @return the elo
+     * @return the ELO rating
      */
     int getElo();
 
     /**
-     * Sets elo.
+     * Sets the ELO rating of the player.
      *
-     * @param elo the elo
+     * @param elo the ELO rating to set
      */
     void setElo(int elo);
 
     /**
-     * Gets name.
+     * Returns the name of the player.
      *
      * @return the name
      */
     String getName();
 
     /**
-     * Sets name.
+     * Sets the name of the player.
      *
-     * @param name the name
+     * @param name the name to set
      */
     void setName(String name);
 
     /**
-     * Gets type.
+     * Returns the type of the player.
      *
      * @return the type
      */
     PlayerType getType();
 
     /**
-     * Sets type.
+     * Sets the type of the player.
      *
-     * @param type the type
+     * @param type the type to set
      */
     void setType(PlayerType type);
 
     /**
-     * Gets description.
+     * Returns the description of the player.
      *
      * @return the description
      */
     String getDescription();
 
     /**
-     * Sets description.
+     * Sets the description of the player.
      *
-     * @param description the description
+     * @param description the description to set
      */
     void setDescription(String description);
 
     /**
-     * Gets long description.
+     * Returns the long description of the player.
      *
      * @return the long description
      */

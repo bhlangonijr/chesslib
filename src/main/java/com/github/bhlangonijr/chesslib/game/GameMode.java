@@ -17,7 +17,7 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * Game Mode Type
+ * All the possible modes of a chess game.
  */
 public enum GameMode {
 

@@ -1182,7 +1182,7 @@ public class Board implements Cloneable, BoardEvent {
      *     <li>if the moving side is the next side to move in the position;</li>
      *     <li>if the destination square does not contain a piece of the same side of the moving one;</li>
      *     <li>in case of a promotion, if a promoting piece is present;</li>
-     *     <li>in case of castling, if the castling move can be performed.</li>
+     *     <li>in case of castling, if the castle move can be performed.</li>
      * </ul>
      * <b>N.B.</b>: the method does not check whether the move is legal or not according to the standard chess rules,
      * but only if the resulting configuration is valid. For instance, it is considered valid moving the king by two or

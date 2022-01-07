@@ -17,41 +17,44 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * The enum Mode.
+ * The game modes.
  */
 public enum Mode {
     /**
-     * The Otb.
+     * The Over the Board (OTB) game mode.
      */
     OTB("Over the Board"),
     /**
-     * The Ics.
+     * The Internet Chess Server (ICS) game mode.
      */
     ICS("Internet Chess Server");
 
     /**
-     * The Description.
+     * The description of the game mode.
      */
-    String description;
+    final String description;
 
     Mode(String description) {
         this.description = description;
     }
 
     /**
-     * From value mode.
+     * Returns a game mode given its name.
+     * <p/>
+     * Same as invoking {@link Mode#valueOf(String)}.
      *
-     * @param v the v
-     * @return the mode
+     * @param v name of the game mode
+     * @return the game mode with the specified name
+     * @throws IllegalArgumentException if the name does not correspond to any game mode
      */
     public static Mode fromValue(String v) {
         return valueOf(v);
     }
 
     /**
-     * Value string.
+     * Returns the name of the game mode.
      *
-     * @return the string
+     * @return the name of the game mode
      */
     public String value() {
         return name();

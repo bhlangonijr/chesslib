@@ -17,81 +17,86 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * The enum Termination.
+ * The types of game termination.
  */
 public enum Termination {
     /**
-     * Abandoned termination.
+     * Termination by abandon: the losing player abandoned the game.
      */
     ABANDONED("ABANDONED"),
     /**
-     * Adjudication termination.
+     * Termination by adjudication: the result is determined by a third-party adjudication.
      */
     ADJUDICATION("ADJUDICATION"),
     /**
-     * Death termination.
+     * Termination by death: the losing player passed away.
      */
     DEATH("DEATH"),
     /**
-     * Emergency termination.
+     * Termination by emergency: the game concluded due to unforeseen circumstances.
      */
     EMERGENCY("EMERGENCY"),
     /**
-     * Normal termination.
+     * Normal termination: the game finished in a normal fashion.
      */
     NORMAL("NORMAL"),
     /**
-     * The Rules infraction.
+     * The rules infraction termination: the game is forfeit due to the losing player's failure to observe either the
+     * chess rules or the event regulations.
      */
     RULES_INFRACTION("RULES INFRACTION"),
     /**
-     * The Time forfeit.
+     * The time forfeit termination: the losing player ran out of time.
      */
     TIME_FORFEIT("TIME FORFEIT"),
     /**
-     * Unterminated termination.
+     * The game is not terminated yet.
      */
     UNTERMINATED("UNTERMINATED"),
     /**
-     * Time termination.
+     * The time termination: alias of {@link Termination#TIME_FORFEIT}.
      */
     TIME("TIME");
 
     /**
-     * The Description.
+     * The description of the termination mode.
      */
-    String description;
+    final String description;
 
     Termination(String description) {
         this.description = description;
     }
 
     /**
-     * From value termination.
+     * Returns a termination mode given its name.
+     * <p/>
+     * Same as invoking {@link Termination#valueOf(String)}.
      *
-     * @param v the v
-     * @return the termination
+     * @param v name of the termination mode
+     * @return the termination mode with the specified name
+     * @throws IllegalArgumentException if the name does not correspond to any termination mode
      */
     public static Termination fromValue(String v) {
         return valueOf(v.replace(' ', '_'));
     }
 
     /**
-     * Value string.
+     * Returns the name of the termination mode.
      *
-     * @return the string
+     * @return the name of the termination mode
      */
     public String value() {
         return name();
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Enum#toString()
+    /**
+     * Returns a string representation of this termination mode.
+     *
+     * @return a string representation of this termination mode
      */
     @Override
     public String toString() {
         return description;
     }
-
 
 }

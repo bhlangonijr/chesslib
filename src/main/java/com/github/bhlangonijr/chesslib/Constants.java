@@ -83,19 +83,19 @@ public class Constants {
     public static final List<Square> DEFAULT_BLACK_OOO_SQUARES = new ArrayList<Square>();
 
     /**
-     * The list of all squares involved in the case of short castle by white.
+     * The list of all squares involved in the case of short castle of white.
      */
     public static final List<Square> DEFAULT_WHITE_OO_ALL_SQUARES = new ArrayList<Square>();
     /**
-     * The list of all squares involved in the case of long castle by white.
+     * The list of all squares involved in the case of long castle of white.
      */
     public static final List<Square> DEFAULT_WHITE_OOO_ALL_SQUARES = new ArrayList<Square>();
     /**
-     * The list of all squares involved in the case of short castle by black.
+     * The list of all squares involved in the case of short castle of black.
      */
     public static final List<Square> DEFAULT_BLACK_OO_ALL_SQUARES = new ArrayList<Square>();
     /**
-     * The list of all squares involved in the case of long castle by black.
+     * The list of all squares involved in the case of long castle of black.
      */
     public static final List<Square> DEFAULT_BLACK_OOO_ALL_SQUARES = new ArrayList<Square>();
 

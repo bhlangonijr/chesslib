@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The type Event.
+ * A chess event.
  */
 public class Event {
 
@@ -40,25 +40,25 @@ public class Event {
     private PgnHolder pgnHolder;
 
     /**
-     * Gets id.
+     * Returns the ID of the event.
      *
-     * @return the id
+     * @return the ID
      */
     public String getId() {
         return id;
     }
 
     /**
-     * Sets id.
+     * Sets the ID of the event.
      *
-     * @param id the id
+     * @param id the ID to set
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * Gets name.
+     * Returns the name of the event.
      *
      * @return the name
      */
@@ -67,34 +67,34 @@ public class Event {
     }
 
     /**
-     * Sets name.
+     * Sets the name of the event.
      *
-     * @param name the name
+     * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Gets event type.
+     * Returns the type of the event.
      *
-     * @return the event type
+     * @return the type
      */
     public EventType getEventType() {
         return eventType;
     }
 
     /**
-     * Sets event type.
+     * Sets the type of the player.
      *
-     * @param eventType the event type
+     * @param eventType the type to set
      */
     public void setEventType(EventType eventType) {
         this.eventType = eventType;
     }
 
     /**
-     * Gets start date.
+     * Returns the start date of the event.
      *
      * @return the start date
      */
@@ -103,16 +103,16 @@ public class Event {
     }
 
     /**
-     * Sets start date.
+     * Sets the start date of the event.
      *
-     * @param startDate the start date
+     * @param startDate the start date to set
      */
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
     /**
-     * Gets end date.
+     * Returns the end date of the event.
      *
      * @return the end date
      */
@@ -121,16 +121,16 @@ public class Event {
     }
 
     /**
-     * Sets end date.
+     * Sets the end date of the event.
      *
-     * @param endDate the end date
+     * @param endDate the end date to set
      */
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
     /**
-     * Gets site.
+     * Returns the site (location) of the event.
      *
      * @return the site
      */
@@ -139,16 +139,16 @@ public class Event {
     }
 
     /**
-     * Sets site.
+     * Sets the site (location) of the event.
      *
-     * @param site the site
+     * @param site the site to set
      */
     public void setSite(String site) {
         this.site = site;
     }
 
     /**
-     * Gets timestamp.
+     * Returns the specific timestamp of the event.
      *
      * @return the timestamp
      */
@@ -157,90 +157,90 @@ public class Event {
     }
 
     /**
-     * Sets timestamp.
+     * Sets the specific timestamp of the event.
      *
-     * @param timestamp the timestamp
+     * @param timestamp the timestamp to set
      */
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 
     /**
-     * Gets rounds.
+     * Returns the number of rounds of the event.
      *
-     * @return the rounds
+     * @return the number of rounds
      */
     public int getRounds() {
         return rounds;
     }
 
     /**
-     * Sets rounds.
+     * Sets the number of rounds of the event.
      *
-     * @param rounds the rounds
+     * @param rounds the number of rounds to set
      */
     public void setRounds(int rounds) {
         this.rounds = rounds;
     }
 
     /**
-     * Gets time control.
+     * Returns the main time control of the event.
      *
-     * @return the time control
+     * @return the main time control
      */
     public TimeControl getTimeControl() {
         return timeControl;
     }
 
     /**
-     * Sets time control.
+     * Sets the main time control of the event.
      *
-     * @param timeControl the time control
+     * @param timeControl the main time control to set
      */
     public void setTimeControl(TimeControl timeControl) {
         this.timeControl = timeControl;
     }
 
     /**
-     * Gets time control 2.
+     * Returns the secondary time control of the event.
      *
-     * @return the time control 2
+     * @return the secondary time control
      */
     public TimeControl getTimeControl2() {
         return timeControl2;
     }
 
     /**
-     * Sets time control 2.
+     * Sets the secondary time control of the event.
      *
-     * @param timeControl2 the time control 2
+     * @param timeControl2 the secondary time control to set
      */
     public void setTimeControl2(TimeControl timeControl2) {
         this.timeControl2 = timeControl2;
     }
 
     /**
-     * Gets round.
+     * Returns the rounds of the event.
      *
-     * @return the round
+     * @return the rounds
      */
     public Map<Integer, Round> getRound() {
         return round;
     }
 
     /**
-     * Gets pgn holder.
+     * Returns the PGN holder used to access the PGN file used for the event.
      *
-     * @return the pgn holder
+     * @return the PGN holder reference
      */
     public PgnHolder getPgnHolder() {
         return pgnHolder;
     }
 
     /**
-     * Sets pgn holder.
+     * Sets the PGN holder used to access the PGN file used for the event.
      *
-     * @param pgnHolder the pgn holder
+     * @param pgnHolder the PGN holder to use
      */
     public void setPgnHolder(PgnHolder pgnHolder) {
         this.pgnHolder = pgnHolder;

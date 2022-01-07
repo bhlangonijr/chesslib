@@ -17,7 +17,8 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * The type Move per time.
+ * The representation of the time control moves-per-time, that specifies how many moves must be played within a certain
+ * amount of time, for example {@code "40/9000"}, 40 moves in 9000 seconds, i.e. 2 hours and 30 minutes.
  */
 public class MovePerTime {
 
@@ -25,17 +26,17 @@ public class MovePerTime {
     private long milliseconds;
 
     /**
-     * Instantiates a new Move per time.
+     * Constructs a new moves-per-time time control.
      */
     public MovePerTime() {
 
     }
 
     /**
-     * Instantiates a new Move per time.
+     * Constructs a new moves-per-time time control from its components, the number of moves and the amount of time.
      *
-     * @param moves        the moves
-     * @param milliseconds the milliseconds
+     * @param moves        the number of moves
+     * @param milliseconds the amount of time, expressed in milliseconds
      */
     public MovePerTime(int moves, long milliseconds) {
         this.moves = moves;
@@ -43,50 +44,55 @@ public class MovePerTime {
     }
 
     /**
-     * Gets moves.
+     * Returns the moves component of the time control.
      *
-     * @return the moves
+     * @return the number of moves
      */
     public int getMoves() {
         return moves;
     }
 
     /**
-     * Sets moves.
+     * Sets the number of moves component of the time control.
      *
-     * @param moves the moves
+     * @param moves the number of moves to set
      */
     public void setMoves(int moves) {
         this.moves = moves;
     }
 
     /**
-     * Gets milliseconds.
+     * Returns the time component of the time control, expressed in milliseconds.
      *
-     * @return the milliseconds
+     * @return the amount of time, in milliseconds
      */
     public long getMilliseconds() {
         return milliseconds;
     }
 
     /**
-     * Sets milliseconds.
+     * Sets the time component of the time control, in milliseconds.
      *
-     * @param milliseconds the milliseconds
+     * @param milliseconds the amount of time to set
      */
     public void setMilliseconds(long milliseconds) {
         this.milliseconds = milliseconds;
     }
 
     /**
-     * To pgn string string.
+     * Returns the PGN notation that represents this time control.
      *
-     * @return the string
+     * @return the PGN representation of this time control
      */
     public String toPGNString() {
         return getMoves() + "/" + (getMilliseconds() / 1000);
     }
 
+    /**
+     * Returns a string representation of this time control.
+     *
+     * @return a string representation of this time control
+     */
     @Override
     public String toString() {
         return getMoves() + " Moves / " + (getMilliseconds() / 1000) + " Sec";

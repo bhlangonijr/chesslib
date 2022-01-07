@@ -17,19 +17,20 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * The enum Event type.
+ * The types of a chess event.
  */
 public enum EventType {
+
     /**
      * Normal match event type.
      */
     NORMAL_MATCH,
     /**
-     * Round robin event type.
+     * Round-robin event type.
      */
     ROUND_ROBIN,
     /**
-     * Round robin carousel event type.
+     * Round-robin carousel event type.
      */
     ROUND_ROBIN_CAROUSEL,
     /**
