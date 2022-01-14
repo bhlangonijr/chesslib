@@ -546,7 +546,7 @@ public class Game {
 
     /**
      * Returns a string representation of this chess game.
-     * <p/>
+     * <p>
      * The result of {@link Game#toPgn(boolean, boolean)} is used to represent this game.
      *
      * @return a string representation of this game
@@ -708,7 +708,7 @@ public class Game {
     /**
      * Loads an already existing PGN textual representation of moves into this game data structure. The internal status
      * of this instance is updated to reflect the loaded moves.
-     * <p/>
+     * <p>
      * It is possible to load a list of moves in their PGN textual representation without setting them in advance in the
      * game invoking {@link Game#loadMoveText(StringBuilder)}.
      *
@@ -928,7 +928,7 @@ public class Game {
     /**
      * Navigates the list of moves from the initial position of the game to the first move in the list. In other words,
      * updates the status of the board to reflect the game up to the first move.
-     * <p/>
+     * <p>
      * Same as invoking {@code gotoMove(moves, 0)}.
      *
      * @param moves the moves to navigate
@@ -943,7 +943,7 @@ public class Game {
     /**
      * Navigates the list of moves from the initial position of the game to the last move in the list. In other words,
      * updates the status of the board to reflect the game up to the last move.
-     * <p/>
+     * <p>
      * Same as invoking {@code gotoMove(moves, moves.size() - 1)}.
      *
      * @param moves the moves to navigate
@@ -957,7 +957,7 @@ public class Game {
 
     /**
      * Navigates the list of moves to the next one in the position.
-     * <p/>
+     * <p>
      * Same as invoking {@code gotoMove(moves, getPosition() + 1)}.
      *
      * @param moves the moves to navigate
@@ -971,7 +971,7 @@ public class Game {
 
     /**
      * Navigates the list of moves to the previous one in the position.
-     * <p/>
+     * <p>
      * Same as invoking {@code gotoMove(moves, getPosition() - 1)}.
      *
      * @param moves the moves to navigate
@@ -985,7 +985,7 @@ public class Game {
 
     /**
      * Navigates the current list of moves to the first one.
-     * <p/>
+     * <p>
      * Same as invoking {@code gotoMove(getCurrentMoveList(), 0)}.
      *
      * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
@@ -998,7 +998,7 @@ public class Game {
 
     /**
      * Navigates the current list of moves to the last one.
-     * <p/>
+     * <p>
      * Same as invoking {@code gotoMove(getCurrentMoveList(), getCurrentMoveList().size() - 1)}.
      *
      * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
@@ -1011,7 +1011,7 @@ public class Game {
 
     /**
      * Navigates the current list of moves to the next one in the position.
-     * <p/>
+     * <p>
      * Same as invoking {@code gotoMove(getCurrentMoveList(), getPosition() + 1)}.
      *
      * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the
@@ -1024,7 +1024,7 @@ public class Game {
 
     /**
      * Navigates the current list of moves to the previous one in the position.
-     * <p/>
+     * <p>
      * Same as invoking {@code gotoMove(getCurrentMoveList(), getPosition() - 1)}.
      *
      * @throws MoveException if any error occurs browsing the list of moves, for instance if a move is illegal for the

@@ -21,7 +21,7 @@ package com.github.bhlangonijr.chesslib;
  * squares and defines all the squares of the same color in between, the two edge squares included. A
  * <i>left-pointing</i> diagonal is tilted to the left, that is, the file of the edge square on the greater rank is
  * lower or equal than the file of the other edge square.
- * <p/>
+ * <p>
  * Note that corners {@code A1} and {@code H8} are special cases of diagonals of length 1.
  */
 public enum DiagonalH1A8 {

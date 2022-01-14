@@ -40,7 +40,7 @@ public enum Mode {
 
     /**
      * Returns a game mode given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link Mode#valueOf(String)}.
      *
      * @param v name of the game mode

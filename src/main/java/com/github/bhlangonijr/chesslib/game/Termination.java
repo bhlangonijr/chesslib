@@ -69,7 +69,7 @@ public enum Termination {
 
     /**
      * Returns a termination mode given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link Termination#valueOf(String)}.
      *
      * @param v name of the termination mode

@@ -133,7 +133,7 @@ public class PgnHolder {
 
     /**
      * Counts the games present in the PGN file.
-     * <p/>
+     * <p>
      * It does not load the contents of the file, but rather checks into the data how many events are persisted. In
      * order to do so, the implementation counts the mandatory PGN tags.
      *
@@ -218,7 +218,7 @@ public class PgnHolder {
 
     /**
      * Checks if the PGN contents are loaded lazily.
-     * <p/>
+     * <p>
      * <b>N.B.</b>: at the moment lazy loading is not enabled and this flag has no impact on the behavior of the class.
      *
      * @return {@code true} if the PGN contents are loaded lazily
@@ -229,7 +229,7 @@ public class PgnHolder {
 
     /**
      * Sets whether to activate lazy loading or not.
-     * <p/>
+     * <p>
      * <b>N.B.</b>: at the moment lazy loading is not enabled and this flag has no impact on the behavior of the class.
      *
      * @param lazyLoad {@code true} to activate lazy loading

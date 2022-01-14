@@ -21,7 +21,7 @@ public class UnicodePrinter {
 
     /**
      * Construct a printer using {@code System.out} as a print stream.
-     * <p/>
+     * <p>
      * Same as invoking {@code new UnicodePrinter(System.out)}.
      *
      * @see UnicodePrinter#UnicodePrinter(PrintStream)

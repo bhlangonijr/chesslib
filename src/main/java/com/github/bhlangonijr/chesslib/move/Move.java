@@ -25,7 +25,7 @@ import com.github.bhlangonijr.chesslib.Square;
 /**
  * The definition of a chess move, that is, a piece movement from its starting square (the origin square) to a
  * destination square. Optionally, the move could specify a promotion piece used to replace a pawn in case of promotion.
- * <p/>
+ * <p>
  * The move is also a {@link BoardEvent}, and hence it can be passed to the observers of the
  * {@link BoardEventType#ON_MOVE} events, emitted when a move is executed on a board.
  */
@@ -38,7 +38,7 @@ public class Move implements BoardEvent {
 
     /**
      * Creates a new move, using its origin and destination squares.
-     * <p/>
+     * <p>
      * Same as {@code new Move(from, to, Piece.NONE)}.
      *
      * @param from the origin square
@@ -64,7 +64,7 @@ public class Move implements BoardEvent {
     /**
      * Creates a new move using a string representing the coordinates of the origin and destination squares, and
      * possibly a promotion piece. The side is used to disambiguate the color of the promotion piece.
-     * <p/>
+     * <p>
      * Valid examples of strings that can be used to instantiate the move are {@code "e2e4"}, {@code "f1b5"} or
      * {@code "a7a8Q"}.
      *
@@ -174,7 +174,7 @@ public class Move implements BoardEvent {
 
     /**
      * Sets the Short Algebraic Notation (SAN) of the move.
-     * <p/>
+     * <p>
      * The SAN notation should be set explicitly after the instantiation of the move because it can not be inferred
      * without the full context of the specific position.
      *

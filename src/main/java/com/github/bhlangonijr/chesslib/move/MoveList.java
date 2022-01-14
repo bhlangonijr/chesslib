@@ -36,10 +36,10 @@ import com.github.bhlangonijr.chesslib.util.StringUtil;
  * A convenient data structure to store an ordered sequence of moves and access to their human-readable representation
  * in one of the standard chess formats. This implementation can be used to hold the list of moves played in a chess
  * game.
- * <p/>
+ * <p>
  * The move list keeps a reference to a base initial position (by default, the standard starting chess position) used
  * to validate and disambiguate between moves.
- * <p/>
+ * <p>
  * This data structure is a {@link List}, thus the standard API of the Java collection is available for this class as
  * well.
  */
@@ -230,7 +230,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Creates a new instance using an existing list of moves. The new instance will use the initial position of the
      * existing list as a base.
-     * <p/>
+     * <p>
      * The returned list will contain only the first {@code finalIndex} moves of the original list, or all the elements
      * if {@code finalIndex} is outside the boundaries of the source list.
      *
@@ -500,7 +500,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
 
     /**
      * Adds a move defined by its Short Algebraic Notation (SAN) to the list.
-     * <p/>
+     * <p>
      * Same as invoking {@code addSanMove(san, false, true)}.
      *
      * @param san the SAN representation of the move to be added
@@ -723,7 +723,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Returns the Forsyth-Edwards Notation (FEN) representation of the position after the moves of this list, until
      * index {@code atMoveIndex} (excluded), are executed from the base initial position.
-     * <p/>
+     * <p>
      * Same as invoking {@code getFen(atMoveIndex, true)}.
      *
      * @param atMoveIndex the index until which to execute the moves
@@ -767,7 +767,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     /**
      * Returns the Forsyth-Edwards Notation (FEN) representation of the position after all the moves of this list are
      * executed starting from the base initial position.
-     * <p/>
+     * <p>
      * Same as invoking {@code getFen(this.size(), true)}.
      *
      * @return the FEN string notation of the position after the moves are played from the initial position

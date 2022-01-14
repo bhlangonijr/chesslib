@@ -35,7 +35,7 @@ public enum BoardEventType {
 
     /**
      * Returns a board event type given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link BoardEventType#valueOf(String)}.
      *
      * @param v name of the board event type

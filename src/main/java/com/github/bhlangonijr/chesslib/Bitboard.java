@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * A collection of bitboards and related constant values useful to perform efficient board manipulations, fast squares
  * comparisons, and to mask some operations to limited portions of the board.
- * <p/>
+ * <p>
  * A bitboard is a specialized bit array data structure used in chess programming, where each bit corresponds to some
  * binary information stored in a board (e.g. the presence of a piece, the property of a square, etc.). Given
  * chessboards have 64 squares, bitboards can be represented by 64-bits numbers (long unsigned integer values). Data
@@ -64,7 +64,7 @@ public class Bitboard {
      * Table of bitboards that represent portions of board included between two squares, specified by the indexes used
      * to access the table. A portion of board is the two-dimensional space defined by the ranks and files of the
      * squares.
-     * <p/>
+     * <p>
      * For instance, the bitboard looked up by coordinates {@code (0, 18)} defines the portion of the board included
      * between squares {@code A1} and {@code C3} (indexes 0 and 18 respectively), i.e. the set of squares
      * {@code [A1, B1, C1, A2, B2, C2, A3, B3, C3]}.
@@ -146,7 +146,7 @@ public class Bitboard {
      * The bitboards representing the squares attacked by a knight placed in any given square on the board. Bitboard at
      * index 0 identifies the squares attacked by a knight placed at square {@code A1} (index 0), bitboard at index 1
      * the squares attacked from square {@code B1} (index 1), etc.
-     * <p/>
+     * <p>
      * Contextually, the bitboards can also represent the squares from which a knight can attack the square.
      */
     final static long[] knightAttacks = {
@@ -239,7 +239,7 @@ public class Bitboard {
      * board. For example, bitboard at index 0 identifies the squares on the same rank attacked from square {@code A1}
      * (index 0), that is, all squares of the 1st rank except the square {@code A1} itself (i.e. {@code B1}, {@code C1},
      * etc.).
-     * <p/>
+     * <p>
      * Contextually, the bitboards can also represent the squares from which a piece on the same rank can attack the
      * square.
      */
@@ -258,7 +258,7 @@ public class Bitboard {
      * board. For example, bitboard at index 0 identifies the squares on the same file attacked from square {@code A1}
      * (index 0), that is, all squares of the 1st file except the square {@code A1} itself (i.e. {@code A2}, {@code A3},
      * etc.).
-     * <p/>
+     * <p>
      * Contextually, the bitboards can also represent the squares from which a piece on the same file can attack the
      * square.
      */
@@ -277,7 +277,7 @@ public class Bitboard {
      * diagonal from any given square on the board. For example, bitboard at index 1 identifies the squares on the same
      * diagonal attacked from square {@code B1} (index 1), that is, all squares of the B1-H7 diagonal (as defined by
      * {@link DiagonalA1H8}) except the square {@code B1} itself (i.e. {@code B2}, {@code C3}, etc.).
-     * <p/>
+     * <p>
      * Contextually, the bitboards can also represent the squares from which a piece on the same <i>right-pointing</i>
      * diagonal can attack the square.
      */
@@ -296,7 +296,7 @@ public class Bitboard {
      * diagonal from any given square on the board. For example, bitboard at index 1 identifies the squares on the same
      * diagonal attacked from square {@code B1} (index 1), that is, all squares of the B1-A2 diagonal (as defined by
      * {@link DiagonalH1A8}) except the square {@code B1} itself (i.e. only square {@code A2}).
-     * <p/>
+     * <p>
      * Contextually, the bitboards can also represent the squares from which a piece on the same <i>left-pointing</i>
      * diagonal can attack the square.
      */

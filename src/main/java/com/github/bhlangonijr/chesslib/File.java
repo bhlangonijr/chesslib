@@ -19,7 +19,7 @@ package com.github.bhlangonijr.chesslib;
 /**
  * The files in a board. A <i>file</i> is a column in the chessboard, and it is identified as a letter from {@code A} to
  * {@code H}.
- * <p/>
+ * <p>
  * Each value defines a single file, except for the special value {@link File#NONE} which represents no file.
  */
 public enum File {
@@ -71,7 +71,7 @@ public enum File {
 
     /**
      * Returns a file given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link File#valueOf(String)}.
      *
      * @param v name of the file

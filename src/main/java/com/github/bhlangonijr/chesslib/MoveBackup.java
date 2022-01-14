@@ -26,7 +26,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
  * A structure that can be used to cancel the effects of a move and to restore the board to a previous status. The
  * board context is memorized at the <i>backup</i> is created, and it could be subsequently re-applied to the sourcing
  * board.
- * <p/>
+ * <p>
  * The move backup is also a {@link BoardEvent}, and hence it can be passed to the observers of the
  * {@link BoardEventType#ON_UNDO_MOVE} events, emitted when a move is reverted on a board.
  */
@@ -103,7 +103,7 @@ public class MoveBackup implements BoardEvent {
      * Restores the previously stored status backup to the board passed as an argument, effectively cancelling the
      * consequences of the move memorized at the time the backup was created, as well as any potential move executed on
      * the board after that moment.
-     * <p/>
+     * <p>
      * It is a responsibility of the caller to make sure the board used for creating the backup is also the board passed
      * in input to this method. No check is performed to prevent another board is used instead.
      *

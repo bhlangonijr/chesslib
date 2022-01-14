@@ -63,7 +63,7 @@ public enum GameResult {
 
     /**
      * Returns a game results given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link GameResult#valueOf(String)}.
      *
      * @param v name of the result

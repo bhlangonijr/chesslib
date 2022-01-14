@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * A chess piece on the board, that is, a specific combination of a {@link Side} and a {@link PieceType}.
- * <p/>
+ * <p>
  * Each value defines a single piece, except for the special value {@link Piece#NONE} which identifies that no piece is
  * selected or assigned.
  */
@@ -112,7 +112,7 @@ public enum Piece {
 
     /**
      * Returns a piece given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link Piece#valueOf(String)}.
      *
      * @param v name of the piece

@@ -40,11 +40,11 @@ import com.github.bhlangonijr.chesslib.util.XorShiftRandom;
  * position moving pieces around, revert already performed moves, and retrieve the status of the current configuration
  * on the board. Furthermore, it offers a handy way for loading a position from a Forsyth-Edwards Notation (FEN) string
  * and exporting it in the same format.
- * <p/>
+ * <p>
  * Each position in uniquely identified by hashes that could be retrieved using {@link Board#getIncrementalHashKey()}
  * and {@link Board#getZobristKey()} methods. Also, the implementation supports comparison against other board instances
  * using either the strict ({@link Board#strictEquals(Object)}) or the non-strict ({@link Board#equals(Object)}) mode.
- * <p/>
+ * <p>
  * The board can be observed registering {@link BoardEventListener}s for particular types of events. Moreover, the
  * {@link Board} class itself is a {@link BoardEvent}, and hence it can be passed to the observers of the
  * {@link BoardEventType#ON_LOAD} events, emitted when a new chess position is loaded from an external source (e.g. a
@@ -164,7 +164,7 @@ public class Board implements Cloneable, BoardEvent {
      * Executes a move on the board, specified in Short Algebraic Notation (SAN). It returns {@code true} if the
      * operation has been successful and the position changed after the move. It performs a full validation of the board
      * status to assess the outcome of the operation.
-     * <p/>
+     * <p>
      * <b>N.B.</b>: the method does not check whether the move is legal or not according to the standard chess rules,
      * but rather if the resulting configuration is valid. For instance, it is totally fine to move the king by two or
      * more squares, or a rook beyond its friendly pieces, as long as the position obtained after the move does not
@@ -183,7 +183,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Executes a move on the board without performing a full validation of the position. It returns {@code true} if the
      * operation has been successful and the position changed after the move.
-     * <p/>
+     * <p>
      * Same as invoking {@code doMove(move, false)}.
      *
      * @param move the move to execute
@@ -199,7 +199,7 @@ public class Board implements Cloneable, BoardEvent {
      * changed after the move. When a full validation is requested, additional checks are performed to assess the
      * outcome of the operation, such as if the side to move is the expected one, if castling or promotion moves are
      * allowed, if the move replaces another piece of the same side, etc.
-     * <p/>
+     * <p>
      * <b>N.B.</b>: the method does not check whether the move is legal or not according to the standard chess rules,
      * but rather if the resulting configuration is valid. For instance, it is totally fine to move the king by two or
      * more squares, or a rook beyond its friendly pieces, as long as the position obtained after the move does not
@@ -339,7 +339,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Executes a <i>null</i> move on the board. It returns {@code true} if the operation has been successful.
-     * <p/>
+     * <p>
      * A null move it is a special move that does not change the position of any piece, but simply updates the history
      * of the board and switches the side to move. It could be useful in some scenarios to implement a <i>"passing
      * turn"</i> behavior.
@@ -396,7 +396,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Moves a piece on the board and updates the backup passed in input. It returns the captured piece, if any, or
      * {@link Piece#NONE} otherwise.
-     * <p/>
+     * <p>
      * Same as invoking {@code movePiece(move.getFrom(), move.getTo(), move.getPromotion(), backup)}.
      *
      * @param move   the move to perform
@@ -726,7 +726,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Sets a piece on a square.
-     * <p/>
+     * <p>
      * The operation does not perform any move, but rather simply puts a piece onto a square.
      *
      * @param piece the piece to be placed on the square
@@ -847,7 +847,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Generates the Forsyth-Edwards Notation (FEN) representation of the current position and its status. Full and half
      * moves counters are included in the output.
-     * <p/>
+     * <p>
      * Same as invoking {@code getFen(true, false)}.
      *
      * @return the string that represents the current position in FEN notation
@@ -860,7 +860,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Generates the Forsyth-Edwards Notation (FEN) representation of the current position and its status. Full and half
      * moves counters are included in the output if the relative flag is enabled.
-     * <p/>
+     * <p>
      * Same as invoking {@code getFen(includeCounters, false)}.
      *
      * @param includeCounters if {@code true}, move counters are included in the resulting string
@@ -1018,7 +1018,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Registers to the board a new listener for a specified event type.
-     * <p/>
+     * <p>
      * It returns a reference to this board to fluently chain other calls for registering (or deregistering) other
      * listeners.
      *
@@ -1033,7 +1033,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Deregisters from the board a listener for a specified event type.
-     * <p/>
+     * <p>
      * It returns a reference to this board to fluently chain other calls for deregistering (or registering) other
      * listeners.
      *
@@ -1050,7 +1050,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Returns the bitboard representing the pieces of a specific side that can attack the given square.
-     * <p/>
+     * <p>
      * Same as invoking {@code squareAttackedBy(square, side, getBitboard())}.
      *
      * @param square the target square
@@ -1175,7 +1175,7 @@ public class Board implements Cloneable, BoardEvent {
      * Verifies if the move still to be executed will leave the resulting board in a valid (legal) position. Optionally,
      * it can perform a full validation, a stricter check to assess if the final board configuration could be considered
      * valid or not.
-     * <p/>
+     * <p>
      * The full validation checks:
      * <ul>
      *     <li>if a piece is actually moving;</li>
@@ -1404,7 +1404,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Verifies if the current position has been repeated at least three times (threefold repetition).
-     * <p/>
+     * <p>
      * Same as invoking {@code isRepetition(3)}.
      *
      * @return {@code true} if the position has been repeated at least three times
@@ -1512,7 +1512,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Returns the unique position ID for the current position and status. The identifier is nothing more than the
      * Forsyth-Edwards Notation (FEN) representation of the board without the move counters.
-     * <p/>
+     * <p>
      * Although this is a reliable way for identifying a unique position, it is much slower than using
      * {@link Board#hashCode()} or {@link Board#getZobristKey()}.
      *
@@ -1539,7 +1539,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Returns the list of all possible pseudo-legal moves for the current position.
-     * <p/>
+     * <p>
      * A move is considered pseudo-legal when it is legal according to the standard rules of chess piece movements, but
      * the resulting position might not be legal because of other rules (e.g. checks to the king).
      *
@@ -1552,7 +1552,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Returns the list of all possible pseudo-legal captures for the current position.
-     * <p/>
+     * <p>
      * A move is considered a pseudo-legal capture when it takes an enemy piece and it is legal according to the
      * standard rules of chess piece movements, but the resulting position might not be legal because of other rules
      * (e.g. checks to the king).
@@ -1566,7 +1566,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Checks if this board is equivalent to another.
-     * <p/>
+     * <p>
      * Two boards are considered equivalent when:
      * <ul>
      *     <li>the pieces are the same, placed on the very same squares;</li>
@@ -1601,7 +1601,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Checks if this board is equivalent to another performing a strict comparison.
-     * <p/>
+     * <p>
      * Two boards are considered strictly equivalent when:
      * <ul>
      *     <li>they are equivalent;</li>
@@ -1680,7 +1680,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Returns a human-readable representation of the board taking the perspective of white, with the 1st rank at the
      * bottom and the 8th rank at the top.
-     * <p/>
+     * <p>
      * Same as invoking {@code toStringFromViewPoint(Side.WHITE)}.
      *
      * @return a string representation of the board from white player's point of view
@@ -1693,7 +1693,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Returns a human-readable representation of the board taking the perspective of black, with the 8th rank at the
      * bottom and the 1st rank at the top.
-     * <p/>
+     * <p>
      * Same as invoking {@code toStringFromViewPoint(Side.BLACK)}.
      *
      * @return a string representation of the board from black player's point of view
@@ -1736,7 +1736,7 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Returns a string representation of this board.
-     * <p/>
+     * <p>
      * The result of {@link Board#toStringFromWhiteViewPoint()} is used to print the position of the board.
      *
      * @return a string representation of the board

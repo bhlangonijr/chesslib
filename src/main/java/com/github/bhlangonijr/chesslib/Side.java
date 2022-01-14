@@ -34,7 +34,7 @@ public enum Side {
 
     /**
      * Returns a side given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link Side#valueOf(String)}.
      *
      * @param v name of the side

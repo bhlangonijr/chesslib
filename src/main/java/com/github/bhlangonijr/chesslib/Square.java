@@ -20,7 +20,7 @@ import java.util.EnumMap;
 
 /**
  * All possible squares on a board.
- * <p/>
+ * <p>
  * Each value defines a single square, except for the special value {@link Square#NONE} which identifies that no
  * square is selected or assigned.
  */
@@ -329,7 +329,7 @@ public enum Square {
 
     /**
      * Returns a square given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link Square#valueOf(String)}.
      *
      * @param v name of the square
@@ -359,7 +359,7 @@ public enum Square {
      * Returns the squares on the side of the given square. A square on the side is on the same rank and in adjacent
      * files. For instance, side squares of {@link Square#D4} are the two adjacent squares on the 4th rank,
      * {@link Square#C4} and {@link Square#E4}.
-     * <p/>
+     * <p>
      * Note that squares on the edge files ({@code A} and {@code H}) have only one side square instead of two (on files
      * {@code B} and {@code G} respectively).
      *

@@ -21,7 +21,7 @@ package com.github.bhlangonijr.chesslib;
  * squares and defines all the squares of the same color in between, the two edge squares included. A
  * <i>right-pointing</i> diagonal is tilted to the right, that is, the file of the edge square on the greater rank is
  * greater or equal than the file of the other edge square.
- * <p/>
+ * <p>
  * Note that corners {@code H1} and {@code A8} are special cases of diagonals of length 1.
  */
 public enum DiagonalA1H8 {

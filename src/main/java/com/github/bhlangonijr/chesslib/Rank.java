@@ -18,7 +18,7 @@ package com.github.bhlangonijr.chesslib;
 
 /**
  * The ranks in a board. A <i>rank</i> is a raw in the chessboard, and it is identified as a number from 1 to 8.
- * <p/>
+ * <p>
  * Each value defines a single rank, except for the special value {@link Rank#NONE} which represents no rank.
  */
 public enum Rank {
@@ -70,7 +70,7 @@ public enum Rank {
 
     /**
      * Returns a rank given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link Rank#valueOf(String)}.
      *
      * @param v name of the rank

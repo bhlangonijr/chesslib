@@ -23,7 +23,7 @@ import com.github.bhlangonijr.chesslib.util.LargeFile;
 
 /**
  * A Portable Game Notation (PGN) iterator, used to navigate the games contained in PGN file.
- * <p/>
+ * <p>
  * The iterator permits iterating over large PGN files without piling up every game into the memory.
  */
 public class PgnIterator implements Iterable<Game>, AutoCloseable {

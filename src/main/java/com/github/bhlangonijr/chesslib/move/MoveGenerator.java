@@ -35,7 +35,7 @@ public class MoveGenerator {
     /**
      * Generates all pawn captures for the playing side in the given position, and appends them to the list passed as an
      * argument. That implies the list must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the captures are legal according to the standard rules of
      * pawn movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -63,7 +63,7 @@ public class MoveGenerator {
     /**
      * Generates all pawn moves, excluding captures, for the playing side in the given position, and appends them to the
      * list passed as an argument. That implies the list must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * pawn movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -108,7 +108,7 @@ public class MoveGenerator {
      * Generates all knight moves for the playing side in the given position, according to a bitboard mask used to
      * specify the allowed target squares on the board. The generated moves are appended to the list passed as an
      * argument, which must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * knight movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -136,7 +136,7 @@ public class MoveGenerator {
     /**
      * Generates all knight moves for the playing side in the given position, and appends them to the list passed as an
      * argument. That implies the list must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * knight movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -153,7 +153,7 @@ public class MoveGenerator {
      * Generates all bishop moves for the playing side in the given position, according to a bitboard mask used to
      * specify the allowed target squares on the board. The generated moves are appended to the list passed as an
      * argument, which must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * bishop movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -181,7 +181,7 @@ public class MoveGenerator {
     /**
      * Generates all bishop moves for the playing side in the given position, and appends them to the list passed as an
      * argument. That implies the list must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * bishop movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -198,7 +198,7 @@ public class MoveGenerator {
      * Generates all rook moves for the playing side in the given position, according to a bitboard mask used to specify
      * the allowed target squares on the board. The generated moves are appended to the list passed as an argument,
      * which must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * rook movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -226,7 +226,7 @@ public class MoveGenerator {
     /**
      * Generates all rook moves for the playing side in the given position, and appends them to the list passed as an
      * argument. That implies the list must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * rook movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -243,7 +243,7 @@ public class MoveGenerator {
      * Generates all queen moves for the playing side in the given position, according to a bitboard mask used to
      * specify the allowed target squares on the board. The generated moves are appended to the list passed as an
      * argument, which must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * queen movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -271,7 +271,7 @@ public class MoveGenerator {
     /**
      * Generates all queen moves for the playing side in the given position, and appends them to the list passed as an
      * argument. That implies the list must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * queen movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -288,7 +288,7 @@ public class MoveGenerator {
      * Generates all king moves for the playing side in the given position, according to a bitboard mask used to specify
      * the allowed target squares on the board. The generated moves are appended to the list passed as an argument,
      * which must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * king movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -316,7 +316,7 @@ public class MoveGenerator {
     /**
      * Generates all king moves for the playing side in the given position, and appends them to the list passed as an
      * argument. That implies the list must be mutable in order for this method to work.
-     * <p/>
+     * <p>
      * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
      * rook movements, the resulting position might not be considered legal after they are played on the board.
      *
@@ -360,7 +360,7 @@ public class MoveGenerator {
 
     /**
      * Returns the list of all possible pseudo-legal moves for the given position.
-     * <p/>
+     * <p>
      * A move is considered pseudo-legal when it is legal according to the standard rules of chess piece movements, but
      * the resulting position might not be legal because of other rules (e.g. checks to the king).
      *
@@ -382,7 +382,7 @@ public class MoveGenerator {
 
     /**
      * Returns the list of all possible pseudo-legal captures for the given position.
-     * <p/>
+     * <p>
      * A move is considered a pseudo-legal capture when it takes an enemy piece and it is legal according to the
      * standard rules of chess piece movements, but the resulting position might not be legal because of other rules
      * (e.g. checks to the king).

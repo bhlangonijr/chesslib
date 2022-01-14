@@ -35,7 +35,7 @@ public class TimeControl {
 
     /**
      * Parses a string that defines a time control and returns its representation.
-     * <p/>
+     * <p>
      * Different formats are supported, as specified in {@link TimeControlType}.
      *
      * @param s the string to parse

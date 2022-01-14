@@ -37,7 +37,7 @@ import com.github.bhlangonijr.chesslib.util.StringUtil;
 
 /**
  * A convenient loader to extract a chess game and its metadata from an iterator over the lines of the PGN file.
- * <p/>
+ * <p>
  * The implementation allows loading only a single PGN game at a time.
  */
 public class GameLoader {

@@ -40,7 +40,7 @@ public enum CastleRight {
 
     /**
      * Returns a castle right given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link CastleRight#valueOf(String)}.
      *
      * @param v name of the castle right

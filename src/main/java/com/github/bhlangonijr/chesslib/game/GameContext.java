@@ -136,7 +136,7 @@ public class GameContext {
 
     /**
      * Constructs a new game context using the default game mode and chess variation.
-     * <p/>
+     * <p>
      * Same as invoking {@code new GameContext(GameMode.HUMAN_VS_HUMAN, VariationType.NORMAL)}.
      */
     public GameContext() {

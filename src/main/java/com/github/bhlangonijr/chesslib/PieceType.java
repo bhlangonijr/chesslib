@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * All possible piece types in a chess game.
- * <p/>
+ * <p>
  * Each value defines a single piece type, except for the special value {@link PieceType#NONE} which represents no type
  * in particular.
  */
@@ -72,7 +72,7 @@ public enum PieceType {
 
     /**
      * Returns a piece type given its name.
-     * <p/>
+     * <p>
      * Same as invoking {@link PieceType#valueOf(String)}.
      *
      * @param v name of the piece type

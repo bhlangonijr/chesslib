@@ -18,7 +18,7 @@ package com.github.bhlangonijr.chesslib;
 
 /**
  * An event emitted whenever a change of status happens or a move is played on the board.
- * <p/>
+ * <p>
  * Board events can be listened using implementations of the {@link BoardEventListener} interface.
  */
 public interface BoardEvent {
