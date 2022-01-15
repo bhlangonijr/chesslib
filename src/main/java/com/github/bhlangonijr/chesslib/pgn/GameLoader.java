@@ -16,22 +16,39 @@
 
 package com.github.bhlangonijr.chesslib.pgn;
 
-import com.github.bhlangonijr.chesslib.game.*;
-import com.github.bhlangonijr.chesslib.util.StringUtil;
+import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.UTF8_BOM;
+import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.isProperty;
+import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.parsePgnProperty;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
 
-import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.*;
+import com.github.bhlangonijr.chesslib.game.Event;
+import com.github.bhlangonijr.chesslib.game.Game;
+import com.github.bhlangonijr.chesslib.game.GameFactory;
+import com.github.bhlangonijr.chesslib.game.GameResult;
+import com.github.bhlangonijr.chesslib.game.Player;
+import com.github.bhlangonijr.chesslib.game.PlayerType;
+import com.github.bhlangonijr.chesslib.game.Round;
+import com.github.bhlangonijr.chesslib.game.Termination;
+import com.github.bhlangonijr.chesslib.game.TimeControl;
+import com.github.bhlangonijr.chesslib.util.StringUtil;
 
 /**
- * The type Game Loader.
+ * A convenient loader to extract a chess game and its metadata from an iterator over the lines of the PGN file.
  * <p>
- * The game loader permits loading a single PGN game
+ * The implementation allows loading only a single PGN game at a time.
  */
 public class GameLoader {
 
+    /**
+     * Loads the next game of chess from an iterator over the lines of a Portable Game Notation (PGN) file. The
+     * iteration ends when the game is fully loaded, hence the iterator is not consumed more than necessary.
+     *
+     * @param iterator the iterator over the lines of a PGN file
+     * @return the next game read from the iterator
+     */
     public static Game loadNextGame(Iterator<String> iterator) {
 
         Event event = null;

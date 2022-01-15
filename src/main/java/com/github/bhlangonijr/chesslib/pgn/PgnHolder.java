@@ -16,21 +16,27 @@
 
 package com.github.bhlangonijr.chesslib.pgn;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.github.bhlangonijr.chesslib.game.Event;
 import com.github.bhlangonijr.chesslib.game.Game;
 import com.github.bhlangonijr.chesslib.game.Player;
 import com.github.bhlangonijr.chesslib.game.Round;
 import com.github.bhlangonijr.chesslib.util.LargeFile;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-
 /**
- * The type Pgn holder.
+ * A proxy for accessing a Portable Game Notation (PGN) file. The PGN holder can be used to optimize the way the
+ * contents of the file are retrieved, and also to abstract the common operations that can be performed with the file,
+ * such as saving to the PGN file the games held into memory, as well as retrieving the metadata stored in the PGN.
  */
 public class PgnHolder {
 
@@ -43,9 +49,9 @@ public class PgnHolder {
     private boolean lazyLoad;
 
     /**
-     * Instantiates a new Pgn holder.
+     * Constructs a new PGN holder using the provided filename as a reference to the PGN file.
      *
-     * @param filename the filename
+     * @param filename the PGN filename
      */
     public PgnHolder(String filename) {
         setFileName(filename);
@@ -53,7 +59,7 @@ public class PgnHolder {
     }
 
     /**
-     * Clean up.
+     * Resets the status of the holder, cleaning up all data previously stored.
      */
     public void cleanUp() {
         event.clear();
@@ -64,76 +70,75 @@ public class PgnHolder {
     }
 
     /**
-     * Gets file name.
+     * Returns the filename of the PGN file.
      *
-     * @return the fileName
+     * @return the filename of the PGN
      */
     public String getFileName() {
         return fileName;
     }
 
     /**
-     * Sets file name.
+     * Sets a new filename for the PGN file.
      *
-     * @param fileName the fileName to set
+     * @param fileName the filename of the PGN
      */
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
     /**
-     * Gets event.
+     * Returns all the chess events stored in the holder, accessible by name.
      *
-     * @return the event
+     * @return the chess events
      */
     public Map<String, Event> getEvent() {
         return event;
     }
 
     /**
-     * Gets player.
+     * Returns all the chess players stored in the holder, accessible by ID.
      *
-     * @return the player
+     * @return the chess players
      */
     public Map<String, Player> getPlayer() {
         return player;
     }
 
     /**
-     * Get list of games.
+     * Returns all the games stored in the holder.
      *
-     * @return the game
+     * @return the games
      */
     public List<Game> getGames() {
         return games;
     }
 
     /**
-     * Gets game.
-     *
-     * @return the game
-     * @deprecated fixed typo - use {@link #getGames()} instead
+     * @deprecated use {@link PgnHolder#getGames()} instead
      */
+    @Deprecated
     public List<Game> getGame() {
         return games;
     }
 
     /**
-     * Load the PGN file
+     * Loads into memory the chess data stored in the PGN file referred by the holder.
      *
-     * @throws Exception the exception
+     * @throws Exception in case of error loading the contents of the file
      */
     public void loadPgn() throws Exception {
         loadPgn(new LargeFile(getFileName()));
     }
 
     /**
-     * Count games in PGN file.
-     * For this all lines in the PGN file are counted, which start with the string "[Event "
-     * because this field is mandatory by PGN definition.
+     * Counts the games present in the PGN file.
+     * <p>
+     * It does not load the contents of the file, but rather checks into the data how many events are persisted. In
+     * order to do so, the implementation counts the mandatory PGN tags.
      *
-     * @return number of games in PGN file
-     * @throws IOException if PGN file set via constructor was not found
+     * @return the number of games in PGN file
+     * @throws IOException in case of error reading the PGN file
      */
     public long countGamesInPgnFile() throws IOException {
         return Files.lines(Paths.get(this.fileName))
@@ -142,10 +147,10 @@ public class PgnHolder {
     }
 
     /**
-     * Load a PGN file
+     * Loads into memory the chess data stored in the given PGN file.
      *
-     * @param file the file to be loaded
-     * @throws Exception the exception
+     * @param file the PGN file to load
+     * @throws Exception in case of error loading the contents of the file
      */
     public void loadPgn(LargeFile file) throws Exception {
 
@@ -163,9 +168,9 @@ public class PgnHolder {
     }
 
     /**
-     * Load a PGN from a string
+     * Loads into memory the chess data of the given PGN, provided as a raw string representation.
      *
-     * @param pgn string to be loaded
+     * @param pgn the raw string representing the contents of a PGN
      */
     public void loadPgn(String pgn) {
 
@@ -177,7 +182,7 @@ public class PgnHolder {
     }
 
     /**
-     * Save the PGN
+     * Saves to the PGN file the current data stored in the holder.
      */
     public void savePgn() {
 
@@ -203,43 +208,50 @@ public class PgnHolder {
     }
 
     /**
-     * Gets size.
+     * Returns the number of games stored in holder.
      *
-     * @return the size
+     * @return the number of games
      */
     public Integer getSize() {
         return size;
     }
 
     /**
-     * Is lazy load boolean.
+     * Checks if the PGN contents are loaded lazily.
+     * <p>
+     * <b>N.B.</b>: at the moment lazy loading is not enabled and this flag has no impact on the behavior of the class.
      *
-     * @return the lazyLoad
+     * @return {@code true} if the PGN contents are loaded lazily
      */
     public boolean isLazyLoad() {
         return lazyLoad;
     }
 
     /**
-     * Sets lazy load.
+     * Sets whether to activate lazy loading or not.
+     * <p>
+     * <b>N.B.</b>: at the moment lazy loading is not enabled and this flag has no impact on the behavior of the class.
      *
-     * @param lazyLoad the lazyLoad to set
+     * @param lazyLoad {@code true} to activate lazy loading
      */
     public void setLazyLoad(boolean lazyLoad) {
         this.lazyLoad = lazyLoad;
     }
 
     /**
-     * Gets listener.
+     * Returns the list of observers to the PGN loading events. The list can be used to add other listeners or remove
+     * existing ones.
      *
-     * @return the listener
+     * @return the listeners to PGN loading events
      */
     public List<PgnLoadListener> getListener() {
         return listener;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
+    /**
+     * Returns a string representation of this PGN holder.
+     *
+     * @return a string representation of the holder
      */
     @Override
     public String toString() {
@@ -274,7 +286,7 @@ public class PgnHolder {
         }
         this.games.add(game);
 
-        // Notify all registered Listener about added game
+        // Notify all registered listeners about added game
         this.getListener().forEach(pgnLoadListener -> pgnLoadListener.notifyProgress(this.games.size()));
     }
 }

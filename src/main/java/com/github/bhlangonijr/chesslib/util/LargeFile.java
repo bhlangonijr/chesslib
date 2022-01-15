@@ -23,7 +23,7 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 
 /**
- * The type Large file.
+ * An abstract representation of a potentially large text-based file that can be read line by line.
  */
 public class LargeFile implements Iterable<String>, AutoCloseable {
 
@@ -32,10 +32,10 @@ public class LargeFile implements Iterable<String>, AutoCloseable {
     private String nextLine;
 
     /**
-     * Instantiates a new Large file.
+     * Constructs a new large file from its path.
      *
      * @param filePath the file path
-     * @throws Exception the exception
+     * @throws Exception in case the file can not be accessed
      */
     public LargeFile(String filePath) throws Exception {
 
@@ -44,7 +44,7 @@ public class LargeFile implements Iterable<String>, AutoCloseable {
     }
 
     /**
-     * Instantiates a new Large file.
+     * Constructs a new large file from its input stream of bytes.
      *
      * @param inputStream the input stream
      */
@@ -54,6 +54,9 @@ public class LargeFile implements Iterable<String>, AutoCloseable {
         readNextLine();
     }
 
+    /**
+     * Closes this large file and releases any system resources associated with it.
+     */
     @Override
     public void close() {
         try {
@@ -62,6 +65,12 @@ public class LargeFile implements Iterable<String>, AutoCloseable {
         }
     }
 
+    /**
+     * Returns an iterator over the lines of the file.
+     *
+     * @return the iterator to read the lines of the file
+     */
+    @Override
     public Iterator<String> iterator() {
         return new FileIterator();
     }

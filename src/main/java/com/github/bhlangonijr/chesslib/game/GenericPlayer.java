@@ -17,7 +17,7 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * The type Generic player.
+ * A generic player of a chess game.
  */
 public class GenericPlayer implements Player {
 
@@ -28,63 +28,74 @@ public class GenericPlayer implements Player {
     private String description;
 
     /**
-     * Instantiates a new Generic player.
+     * Constructs a new chess player.
      */
     public GenericPlayer() {
 
     }
 
     /**
-     * Instantiates a new Generic player.
+     * Constructs a new chess player using their basic information.
      *
-     * @param id   the id
-     * @param name the name
+     * @param id   the ID of the player
+     * @param name the name of the player
      */
     public GenericPlayer(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public int getElo() {
         return elo;
     }
 
+    @Override
     public void setElo(int elo) {
         this.elo = elo;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public PlayerType getType() {
         return type;
     }
 
+    @Override
     public void setType(PlayerType type) {
         this.type = type;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @Override
     public String getLongDescription() {
         String desc = getName();
         if (getElo() > 0) {
@@ -93,6 +104,12 @@ public class GenericPlayer implements Player {
         return desc;
     }
 
+    /**
+     * Returns a string representation of this player.
+     *
+     * @return a string representation of this player
+     */
+    @Override
     public String toString() {
         return getId();
     }

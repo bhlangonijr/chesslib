@@ -61,14 +61,14 @@ Chesslib dependency can be added via the jitpack repository.
 
 ## Gradle
 
-```
+```groovy
 repositories {
     ...
     maven { url 'https://jitpack.io' }
 }
 ```
 
-```
+```groovy
 dependencies {
     ...
     compile 'com.github.bhlangonijr:chesslib:1.3.3'
@@ -98,7 +98,7 @@ Alternatively one could just specify the move using SAN, e.g.:
 ```
 
 Result:
-```
+```text
 rnbqkbnr
 pppppppp
 
@@ -114,16 +114,13 @@ Side: BLACK
 ```java
     // Undo the last move from the stack and return it
     Move move = board.undoMove();
-
 ```
 
 ## <a name="Get_FEN_string_from_chessboard"></a> Get FEN string from chessboard
 
 ```java
     System.out.println(board.getFen());
-
 ```
-
 
 ## <a name="Load_a_chessboard_position_from_notation"></a> Load a chessboard position from [FEN](https://en.wikipedia.org/wiki/Forsyth–Edwards_Notation) notation
 
@@ -150,7 +147,6 @@ position of a regular chess game. Arbitrary moves from a chess game can be loade
     list.loadFromSan(san);
     
     System.out.println("FEN of final position: " + list.getFen());
-
 ```
 
 ## <a name="Generate_all_chess_legal_moves_for_the_current_position"></a> Generate all chess legal-moves for the current position
@@ -162,7 +158,7 @@ position of a regular chess game. Arbitrary moves from a chess game can be loade
     System.out.println("Legal moves: " + moves);
 ```
 Result:
-```
+```text
   a2a3 a2a4 b2b3 b2b4 c2c3 c2c4 d2d3 d2d4 e2e3 e2e4 f2f3 f2f4 g2g3 g2g4 h2h3 h2h4 b1a3 b1c3 g1f3 g1h3
 ```
 
@@ -243,7 +239,7 @@ Capturing the comments from each move:
             String comment = comments.get(i + 1) + "";
             System.out.println(ply + move + " " + comment.trim());
         }
-    }    
+    }
 ```
 The output should be something like: 
 ```text
@@ -274,7 +270,7 @@ Example of a perft function using chesslib:
         }
         return nodes;
     }
-``` 
+```
 
 There are plenty of known results for Perft tests on a given set of chess positions.
 It can be tested against the library to check if it's reliably generating moves and while 
@@ -291,7 +287,7 @@ keeping the `Board` in a consistent state, e.g.:
         long nodes = perft(board, 5, 1);
         assertEquals(4865609, nodes);
     }
-``` 
+```
 
 It's known that from the initial standard chess position, there should have exactly 4865609 positions
 for depth 5. Deviation from this number would imply a bug in move generation or keeping the board state. 
@@ -329,7 +325,6 @@ Add the listener to `PgnHolder` object and load the games:
     // add your listener
     pgn.getListener().add(myListener);
     pgn.loadPgn();
-    
 ```
 
 Example implementing a `SwingWorker` to update a Swing `ProgressBarDialog` with PGN loading status: 
@@ -418,6 +413,4 @@ to a separate thread like in a threadpool:
 
         executors.submit(myListenerRunnable);
     }
-```    
-  
- 
+```

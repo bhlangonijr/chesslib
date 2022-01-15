@@ -17,15 +17,15 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * The type Game factory.
+ * A factory for game-related components, such as games, events, rounds, and players.
  */
 public class GameFactory {
 
     /**
-     * Create a new Event
+     * Returns a new instance of a chess event.
      *
-     * @param name the name
-     * @return event
+     * @param name the name of the event
+     * @return the newly created instance of a chess event
      */
     public static Event newEvent(String name) {
 
@@ -37,11 +37,11 @@ public class GameFactory {
     }
 
     /**
-     * Create a new Round
+     * Returns a new instance of a round of a chess event.
      *
-     * @param event  the event
-     * @param number the number
-     * @return round
+     * @param event  the chess event the round belongs to
+     * @param number the number of the round
+     * @return the newly created instance of a round
      */
     public static Round newRound(Event event, int number) {
 
@@ -52,11 +52,11 @@ public class GameFactory {
     }
 
     /**
-     * Create a new Game
+     * Returns a new instance of a chess game.
      *
-     * @param gameId the game id
-     * @param round  the round
-     * @return game
+     * @param gameId the game ID
+     * @param round  the round the game belongs to
+     * @return the newly created instance of a game
      */
     public static Game newGame(String gameId, Round round) {
 
@@ -66,11 +66,11 @@ public class GameFactory {
     }
 
     /**
-     * Creates a new player
+     * Creates a new instance of a chess player.
      *
-     * @param type the type
-     * @param name the name
-     * @return player
+     * @param type the type of the player
+     * @param name the name of the player
+     * @return he newly created instance of a player
      */
     public static Player newPlayer(PlayerType type, String name) {
         return new GenericPlayer(name, name);

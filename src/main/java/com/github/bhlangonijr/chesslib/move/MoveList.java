@@ -16,16 +16,32 @@
 
 package com.github.bhlangonijr.chesslib.move;
 
-import com.github.bhlangonijr.chesslib.*;
-import com.github.bhlangonijr.chesslib.util.StringUtil;
-
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
+import com.github.bhlangonijr.chesslib.Bitboard;
+import com.github.bhlangonijr.chesslib.Board;
+import com.github.bhlangonijr.chesslib.Constants;
+import com.github.bhlangonijr.chesslib.File;
+import com.github.bhlangonijr.chesslib.Piece;
+import com.github.bhlangonijr.chesslib.PieceType;
+import com.github.bhlangonijr.chesslib.Rank;
+import com.github.bhlangonijr.chesslib.Side;
+import com.github.bhlangonijr.chesslib.Square;
+import com.github.bhlangonijr.chesslib.util.StringUtil;
+
 /**
- * The type Move list.
+ * A convenient data structure to store an ordered sequence of moves and access to their human-readable representation
+ * in one of the standard chess formats. This implementation can be used to hold the list of moves played in a chess
+ * game.
+ * <p>
+ * The move list keeps a reference to a base initial position (by default, the standard starting chess position) used
+ * to validate and disambiguate between moves.
+ * <p>
+ * This data structure is a {@link List}, thus the standard API of the Java collection is available for this class as
+ * well.
  */
 public class MoveList extends LinkedList<Move> implements List<Move> {
 
@@ -42,25 +58,27 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     private int index;
 
     /**
-     * Instantiates a new Move list.
+     * Constructs an empty move list, using the standard starting position as a base.
      */
     public MoveList() {
         this(Constants.startStandardFENPosition);
     }
 
     /**
-     * Initialize the move list with the initial FEN
+     * Constructs an empty move list, using the provided initial position as a base, retrieved in Forsyth-Edwards
+     * Notation (FEN).
      *
-     * @param initialFEN the initial fen
+     * @param initialFEN the FEN representation of the base position
      */
     public MoveList(String initialFEN) {
         this.startFEN = initialFEN;
     }
 
     /**
-     * Intialize a MoveList based on another
+     * Constructs a new move list starting from an existing one. The new instance will use the initial position of the
+     * existing list as a base.
      *
-     * @param halfMoves the half moves
+     * @param halfMoves the existing move list
      */
     public MoveList(MoveList halfMoves) {
         this(halfMoves.getStartFen());
@@ -68,21 +86,21 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Gets board.
+     * Returns a reference to the board representing the last position after the moves are played.
      *
-     * @return the board
+     * @return the board representing the position after the moves are played
      */
     protected static Board getBoard() {
         return boardHolder.get();
     }
 
     /**
-     * Encode to san string.
+     * Encodes the move to its Short Algebraic Notation (SAN), using the context of the given board.
      *
-     * @param board the board
-     * @param move  the move
-     * @return the string
-     * @throws MoveConversionException the move conversion exception
+     * @param board the board used as context for encoding the move
+     * @param move  the move to encode
+     * @return the SAN notation of the move
+     * @throws MoveConversionException if the move conversion fails
      */
     // encode the move to SAN move and update thread local board
     protected static String encodeToSan(final Board board, Move move) throws MoveConversionException {
@@ -90,26 +108,26 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Encode to fan string.
+     * Encodes the move to its Figurine Algebraic Notation (FAN), using the context of the given board.
      *
-     * @param board the board
-     * @param move  the move
-     * @return the string
-     * @throws MoveConversionException the move conversion exception
+     * @param board the board used as context for encoding the move
+     * @param move  the move to encode
+     * @return the FAN notation of the move
+     * @throws MoveConversionException if the move conversion fails
      */
-    // encode the move to SAN move and update thread local board
+    // encode the move to FAN move and update thread local board
     protected static String encodeToFan(final Board board, Move move) throws MoveConversionException {
         return encode(board, move, Piece::getFanSymbol);
     }
 
     /**
-     * Encode string.
+     * Encodes the move using a conversion function and the given board as context.
      *
-     * @param board    the board
-     * @param move     the move
-     * @param notation the notation
-     * @return the string
-     * @throws MoveConversionException the move conversion exception
+     * @param board    the board used as context for encoding the move
+     * @param move     the move to encode
+     * @param notation the conversion function to transform the move to its string representation
+     * @return the notation of the move
+     * @throws MoveConversionException if the move conversion fails
      */
     // encode the move to SAN/FAN move and update thread local board
     protected static String encode(final Board board, Move move, Function<Piece, String> notation)
@@ -210,12 +228,16 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Create a MoveList with a given startposition
+     * Creates a new instance using an existing list of moves. The new instance will use the initial position of the
+     * existing list as a base.
+     * <p>
+     * The returned list will contain only the first {@code finalIndex} moves of the original list, or all the elements
+     * if {@code finalIndex} is outside the boundaries of the source list.
      *
-     * @param startMoves the start moves
-     * @param finalIndex the final index
-     * @return move list
-     * @throws MoveConversionException the move conversion exception
+     * @param startMoves the existing list of moves
+     * @param finalIndex the last index of the source list to use
+     * @return the new list of moves
+     * @throws MoveConversionException if the starting list of moves is invalid
      */
     public static MoveList createMoveListFrom(MoveList startMoves, int finalIndex) throws MoveConversionException {
         String fen = null;
@@ -242,57 +264,45 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Gets index.
+     * Returns the index of the moves list.
      *
-     * @return the index
+     * @return the index of the list
      */
     public int getIndex() {
         return index;
     }
 
     /**
-     * Sets index.
+     * Sets the index of the moves list.
      *
-     * @param index the index to set
+     * @param index the index of the list
      */
     public void setIndex(int index) {
         this.index = index;
     }
 
-    /* (non-Javadoc)
-     * @see java.util.ArrayList#add(int, java.lang.Object)
-     */
     @Override
-    public void add(int arg0, Move arg1) {
+    public void add(int index, Move move) {
         dirty = true;
-        super.add(arg0, arg1);
+        super.add(index, move);
     }
 
-    /* (non-Javadoc)
-     * @see java.util.ArrayList#add(java.lang.Object)
-     */
     @Override
-    public boolean add(Move arg0) {
+    public boolean add(Move move) {
         dirty = true;
-        return super.add(arg0);
+        return super.add(move);
     }
 
-    /* (non-Javadoc)
-     * @see java.util.ArrayList#addAll(java.util.Collection)
-     */
     @Override
-    public boolean addAll(Collection<? extends Move> arg0) {
+    public boolean addAll(Collection<? extends Move> moves) {
         dirty = true;
-        return super.addAll(arg0);
+        return super.addAll(moves);
     }
 
-    /* (non-Javadoc)
-     * @see java.util.ArrayList#addAll(int, java.util.Collection)
-     */
     @Override
-    public boolean addAll(int arg0, Collection<? extends Move> arg1) {
+    public boolean addAll(int index, Collection<? extends Move> moves) {
         dirty = true;
-        return super.addAll(arg0, arg1);
+        return super.addAll(index, moves);
     }
 
     @Override
@@ -319,9 +329,6 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         return super.remove(index);
     }
 
-    /* (non-Javadoc)
-     * @see java.util.ArrayList#clear()
-     */
     @Override
     public void clear() {
         dirty = true;
@@ -331,55 +338,52 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Converts the MoveList into short algebraic notation (SAN) representation
-     * without move numbers, e.g. "e4 e5 Nf3 Bc5".
+     * Converts the list of moves into a Short Algebraic Notation (SAN) representation that does not include move
+     * numbers, for example {@code "e4 e5 Nf3 Bc5"}.
      *
-     * @return string
-     * @throws MoveConversionException the move conversion exception
-     * @see #toSanWithMoveNumbers()
+     * @return the SAN representation of the list of moves without move numbers
+     * @throws MoveConversionException in case a conversion error occurs during the process
+     * @see MoveList#toSanWithMoveNumbers()
      */
     public String toSan() throws MoveConversionException {
         return toStringWithoutMoveNumbers(toSanArray());
     }
 
     /**
-     * Converts the MoveList into short algebraic notation (SAN) representation
-     * with move numbers, e.g. "1. e4 e5 2. Nf3 Bc5".
+     * Converts the list of moves into a Short Algebraic Notation (SAN) representation that does include move numbers,
+     * for example {@code "1. e4 e5 2. Nf3 Bc5"}.
      *
-     * @return string
-     * @throws MoveConversionException the move conversion exception
-     * @see #toSan()
-     * @since 1.4.0
+     * @return the SAN representation of the list of moves with move numbers
+     * @throws MoveConversionException in case a conversion error occurs during the process
+     * @see MoveList#toSan()
      */
     public String toSanWithMoveNumbers() throws MoveConversionException {
         return toStringWithMoveNumbers(toSanArray());
     }
 
     /**
-     * Converts the MoveList into figurine algebraic notation (FAN) representation
-     * without move numbers, e.g. "♙e4 ♟e5 ♘f3 ♝c5".
+     * Converts the list of moves into a Figurine Algebraic Notation (FAN) representation that does not include move
+     * numbers, for example {@code "♙e4 ♟e5 ♘f3 ♝c5"}.
      *
-     * @return string
-     * @throws MoveConversionException the move conversion exception
-     * @see #toFanWithMoveNumbers()
+     * @return the FAN representation of the list of moves without move numbers
+     * @throws MoveConversionException in case a conversion error occurs during the process
+     * @see MoveList#toFanWithMoveNumbers()
      */
     public String toFan() throws MoveConversionException {
         return toStringWithoutMoveNumbers(toFanArray());
     }
 
     /**
-     * Converts the MoveList into figurine algebraic notation (FAN) representation
-     * with move numbers, e.g. "1. ♙e4 ♟e5 2. ♘f3 ♝c5".
+     * Converts the list of moves into a Figurine Algebraic Notation (FAN) representation that does include move
+     * numbers, for example {@code "1. ♙e4 ♟e5 2. ♘f3 ♝c5"}.
      *
-     * @return string
-     * @throws MoveConversionException the move conversion exception
-     * @see #toFan()
-     * @since 1.4.0
+     * @return the FAN representation of the list of moves with move numbers
+     * @throws MoveConversionException in case a conversion error occurs during the process
+     * @see MoveList#toFan()
      */
     public String toFanWithMoveNumbers() throws MoveConversionException {
         return toStringWithMoveNumbers(toFanArray());
     }
-
 
     private String toStringWithoutMoveNumbers(String[] moveArray) throws MoveConversionException {
         StringBuilder sb = new StringBuilder();
@@ -402,10 +406,10 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Converts the MoveList into short algebraic notation (SAN) array representation
+     * Returns an array of strings representing the moves in Short Algebraic Notation (SAN).
      *
-     * @return string [ ]
-     * @throws MoveConversionException the move conversion exception
+     * @return the SAN representations of the list of moves
+     * @throws MoveConversionException in case a conversion error occurs during the process
      */
     public String[] toSanArray() throws MoveConversionException {
         if (!dirty && sanArray != null) {
@@ -417,10 +421,10 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Converts the MoveList into figurine algebraic notation (FAN) array representation
+     * Returns an array of strings representing the moves in Figurine Algebraic Notation (FAN).
      *
-     * @return string [ ]
-     * @throws MoveConversionException the move conversion exception
+     * @return the FAN representations of the list of moves
+     * @throws MoveConversionException in case a conversion error occurs during the process
      */
     public String[] toFanArray() throws MoveConversionException {
         if (!dirty && fanArray != null) {
@@ -458,19 +462,20 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Gets start board position as a Forsyth–Edwards Notation (FEN) string.
+     * Returns the Forsyth–Edwards Notation (FEN) string that defines the initial position of the list of moves.
      *
-     * @return the startFEN
+     * @return the FEN representation of the initial position
      */
     public String getStartFen() {
         return startFEN;
     }
 
     /**
-     * Load from long algebraic text
+     * Reloads the list with a sequence of moves separated by spaces and provided in input in their algebraic form (e.g.
+     * {@code "e2e4"} or {@code "g8f6"}). The base initial position will be left untouched.
      *
-     * @param text the text
-     * @throws MoveConversionException the move conversion exception
+     * @param text the string representing the algebraic list of moves
+     * @throws MoveConversionException if it is not possible to parse and convert the moves
      */
     public synchronized void loadFromText(String text) throws MoveConversionException {
         final Board b = getBoard();
@@ -494,22 +499,28 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Add a move in the short algebraic notation (SAN) format
+     * Adds a move defined by its Short Algebraic Notation (SAN) to the list.
+     * <p>
+     * Same as invoking {@code addSanMove(san, false, true)}.
      *
-     * @param san the san
-     * @throws MoveConversionException the move conversion exception
+     * @param san the SAN representation of the move to be added
+     * @throws MoveConversionException if it is not possible to parse or validate the move
+     * @see MoveList#addSanMove(String, boolean, boolean)
      */
     public void addSanMove(String san) throws MoveConversionException {
         addSanMove(san, false, true);
     }
 
     /**
-     * Add a move in the short algebraic notation (SAN) format
+     * Adds a move defined by its Short Algebraic Notation (SAN) to the list. It is possible to control whether to
+     * replay the moves already present in the list, as well as if to perform a full validation or not. When a full
+     * validation is requested, additional checks are performed to assess the validity of the move, such as if the side
+     * to move is consistent with the position, if castle moves or promotions are allowed, etc.
      *
-     * @param san            the san
-     * @param replay         the replay
-     * @param fullValidation the full validation
-     * @throws MoveConversionException the move conversion exception
+     * @param san            the SAN representation of the move to be added
+     * @param replay         if {@code true}, existing moves will be played again
+     * @param fullValidation if {@code true}, a full validation of the position will be performed
+     * @throws MoveConversionException if it is not possible to parse or validate the move
      */
     public void addSanMove(String san, boolean replay, boolean fullValidation) throws MoveConversionException {
         final Board b = getBoard();
@@ -537,10 +548,11 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Load from short algebraic notation (SAN) text
+     * Reloads the list with a sequence of moves provided in input in their Short Algebraic Notation (SAN) (e.g.
+     * {@code "1. e4 e5 2. Nf3 Bc5"}). The base initial position will be left untouched.
      *
-     * @param text the text
-     * @throws MoveConversionException the move conversion exception
+     * @param text the SAN representation of the list of moves
+     * @throws MoveConversionException if it is not possible to parse and convert the moves
      */
     public void loadFromSan(String text) throws MoveConversionException {
         final Board b = getBoard();
@@ -573,17 +585,16 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Decode short algebraic notation (SAN) to a {@link Move}.
+     * Converts a move defined by its Short Algebraic Notation (SAN) to an instance of {@link Move}, using the given
+     * board and side as context.
      *
-     * @param board the board
-     * @param san   the san
-     * @param side  the side
-     * @return the move
-     * @throws MoveConversionException the move conversion exception
+     * @param board the board in which the move is played
+     * @param san   the SAN representation of the move
+     * @param side  the side executing the move
+     * @return the converted move
+     * @throws MoveConversionException if it is not possible to convert the move
      */
-    /*
-     * encode san to move
-     */
+    // decode SAN to move
     protected Move decodeSan(Board board, String san, Side side) throws MoveConversionException {
 
         if (san.equalsIgnoreCase("Z0")) {
@@ -620,7 +631,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         try {
             to = Square.valueOf(StringUtil.lastSequence(san.toUpperCase(), 2));
         } catch (Exception e) {
-            throw new MoveConversionException("Coudn't parse destination square[" + san + "]: " +
+            throw new MoveConversionException("Couldn't parse destination square[" + san + "]: " +
                     san.toUpperCase());
         }
         Piece promotion = strPromotion.equals("") ? Piece.NONE :
@@ -710,23 +721,29 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Get the FEN representation of the movelist applied
-     * into a standard board at the start position
+     * Returns the Forsyth-Edwards Notation (FEN) representation of the position after the moves of this list, until
+     * index {@code atMoveIndex} (excluded), are executed from the base initial position.
+     * <p>
+     * Same as invoking {@code getFen(atMoveIndex, true)}.
      *
-     * @param atMoveIndex the at move index
-     * @return fen
+     * @param atMoveIndex the index until which to execute the moves
+     * @return the FEN string notation of the position after the wanted number of moves are played from the initial
+     * position
+     * @see MoveList#getFen(int, boolean)
      */
     public String getFen(int atMoveIndex) {
         return getFen(atMoveIndex, true);
     }
 
     /**
-     * Get the FEN representation of the movelist applied
-     * into a standard board at the start position
+     * Returns the Forsyth-Edwards Notation (FEN) representation of the position after the moves of this list, until
+     * index {@code atMoveIndex} (excluded), are executed from the base initial position. Full and half moves counters
+     * are included in the output if the relative flag is enabled.
      *
-     * @param atMoveIndex     the at move index
-     * @param includeCounters the include counters
-     * @return fen
+     * @param atMoveIndex     the index until which to execute the moves
+     * @param includeCounters if {@code true}, move counters are included in the resulting string
+     * @return the FEN string notation of the position after the wanted number of moves are played from the initial
+     * position
      */
     public String getFen(int atMoveIndex, boolean includeCounters) {
         final Board b = getBoard();
@@ -748,35 +765,40 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
     }
 
     /**
-     * Get the FEN representation of the movelist applied
-     * into a standard board at the start position
+     * Returns the Forsyth-Edwards Notation (FEN) representation of the position after all the moves of this list are
+     * executed starting from the base initial position.
+     * <p>
+     * Same as invoking {@code getFen(this.size(), true)}.
      *
-     * @return fen
+     * @return the FEN string notation of the position after the moves are played from the initial position
+     * @see MoveList#getFen(int, boolean)
      */
     public String getFen() {
         return getFen(this.size());
     }
 
     /**
-     * Gets parent.
+     * Returns the parent index of the list of moves.
      *
-     * @return the parent
+     * @return the parent index
      */
     public int getParent() {
         return parent;
     }
 
     /**
-     * Sets parent.
+     * Sets the parent index of the list of moves.
      *
-     * @param parent the parent to set
+     * @param parent the parent index to set
      */
     public void setParent(int parent) {
         this.parent = parent;
     }
 
-    /* (non-Javadoc)
-     * @see java.util.AbstractCollection#toString()
+    /**
+     * Returns a string representation of the list.
+     *
+     * @return a string representation of the list of moves
      */
     @Override
     public String toString() {
@@ -788,8 +810,10 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         return b.toString().trim();
     }
 
-    /* (non-Javadoc)
-     * @see java.util.AbstractList#hashCode()
+    /**
+     * Returns a hash code value for this move list.
+     *
+     * @return a hash value for this move list
      */
     @Override
     public int hashCode() {
@@ -799,8 +823,11 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see java.util.AbstractList#equals(java.lang.Object)
+    /**
+     * Checks if this list is equivalent to another, that is, if the lists contains the same moves in the same order.
+     *
+     * @param obj the other object reference to compare to this list of moves
+     * @return {@code true} if this list and the object reference are equivalent
      */
     @Override
     public boolean equals(Object obj) {

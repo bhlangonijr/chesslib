@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Time control.
+ * A generic chess time control used in a game or a chess event. Depending on its type, the time control can be defined
+ * by different components. It is also possible to convert the time control to and from its PGN representation.
  */
 public class TimeControl {
 
-    private final List<MovePerTime> movePerTime =
-            new ArrayList<MovePerTime>();
+    private final List<MovePerTime> movePerTime = new ArrayList<MovePerTime>();
     private TimeControlType timeControlType;
     private int halfMoves = 0;
     private long milliseconds = 0;
@@ -34,10 +34,12 @@ public class TimeControl {
     private long nodes;
 
     /**
-     * Parse from string time control.
+     * Parses a string that defines a time control and returns its representation.
+     * <p>
+     * Different formats are supported, as specified in {@link TimeControlType}.
      *
-     * @param s the s
-     * @return the time control
+     * @param s the string to parse
+     * @return the parsed time control
      */
     public static TimeControl parseFromString(String s) {
         TimeControl tc = new TimeControl();
@@ -100,7 +102,7 @@ public class TimeControl {
     }
 
     /**
-     * Gets time control type.
+     * Returns the type of the time control.
      *
      * @return the time control type
      */
@@ -109,70 +111,70 @@ public class TimeControl {
     }
 
     /**
-     * Sets time control type.
+     * Sets the type of the time control.
      *
-     * @param timeControlType the time control type
+     * @param timeControlType the time control type to set
      */
     public void setTimeControlType(TimeControlType timeControlType) {
         this.timeControlType = timeControlType;
     }
 
     /**
-     * Gets half moves.
+     * Returns the half moves component of the time control.
      *
-     * @return the half moves
+     * @return the number of half moves
      */
     public int getHalfMoves() {
         return halfMoves;
     }
 
     /**
-     * Sets half moves.
+     * Sets the half moves component of the time control.
      *
-     * @param halfMoves the half moves
+     * @param halfMoves the number of half moves to set
      */
     public void setHalfMoves(int halfMoves) {
         this.halfMoves = halfMoves;
     }
 
     /**
-     * Gets milliseconds.
+     * Returns the time component of the time control, expressed in milliseconds.
      *
-     * @return the milliseconds
+     * @return the amount of time, in milliseconds
      */
     public long getMilliseconds() {
         return milliseconds;
     }
 
     /**
-     * Sets milliseconds.
+     * Sets the time component of the time control, in milliseconds.
      *
-     * @param milliseconds the milliseconds
+     * @param milliseconds the amount of time to set
      */
     public void setMilliseconds(long milliseconds) {
         this.milliseconds = milliseconds;
     }
 
     /**
-     * Gets increment.
+     * Returns the time increment component of the time control, expressed in milliseconds.
      *
-     * @return the increment
+     * @return the time increment, in milliseconds
      */
     public long getIncrement() {
         return increment;
     }
 
     /**
-     * Sets increment.
+     * Sets the time increment component of the time control, in milliseconds.
      *
-     * @param increment the increment
+     * @param increment the time increment to set
      */
     public void setIncrement(long increment) {
         this.increment = increment;
     }
 
     /**
-     * Gets nodes.
+     * Returns the nodes component of the time control.
      *
      * @return the nodes
      */
@@ -181,25 +183,25 @@ public class TimeControl {
     }
 
     /**
-     * Sets nodes.
+     * Sets the nodes component of the time control.
      *
-     * @param nodes the nodes
+     * @param nodes the nodes to set
      */
     public void setNodes(long nodes) {
         this.nodes = nodes;
     }
 
     /**
-     * Gets move per time.
+     * Returns the moves-per-time sub-time controls of this time controls.
      *
-     * @return the move per time
+     * @return the moves-per-time time controls
      */
     public List<MovePerTime> getMovePerTime() {
         return movePerTime;
     }
 
     /**
-     * Gets depth.
+     * Returns the depth component of the time control.
      *
      * @return the depth
      */
@@ -208,18 +210,18 @@ public class TimeControl {
     }
 
     /**
-     * Sets depth.
+     * Sets the depth component of the time control.
      *
-     * @param depth the depth
+     * @param depth the depth to set
      */
     public void setDepth(int depth) {
         this.depth = depth;
     }
 
     /**
-     * TimeControl to PGN String Format
+     * Returns the PGN notation that represents this time control. The format of the returned value depends on its type.
      *
-     * @return the string
+     * @return the PGN representation of this time control
      */
     public String toPGNString() {
         if (getTimeControlType().equals(TimeControlType.UNKNOW)) {
@@ -246,6 +248,11 @@ public class TimeControl {
         return s.toString();
     }
 
+    /**
+     * Returns a string representation of this time control.
+     *
+     * @return a string representation of this time control
+     */
     @Override
     public String toString() {
         if (getTimeControlType().equals(TimeControlType.UNKNOW)) {

@@ -17,67 +17,72 @@
 package com.github.bhlangonijr.chesslib;
 
 /**
- * The enum Diagonal h 1 a 8.
+ * The representation of all possible <i>left-pointing</i> diagonals in a board. A diagonal is identified by two edge
+ * squares and defines all the squares of the same color in between, the two edge squares included. A
+ * <i>left-pointing</i> diagonal is tilted to the left, that is, the file of the edge square on the greater rank is
+ * lower or equal than the file of the other edge square.
+ * <p>
+ * Note that corners {@code A1} and {@code H8} are special cases of diagonals of length 1.
  */
 public enum DiagonalH1A8 {
     /**
-     * A 1 a 1 diagonal h 1 a 8.
+     * The {@code A1-A1} diagonal.
      */
     A1_A1,
     /**
-     * B 1 a 2 diagonal h 1 a 8.
+     * The {@code B1-A2} diagonal.
      */
     B1_A2,
     /**
-     * C 1 a 3 diagonal h 1 a 8.
+     * The {@code C1-A3} diagonal.
      */
     C1_A3,
     /**
-     * D 1 a 4 diagonal h 1 a 8.
+     * The {@code D1-A4} diagonal.
      */
     D1_A4,
     /**
-     * E 1 a 5 diagonal h 1 a 8.
+     * The {@code E1-A5} diagonal.
      */
     E1_A5,
     /**
-     * F 1 a 6 diagonal h 1 a 8.
+     * The {@code F1-A6} diagonal.
      */
     F1_A6,
     /**
-     * G 1 a 7 diagonal h 1 a 8.
+     * The {@code G1-A7} diagonal.
      */
     G1_A7,
     /**
-     * H 1 a 8 diagonal h 1 a 8.
+     * The {@code H1-A8} diagonal.
      */
     H1_A8,
     /**
-     * B 8 h 2 diagonal h 1 a 8.
+     * The {@code B8-H2} diagonal.
      */
     B8_H2,
     /**
-     * C 8 h 3 diagonal h 1 a 8.
+     * The {@code C8-H3} diagonal.
      */
     C8_H3,
     /**
-     * D 8 h 4 diagonal h 1 a 8.
+     * The {@code D8-H4} diagonal.
      */
     D8_H4,
     /**
-     * E 8 h 5 diagonal h 1 a 8.
+     * The {@code E8-H5} diagonal.
      */
     E8_H5,
     /**
-     * F 8 h 6 diagonal h 1 a 8.
+     * The {@code F8-H6} diagonal.
      */
     F8_H6,
     /**
-     * G 8 h 7 diagonal h 1 a 8.
+     * The {@code G8-H7} diagonal.
      */
     G8_H7,
     /**
-     * H 8 h 8 diagonal h 1 a 8.
+     * The {@code H8-H8} diagonal.
      */
     H8_H8
 }

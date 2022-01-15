@@ -17,80 +17,84 @@
 package com.github.bhlangonijr.chesslib;
 
 /**
- * The enum File.
+ * The files in a board. A <i>file</i> is a column in the chessboard, and it is identified as a letter from {@code A} to
+ * {@code H}.
+ * <p>
+ * Each value defines a single file, except for the special value {@link File#NONE} which represents no file.
  */
 public enum File {
 
     /**
-     * File a file.
+     * The {@code A} file.
      */
     FILE_A("A"),
     /**
-     * File b file.
+     * The {@code B} file.
      */
     FILE_B("B"),
     /**
-     * File c file.
+     * The {@code C} file.
      */
     FILE_C("C"),
     /**
-     * File d file.
+     * The {@code D} file.
      */
     FILE_D("D"),
     /**
-     * File e file.
+     * The {@code E} file.
      */
     FILE_E("E"),
     /**
-     * File f file.
+     * The {@code F} file.
      */
     FILE_F("F"),
     /**
-     * File g file.
+     * The {@code G} file.
      */
     FILE_G("G"),
     /**
-     * File h file.
+     * The {@code H} file.
      */
     FILE_H("H"),
     /**
-     * None file.
+     * Special value that represents no file in particular.
      */
     NONE("");
 
-    public static File[] allFiles = values();
-    /**
-     * The Notation.
-     */
-    String notation;
+    public static final File[] allFiles = values();
+
+    final String notation;
 
     File(String notation) {
         this.notation = notation;
     }
 
     /**
-     * From value file.
+     * Returns a file given its name.
+     * <p>
+     * Same as invoking {@link File#valueOf(String)}.
      *
-     * @param v the v
-     * @return the file
+     * @param v name of the file
+     * @return the file with the specified name
+     * @throws IllegalArgumentException if the name does not correspond to any file
      */
     public static File fromValue(String v) {
         return valueOf(v);
     }
 
     /**
-     * Gets notation.
+     * Returns the letter that identifies the file in chess notations.
      *
-     * @return the notation
+     * @return the letter used to represent the file
      */
     public String getNotation() {
         return notation;
     }
 
     /**
-     * Value string.
+     * Returns the name of the file.
      *
-     * @return the string
+     * @return the name of the file
      */
     public String value() {
         return name();

@@ -17,23 +17,23 @@
 package com.github.bhlangonijr.chesslib.move;
 
 /**
- * The type Move generator exception.
+ * Thrown to indicate a failure generating a move.
  */
 public class MoveGeneratorException extends RuntimeException {
 
     private static final long serialVersionUID = 6523240383760826752L;
 
     /**
-     * Instantiates a new Move generator exception.
+     * Constructs a new move generator exception.
      */
     public MoveGeneratorException() {
         super();
     }
 
     /**
-     * Instantiates a new Move generator exception.
+     * Constructs a new move generator exception with the specified detail message and cause.
      *
-     * @param message the message
+     * @param message the error message
      * @param cause   the cause
      */
     public MoveGeneratorException(String message, Throwable cause) {
@@ -41,16 +41,16 @@ public class MoveGeneratorException extends RuntimeException {
     }
 
     /**
-     * Instantiates a new Move generator exception.
+     * Constructs a new move generator exception with the specified detail message.
      *
-     * @param message the message
+     * @param message the error message
      */
     public MoveGeneratorException(String message) {
         super(message);
     }
 
     /**
-     * Instantiates a new Move generator exception.
+     * Constructs a new move generator exception with the specified cause.
      *
      * @param cause the cause
      */

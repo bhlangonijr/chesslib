@@ -16,18 +16,17 @@
 
 package com.github.bhlangonijr.chesslib;
 
-
 /**
- * Board Event Listener
+ * An observer to board events. Events listeners can be registered to the board using the method
+ * {@link Board#addEventListener(BoardEventType, BoardEventListener)}.
  */
 public interface BoardEventListener {
 
     /**
-     * On Move Event
+     * Method invoked when a board event is emitted and notified to the observer.
      *
-     * @param event the event
+     * @param event the board event occurred
      */
     void onEvent(BoardEvent event);
-
 
 }

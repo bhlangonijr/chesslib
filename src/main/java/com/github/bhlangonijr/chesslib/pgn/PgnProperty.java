@@ -1,52 +1,61 @@
 package com.github.bhlangonijr.chesslib.pgn;
 
-import com.github.bhlangonijr.chesslib.util.StringUtil;
-
 import java.util.regex.Pattern;
 
+import com.github.bhlangonijr.chesslib.util.StringUtil;
+
 /**
- * The type Pgn property.
+ * The definition of a Portable Game Notation (PGN) property, also known as <i>tag</i>.
  */
 public class PgnProperty {
 
+    /**
+     * The Byte Order Mark (BOM) that defines a big-endian representation of bytes.
+     */
     public final static String UTF8_BOM = "\uFEFF";
 
     private final static Pattern propertyPattern = Pattern.compile("\\[.* \".*\"\\]");
     /**
-     * The Name.
+     * The name of the PGN property.
      */
     public String name;
     /**
-     * The Value.
+     * The value of the PGN property.
      */
     public String value;
 
     /**
-     * Instantiates a new Pgn property.
+     * Constructs an empty PGN property.
      */
     public PgnProperty() {
     }
 
     /**
-     * Instantiates a new Pgn property.
+     * Constructs an PGN property formed by a tag pair.
      *
-     * @param name  the name
-     * @param value the value
+     * @param name  the name of the property
+     * @param value the value of the property
      */
     public PgnProperty(String name, String value) {
         this.name = name;
         this.value = value;
     }
 
+    /**
+     * Checks if the line of text contains a PGN property.
+     *
+     * @param line the line of text to check
+     * @return {@code true} if the line is a PGN property
+     */
     public static boolean isProperty(String line) {
         return propertyPattern.matcher(line).matches();
     }
 
     /**
-     * Parse a PGN property line
+     * Parses a line of text that contains a PGN property.
      *
-     * @param line the pgn property line
-     * @return PgnProperty object read from the string
+     * @param line the line of text that includes the PGN property
+     * @return the PGN property extracted from the line of text
      */
     public static PgnProperty parsePgnProperty(String line) {
         try {

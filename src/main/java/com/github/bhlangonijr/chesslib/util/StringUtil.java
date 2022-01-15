@@ -19,30 +19,30 @@ package com.github.bhlangonijr.chesslib.util;
 import java.util.Map;
 
 /**
- * The type String util.
+ * A utility collection of operations on strings.
  *
  * @author bhlangonijr
  */
 public class StringUtil {
 
     /**
-     * Extracts the last char sequence of a string
+     * Extracts the last char sequence from a string, that is, the last {@code size} chars.
      *
-     * @param str  the str
-     * @param size the size
-     * @return string
+     * @param str  the string
+     * @param size the number of chars to extract
+     * @return the extracted substring
      */
     public static String lastSequence(final String str, int size) {
         return str.substring(str.length() - size);
     }
 
     /**
-     * Extracts the sequence after the given subsequence
+     * Extracts from a string the char sequence of length {@code size} that occurs after the given subsequence.
      *
-     * @param str  the str
-     * @param seq  the seq
-     * @param size the size
-     * @return string
+     * @param str  the string
+     * @param seq  the subsequence to search
+     * @param size the number of chars to extract
+     * @return the extracted substring, or an empty string if the subsequence is not found
      */
     public static String afterSequence(final String str, final String seq, int size) {
         int idx = str.indexOf(seq) + seq.length();
@@ -53,11 +53,11 @@ public class StringUtil {
     }
 
     /**
-     * Extracts the sequence after the given subsequence
+     * Extracts from a string the char sequence that occurs after the given subsequence.
      *
-     * @param str the str
-     * @param seq the seq
-     * @return string
+     * @param str the string
+     * @param seq the subsequence to search
+     * @return the extracted substring, or an empty string if the subsequence is not found
      */
     public static String afterSequence(final String str, final String seq) {
         int idx = str.indexOf(seq) + seq.length();
@@ -68,11 +68,11 @@ public class StringUtil {
     }
 
     /**
-     * Extracts the sequence before the given subsequence
+     * Extracts from a string the char sequence that occurs before the given subsequence.
      *
-     * @param str the str
-     * @param seq the seq
-     * @return string
+     * @param str the string
+     * @param seq the subsequence to search
+     * @return the extracted substring, or the original string if the subsequence is not found
      */
     public static String beforeSequence(final String str, final String seq) {
         int idx = str.indexOf(seq);
@@ -83,10 +83,10 @@ public class StringUtil {
     }
 
     /**
-     * Remove extra-whitespaces in the text
+     * Removes extra whitespaces in the string. It replaces each sequence of two or more whitespaces with a single one.
      *
-     * @param str the str
-     * @return string
+     * @param str the string from which to remove extra whitespaces
+     * @return the string without extra whitespaces
      */
     public static String normalize(String str) {
         StringBuilder sb = new StringBuilder();
@@ -102,12 +102,13 @@ public class StringUtil {
     }
 
     /**
-     * Replace all string builder.
+     * Replaces inside a string builder every occurrence of a subsequence of chars with another one. It returns the
+     * modified builder.
      *
-     * @param builder the builder
-     * @param from    the from
-     * @param to      the to
-     * @return the string builder
+     * @param builder the builder in which to replace the subsequence of chars
+     * @param from    the subsequence to replace with another one
+     * @param to      the subsequence with which to replace the original one
+     * @return the modified string builder
      */
     public static StringBuilder replaceAll(StringBuilder builder, String from, String to) {
         int index = builder.indexOf(from);
@@ -120,10 +121,11 @@ public class StringUtil {
     }
 
     /**
-     * Translate.
+     * Replaces the chars in a builder with the ones stored in the translation table. The indexes in the table refers to
+     * the code points of the chars to be replaced.
      *
-     * @param str   the str
-     * @param table the table
+     * @param str   the string builder in which to replace the chars
+     * @param table the translation table
      */
     public static void translate(StringBuilder str, char[] table) {
         for (int idx = 0; idx < str.length(); ++idx) {
@@ -136,26 +138,26 @@ public class StringUtil {
     }
 
     /**
-     * Translate.
+     * Replaces the chars in a builder with the ones stored in the translation map.
      *
-     * @param str   the str
-     * @param table the table
+     * @param str the string builder in which to replace the chars
+     * @param map the translation map
      */
-    public static void translate(StringBuilder str, Map<Character, Character> table) {
+    public static void translate(StringBuilder str, Map<Character, Character> map) {
         for (int idx = 0; idx < str.length(); ++idx) {
             char ch = str.charAt(idx);
-            Character conversion = table.get(ch);
+            Character conversion = map.get(ch);
             if (conversion != null)
                 str.setCharAt(idx, conversion);
         }
     }
 
     /**
-     * Count occurrences int.
+     * Counts the occurrences of a char inside a string.
      *
-     * @param str         the str
+     * @param str         the string in which to count the occurrences of the char
      * @param charToCount the char to count
-     * @return the int
+     * @return the number of times the char is found inside the string
      */
     public static int countOccurrences(String str, char charToCount) {
         int count = 0;
@@ -166,6 +168,5 @@ public class StringUtil {
         }
         return count;
     }
-
 
 }

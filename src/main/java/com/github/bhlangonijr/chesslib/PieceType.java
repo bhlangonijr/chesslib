@@ -20,36 +20,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The enum Piece type.
+ * All possible piece types in a chess game.
+ * <p>
+ * Each value defines a single piece type, except for the special value {@link PieceType#NONE} which represents no type
+ * in particular.
  */
 public enum PieceType {
 
     /**
-     * Pawn piece type.
+     * The pawn piece type.
      */
     PAWN(""),
     /**
-     * Knight piece type.
+     * The knight piece type.
      */
     KNIGHT("N"),
     /**
-     * Bishop piece type.
+     * The bishop piece type.
      */
     BISHOP("B"),
     /**
-     * Rook piece type.
+     * The rook piece type.
      */
     ROOK("R"),
     /**
-     * Queen piece type.
+     * The queen piece type.
      */
     QUEEN("Q"),
     /**
-     * King piece type.
+     * The king piece type.
      */
     KING("K"),
     /**
-     * None piece type.
+     * Special value that represents no piece type in particular.
      */
     NONE("NONE");
 
@@ -68,22 +71,25 @@ public enum PieceType {
     }
 
     /**
-     * From value piece type.
+     * Returns a piece type given its name.
+     * <p>
+     * Same as invoking {@link PieceType#valueOf(String)}.
      *
-     * @param v the v
-     * @return the piece type
+     * @param v name of the piece type
+     * @return the piece type with the specified name
+     * @throws IllegalArgumentException if the name does not correspond to any piece type
      */
     public static PieceType fromValue(String v) {
         return valueOf(v);
     }
 
     /**
-     * Returns the {@code PieceType} corresponding to the given short algebraic notation symbol.
+     * Returns the piece type corresponding to the given Short Algebraic Notation (SAN) symbol.
      *
-     * @param sanSymbol A piece symbol, such as "K", "B" or "".
-     * @return the piece type, such as {@code KING}, {@code BISHOP}, or {@code PAWN}.
-     * @throws IllegalArgumentException Thrown if the input does not correspond to any standard chess piece type.
-     * @since 1.4.0
+     * @param sanSymbol a piece symbol in SAN notation, such as {@code K} or {@code B}, or the empty string for the pawn
+     *                  type
+     * @return the piece type that corresponds to the SAN symbol provided in input
+     * @throws IllegalArgumentException if the input symbol does not correspond to any standard chess piece type
      */
     public static PieceType fromSanSymbol(String sanSymbol) {
         final PieceType pieceType = sanToType.get(sanSymbol);
@@ -94,20 +100,19 @@ public enum PieceType {
     }
 
     /**
-     * Returns the short algebraic notation (SAN) symbol for this piece type.
-     * For example, "R" for a rook, "K" for a king, and an empty string for a pawn.
+     * Returns the Short Algebraic Notation (SAN) symbol for this piece type. For example, {@code R} for the rook type,
+     * {@code K} for the king type, or an empty string for the pawn type.
      *
-     * @return The short algebraic notation symbol of this piece type.
-     * @since 1.4.0
+     * @return the SAN symbol of this piece type
      */
     public String getSanSymbol() {
         return sanSymbol;
     }
 
     /**
-     * Value string.
+     * Returns the name of the piece type.
      *
-     * @return the string
+     * @return the name of the piece type
      */
     public String value() {
         return name();

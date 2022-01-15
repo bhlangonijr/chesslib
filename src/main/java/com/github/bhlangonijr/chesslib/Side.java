@@ -17,44 +17,47 @@
 package com.github.bhlangonijr.chesslib;
 
 /**
- * The enum Side.
+ * One of the two sides in a chess game, {@link Side#WHITE} or {@link Side#BLACK}.
  */
 public enum Side {
 
     /**
-     * White side.
+     * The white side.
      */
     WHITE,
     /**
-     * Black side.
+     * The black side.
      */
     BLACK;
 
-    public static Side[] allSides = values();
+    public static final Side[] allSides = values();
 
     /**
-     * From value side.
+     * Returns a side given its name.
+     * <p>
+     * Same as invoking {@link Side#valueOf(String)}.
      *
-     * @param v the v
-     * @return the side
+     * @param v name of the side
+     * @return the side with the specified name
+     * @throws IllegalArgumentException if the name does not correspond to any side
      */
     public static Side fromValue(String v) {
         return valueOf(v);
     }
 
     /**
-     * Value string.
+     * Returns the name of the side.
      *
-     * @return the string
+     * @return the name of the side
      */
     public String value() {
         return name();
     }
 
     /**
-     * Flip side.
+     * Returns the opposite of this side, that is the other side.
      *
-     * @return the side
+     * @return the opposite side
      */
     public Side flip() {
         return Side.WHITE.equals(this) ?

@@ -20,65 +20,68 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The enum Piece.
+ * A chess piece on the board, that is, a specific combination of a {@link Side} and a {@link PieceType}.
+ * <p>
+ * Each value defines a single piece, except for the special value {@link Piece#NONE} which identifies that no piece is
+ * selected or assigned.
  */
 public enum Piece {
 
     /**
-     * White pawn piece.
+     * A white pawn.
      */
     WHITE_PAWN(Side.WHITE, PieceType.PAWN, "♙", "P"),
     /**
-     * White knight piece.
+     * A white knight.
      */
     WHITE_KNIGHT(Side.WHITE, PieceType.KNIGHT, "♘", "N"),
     /**
-     * White bishop piece.
+     * A white bishop.
      */
     WHITE_BISHOP(Side.WHITE, PieceType.BISHOP, "♗", "B"),
     /**
-     * White rook piece.
+     * A white rook.
      */
     WHITE_ROOK(Side.WHITE, PieceType.ROOK, "♖", "R"),
     /**
-     * White queen piece.
+     * A white queen.
      */
     WHITE_QUEEN(Side.WHITE, PieceType.QUEEN, "♕", "Q"),
     /**
-     * White king piece.
+     * A white king.
      */
     WHITE_KING(Side.WHITE, PieceType.KING, "♔", "K"),
     /**
-     * Black pawn piece.
+     * A black pawn.
      */
     BLACK_PAWN(Side.BLACK, PieceType.PAWN, "♟", "p"),
     /**
-     * Black knight piece.
+     * A black knight.
      */
     BLACK_KNIGHT(Side.BLACK, PieceType.KNIGHT, "♞", "n"),
     /**
-     * Black bishop piece.
+     * A black bishop.
      */
     BLACK_BISHOP(Side.BLACK, PieceType.BISHOP, "♝", "b"),
     /**
-     * Black rook piece.
+     * A black rook.
      */
     BLACK_ROOK(Side.BLACK, PieceType.ROOK, "♜", "r"),
     /**
-     * Black queen piece.
+     * A black queen.
      */
     BLACK_QUEEN(Side.BLACK, PieceType.QUEEN, "♛", "q"),
     /**
-     * Black king piece.
+     * A black king.
      */
     BLACK_KING(Side.BLACK, PieceType.KING, "♚", "k"),
     /**
-     * None piece.
+     * Special value that represents no piece in particular.
      */
     NONE(null, null, "NONE", ".");
 
+    public static final Piece[] allPieces = values();
     private static final Map<String, Piece> fenToPiece = new HashMap<>(13);
-    public static Piece[] allPieces = values();
     private static final Piece[][] pieceMake = {
             {WHITE_PAWN, BLACK_PAWN},
             {WHITE_KNIGHT, BLACK_KNIGHT},
@@ -108,34 +111,36 @@ public enum Piece {
     }
 
     /**
-     * From value piece.
+     * Returns a piece given its name.
+     * <p>
+     * Same as invoking {@link Piece#valueOf(String)}.
      *
-     * @param v the v
-     * @return the piece
+     * @param v name of the piece
+     * @return the piece with the specified name
+     * @throws IllegalArgumentException if the name does not correspond to any piece
      */
     public static Piece fromValue(String v) {
         return valueOf(v);
     }
 
     /**
-     * Make piece.
+     * Returns the piece corresponding to the provided pair of side and type. If {@link PieceType#NONE} is requested,
+     * {@link Piece#NONE} is returned regardless of the side.
      *
-     * @param side the side
-     * @param type the type
-     * @return the piece
+     * @param side the side of the wanted piece
+     * @param type the type of the wanted piece
+     * @return the piece corresponding to the given combination of side and type
      */
     public static Piece make(Side side, PieceType type) {
-        //return Piece.valueOf(side+"_"+type);
         return pieceMake[type.ordinal()][side.ordinal()];
     }
 
     /**
-     * Returns the {@code Piece} corresponding to the given Forsyth-Edwards notation symbol.
+     * Returns the piece corresponding to the given Forsyth-Edwards Notation (FEN) symbol.
      *
-     * @param fenSymbol A piece symbol, such as "K", "b" or "p".
-     * @return the piece, such as {@code WHITE_KING}, {@code BLACK_BISHOP}, or {@code BLACK_PAWN}.
-     * throws IllegalArgumentException Thrown if the input does not correspond to any standard chess piece.
-     * @since 1.4.0
+     * @param fenSymbol a piece FEN symbol, such as {@code K}, {@code b} or {@code p}
+     * @return the piece that corresponds to the FEN symbol provided in input
+     * @throws IllegalArgumentException if the input symbol does not correspond to any standard chess piece
      */
     public static Piece fromFenSymbol(String fenSymbol) {
         final Piece piece = fenToPiece.get(fenSymbol);
@@ -146,60 +151,57 @@ public enum Piece {
     }
 
     /**
-     * Value string.
+     * Returns the name of the piece.
      *
-     * @return the string
+     * @return the name of the piece
      */
     public String value() {
         return name();
     }
 
     /**
-     * Gets piece type.
+     * Returns the type of this piece.
      *
-     * @return the piece type
+     * @return the piece type of this piece
      */
     public PieceType getPieceType() {
         return type;
     }
 
     /**
-     * Gets piece side.
+     * Returns the side of this piece.
      *
-     * @return the piece side
+     * @return the side of this piece
      */
     public Side getPieceSide() {
         return side;
     }
 
     /**
-     * Returns the short algebraic notation (SAN) symbol for this piece type.
-     * For example, "R" for a rook, "K" for a king, and an empty string for a pawn.
+     * Returns the Short Algebraic Notation (SAN) symbol for this piece. For example, {@code R} for a rook, {@code K}
+     * for a king, or an empty string for a pawn.
      *
-     * @return The short algebraic notation symbol of this piece type.
-     * @since 1.4.0
+     * @return the SAN symbol of this piece
      */
     public String getSanSymbol() {
         return type.getSanSymbol();
     }
 
     /**
-     * Returns the figurine algebraic notation (FAN) symbol for this piece.
-     * For example, "♜" for a black rook, and "♙" for a white pawn.
+     * Returns the Figurine Algebraic Notation (FAN) symbol for this piece. For example, {@code ♜} for a black rook, or
+     * {@code ♙} for a white pawn.
      *
-     * @return The figurine algebraic notation symbol of this piece type.
-     * @since 1.4.0
+     * @return the FAN symbol of this piece
      */
     public String getFanSymbol() {
         return fanSymbol;
     }
 
     /**
-     * Returns the Forsyth-Edwards notation (FEN) symbol for this piece.
-     * For example, "r" for a black rook, and "P" for a white pawn.
+     * Returns the Forsyth-Edwards Notation (FEN) symbol for this piece. For example, {@code r} for a black rook, or
+     * {@code P} for a white pawn.
      *
-     * @return The Forsyth-Edwards Notation symbol of this piece.
-     * @since 1.4.0
+     * @return the FEN symbol of this piece
      */
     public String getFenSymbol() {
         return fenSymbol;

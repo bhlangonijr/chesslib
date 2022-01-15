@@ -20,54 +20,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Round.
+ * A round of a chess event.
  */
 public class Round {
-    private final List<Game> game =
-            new ArrayList<Game>();
+    private final List<Game> game = new ArrayList<Game>();
     private final Event event;
     private int number;
 
     /**
-     * Instantiates a new Round.
+     * Constructs a new event round.
      *
-     * @param event the event
+     * @param event the event the round belongs to
      */
     public Round(Event event) {
         this.event = event;
     }
 
     /**
-     * Gets number.
+     * Returns the number of the round.
      *
-     * @return the number
+     * @return the number of the round
      */
     public int getNumber() {
         return number;
     }
 
     /**
-     * Sets number.
+     * Sets the number of the round.
      *
-     * @param number the number
+     * @param number the number of the round
      */
     public void setNumber(int number) {
         this.number = number;
     }
 
     /**
-     * Gets game.
+     * Returns the list of games scheduled in the round.
      *
-     * @return the game
+     * @return the games of the round
      */
     public List<Game> getGame() {
         return game;
     }
 
     /**
-     * Gets event.
+     * Returns the chess event the round refers to.
      *
-     * @return the event
+     * @return the event the round belongs to
      */
     public Event getEvent() {
         return event;

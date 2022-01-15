@@ -16,22 +16,39 @@
 
 package com.github.bhlangonijr.chesslib;
 
+import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
+import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Supplier;
+import java.util.stream.IntStream;
+
 import com.github.bhlangonijr.chesslib.game.GameContext;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.util.XorShiftRandom;
 
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Supplier;
-import java.util.stream.IntStream;
-
-import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
-import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
-
 /**
- * Chessboard data structure
+ * The definition of a chessboard position and its status. It exposes methods to manipulate the board, evolve the
+ * position moving pieces around, revert already performed moves, and retrieve the status of the current configuration
+ * on the board. Furthermore, it offers a handy way for loading a position from a Forsyth-Edwards Notation (FEN) string
+ * and exporting it in the same format.
+ * <p>
+ * Each position in uniquely identified by hashes that could be retrieved using {@link Board#getIncrementalHashKey()}
+ * and {@link Board#getZobristKey()} methods. Also, the implementation supports comparison against other board instances
+ * using either the strict ({@link Board#strictEquals(Object)}) or the non-strict ({@link Board#equals(Object)}) mode.
+ * <p>
+ * The board can be observed registering {@link BoardEventListener}s for particular types of events. Moreover, the
+ * {@link Board} class itself is a {@link BoardEvent}, and hence it can be passed to the observers of the
+ * {@link BoardEventType#ON_LOAD} events, emitted when a new chess position is loaded from an external source (e.g. a
+ * FEN string).
  */
 public class Board implements Cloneable, BoardEvent {
 
@@ -65,17 +82,21 @@ public class Board implements Cloneable, BoardEvent {
     private long incrementalHashKey;
 
     /**
-     * Instantiates a new Board.
+     * Constructs a new board using a default game context. The board will keep its history updated, that is, will store
+     * a hash value for each position encountered.
+     *
+     * @see Board#Board(GameContext, boolean)
      */
     public Board() {
         this(new GameContext(), true);
     }
 
     /**
-     * Instantiates a new Board.
+     * Constructs a new board, using the game context provided in input. When history updates are enabled, the board
+     * will keep the hashes of all positions encountered.
      *
-     * @param gameContext   the game context
-     * @param updateHistory the update history
+     * @param gameContext   the game context to use for this board
+     * @param updateHistory whether to keep the history updated or not
      */
     public Board(GameContext gameContext, boolean updateHistory) {
 
@@ -140,10 +161,17 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Execute the move on the board using SAN notation
+     * Executes a move on the board, specified in Short Algebraic Notation (SAN). It returns {@code true} if the
+     * operation has been successful and the position changed after the move. It performs a full validation of the board
+     * status to assess the outcome of the operation.
+     * <p>
+     * <b>N.B.</b>: the method does not check whether the move is legal or not according to the standard chess rules,
+     * but rather if the resulting configuration is valid. For instance, it is totally fine to move the king by two or
+     * more squares, or a rook beyond its friendly pieces, as long as the position obtained after the move does not
+     * violate any chess constraint.
      *
-     * @param move the move in SAN (e.g.: Nc3)
-     * @return true if operation was successful
+     * @param move the move to execute in SAN notation, such as {@code Nc3}
+     * @return {@code true} if the move was successful and the resulting position is valid
      */
     public boolean doMove(final String move) {
 
@@ -153,21 +181,33 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Execute the move on the board
+     * Executes a move on the board without performing a full validation of the position. It returns {@code true} if the
+     * operation has been successful and the position changed after the move.
+     * <p>
+     * Same as invoking {@code doMove(move, false)}.
      *
-     * @param move the move
-     * @return true if operation was successful
+     * @param move the move to execute
+     * @return {@code true} if the move was successful and the resulting position is valid
+     * @see #doMove(Move, boolean)
      */
     public boolean doMove(final Move move) {
         return doMove(move, false);
     }
 
     /**
-     * Execute the move on the board
+     * Executes a move on the board. It returns {@code true} if the operation has been successful and the position
+     * changed after the move. When a full validation is requested, additional checks are performed to assess the
+     * outcome of the operation, such as if the side to move is the expected one, if castling or promotion moves are
+     * allowed, if the move replaces another piece of the same side, etc.
+     * <p>
+     * <b>N.B.</b>: the method does not check whether the move is legal or not according to the standard chess rules,
+     * but rather if the resulting configuration is valid. For instance, it is totally fine to move the king by two or
+     * more squares, or a rook beyond its friendly pieces, as long as the position obtained after the move does not
+     * violate any chess constraint.
      *
-     * @param move           the move
-     * @param fullValidation perform full validation
-     * @return true if operation was successful
+     * @param move           the move to execute
+     * @param fullValidation whether to perform a full validation of the position or not
+     * @return {@code true} if the move was successful and the resulting position is valid
      */
     public boolean doMove(final Move move, boolean fullValidation) {
 
@@ -288,7 +328,7 @@ public class Board implements Cloneable, BoardEvent {
         }
 
         backup.add(backupMove);
-        //call listeners
+        // call listeners
         if (isEnableEvents() && eventListener.get(BoardEventType.ON_MOVE).size() > 0) {
             for (BoardEventListener evl : eventListener.get(BoardEventType.ON_MOVE)) {
                 evl.onEvent(move);
@@ -298,9 +338,13 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Execute a null move on the board -
+     * Executes a <i>null</i> move on the board. It returns {@code true} if the operation has been successful.
+     * <p>
+     * A null move it is a special move that does not change the position of any piece, but simply updates the history
+     * of the board and switches the side to move. It could be useful in some scenarios to implement a <i>"passing
+     * turn"</i> behavior.
      *
-     * @return true if operation was successful
+     * @return {@code true} if the null move was successful
      */
     public boolean doNullMove() {
 
@@ -323,9 +367,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Undo the last move executed on the board
+     * Reverts the latest move played on the board and returns it. If no moves were previously executed, it returns
+     * null.
      *
-     * @return the move
+     * @return the reverted move, or null if no previous moves were played
      */
     public Move undoMove() {
         Move move = null;
@@ -337,7 +382,7 @@ public class Board implements Cloneable, BoardEvent {
             move = b.getMove();
             b.restore(this);
         }
-        //call listeners
+        // call listeners
         if (isEnableEvents() &&
                 eventListener.get(BoardEventType.ON_UNDO_MOVE).size() > 0) {
             for (BoardEventListener evl :
@@ -349,29 +394,31 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Move piece piece.
+     * Moves a piece on the board and updates the backup passed in input. It returns the captured piece, if any, or
+     * {@link Piece#NONE} otherwise.
+     * <p>
+     * Same as invoking {@code movePiece(move.getFrom(), move.getTo(), move.getPromotion(), backup)}.
      *
-     * @param move   the move
-     * @param backup the backup
-     * @return the piece
-     */
-    /*
-     * Move a piece
-     * @param move
-     * @return
+     * @param move   the move to perform
+     * @param backup the move backup to update
+     * @return the captured piece, if present, or {@link Piece#NONE} otherwise
+     * @see Board#movePiece(Square, Square, Piece, MoveBackup)
      */
     protected Piece movePiece(Move move, MoveBackup backup) {
         return movePiece(move.getFrom(), move.getTo(), move.getPromotion(), backup);
     }
 
     /**
-     * Move piece piece.
+     * Moves a piece on the board and updates the backup passed in input. It returns the captured piece, if any, or
+     * {@link Piece#NONE} otherwise. The piece movement is described by its starting and destination squares, and by the
+     * piece to promote the moving piece to in case of a promotion.
      *
-     * @param from      the from
-     * @param to        the to
-     * @param promotion the promotion
-     * @param backup    the backup
-     * @return the piece
+     * @param from      the starting square of the piece
+     * @param to        the destination square of the piece
+     * @param promotion the piece to set on the board to replace the moving piece after its promotion, or
+     *                  {@link Piece#NONE} in case the move is not a promotion
+     * @param backup    the move backup to update
+     * @return the captured piece, if present, or {@link Piece#NONE} otherwise
      */
     protected Piece movePiece(Square from, Square to, Piece promotion, MoveBackup backup) {
         Piece movingPiece = getPiece(from);
@@ -402,9 +449,8 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Undo move piece.
-     *
-     * @param move the move
+     * Reverts the effects of a piece previously moved. It restores the moved piece where it was and cancels any
+     * possible promotion to another piece.
      */
     protected void undoMovePiece(Move move) {
         Square from = move.getFrom();
@@ -422,11 +468,11 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Returns true if finds the specific piece in the given square locations
+     * Searches the piece in any of the squares provided in input and returns {@code true} if found.
      *
-     * @param piece    the piece
-     * @param location the location
-     * @return boolean
+     * @param piece    the piece to search in any of the given squares
+     * @param location an array of squares where to look the piece for
+     * @return {@code true} if the piece is found
      */
     public boolean hasPiece(Piece piece, Square[] location) {
         for (Square sq : location) {
@@ -438,10 +484,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Get the piece on the given square
+     * Returns the piece at the specified square, or {@link Piece#NONE} if the square is empty.
      *
-     * @param sq the sq
-     * @return piece
+     * @param sq the square to get the piece from
+     * @return the found piece, or {@link Piece#NONE} if no piece is present on the square
      */
     public Piece getPiece(Square sq) {
 
@@ -449,209 +495,219 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Gets bitboard.
+     * Returns the bitboard that represents all the pieces on the board, for both sides.
      *
-     * @return the bitboard
+     * @return the bitboard of all the pieces on the board
      */
     public long getBitboard() {
         return bbSide[0] | bbSide[1];
     }
 
     /**
-     * Gets bitboard.
+     * Returns the bitboard that represents all the pieces of a given side and type present on the board.
      *
-     * @param piece the piece
-     * @return the bitboard of a given piece
+     * @param piece the piece for which the bitboard must be returned
+     * @return the bitboard of the given piece definition
      */
     public long getBitboard(Piece piece) {
         return bitboard[piece.ordinal()];
     }
 
     /**
-     * Gets bitboard.
+     * Returns the bitboard that represents all the pieces of a given side present on the board.
      *
-     * @param side the side
-     * @return the bitboard of a given side
+     * @param side the side for which the bitboard must be returned
+     * @return the bitboard of all the pieces of the side
      */
     public long getBitboard(Side side) {
         return bbSide[side.ordinal()];
     }
 
     /**
-     * Get bb side long [ ].
+     * Returns the bitboards that represents all the pieces present on the board, one for each side. The bitboard for
+     * white is stored at index 0, the bitboard for black at index 1.
      *
-     * @return the bbSide
+     * @return the bitboards of all the pieces for both sides
      */
     public long[] getBbSide() {
         return bbSide;
     }
 
     /**
-     * Get the square(s) location of the given piece
+     * Returns the list of squares that contain all the pieces of a given side and type.
      *
-     * @param piece the piece
-     * @return piece location
+     * @param piece the piece for which the list of squares must be returned
+     * @return the list of squares that contain the given piece definition
      */
     public List<Square> getPieceLocation(Piece piece) {
         if (getBitboard(piece) != 0L) {
             return Bitboard.bbToSquareList(getBitboard(piece));
         }
         return Collections.emptyList();
-
     }
 
     /**
-     * Get the square first location of the given piece
+     * Returns the square of the first piece of a given side and type found on the board, scanning from lower
+     * ranks/files. If no piece is found, {@link Square#NONE} is returned.
      *
-     * @param piece the piece
-     * @return piece location
+     * @param piece the piece for which the first encountered square must be returned
+     * @return the first square that contain the given piece definition, or {@link Square#NONE} if the piece is not
+     * found
      */
     public Square getFistPieceLocation(Piece piece) {
         if (getBitboard(piece) != 0L) {
             return Square.squareAt(Bitboard.bitScanForward(getBitboard(piece)));
         }
         return Square.NONE;
-
     }
 
     /**
-     * Gets side to move.
+     * Returns the next side to move.
      *
-     * @return the sideToMove
+     * @return the next side to move
      */
     public Side getSideToMove() {
         return sideToMove;
     }
 
     /**
-     * Sets side to move.
+     * Sets the next side to move.
      *
-     * @param sideToMove the sideToMove to set
+     * @param sideToMove the side to move to set
      */
     public void setSideToMove(Side sideToMove) {
         this.sideToMove = sideToMove;
     }
 
     /**
-     * Gets en passant target.
+     * Returns the target square of an en passant capture, if any. In other words, the square which contains the pawn
+     * that can be captured en passant.
      *
-     * @return the enPassantTarget
+     * @return the en passant target square, or {@link Square#NONE} if en passant is not possible
+     * @see Board#getEnPassant()
      */
     public Square getEnPassantTarget() {
         return enPassantTarget;
     }
 
     /**
-     * Sets en passant target.
+     * Sets the en passant target square.
      *
-     * @param enPassant the enPassantTarget to set
+     * @param enPassant the en passant target square to set
+     * @see Board#getEnPassantTarget()
      */
     public void setEnPassantTarget(Square enPassant) {
         this.enPassantTarget = enPassant;
     }
 
     /**
-     * Gets en passant.
+     * Returns the destination square of an en passant capture, if any. In other words, the square a pawn will move to
+     * in case an enemy pawn is captured en passant.
      *
-     * @return the enPassant
+     * @return the en passant destination square, or {@link Square#NONE} if en passant is not possible
+     * @see Board#getEnPassantTarget()
      */
     public Square getEnPassant() {
         return enPassant;
     }
 
     /**
-     * Sets en passant.
+     * Sets the en passant destination square.
      *
-     * @param enPassant the enPassant to set
+     * @param enPassant the en passant destination square to set
+     * @see Board#getEnPassant()
      */
     public void setEnPassant(Square enPassant) {
         this.enPassant = enPassant;
     }
 
     /**
-     * Gets move counter.
+     * Returns the counter of full moves played. The counter is incremented after each move played by black.
      *
-     * @return the moveCounter
+     * @return the counter of full moves
      */
     public Integer getMoveCounter() {
         return moveCounter;
     }
 
     /**
-     * Sets move counter.
+     * Sets the counter of full moves.
      *
-     * @param moveCounter the moveCounter to set
+     * @param moveCounter the counter of full moves to set
+     * @see Board#getMoveCounter()
      */
     public void setMoveCounter(Integer moveCounter) {
         this.moveCounter = moveCounter;
     }
 
     /**
-     * Gets half move counter.
+     * Returns the counter of half moves. The counter is incremented after each capture or pawn move, and it is used to
+     * apply the fifty-move rule.
      *
-     * @return the halfMoveCounter
+     * @return the counter of half moves
      */
     public Integer getHalfMoveCounter() {
         return halfMoveCounter;
     }
 
     /**
-     * Sets half move counter.
+     * Sets the counter of half moves.
      *
-     * @param halfMoveCounter the halfMoveCounter to set
+     * @param halfMoveCounter the counter of half moves to set
+     * @see Board#getHalfMoveCounter()
      */
     public void setHalfMoveCounter(Integer halfMoveCounter) {
         this.halfMoveCounter = halfMoveCounter;
     }
 
     /**
-     * Gets castle right.
+     * Returns the castle right of a given side.
      *
-     * @param side the side
-     * @return the castleRight
+     * @param side the side for which the castle right must be returned
+     * @return the castle right of the side
      */
     public CastleRight getCastleRight(Side side) {
         return castleRight.get(side);
     }
 
     /**
-     * Gets castle right.
+     * Returns the castle rights for both sides, stored in an {@link EnumMap}.
      *
-     * @return the castleRight
+     * @return the map containing the castle rights for both sides
      */
     public EnumMap<Side, CastleRight> getCastleRight() {
         return castleRight;
     }
 
     /**
-     * Gets context.
+     * Returns the game context used for this board.
      *
-     * @return the context
+     * @return the game context
      */
     public GameContext getContext() {
         return context;
     }
 
     /**
-     * Sets context.
+     * Sets the game context of the board.
      *
-     * @param context the context to set
+     * @param context the game context to set
      */
     public void setContext(GameContext context) {
         this.context = context;
     }
 
     /**
-     * Gets backup.
+     * Returns the current ordered list of move backups generated from the moves performed on the board.
      *
-     * @return the backup
+     * @return the list of move backups
      */
     public LinkedList<MoveBackup> getBackup() {
         return backup;
     }
 
     /**
-     * Clear the entire board
+     * Clears the entire board and resets its status and all the flags to their default value.
      */
     public void clear() {
         setSideToMove(Side.WHITE);
@@ -669,10 +725,12 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * add a piece into a given square
+     * Sets a piece on a square.
+     * <p>
+     * The operation does not perform any move, but rather simply puts a piece onto a square.
      *
-     * @param piece the piece
-     * @param sq    the sq
+     * @param piece the piece to be placed on the square
+     * @param sq    the square the piece has to be set to
      */
     public void setPiece(Piece piece, Square sq) {
         bitboard[piece.ordinal()] |= sq.getBitboard();
@@ -684,10 +742,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * remove a piece from a given square
+     * Unsets a piece from a square.
      *
-     * @param piece the piece
-     * @param sq    the sq
+     * @param piece the piece to be removed from the square
+     * @param sq    the square the piece has to be unset from
      */
     public void unsetPiece(Piece piece, Square sq) {
         bitboard[piece.ordinal()] ^= sq.getBitboard();
@@ -699,10 +757,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Load an specific chess position using FEN notation
-     * ex.: rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1
+     * Loads a specific chess position from a valid Forsyth-Edwards Notation (FEN) string. The status of the current
+     * board is replaced with the one of the FEN string (e.g. en passant squares, castle rights, etc.).
      *
-     * @param fen the fen
+     * @param fen the FEN string representing the chess position to load
      */
     public void loadFromFen(String fen) {
         clear();
@@ -776,7 +834,7 @@ public class Board implements Cloneable, BoardEvent {
         if (updateHistory) {
             getHistory().addLast(this.getZobristKey());
         }
-        //call listeners
+        // call listeners
         if (isEnableEvents() &&
                 eventListener.get(BoardEventType.ON_LOAD).size() > 0) {
             for (BoardEventListener evl :
@@ -787,32 +845,44 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Generates the current board FEN representation
+     * Generates the Forsyth-Edwards Notation (FEN) representation of the current position and its status. Full and half
+     * moves counters are included in the output.
+     * <p>
+     * Same as invoking {@code getFen(true, false)}.
      *
-     * @return board fen
+     * @return the string that represents the current position in FEN notation
+     * @see Board#getFen(boolean, boolean)
      */
     public String getFen() {
         return getFen(true);
     }
 
     /**
-     * Generates the current board FEN representation
+     * Generates the Forsyth-Edwards Notation (FEN) representation of the current position and its status. Full and half
+     * moves counters are included in the output if the relative flag is enabled.
+     * <p>
+     * Same as invoking {@code getFen(includeCounters, false)}.
      *
-     * @param includeCounters if true include halfMove and fullMove counters
-     * @return board fen
+     * @param includeCounters if {@code true}, move counters are included in the resulting string
+     * @return the string that represents the current position in FEN notation
+     * @see Board#getFen(boolean, boolean)
      */
     public String getFen(boolean includeCounters) {
         return getFen(includeCounters, false);
     }
 
     /**
-     * Generates the current board FEN representation
+     * Generates the Forsyth-Edwards Notation (FEN) representation of the current position and its status. Full and half
+     * moves counters are included in the output if the relative flag is enabled. Furthermore, it is possible to control
+     * whether to include the en passant square in the result only when the pawn can be captured or every time the en
+     * passant target exists.
      *
-     * @param includeCounters if true include halfMove and fullMove counters
-     * @param onlyOutputEnPassantIfCapturable if true, only output the en passant 
-     *   square if the pawn that just moved is able to be captured. If false, always
-     *   output the en passant square if a pawn just moved 2 squares.
-     * @return board fen
+     * @param includeCounters                 if {@code true}, move counters are included in the resulting string
+     * @param onlyOutputEnPassantIfCapturable if {@code true}, the en passant square is included in the output only if
+     *                                        the pawn that just moved can be captured. Otherwise, if {@code false}, the
+     *                                        en passant square is always included in the output when the en passant
+     *                                        target exists
+     * @return the string that represents the current position in FEN notation
      */
     public String getFen(boolean includeCounters, boolean onlyOutputEnPassantIfCapturable) {
 
@@ -886,8 +956,8 @@ public class Board implements Cloneable, BoardEvent {
             fen.append(" " + rights);
         }
 
-        if (Square.NONE.equals(getEnPassant()) 
-            || (onlyOutputEnPassantIfCapturable 
+        if (Square.NONE.equals(getEnPassant())
+                || (onlyOutputEnPassantIfCapturable
                 && !pawnCanBeCapturedEnPassant())) {
             fen.append(" -");
         } else {
@@ -907,9 +977,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Board to array piece [ ].
+     * Returns an array of pieces that represents the current position on the board. For each index, the array holds
+     * the piece present on the square with the same index, or {@link Piece#NONE} if the square is empty.
      *
-     * @return the piece [ ]
+     * @return the array that contains the pieces on the board
      */
     public Piece[] boardToArray() {
 
@@ -925,25 +996,35 @@ public class Board implements Cloneable, BoardEvent {
         return pieces;
     }
 
+    /**
+     * The type of board events this data structure represents when notified to its observers.
+     *
+     * @return the board event type {@link BoardEventType#ON_LOAD}
+     */
+    @Override
     public BoardEventType getType() {
         return BoardEventType.ON_LOAD;
     }
 
     /**
-     * Gets event listener.
+     * Returns an {@link EnumMap} of the event listeners registered to this board. Each entry of the map contains the
+     * list of observers for a particular type of events.
      *
-     * @return the event listener
+     * @return the event listeners registered to this board
      */
     public EnumMap<BoardEventType, List<BoardEventListener>> getEventListener() {
         return eventListener;
     }
 
     /**
-     * Adds a Board Event Listener
+     * Registers to the board a new listener for a specified event type.
+     * <p>
+     * It returns a reference to this board to fluently chain other calls for registering (or deregistering) other
+     * listeners.
      *
-     * @param eventType the event type
-     * @param listener  the listener
-     * @return Board board
+     * @param eventType the board event type observed by the listener
+     * @param listener  the listener to register
+     * @return this board
      */
     public Board addEventListener(BoardEventType eventType, BoardEventListener listener) {
         getEventListener().get(eventType).add(listener);
@@ -951,11 +1032,14 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Removes a Board Event Listener
+     * Deregisters from the board a listener for a specified event type.
+     * <p>
+     * It returns a reference to this board to fluently chain other calls for deregistering (or registering) other
+     * listeners.
      *
-     * @param eventType the event type
-     * @param listener  the listener
-     * @return Board board
+     * @param eventType the board event type observed by the listener
+     * @param listener  the listener to deregister
+     * @return this board
      */
     public Board removeEventListener(BoardEventType eventType, BoardEventListener listener) {
         if (getEventListener() != null && getEventListener().get(eventType) != null) {
@@ -965,23 +1049,27 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Returns if the the bitboard with pieces which can attack the given square
+     * Returns the bitboard representing the pieces of a specific side that can attack the given square.
+     * <p>
+     * Same as invoking {@code squareAttackedBy(square, side, getBitboard())}.
      *
-     * @param square the square
-     * @param side   the side
-     * @return true if the square is attacked
+     * @param square the target square
+     * @param side   the attacking side
+     * @return the bitboard of all the pieces of the given side that can attack the square
+     * @see Board#squareAttackedBy(Square, Side, long)
      */
     public long squareAttackedBy(Square square, Side side) {
         return squareAttackedBy(square, side, getBitboard());
     }
 
     /**
-     * Returns if the the bitboard with pieces which can attack the given square
+     * Returns the bitboard representing the pieces of a specific side that can attack the given square. It takes a
+     * bitboard mask in input to filter the result for a specific set of occupied squares only.
      *
-     * @param square the square
-     * @param side   the side
-     * @param occ    occupied squares
-     * @return true if the square is attacked
+     * @param square the target square
+     * @param side   the attacking side
+     * @param occ    a mask of occupied squares
+     * @return the bitboard of all the pieces of the given side that can attack the square
      */
     public long squareAttackedBy(Square square, Side side, long occ) {
         long result;
@@ -1001,15 +1089,14 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Square attacked by a given piece type and side
+     * Returns the bitboard representing the pieces of a specific side and type that can attack the given square.
      *
-     * @param square the square
-     * @param side   the side
-     * @param type   the type
-     * @return long
+     * @param square the target square
+     * @param side   the attacking side
+     * @param type   the type of the attacking pieces
+     * @return the bitboard of all the pieces of the given side and type that can attack the square
      */
-    public long squareAttackedByPieceType(Square square,
-                                          Side side, PieceType type) {
+    public long squareAttackedByPieceType(Square square, Side side, PieceType type) {
         long result = 0L;
         long occ = getBitboard();
         switch (type) {
@@ -1044,10 +1131,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Get king Square
+     * Returns the square occupied by the king of the given side.
      *
-     * @param side the side
-     * @return king square
+     * @param side the side of the king
+     * @return the square occupied by the king
      */
     public Square getKingSquare(Side side) {
         Square result = Square.NONE;
@@ -1060,20 +1147,20 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Is King Attacked
+     * Checks if the king of the side to move is attacked by any enemy piece.
      *
-     * @return boolean
+     * @return {@code true} if the king of the next side to move is attacked
      */
     public boolean isKingAttacked() {
         return squareAttackedBy(getKingSquare(getSideToMove()), getSideToMove().flip()) != 0;
     }
 
     /**
-     * set of squares attacked by
+     * Checks if any of the squares provided in input is attacked by the given side in the current position.
      *
-     * @param squares the squares
-     * @param side    the side
-     * @return boolean
+     * @param squares the target squares
+     * @param side    the attacking side
+     * @return {@code true} if any square is attacked
      */
     public boolean isSquareAttackedBy(List<Square> squares, Side side) {
         for (Square sq : squares) {
@@ -1085,13 +1172,26 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Verify if the move to be played leaves the resulting board in a legal position
+     * Verifies if the move still to be executed will leave the resulting board in a valid (legal) position. Optionally,
+     * it can perform a full validation, a stricter check to assess if the final board configuration could be considered
+     * valid or not.
+     * <p>
+     * The full validation checks:
+     * <ul>
+     *     <li>if a piece is actually moving;</li>
+     *     <li>if the moving side is the next side to move in the position;</li>
+     *     <li>if the destination square does not contain a piece of the same side of the moving one;</li>
+     *     <li>in case of a promotion, if a promoting piece is present;</li>
+     *     <li>in case of castling, if the castle move can be performed.</li>
+     * </ul>
+     * <b>N.B.</b>: the method does not check whether the move is legal or not according to the standard chess rules,
+     * but only if the resulting configuration is valid. For instance, it is considered valid moving the king by two or
+     * more squares, or a rook beyond its friendly pieces, as long as the position obtained after the move does not
+     * violate any chess constraint.
      *
-     * @param move           the move
-     * @param fullValidation performs a full validation on the move, not only if it leaves own king on check, but also if
-     *                       castling is legal, based on attacked pieces and squares, if board is in a consistent state:
-     *                       e.g.: Occupancy of source square by a piece that belongs to playing side, etc.
-     * @return the boolean
+     * @param move           the move to validate
+     * @param fullValidation performs a full validation of the move
+     * @return {@code true} if the move is considered valid
      */
     public boolean isMoveLegal(Move move, boolean fullValidation) {
 
@@ -1185,10 +1285,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Is attacked by boolean.
+     * Checks if the squares of a move are consistent, that is, if the destination square is attacked by the piece
+     * placed on the starting square.
      *
-     * @param move the move
-     * @return the boolean
+     * @return {@code true} if the move is coherent
      */
     public boolean isAttackedBy(Move move) {
 
@@ -1227,18 +1327,19 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Gets history.
+     * Returns the history of the board, represented by the hashes of all the positions occurred on the board.
      *
-     * @return the history
+     * @return the list of hashes of all the positions occurred on the board
+     * @see Board#getIncrementalHashKey()
      */
     public LinkedList<Long> getHistory() {
         return history;
     }
 
     /**
-     * Is side mated
+     * Verifies in the current position if the king of the side to move is mated.
      *
-     * @return boolean
+     * @return {@code true} if the king of the side to move is checkmated
      */
     public boolean isMated() {
         try {
@@ -1255,9 +1356,16 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * verify draw by 3 fold rep, insufficient material, 50th move rule and stale mate
+     * Verifies if the current position is a forced draw because any of the standard chess rules. Specifically, the
+     * method checks for:
+     * <ul>
+     *     <li>threefold repetition;</li>
+     *     <li>insufficient material;</li>
+     *     <li>fifty-move rule;</li>
+     *     <li>stalemate.</li>
+     * </ul>
      *
-     * @return the boolean
+     * @return {@code true} if the position is a draw
      */
     public boolean isDraw() {
         if (isRepetition()) {
@@ -1274,12 +1382,11 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Verify threefold repetition
+     * Verifies if the current position has been repeated at least <i>n</i> times, where <i>n</i> is provided in input.
      *
-     * @param count the number of repetitions
-     * @return boolean
+     * @return {@code true} if the position has been repeated at least <i>n</i> times
      */
-    public boolean isRepetition(int count) {
+    public boolean isRepetition(int n) {
 
         final int i = Math.min(getHistory().size() - 1, getHalfMoveCounter());
         if (getHistory().size() >= 4) {
@@ -1287,7 +1394,7 @@ public class Board implements Cloneable, BoardEvent {
             int rep = 0;
             for (int x = 4; x <= i; x += 2) {
                 final long k = getHistory().get(getHistory().size() - x - 1);
-                if (k == lastKey && ++rep >= count - 1) {
+                if (k == lastKey && ++rep >= n - 1) {
                     return true;
                 }
             }
@@ -1296,9 +1403,12 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Verify threefold repetition
+     * Verifies if the current position has been repeated at least three times (threefold repetition).
+     * <p>
+     * Same as invoking {@code isRepetition(3)}.
      *
-     * @return boolean
+     * @return {@code true} if the position has been repeated at least three times
+     * @see Board#isRepetition(int)
      */
     public boolean isRepetition() {
 
@@ -1306,9 +1416,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Verify if there is enough material left in the board
+     * Verifies if the current position has insufficient material to continue the game, and thus it must be considered a
+     * forced draw.
      *
-     * @return boolean
+     * @return {@code true} if the position has insufficient material
      */
     public boolean isInsufficientMaterial() {
 
@@ -1360,9 +1471,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Is stale mate
+     * Verifies in the current position if the king of the side to move is stalemated, and thus if the position must be
+     * considered a forced draw.
      *
-     * @return boolean
+     * @return {@code true} if the king of the side to move is stalemated
      */
     public boolean isStaleMate() {
         try {
@@ -1379,31 +1491,34 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Is enable events boolean.
+     * Returns whether the notifications of board events are enabled or not.
      *
-     * @return the enableEvents
+     * @return {@code true} if board events are notified to observers
      */
     public boolean isEnableEvents() {
         return enableEvents;
     }
 
     /**
-     * Sets enable events.
+     * Sets the flag that controls the notification of board events. If {@code true}, board events are emitted,
+     * otherwise they are turned off.
      *
-     * @param enableEvents the enableEvents to set
+     * @param enableEvents whether the notification of board events is enabled or not
      */
     public void setEnableEvents(boolean enableEvents) {
         this.enableEvents = enableEvents;
     }
 
     /**
-     * Get the unique position ID for the board state,
-     * which is the actual FEN representation of the board without counters
+     * Returns the unique position ID for the current position and status. The identifier is nothing more than the
+     * Forsyth-Edwards Notation (FEN) representation of the board without the move counters.
      * <p>
-     * This is a reliable way of identifying a unique position, although much more slower
-     * than using the {@code Board#hashcode()}, or {@code Board#getZobristKey()}
+     * Although this is a reliable way for identifying a unique position, it is much slower than using
+     * {@link Board#hashCode()} or {@link Board#getZobristKey()}.
      *
-     * @return position id
+     * @return the unique position ID
+     * @see Board#hashCode()
+     * @see Board#getZobristKey()
      */
     public String getPositionId() {
         String[] parts = this.getFen(false).split(" ");
@@ -1412,9 +1527,10 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * The legal moves for the current board
+     * Returns the list of all possible legal moves for the current position according to the standard rules of chess.
+     * If such moves are played, it is guaranteed the resulting position will also be legal.
      *
-     * @return list of only legal moves
+     * @return the list of legal moves available in the current position
      */
     public List<Move> legalMoves() {
 
@@ -1422,9 +1538,12 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * The pseudo-legal moves for the current board
+     * Returns the list of all possible pseudo-legal moves for the current position.
+     * <p>
+     * A move is considered pseudo-legal when it is legal according to the standard rules of chess piece movements, but
+     * the resulting position might not be legal because of other rules (e.g. checks to the king).
      *
-     * @return list of pseud-legal moves
+     * @return the list of pseudo-legal moves available in the current position
      */
     public List<Move> pseudoLegalMoves() {
 
@@ -1432,9 +1551,13 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * The pseudo-legal captures for the current board
+     * Returns the list of all possible pseudo-legal captures for the current position.
+     * <p>
+     * A move is considered a pseudo-legal capture when it takes an enemy piece and it is legal according to the
+     * standard rules of chess piece movements, but the resulting position might not be legal because of other rules
+     * (e.g. checks to the king).
      *
-     * @return list of pseud-legal captures
+     * @return the list of pseudo-legal captures available in the current position
      */
     public List<Move> pseudoLegalCaptures() {
 
@@ -1442,9 +1565,19 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * (non-Javadoc)
+     * Checks if this board is equivalent to another.
+     * <p>
+     * Two boards are considered equivalent when:
+     * <ul>
+     *     <li>the pieces are the same, placed on the very same squares;</li>
+     *     <li>the side to move is the same;</li>
+     *     <li>the castling rights are the same;</li>
+     *     <li>the en passant target is the same.</li>
+     * </ul>
      *
-     * @see Object#equals(Object)
+     * @param obj the other object reference to compare to this board
+     * @return {@code true} if this board and the object reference are equivalent
+     * @see Board#strictEquals(Object)
      */
     @Override
     public boolean equals(Object obj) {
@@ -1467,11 +1600,17 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Strict equals is equivalent to the {@code Board#equals()} function plus it also compares if history
-     * on both boards are the same
+     * Checks if this board is equivalent to another performing a strict comparison.
+     * <p>
+     * Two boards are considered strictly equivalent when:
+     * <ul>
+     *     <li>they are equivalent;</li>
+     *     <li>their history is the same.</li>
+     * </ul>
      *
-     * @param obj board object
-     * @return if board compared is strictly equal including history
+     * @param obj the other object reference to compare to this board
+     * @return {@code true} if this board and the object reference are strictly equivalent
+     * @see Board#equals(Object)
      */
     public boolean strictEquals(Object obj) {
         if (obj instanceof Board) {
@@ -1481,14 +1620,24 @@ public class Board implements Cloneable, BoardEvent {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * Returns a hash code value for this board.
+     *
+     * @return a hash value for this board
      */
     @Override
     public int hashCode() {
         return (int) incrementalHashKey;
     }
 
+    /**
+     * Returns a Zobrist hash code value for this board. A Zobrist hashing assures the same position returns the same
+     * hash value. It is calculated using the position of the pieces, the side to move, the castle rights and the en
+     * passant target.
+     *
+     * @return a Zobrist hash value for this board
+     * @see <a href="https://en.wikipedia.org/wiki/Zobrist_hashing">Zobrist hashing in Wikipedia</a>
+     */
     public long getZobristKey() {
         long hash = 0;
         if (getCastleRight(Side.WHITE) != CastleRight.NONE) {
@@ -1529,32 +1678,37 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
-     * Returns a string representation of the board with the 1st rank at the bottom,
-     * similarly to the {@link #toString()} method but without the info on whose turn it is.
+     * Returns a human-readable representation of the board taking the perspective of white, with the 1st rank at the
+     * bottom and the 8th rank at the top.
+     * <p>
+     * Same as invoking {@code toStringFromViewPoint(Side.WHITE)}.
      *
-     * @return A string representation of the board from the White player's point of view.
-     * @since 1.4.0
+     * @return a string representation of the board from white player's point of view
+     * @see Board#toStringFromViewPoint(Side)
      */
     public String toStringFromWhiteViewPoint() {
         return toStringFromViewPoint(Side.WHITE);
     }
 
     /**
-     * Returns a string representation of the board with the 8th rank at the bottom
+     * Returns a human-readable representation of the board taking the perspective of black, with the 8th rank at the
+     * bottom and the 1st rank at the top.
+     * <p>
+     * Same as invoking {@code toStringFromViewPoint(Side.BLACK)}.
      *
-     * @return A string representation of the board from the Black player's point of view.
-     * @since 1.4.0
+     * @return a string representation of the board from black player's point of view
+     * @see Board#toStringFromViewPoint(Side)
      */
     public String toStringFromBlackViewPoint() {
         return toStringFromViewPoint(Side.BLACK);
     }
 
     /**
-     * Returns a string representation of the board from the given player's point of view.
+     * Returns a human-readable representation of the board taking the perspective of one side, with the 1st rank at the
+     * bottom in case of white, or the 8th rank at the bottom in case of black.
      *
-     * @param side The side whose home rank should be at the bottom of the resulting representation.
-     * @return A string representation of the board from the given player's point of view.
-     * @since 1.4.0
+     * @param side the side whose home rank should be at the bottom of the resulting representation
+     * @return a string representation of the board using one of the two player's point of view
      */
     public String toStringFromViewPoint(Side side) {
         StringBuilder sb = new StringBuilder();
@@ -1580,11 +1734,24 @@ public class Board implements Cloneable, BoardEvent {
         return sb.toString();
     }
 
+    /**
+     * Returns a string representation of this board.
+     * <p>
+     * The result of {@link Board#toStringFromWhiteViewPoint()} is used to print the position of the board.
+     *
+     * @return a string representation of the board
+     * @see Board#toStringFromWhiteViewPoint()
+     */
     @Override
     public String toString() {
         return toStringFromWhiteViewPoint() + "Side: " + getSideToMove();
     }
 
+    /**
+     * Returns a reference to a copy of the board. The board history is copied as well.
+     *
+     * @return a copy of the board
+     */
     @Override
     public Board clone() {
         Board copy = new Board(getContext(), this.updateHistory);
@@ -1597,18 +1764,29 @@ public class Board implements Cloneable, BoardEvent {
         return copy;
     }
 
+    /**
+     * Returns the current incremental hash key. This hash value changes every time the position changes, hence it is
+     * unique for every position.
+     *
+     * @return the current incremental hash key
+     */
     public long getIncrementalHashKey() {
         return incrementalHashKey;
     }
 
+    /**
+     * Sets the current incremental hash key, replacing the previous one.
+     *
+     * @param hashKey the incremental hash key to set
+     */
     public void setIncrementalHashKey(long hashKey) {
         incrementalHashKey = hashKey;
     }
 
     private boolean pawnCanBeCapturedEnPassant() {
-        return 
-            squareAttackedByPieceType(getEnPassant(), getSideToMove(), PieceType.PAWN) != 0 
-            && verifyNotPinnedPiece(getSideToMove().flip(), getEnPassant(), getEnPassantTarget());
+        return
+                squareAttackedByPieceType(getEnPassant(), getSideToMove(), PieceType.PAWN) != 0
+                        && verifyNotPinnedPiece(getSideToMove().flip(), getEnPassant(), getEnPassantTarget());
     }
 
     private boolean verifyNotPinnedPiece(Side side, Square enPassant, Square target) {

@@ -17,15 +17,16 @@
 package com.github.bhlangonijr.chesslib.game;
 
 /**
- * The enum Player type.
+ * The possible types of chess player.
  */
 public enum PlayerType {
+
     /**
-     * Human player type.
+     * The human player type.
      */
     HUMAN,
     /**
-     * Engine player type.
+     * The engine player type.
      */
     ENGINE
 }

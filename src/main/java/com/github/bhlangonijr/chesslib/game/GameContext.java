@@ -25,125 +25,129 @@ import com.github.bhlangonijr.chesslib.move.Move;
 import java.util.List;
 
 /**
- * The type Game context.
+ * The definition of a game context, a support structure used to provide contextual information to a chess position, and
+ * most importantly to validate special moves in a uniform and consistent way according to the chess variation (e.g.
+ * castle moves).
  */
 public class GameContext {
 
     /**
-     * The Whiteoo.
+     * The definition of the white king shift in the default short castle move.
      */
     protected Move whiteoo;
     /**
-     * The Whiteooo.
+     * The definition of the white king shift in the default long castle move.
      */
     protected Move whiteooo;
     /**
-     * The Blackoo.
+     * The definition of the black king shift in the default short castle move.
      */
     protected Move blackoo;
     /**
-     * The Blackooo.
+     * The definition of the black king shift in the default long castle move.
      */
     protected Move blackooo;
 
     /**
-     * The White rookoo.
+     * The definition of the white rook shift in the default short castle move.
      */
     protected Move whiteRookoo;
     /**
-     * The White rookooo.
+     * The definition of the white rook shift in the default long castle move.
      */
     protected Move whiteRookooo;
     /**
-     * The Black rookoo.
+     * The definition of the black rook shift in the default short castle move.
      */
     protected Move blackRookoo;
     /**
-     * The Black rookooo.
+     * The definition of the black rook shift in the default long castle move.
      */
     protected Move blackRookooo;
 
     /**
-     * The Whiteoo squares.
+     * The list of squares crossed by the white king in the default short castle move.
      */
     protected List<Square> whiteooSquares;
     /**
-     * The Whiteooo squares.
+     * The list of squares crossed by the white king in the default long castle move.
      */
     protected List<Square> whiteoooSquares;
     /**
-     * The Blackoo squares.
+     * The list of squares crossed by the black king in the default short castle move.
      */
     protected List<Square> blackooSquares;
     /**
-     * The Blackooo squares.
+     * The list of squares crossed by the black king in the default long castle move.
      */
     protected List<Square> blackoooSquares;
 
     /**
-     * The Whiteoo squares bb.
+     * The bitboard representation of the squares crossed by the white king in the default short castle move.
      */
     protected long whiteooSquaresBb;
     /**
-     * The Whiteooo squares bb.
+     * The bitboard representation of the squares crossed by the white king in the default long castle move.
      */
     protected long whiteoooSquaresBb;
     /**
-     * The Blackoo squares bb.
+     * The bitboard representation of the squares crossed by the black king in the default short castle move.
      */
     protected long blackooSquaresBb;
     /**
-     * The Blackooo squares bb.
+     * The bitboard representation of the squares crossed by the black king in the default long castle move.
      */
     protected long blackoooSquaresBb;
 
     /**
-     * The Whiteoo all squares bb.
+     * The bitboard representation of all the squares involved in the default short castle move of white.
      */
     protected long whiteooAllSquaresBb;
     /**
-     * The Whiteooo all squares bb.
+     * The bitboard representation of all the squares involved in the default long castle move of white.
      */
     protected long whiteoooAllSquaresBb;
     /**
-     * The Blackoo all squares bb.
+     * The bitboard representation of all the squares involved in the default short castle move of black.
      */
     protected long blackooAllSquaresBb;
     /**
-     * The Blackooo all squares bb.
+     * The bitboard representation of all the squares involved in the default long castle move of black.
      */
     protected long blackoooAllSquaresBb;
 
     /**
-     * The Start fen.
+     * The initial position of the game, as a Forsyth-Edwards Notation (FEN) string.
      */
     protected String startFEN;
 
     /**
-     * The Game mode.
+     * The game mode.
      */
     protected GameMode gameMode;
     /**
-     * The Variation type.
+     * The type of the chess variation.
      */
     protected VariationType variationType;
     /**
-     * The Event.
+     * The chess event.
      */
     protected Event event;
 
     /**
-     * Instantiates a new Game context.
+     * Constructs a new game context using the default game mode and chess variation.
+     * <p>
+     * Same as invoking {@code new GameContext(GameMode.HUMAN_VS_HUMAN, VariationType.NORMAL)}.
      */
     public GameContext() {
         this(GameMode.HUMAN_VS_HUMAN, VariationType.NORMAL);
     }
 
     /**
-     * Instantiates a new Game context.
+     * Constructs a new game context using the provided game mode and chess variation.
      *
      * @param gameMode      the game mode
-     * @param variationType the variation type
+     * @param variationType the chess variation
      */
     public GameContext(GameMode gameMode, VariationType variationType) {
         setGameMode(gameMode);
@@ -192,11 +196,12 @@ public class GameContext {
     }
 
     /**
-     * gets the king castle move
+     * Returns an unambiguous castle move by king given the provided side and castle rights, if possible. A castle move
+     * is not ambiguous if only one side of the board has castle rights, either king-side or queen-side (not both).
      *
-     * @param side        the side
-     * @param castleRight the castle right
-     * @return king castle move
+     * @param side        the side to move
+     * @param castleRight the castle rights available for the moving side
+     * @return the move representing the castle move of the king, if available and not ambiguous, or null otherwise
      */
     public Move getKingCastleMove(Side side, CastleRight castleRight) {
         Move move = null;
@@ -217,11 +222,12 @@ public class GameContext {
     }
 
     /**
-     * gets the rook castle move
+     * Returns an unambiguous castle move by rook given the provided side and castle rights, if possible. A castle move
+     * is not ambiguous if only one side of the board has castle rights, either king-side or queen-side (not both).
      *
-     * @param side        the side
-     * @param castleRight the castle right
-     * @return rook castle move
+     * @param side        the side to move
+     * @param castleRight the castle rights available for the moving side
+     * @return the move representing the castle move of the rook, if available and not ambiguous, or null otherwise
      */
     public Move getRookCastleMove(Side side, CastleRight castleRight) {
         Move move = null;
@@ -242,10 +248,10 @@ public class GameContext {
     }
 
     /**
-     * Is castle move boolean.
+     * Checks if the move is a castle move or not.
      *
-     * @param move the move
-     * @return true if move is a castle one
+     * @param move the move to check
+     * @return {@code true} if the move is a castle one
      */
     public boolean isCastleMove(final Move move) {
         return move.equals(getWhiteoo()) ||
@@ -255,11 +261,11 @@ public class GameContext {
     }
 
     /**
-     * If castle move is a valid one
+     * Checks if the castle move is valid according to the castle rights.
      *
-     * @param move        the move
-     * @param castleRight the castle right
-     * @return boolean
+     * @param move        the move to check
+     * @param castleRight the castle rights to compare the move against
+     * @return {@code true} if the castle move is valid
      */
     public boolean hasCastleRight(final Move move, final CastleRight castleRight) {
 
@@ -273,10 +279,10 @@ public class GameContext {
     }
 
     /**
-     * is King side castle
+     * Checks if the move is a king-side (short) castle move.
      *
-     * @param move the move
-     * @return boolean
+     * @param move the move to check
+     * @return {@code true} if the move is a king-side castle one
      */
     public boolean isKingSideCastle(Move move) {
         return move.equals(getWhiteoo()) ||
@@ -284,10 +290,10 @@ public class GameContext {
     }
 
     /**
-     * is queen side castle
+     * Checks if the move is a queen-side (long) castle move.
      *
-     * @param move the move
-     * @return boolean
+     * @param move the move to check
+     * @return {@code true} if the move is a queen-side castle one
      */
     public boolean isQueenSideCastle(Move move) {
         return move.equals(getWhiteooo()) ||
@@ -295,169 +301,169 @@ public class GameContext {
     }
 
     /**
-     * Gets whiteoo.
+     * Returns white king move in case of short castle.
      *
-     * @return the whiteoo
+     * @return the short castle white king move
      */
     public Move getWhiteoo() {
         return whiteoo;
     }
 
     /**
-     * Sets whiteoo.
+     * Sets the white king move in case of short castle.
      *
-     * @param whiteoo the whiteoo
+     * @param whiteoo the short castle white king move to set
      */
     public void setWhiteoo(Move whiteoo) {
         this.whiteoo = whiteoo;
     }
 
     /**
-     * Gets whiteooo.
+     * Returns white king move in case of long castle.
      *
-     * @return the whiteooo
+     * @return the long castle white king move
      */
     public Move getWhiteooo() {
         return whiteooo;
     }
 
     /**
-     * Sets whiteooo.
+     * Sets the white king move in case of long castle.
      *
-     * @param whiteooo the whiteooo
+     * @param whiteooo the long castle white king move to set
      */
     public void setWhiteooo(Move whiteooo) {
         this.whiteooo = whiteooo;
     }
 
     /**
-     * Gets blackoo.
+     * Returns black king move in case of short castle.
      *
-     * @return the blackoo
+     * @return the short castle black king move
      */
     public Move getBlackoo() {
         return blackoo;
     }
 
     /**
-     * Sets blackoo.
+     * Sets the black king move in case of short castle.
      *
-     * @param blackoo the blackoo
+     * @param blackoo the short castle black king move to set
      */
     public void setBlackoo(Move blackoo) {
         this.blackoo = blackoo;
     }
 
     /**
-     * Gets blackooo.
+     * Returns black king move in case of long castle.
      *
-     * @return the blackooo
+     * @return the long castle black king move
      */
     public Move getBlackooo() {
         return blackooo;
     }
 
     /**
-     * Sets blackooo.
+     * Sets the black king move in case of long castle.
      *
-     * @param blackooo the blackooo
+     * @param blackooo the long castle black king move to set
      */
     public void setBlackooo(Move blackooo) {
         this.blackooo = blackooo;
     }
 
     /**
-     * Gets white rookoo.
+     * Returns white rook move in case of short castle.
      *
-     * @return the white rookoo
+     * @return the short castle white rook move
      */
     public Move getWhiteRookoo() {
         return whiteRookoo;
     }
 
     /**
-     * Sets white rookoo.
+     * Sets the white rook move in case of short castle.
      *
-     * @param whiteRookoo the white rookoo
+     * @param whiteRookoo the short castle white rook move to set
      */
     public void setWhiteRookoo(Move whiteRookoo) {
         this.whiteRookoo = whiteRookoo;
     }
 
     /**
-     * Gets white rookooo.
+     * Returns white rook move in case of long castle.
      *
-     * @return the white rookooo
+     * @return the long castle white rook move
      */
     public Move getWhiteRookooo() {
         return whiteRookooo;
     }
 
     /**
-     * Sets white rookooo.
+     * Sets the white rook move in case of long castle.
      *
-     * @param whiteRookooo the white rookooo
+     * @param whiteRookooo the long castle white rook move to set
      */
     public void setWhiteRookooo(Move whiteRookooo) {
         this.whiteRookooo = whiteRookooo;
     }
 
     /**
-     * Gets black rookoo.
+     * Returns black rook move in case of short castle.
      *
-     * @return the black rookoo
+     * @return the short castle black rook move
      */
     public Move getBlackRookoo() {
         return blackRookoo;
     }
 
     /**
-     * Sets black rookoo.
+     * Sets the black rook move in case of short castle.
      *
-     * @param blackRookoo the black rookoo
+     * @param blackRookoo the short castle black rook move to set
      */
     public void setBlackRookoo(Move blackRookoo) {
         this.blackRookoo = blackRookoo;
     }
 
     /**
-     * Gets black rookooo.
+     * Returns black rook move in case of long castle.
      *
-     * @return the black rookooo
+     * @return the long castle black rook move
      */
     public Move getBlackRookooo() {
         return blackRookooo;
     }
 
     /**
-     * Sets black rookooo.
+     * Sets the black rook move in case of long castle.
      *
-     * @param blackRookooo the black rookooo
+     * @param blackRookooo the long castle black rook move to set
      */
     public void setBlackRookooo(Move blackRookooo) {
         this.blackRookooo = blackRookooo;
     }
 
     /**
-     * Gets start fen.
+     * Returns the initial position of the game as a Forsyth-Edwards Notation (FEN) string.
      *
-     * @return the start fen
+     * @return the initial position in FEN notation
      */
     public String getStartFEN() {
         return startFEN;
     }
 
     /**
-     * Sets start fen.
+     * Sets the initial position of the game, provided as a Forsyth-Edwards Notation (FEN).
      *
-     * @param startFEN the start fen
+     * @param startFEN the initial position to set
      */
     public void setStartFEN(String startFEN) {
         this.startFEN = startFEN;
     }
 
     /**
-     * Gets game mode.
+     * Returns the game mode.
      *
      * @return the game mode
      */
@@ -466,190 +472,190 @@ public class GameContext {
     }
 
     /**
-     * Sets game mode.
+     * Sets the game mode.
      *
-     * @param gameMode the game mode
+     * @param gameMode the game mode to set
      */
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
     }
 
     /**
-     * Gets variation type.
+     * Returns the type of the chess variation.
      *
-     * @return the variationType
+     * @return the type of the chess variation
      */
     public VariationType getVariationType() {
         return variationType;
     }
 
     /**
-     * Sets variation type.
+     * Sets the type of the chess variation.
      *
-     * @param variationType the variationType to set
+     * @param variationType the chess variation type to set
      */
     public void setVariationType(VariationType variationType) {
         this.variationType = variationType;
     }
 
     /**
-     * Gets whiteoo squares.
+     * Returns the list of squares crossed by the white king in the short castle move.
      *
-     * @return the whiteoo squares
+     * @return the squares crossed by the white king in the short castle move
      */
     public List<Square> getWhiteooSquares() {
         return whiteooSquares;
     }
 
     /**
-     * Sets whiteoo squares.
+     * Sets the list of squares crossed by the white king in the short castle move.
      *
-     * @param whiteooSquares the whiteoo squares
+     * @param whiteooSquares the list of squares to set
      */
     public void setWhiteooSquares(List<Square> whiteooSquares) {
         this.whiteooSquares = whiteooSquares;
     }
 
     /**
-     * Gets whiteooo squares.
+     * Returns the list of squares crossed by the white king in the long castle move.
      *
-     * @return the whiteooo squares
+     * @return the squares crossed by the white king in the long castle move
      */
     public List<Square> getWhiteoooSquares() {
         return whiteoooSquares;
     }
 
     /**
-     * Sets whiteooo squares.
+     * Sets the list of squares crossed by the white king in the long castle move.
      *
-     * @param whiteoooSquares the whiteooo squares
+     * @param whiteoooSquares the list of squares to set
      */
     public void setWhiteoooSquares(List<Square> whiteoooSquares) {
         this.whiteoooSquares = whiteoooSquares;
     }
 
     /**
-     * Gets blackoo squares.
+     * Returns the list of squares crossed by the black king in the short castle move.
      *
-     * @return the blackoo squares
+     * @return the squares crossed by the black king in the short castle move
      */
     public List<Square> getBlackooSquares() {
         return blackooSquares;
     }
 
     /**
-     * Sets blackoo squares.
+     * Sets the list of squares crossed by the black king in the short castle move.
      *
-     * @param blackooSquares the blackoo squares
+     * @param blackooSquares the list of squares to set
      */
     public void setBlackooSquares(List<Square> blackooSquares) {
         this.blackooSquares = blackooSquares;
     }
 
     /**
-     * Gets blackooo squares.
+     * Returns the list of squares crossed by the black king in the long castle move.
      *
-     * @return the blackooo squares
+     * @return the squares crossed by the black king in the long castle move
      */
     public List<Square> getBlackoooSquares() {
         return blackoooSquares;
     }
 
     /**
-     * Sets blackooo squares.
+     * Sets the list of squares crossed by the black king in the long castle move.
      *
-     * @param blackoooSquares the blackooo squares
+     * @param blackoooSquares the list of squares to set
      */
     public void setBlackoooSquares(List<Square> blackoooSquares) {
         this.blackoooSquares = blackoooSquares;
     }
 
     /**
-     * Gets whiteoo squares bb.
+     * Returns the bitboard representation of the squares crossed by the white king in the short castle move.
      *
-     * @return the whiteoo squares bb
+     * @return the bitboard representing the squares crossed by the white king in the short castle move
      */
     public long getWhiteooSquaresBb() {
         return whiteooSquaresBb;
     }
 
     /**
-     * Sets whiteoo squares bb.
+     * Sets the bitboard representation of the squares crossed by the white king in the short castle move.
      *
-     * @param whiteooSquaresBb the whiteoo squares bb
+     * @param whiteooSquaresBb the bitboard to set
      */
     public void setWhiteooSquaresBb(long whiteooSquaresBb) {
         this.whiteooSquaresBb = whiteooSquaresBb;
     }
 
     /**
-     * Gets whiteooo squares bb.
+     * Returns the bitboard representation of the squares crossed by the white king in the long castle move.
      *
-     * @return the whiteooo squares bb
+     * @return the bitboard representing the squares crossed by the white king in the long castle move
      */
     public long getWhiteoooSquaresBb() {
         return whiteoooSquaresBb;
     }
 
     /**
-     * Sets whiteooo squares bb.
+     * Sets the bitboard representation of the squares crossed by the white king in the long castle move.
      *
-     * @param whiteoooSquaresBb the whiteooo squares bb
+     * @param whiteoooSquaresBb the bitboard to set
      */
     public void setWhiteoooSquaresBb(long whiteoooSquaresBb) {
         this.whiteoooSquaresBb = whiteoooSquaresBb;
     }
 
     /**
-     * Gets blackoo squares bb.
+     * Returns the bitboard representation of the squares crossed by the black king in the short castle move.
      *
-     * @return the blackoo squares bb
+     * @return the bitboard representing the squares crossed by the black king in the short castle move
      */
     public long getBlackooSquaresBb() {
         return blackooSquaresBb;
     }
 
     /**
-     * Sets blackoo squares bb.
+     * Sets the bitboard representation of the squares crossed by the black king in the short castle move.
      *
-     * @param blackooSquaresBb the blackoo squares bb
+     * @param blackooSquaresBb the bitboard to set
      */
     public void setBlackooSquaresBb(long blackooSquaresBb) {
         this.blackooSquaresBb = blackooSquaresBb;
     }
 
     /**
-     * Gets blackooo squares bb.
+     * Returns the bitboard representation of the squares crossed by the black king in the long castle move.
      *
-     * @return the blackooo squares bb
+     * @return the bitboard representing the squares crossed by the black king in the long castle move
      */
     public long getBlackoooSquaresBb() {
         return blackoooSquaresBb;
     }
 
     /**
-     * Sets blackooo squares bb.
+     * Sets the bitboard representation of the squares crossed by the black king in the long castle move.
      *
-     * @param blackoooSquaresBb the blackooo squares bb
+     * @param blackoooSquaresBb the bitboard to set
      */
     public void setBlackoooSquaresBb(long blackoooSquaresBb) {
         this.blackoooSquaresBb = blackoooSquaresBb;
     }
 
     /**
-     * Gets whiteoo all squares bb.
+     * Returns the bitboard representation of all the squares involved in the short castle move of white.
      *
-     * @return the whiteoo all squares bb
+     * @return the bitboard representing the squares involved in the short castle move of white
      */
     public long getWhiteooAllSquaresBb() {
         return whiteooAllSquaresBb;
     }
 
     /**
-     * Sets whiteoo all squares bb.
+     * Sets the bitboard representation of all the squares involved in the short castle move of white.
      *
-     * @param whiteooAllSquaresBb the whiteoo all squares bb
-     * @return the whiteoo all squares bb
+     * @param whiteooAllSquaresBb the bitboard to set
+     * @return this game context instance
      */
     public GameContext setWhiteooAllSquaresBb(long whiteooAllSquaresBb) {
         this.whiteooAllSquaresBb = whiteooAllSquaresBb;
@@ -657,19 +663,19 @@ public class GameContext {
     }
 
     /**
-     * Gets whiteooo all squares bb.
+     * Returns the bitboard representation of all the squares involved in the long castle move of white.
      *
-     * @return the whiteooo all squares bb
+     * @return the bitboard representing the squares involved in the long castle move of white
      */
     public long getWhiteoooAllSquaresBb() {
         return whiteoooAllSquaresBb;
     }
 
     /**
-     * Sets whiteooo all squares bb.
+     * Sets the bitboard representation of all the squares involved in the long castle move of white.
      *
-     * @param whiteoooAllSquaresBb the whiteooo all squares bb
-     * @return the whiteooo all squares bb
+     * @param whiteoooAllSquaresBb the bitboard to set
+     * @return this game context instance
      */
     public GameContext setWhiteoooAllSquaresBb(long whiteoooAllSquaresBb) {
         this.whiteoooAllSquaresBb = whiteoooAllSquaresBb;
@@ -677,19 +683,19 @@ public class GameContext {
     }
 
     /**
-     * Gets blackoo all squares bb.
+     * Returns the bitboard representation of all the squares involved in the short castle move of black.
      *
-     * @return the blackoo all squares bb
+     * @return the bitboard representing the squares involved in the short castle move of black
      */
     public long getBlackooAllSquaresBb() {
         return blackooAllSquaresBb;
     }
 
     /**
-     * Sets blackoo all squares bb.
+     * Sets the bitboard representation of all the squares involved in the short castle move of black.
      *
-     * @param blackooAllSquaresBb the blackoo all squares bb
-     * @return the blackoo all squares bb
+     * @param blackooAllSquaresBb the bitboard to set
+     * @return this game context instance
      */
     public GameContext setBlackooAllSquaresBb(long blackooAllSquaresBb) {
         this.blackooAllSquaresBb = blackooAllSquaresBb;
@@ -697,19 +703,19 @@ public class GameContext {
     }
 
     /**
-     * Gets blackooo all squares bb.
+     * Returns the bitboard representation of all the squares involved in the long castle move of black.
      *
-     * @return the blackooo all squares bb
+     * @return the bitboard representing the squares involved in the long castle move of black
      */
     public long getBlackoooAllSquaresBb() {
         return blackoooAllSquaresBb;
     }
 
     /**
-     * Sets blackooo all squares bb.
+     * Sets the bitboard representation of all the squares involved in the long castle move of black.
      *
-     * @param blackoooAllSquaresBb the blackooo all squares bb
-     * @return the blackooo all squares bb
+     * @param blackoooAllSquaresBb the bitboard to set
+     * @return this game context instance
      */
     public GameContext setBlackoooAllSquaresBb(long blackoooAllSquaresBb) {
         this.blackoooAllSquaresBb = blackoooAllSquaresBb;
@@ -717,50 +723,50 @@ public class GameContext {
     }
 
     /**
-     * Gets .
+     * Returns the short castle king move based on the side to move.
      *
-     * @param side the side
-     * @return the
+     * @param side the side to move
+     * @return the short castle king move
      */
     public Move getoo(Side side) {
         return Side.WHITE.equals(side) ? getWhiteoo() : getBlackoo();
     }
 
     /**
-     * Gets .
+     * Returns the long castle king move based on the side to move.
      *
-     * @param side the side
-     * @return the
+     * @param side the side to move
+     * @return the long castle king move
      */
     public Move getooo(Side side) {
         return Side.WHITE.equals(side) ? getWhiteooo() : getBlackooo();
     }
 
     /**
-     * Gets rookoo.
+     * Returns the short castle rook move based on the side to move.
      *
-     * @param side the side
-     * @return the rookoo
+     * @param side the side to move
+     * @return the short castle rook move
      */
     public Move getRookoo(Side side) {
         return Side.WHITE.equals(side) ? getWhiteRookoo() : getBlackRookoo();
     }
 
     /**
-     * Gets rookooo.
+     * Returns the long castle rook move based on the side to move.
      *
-     * @param side the side
-     * @return the rookooo
+     * @param side the side to move
+     * @return the long castle rook move
      */
     public Move getRookooo(Side side) {
         return Side.WHITE.equals(side) ? getWhiteRookooo() : getBlackRookooo();
     }
 
     /**
-     * Gets squares.
+     * Returns the list of squares crossed by the king in the short castle move based on the side to move.
      *
-     * @param side the side
-     * @return the squares
+     * @param side the side to move
+     * @return the squares crossed by the king in the short castle move
      */
     public List<Square> getooSquares(Side side) {
         return Side.WHITE.equals(side) ?
@@ -768,10 +774,10 @@ public class GameContext {
     }
 
     /**
-     * Gets squares.
+     * Returns the list of squares crossed by the king in the long castle move based on the side to move.
      *
-     * @param side the side
-     * @return the squares
+     * @param side the side to move
+     * @return the squares crossed by the king in the long castle move
      */
     public List<Square> getoooSquares(Side side) {
         return Side.WHITE.equals(side) ?
@@ -779,10 +785,11 @@ public class GameContext {
     }
 
     /**
-     * Gets squares bb.
+     * Returns the bitboard representation of the squares crossed by the king in the short castle move based on the side
+     * to move.
      *
-     * @param side the side
-     * @return the squares bb
+     * @param side the side to move
+     * @return the bitboard representing the squares crossed by the king in the short castle move
      */
     public long getooSquaresBb(Side side) {
         return Side.WHITE.equals(side) ?
@@ -790,10 +797,11 @@ public class GameContext {
     }
 
     /**
-     * Gets squares bb.
+     * Returns the bitboard representation of the squares crossed by the king in the long castle move based on the side
+     * to move.
      *
-     * @param side the side
-     * @return the squares bb
+     * @param side the side to move
+     * @return the bitboard representing the squares crossed by the king in the long castle move
      */
     public long getoooSquaresBb(Side side) {
         return Side.WHITE.equals(side) ?
@@ -801,10 +809,11 @@ public class GameContext {
     }
 
     /**
-     * Gets all squares bb.
+     * Returns the bitboard representation of all the squares involved in the short castle move based on the side to
+     * move.
      *
-     * @param side the side
-     * @return the all squares bb
+     * @param side the side to move
+     * @return the bitboard representing the squares involved in the short castle move
      */
     public long getooAllSquaresBb(Side side) {
         return Side.WHITE.equals(side) ?
@@ -812,10 +821,11 @@ public class GameContext {
     }
 
     /**
-     * Gets all squares bb.
+     * Returns the bitboard representation of all the squares involved in the long castle move based on the side to
+     * move.
      *
-     * @param side the side
-     * @return the all squares bb
+     * @param side the side to move
+     * @return the bitboard representing the squares involved in the long castle move
      */
     public long getoooAllSquaresBb(Side side) {
         return Side.WHITE.equals(side) ?
@@ -823,18 +833,18 @@ public class GameContext {
     }
 
     /**
-     * Gets event.
+     * Returns the chess event.
      *
-     * @return the event
+     * @return the chess event
      */
     public Event getEvent() {
         return event;
     }
 
     /**
-     * Sets event.
+     * Sets the chess event.
      *
-     * @param event the event to set
+     * @param event the chess event to set
      */
     public void setEvent(Event event) {
         this.event = event;

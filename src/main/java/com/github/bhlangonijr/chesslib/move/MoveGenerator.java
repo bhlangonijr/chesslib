@@ -25,7 +25,7 @@ import static com.github.bhlangonijr.chesslib.Bitboard.bitScanForward;
 import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
 
 /**
- * The Move generator.
+ * A handy collection of static utility methods for generating moves from a chess position.
  */
 public class MoveGenerator {
 
@@ -33,10 +33,14 @@ public class MoveGenerator {
     }
 
     /**
-     * Generate All pawn moves
+     * Generates all pawn captures for the playing side in the given position, and appends them to the list passed as an
+     * argument. That implies the list must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the captures are legal according to the standard rules of
+     * pawn movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
+     * @param board the board from which to generate the pawn captures
+     * @param moves a mutable list in which to append the generated pawn captures
      */
     public static void generatePawnCaptures(Board board, List<Move> moves) {
         Side side = board.getSideToMove();
@@ -57,10 +61,14 @@ public class MoveGenerator {
     }
 
     /**
-     * Generate All pawn captures
+     * Generates all pawn moves, excluding captures, for the playing side in the given position, and appends them to the
+     * list passed as an argument. That implies the list must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * pawn movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
+     * @param board the board from which to generate the pawn moves
+     * @param moves a mutable list in which to append the generated pawn moves
      */
     public static void generatePawnMoves(Board board, List<Move> moves) {
         Side side = board.getSideToMove();
@@ -97,11 +105,16 @@ public class MoveGenerator {
     }
 
     /**
-     * generate knight moves on the target squares allowed in mask param
+     * Generates all knight moves for the playing side in the given position, according to a bitboard mask used to
+     * specify the allowed target squares on the board. The generated moves are appended to the list passed as an
+     * argument, which must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * knight movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
-     * @param mask  mask of allowed targets
+     * @param board the board from which to generate the knight moves
+     * @param moves a mutable list in which to append the generated knight moves
+     * @param mask  bitboard mask of allowed targets
      */
     public static void generateKnightMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
@@ -121,10 +134,15 @@ public class MoveGenerator {
     }
 
     /**
-     * Get knight moves and captures
+     * Generates all knight moves for the playing side in the given position, and appends them to the list passed as an
+     * argument. That implies the list must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * knight movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
+     * @param board the board from which to generate the knight moves
+     * @param moves a mutable list in which to append the generated knight moves
+     * @see MoveGenerator#generateKnightMoves(Board, List, long)
      */
     public static void generateKnightMoves(Board board, List<Move> moves) {
 
@@ -132,11 +150,16 @@ public class MoveGenerator {
     }
 
     /**
-     * generate bishop moves on the target squares allowed in mask param
+     * Generates all bishop moves for the playing side in the given position, according to a bitboard mask used to
+     * specify the allowed target squares on the board. The generated moves are appended to the list passed as an
+     * argument, which must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * bishop movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
-     * @param mask  mask of allowed targets
+     * @param board the board from which to generate the bishop moves
+     * @param moves a mutable list in which to append the generated bishop moves
+     * @param mask  bitboard mask of allowed targets
      */
     public static void generateBishopMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
@@ -156,10 +179,15 @@ public class MoveGenerator {
     }
 
     /**
-     * Get Bishop moves
+     * Generates all bishop moves for the playing side in the given position, and appends them to the list passed as an
+     * argument. That implies the list must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * bishop movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
+     * @param board the board from which to generate the bishop moves
+     * @param moves a mutable list in which to append the generated bishop moves
+     * @see MoveGenerator#generateBishopMoves(Board, List, long)
      */
     public static void generateBishopMoves(Board board, List<Move> moves) {
 
@@ -167,11 +195,16 @@ public class MoveGenerator {
     }
 
     /**
-     * generate rook moves on the target squares allowed in mask param
+     * Generates all rook moves for the playing side in the given position, according to a bitboard mask used to specify
+     * the allowed target squares on the board. The generated moves are appended to the list passed as an argument,
+     * which must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * rook movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
-     * @param mask  mask of allowed targets
+     * @param board the board from which to generate the rook moves
+     * @param moves a mutable list in which to append the generated rook moves
+     * @param mask  bitboard mask of allowed targets
      */
     public static void generateRookMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
@@ -191,10 +224,15 @@ public class MoveGenerator {
     }
 
     /**
-     * Get Rook moves
+     * Generates all rook moves for the playing side in the given position, and appends them to the list passed as an
+     * argument. That implies the list must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * rook movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
+     * @param board the board from which to generate the rook moves
+     * @param moves a mutable list in which to append the generated rook moves
+     * @see MoveGenerator#generateRookMoves(Board, List, long)
      */
     public static void generateRookMoves(Board board, List<Move> moves) {
 
@@ -202,11 +240,16 @@ public class MoveGenerator {
     }
 
     /**
-     * generate queen moves on the target squares allowed in mask param
+     * Generates all queen moves for the playing side in the given position, according to a bitboard mask used to
+     * specify the allowed target squares on the board. The generated moves are appended to the list passed as an
+     * argument, which must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * queen movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
-     * @param mask  mask of allowed targets
+     * @param board the board from which to generate the queen moves
+     * @param moves a mutable list in which to append the generated queen moves
+     * @param mask  bitboard mask of allowed targets
      */
     public static void generateQueenMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
@@ -226,10 +269,15 @@ public class MoveGenerator {
     }
 
     /**
-     * Get Queen moves
+     * Generates all queen moves for the playing side in the given position, and appends them to the list passed as an
+     * argument. That implies the list must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * queen movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
+     * @param board the board from which to generate the queen moves
+     * @param moves a mutable list in which to append the generated queen moves
+     * @see MoveGenerator#generateQueenMoves(Board, List, long)
      */
     public static void generateQueenMoves(Board board, List<Move> moves) {
 
@@ -237,11 +285,16 @@ public class MoveGenerator {
     }
 
     /**
-     * generate king moves on the target squares allowed in mask param
+     * Generates all king moves for the playing side in the given position, according to a bitboard mask used to specify
+     * the allowed target squares on the board. The generated moves are appended to the list passed as an argument,
+     * which must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * king movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
-     * @param mask  mask of allowed targets
+     * @param board the board from which to generate the king moves
+     * @param moves a mutable list in which to append the generated king moves
+     * @param mask  bitboard mask of allowed targets
      */
     public static void generateKingMoves(Board board, List<Move> moves, long mask) {
         Side side = board.getSideToMove();
@@ -261,20 +314,26 @@ public class MoveGenerator {
     }
 
     /**
-     * Get King moves
+     * Generates all king moves for the playing side in the given position, and appends them to the list passed as an
+     * argument. That implies the list must be mutable in order for this method to work.
+     * <p>
+     * All moves have to be considered pseudo-legal: although the moves are legal according to the standard rules of
+     * rook movements, the resulting position might not be considered legal after they are played on the board.
      *
-     * @param board the board
-     * @param moves the moves
+     * @param board the board from which to generate the king moves
+     * @param moves a mutable list in which to append the generated king moves
+     * @see MoveGenerator#generateKingMoves(Board, List, long)
      */
     public static void generateKingMoves(Board board, List<Move> moves) {
         generateKingMoves(board, moves, ~board.getBitboard(board.getSideToMove()));
     }
 
     /**
-     * Generate all castle moves - always legal moves
+     * Generates all castle moves for the playing side in the given position, and appends them to the list passed as an
+     * argument. That implies the list must be mutable in order for this method to work.
      *
-     * @param board the board
-     * @param moves the moves
+     * @param board the board from which to generate the castle moves
+     * @param moves a mutable list in which to append the generated castle moves
      */
     public static void generateCastleMoves(Board board, List<Move> moves) {
         Side side = board.getSideToMove();
@@ -300,10 +359,13 @@ public class MoveGenerator {
     }
 
     /**
-     * Generate all pseudo-legal moves
+     * Returns the list of all possible pseudo-legal moves for the given position.
+     * <p>
+     * A move is considered pseudo-legal when it is legal according to the standard rules of chess piece movements, but
+     * the resulting position might not be legal because of other rules (e.g. checks to the king).
      *
-     * @param board the board
-     * @return move list
+     * @param board the board from which to generate the pseudo-legal moves
+     * @return the list of pseudo-legal moves available in the position
      */
     public static List<Move> generatePseudoLegalMoves(Board board) {
         List<Move> moves = new LinkedList<>();
@@ -319,10 +381,14 @@ public class MoveGenerator {
     }
 
     /**
-     * Generate all pseudo-legal captures
+     * Returns the list of all possible pseudo-legal captures for the given position.
+     * <p>
+     * A move is considered a pseudo-legal capture when it takes an enemy piece and it is legal according to the
+     * standard rules of chess piece movements, but the resulting position might not be legal because of other rules
+     * (e.g. checks to the king).
      *
-     * @param board the board
-     * @return move list
+     * @param board the board from which to generate the pseudo-legal captures
+     * @return the list of pseudo-legal captures available in the position
      */
     public static List<Move> generatePseudoLegalCaptures(Board board) {
         List<Move> moves = new LinkedList<>();
@@ -337,11 +403,11 @@ public class MoveGenerator {
     }
 
     /**
-     * Generate Legal Moves
+     * Returns the list of all possible legal moves for the position according to the standard rules of chess.
      *
-     * @param board the board
-     * @return move list
-     * @throws MoveGeneratorException the move generator exception
+     * @param board the board from which to generate the legal moves
+     * @return the list of legal moves available in the position
+     * @throws MoveGeneratorException if it is not possible to generate the moves
      */
     public static List<Move> generateLegalMoves(Board board) throws MoveGeneratorException {
         try {
