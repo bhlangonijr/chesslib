@@ -90,7 +90,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      *
      * @return the board representing the position after the moves are played
      */
-    protected static Board getBoard() {
+    private static Board getBoard() {
         return boardHolder.get();
     }
 
@@ -103,7 +103,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @throws MoveConversionException if the move conversion fails
      */
     // encode the move to SAN move and update thread local board
-    protected static String encodeToSan(final Board board, Move move) throws MoveConversionException {
+    private static String encodeToSan(final Board board, Move move) throws MoveConversionException {
         return encode(board, move, Piece::getSanSymbol);
     }
 
@@ -116,7 +116,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @throws MoveConversionException if the move conversion fails
      */
     // encode the move to FAN move and update thread local board
-    protected static String encodeToFan(final Board board, Move move) throws MoveConversionException {
+    private static String encodeToFan(final Board board, Move move) throws MoveConversionException {
         return encode(board, move, Piece::getFanSymbol);
     }
 
@@ -130,7 +130,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
      * @throws MoveConversionException if the move conversion fails
      */
     // encode the move to SAN/FAN move and update thread local board
-    protected static String encode(final Board board, Move move, Function<Piece, String> notation)
+    private static String encode(final Board board, Move move, Function<Piece, String> notation)
             throws MoveConversionException {
         StringBuilder san = new StringBuilder();
         Piece piece = board.getPiece(move.getFrom());
