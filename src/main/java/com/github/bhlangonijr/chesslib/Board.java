@@ -451,6 +451,8 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Reverts the effects of a piece previously moved. It restores the moved piece where it was and cancels any
      * possible promotion to another piece.
+     *
+     * @param move the move to undo
      */
     protected void undoMovePiece(Move move) {
         Square from = move.getFrom();
@@ -1288,6 +1290,7 @@ public class Board implements Cloneable, BoardEvent {
      * Checks if the squares of a move are consistent, that is, if the destination square is attacked by the piece
      * placed on the starting square.
      *
+     * @param move the move to check
      * @return {@code true} if the move is coherent
      */
     public boolean isAttackedBy(Move move) {
@@ -1384,6 +1387,7 @@ public class Board implements Cloneable, BoardEvent {
     /**
      * Verifies if the current position has been repeated at least <i>n</i> times, where <i>n</i> is provided in input.
      *
+     * @param n the number of repetitions to check in the position
      * @return {@code true} if the position has been repeated at least <i>n</i> times
      */
     public boolean isRepetition(int n) {

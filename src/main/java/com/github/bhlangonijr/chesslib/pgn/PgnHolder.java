@@ -115,6 +115,9 @@ public class PgnHolder {
     }
 
     /**
+     * Returns all the games stored in the holder.
+     *
+     * @return the games
      * @deprecated use {@link PgnHolder#getGames()} instead
      */
     @Deprecated
