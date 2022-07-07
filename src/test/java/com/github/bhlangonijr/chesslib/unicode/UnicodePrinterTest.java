@@ -24,7 +24,7 @@ public class UnicodePrinterTest {
         printer.print(board);
 
         String repr = baos.toString(StandardCharsets.UTF_8);
-        assertEquals("Should be a white rook", '\u2656', repr.charAt(0));
-        assertEquals("Should be a black rook", '\u265C', repr.charAt(63));
+        assertEquals("Should be a white rook at pos 0\n"+repr, '\u2656', repr.charAt(0));
+        assertEquals("Should be a black rook at pos 63\n"+repr, '\u265C', repr.split("\n")[7].charAt(7));
     }
 }
