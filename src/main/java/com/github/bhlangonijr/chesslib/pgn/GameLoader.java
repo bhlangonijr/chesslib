@@ -34,6 +34,7 @@ import com.github.bhlangonijr.chesslib.game.Round;
 import com.github.bhlangonijr.chesslib.game.Termination;
 import com.github.bhlangonijr.chesslib.game.TimeControl;
 import com.github.bhlangonijr.chesslib.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A convenient loader to extract a chess game and its metadata from an iterator over the lines of the PGN file.
@@ -232,7 +233,7 @@ public class GameLoader {
                                 break;
                         }
                     }
-                } else if (!line.trim().equals("") && moveText != null) {
+                } else if (StringUtils.isNotBlank(line) && moveText != null) {
                     moveText.append(line);
                     moveText.append('\n');
                     moveTextParsing = true;
@@ -249,7 +250,7 @@ public class GameLoader {
                 }
 
             } catch (Exception e) {
-                String name = "";
+                String name = StringUtils.EMPTY;
                 int r = 0;
                 try {
                     r = round.getNumber();
@@ -268,15 +269,15 @@ public class GameLoader {
     private static void setMoveText(Game game, StringBuilder moveText) throws Exception {
 
         //clear game result
-        StringUtil.replaceAll(moveText, "1-0", "");
-        StringUtil.replaceAll(moveText, "0-1", "");
-        StringUtil.replaceAll(moveText, "1/2-1/2", "");
-        StringUtil.replaceAll(moveText, "*", "");
+        StringUtil.replaceAll(moveText, "1-0", StringUtils.EMPTY);
+        StringUtil.replaceAll(moveText, "0-1", StringUtils.EMPTY);
+        StringUtil.replaceAll(moveText, "1/2-1/2", StringUtils.EMPTY);
+        StringUtil.replaceAll(moveText, "*", StringUtils.EMPTY);
 
         game.setMoveText(moveText);
         game.loadMoveText(moveText);
 
-        game.setPlyCount(game.getHalfMoves().size() + "");
+        game.setPlyCount(String.valueOf(game.getHalfMoves().size()));
 
     }
 }

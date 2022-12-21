@@ -31,6 +31,7 @@ import com.github.bhlangonijr.chesslib.Rank;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A convenient data structure to store an ordered sequence of moves and access to their human-readable representation
@@ -389,7 +390,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         StringBuilder sb = new StringBuilder();
         for (String move : moveArray) {
             sb.append(move);
-            sb.append(" ");
+            sb.append(StringUtils.SPACE);
         }
         return sb.toString();
     }
@@ -400,7 +401,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             if (halfMove % 2 == 0) {
                 sb.append((halfMove / 2) + 1).append(". ");
             }
-            sb.append(moveArray[halfMove]).append(" ");
+            sb.append(moveArray[halfMove]).append(StringUtils.SPACE);
         }
         return sb.toString();
     }
@@ -485,7 +486,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         try {
             Side side = b.getSideToMove();
             text = StringUtil.normalize(text);
-            String[] m = text.split(" ");
+            String[] m = text.split(StringUtils.SPACE);
             int i = 0;
             for (String strMove : m) {
                 Move move = new Move(strMove, side);
@@ -561,7 +562,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         }
         try {
             text = StringUtil.normalize(text);
-            String[] m = text.split(" ");
+            String[] m = text.split(StringUtils.SPACE);
             for (String strMove : m) {
                 if (strMove.startsWith("$")) {
                     continue;
@@ -572,7 +573,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
                 if (strMove.contains(".")) {
                     strMove = StringUtil.afterSequence(strMove, ".");
                 }
-                if (strMove.trim().equals("")) {
+                if (StringUtils.isBlank(strMove)) {
                     continue;
                 }
                 addSanMove(strMove);
@@ -609,7 +610,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         //FIX missing equal sign for pawn promotions
         if (Character.isLetter(lastChar) && Character.toUpperCase(lastChar) != 'O') {
             san = san.substring(0, san.length() - 1);
-            strPromotion = lastChar + "";
+            strPromotion = String.valueOf(lastChar);
         }
 
         if (san.equals("O-O") || san.equals("O-O-O")) { // is castle
@@ -634,9 +635,8 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             throw new MoveConversionException("Couldn't parse destination square[" + san + "]: " +
                     san.toUpperCase());
         }
-        Piece promotion = strPromotion.equals("") ? Piece.NONE :
-                Piece.fromFenSymbol(side.equals(Side.WHITE) ?
-                        strPromotion.toUpperCase() : strPromotion.toLowerCase());
+        Piece promotion = StringUtils.isEmpty(strPromotion) ? Piece.NONE :
+                Piece.fromFenSymbol(side.equals(Side.WHITE) ? strPromotion.toUpperCase() : strPromotion.toLowerCase());
 
         if (san.length() == 2) { //is pawn move
             long mask = Bitboard.getBbtable(to) - 1L;
@@ -661,13 +661,13 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             PieceType fromPiece = PieceType.PAWN;
 
             if (Character.isUpperCase(strFrom.charAt(0))) {
-                fromPiece = PieceType.fromSanSymbol(strFrom.charAt(0) + "");
+                fromPiece = PieceType.fromSanSymbol(String.valueOf(strFrom.charAt(0)));
             }
 
             if (strFrom.length() == 3) {
                 from = Square.valueOf(strFrom.substring(1, 3).toUpperCase());
             } else {
-                String location = "";
+                String location = StringUtils.EMPTY;
                 if (strFrom.length() == 2) {
                     if (Character.isUpperCase(strFrom.charAt(0))) {
                         location = strFrom.substring(1, 2);
@@ -805,7 +805,7 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         StringBuilder b = new StringBuilder();
         for (Move move : this) {
             b.append(move.toString());
-            b.append(" ");
+            b.append(StringUtils.SPACE);
         }
         return b.toString().trim();
     }
@@ -846,12 +846,12 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         return false;
     }
 
-    private String normalizeSan(String san) {
-        return san.replace("+", "")
-                .replace("#", "")
-                .replace("!", "")
-                .replace("?", "")
-                .replace("ep", "")
-                .replace("\n", " ");
+    private String normalizeSan(String san) { //TODO regex?
+        return san.replace("+", StringUtils.EMPTY)
+                .replace("#", StringUtils.EMPTY)
+                .replace("!", StringUtils.EMPTY)
+                .replace("?", StringUtils.EMPTY)
+                .replace("ep", StringUtils.EMPTY)
+                .replace("\n", StringUtils.SPACE);
     }
 }
