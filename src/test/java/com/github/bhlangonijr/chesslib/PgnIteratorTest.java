@@ -19,6 +19,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class PgnIteratorTest {
 
+    //TODO test exception...
+
     @Test
     public void testPGNOrder() throws Exception {
         PgnIterator games = new PgnIterator("src/test/resources/pgn_order.pgn");
