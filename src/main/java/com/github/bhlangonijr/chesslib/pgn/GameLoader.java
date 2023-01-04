@@ -200,6 +200,7 @@ public class GameLoader {
                                 }
                                 break;
                             case "variation":
+                            case "variant":
                                 if (game != null) {
                                     game.setVariation(p.value);
                                 }
