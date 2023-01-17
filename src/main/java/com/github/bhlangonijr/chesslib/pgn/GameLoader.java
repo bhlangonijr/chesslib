@@ -20,6 +20,7 @@ import com.github.bhlangonijr.chesslib.game.Event;
 import com.github.bhlangonijr.chesslib.game.Game;
 import com.github.bhlangonijr.chesslib.game.GameFactory;
 import com.github.bhlangonijr.chesslib.game.GameResult;
+import com.github.bhlangonijr.chesslib.game.GenericPlayer;
 import com.github.bhlangonijr.chesslib.game.Player;
 import com.github.bhlangonijr.chesslib.game.PlayerType;
 import com.github.bhlangonijr.chesslib.game.Round;
@@ -58,15 +59,14 @@ public class GameLoader {
         PgnTempContainer container = new PgnTempContainer();
 
         while (iterator.hasNext()) {
-            String line = iterator.next();
+            String line = iterator.next().trim();
+            if (line.startsWith(UTF8_BOM)) {
+                line = line.substring(1);
+            }
             try {
-                line = line.trim();
-                if (line.startsWith(UTF8_BOM)) {
-                    line = line.substring(1);
-                }
                 if (isProperty(line)) {
                     addProperty(line, container);
-                } else if (!line.equals("") && container.moveText != null) {
+                } else if (!line.equals("")) {
                     addMoveText(line, container);
                     if (isEndGame(line)) {
                         setMoveText(container.game, container.moveText);
@@ -76,7 +76,7 @@ public class GameLoader {
             } catch (Exception e) { //TODO stricter exceptions
                 String name = container.event.getName();
                 int r = container.round.getNumber();
-                throw new PgnException("Error parsing PGN[" + r + ", " + name + "]: ", e);
+                throw new PgnException(String.format("Error parsing PGN[%d, %s]: ", r, name), e);
             }
         }
         return container.initGame ? container.game : null;
@@ -97,7 +97,6 @@ public class GameLoader {
                 }
                 container.event.setName(property.value);
                 container.event.setId(property.value);
-                container.moveText = new StringBuilder(); //TODO initialize this
                 break;
             case "site":
                 container.event.setSite(property.value);
@@ -124,14 +123,9 @@ public class GameLoader {
 
                 container.game.setDate(container.event.getStartDate()); //TODO this should be done only once
 
-
-                Player player = GameFactory.newPlayer(PlayerType.HUMAN, property.value);
-                player.setId(property.value);
-                player.setDescription(property.value);
-
-                container.game.setWhitePlayer(player);
-                container.whitePlayer = player;
-
+                container.whitePlayer.setId(property.value);
+                container.whitePlayer.setName(property.value);
+                container.whitePlayer.setDescription(property.value);
                 break;
             }
             case "black": {
@@ -141,12 +135,9 @@ public class GameLoader {
 
                 container.game.setDate(container.event.getStartDate()); //TODO this should be done only once
 
-                Player player = GameFactory.newPlayer(PlayerType.HUMAN, property.value);
-                player.setId(property.value);
-                player.setDescription(property.value);
-
-                container.game.setBlackPlayer(player);
-                container.blackPlayer = player;
+                container.blackPlayer.setId(property.value);
+                container.blackPlayer.setName(property.value);
+                container.blackPlayer.setDescription(property.value);
                 break;
             }
             case "result":
@@ -187,21 +178,17 @@ public class GameLoader {
                 container.game.setVariation(property.value);
                 break;
             case "whiteelo":
-                if (container.whitePlayer != null) {
-                    try {
-                        container.whitePlayer.setElo(Integer.parseInt(property.value));
-                    } catch (NumberFormatException e) {
+                try {
+                    container.whitePlayer.setElo(Integer.parseInt(property.value));
+                } catch (NumberFormatException e) {
 
-                    }
                 }
                 break;
             case "blackelo":
-                if (container.blackPlayer != null) {
-                    try {
-                        container.blackPlayer.setElo(Integer.parseInt(property.value));
-                    } catch (NumberFormatException e) {
+                try {
+                    container.blackPlayer.setElo(Integer.parseInt(property.value));
+                } catch (NumberFormatException e) {
 
-                    }
                 }
                 break;
             default:
@@ -226,12 +213,14 @@ public class GameLoader {
 
     private static class PgnTempContainer {
 
-        Event event;
-        Round round;
-        Game game;
+        //TODO many of this stuff can be accessed through game
+
+        final Event event;
+        final Round round;
+        final Game game;
         Player whitePlayer;
         Player blackPlayer;
-        StringBuilder moveText;
+        final StringBuilder moveText;
         boolean moveTextParsing;
         boolean initGame;
 
@@ -240,6 +229,13 @@ public class GameLoader {
             this.round = new Round(event);
             this.game = new Game(UUID.randomUUID().toString(), round);
             this.round.getGame().add(this.game);
+            this.whitePlayer = new GenericPlayer();
+            this.whitePlayer.setType(PlayerType.HUMAN);
+            this.game.setWhitePlayer(this.whitePlayer);
+            this.blackPlayer = new GenericPlayer();
+            this.blackPlayer.setType(PlayerType.HUMAN);
+            this.game.setBlackPlayer(this.blackPlayer);
+            this.moveText = new StringBuilder();
         }
     }
 
