@@ -73,7 +73,7 @@ public class GameLoader {
                 }
             } catch (Exception e) { //TODO stricter exceptions
                 String name = container.event.getName();
-                int r = container.round != null ? container.round.getNumber() : 0;
+                int r = container.round.getNumber();
                 throw new PgnException("Error parsing PGN[" + r + ", " + name + "]: ", e);
             }
         }
@@ -109,16 +109,14 @@ public class GameLoader {
                 } catch (Exception e1) {
                 }
                 r = Math.max(0, r);
-                container.round = container.event.getRound().get(r);
-                if (container.round == null) {
-                    container.round = GameFactory.newRound(container.event, r);
+                container.round.setNumber(r);
+                if (!container.event.getRound().containsKey(r)) {
                     container.event.getRound().put(r, container.round);
                 }
                 break;
             case "white": {
-                if (container.round == null) {
-                    container.round = GameFactory.newRound(container.event, 1);
-                    container.event.getRound().put(1, container.round);
+                if (container.round.getNumber() < 1) {
+                    container.round.setNumber(1); //TODO this is just to have the same behaviour as before...
                 }
                 if (container.game == null) {
                     container.game = GameFactory.newGame(UUID.randomUUID().toString(), container.round);
@@ -136,9 +134,8 @@ public class GameLoader {
                 break;
             }
             case "black": {
-                if (container.round == null) {
-                    container.round = GameFactory.newRound(container.event, 1);
-                    container.event.getRound().put(1, container.round);
+                if (container.round.getNumber() < 1) {
+                    container.round.setNumber(1); //TODO this just to have the same behaviour as before...
                 }
                 if (container.game == null) {
                     container.game = GameFactory.newGame(UUID.randomUUID().toString(), container.round);
@@ -249,7 +246,7 @@ public class GameLoader {
     private static class PgnTempContainer {
 
         Event event = new Event();
-        Round round;
+        Round round = new Round(event);
         Game game;
         Player whitePlayer;
         Player blackPlayer;
