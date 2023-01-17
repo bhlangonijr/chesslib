@@ -30,7 +30,7 @@ public class PgnIteratorTest {
         assertEquals("1951.06.20", game.getDate());
         //assertEquals("1951.??.??", game.getRound().getEvent().getStartDate());
         assertEquals(9, game.getRound().getNumber());
-        //assertEquals(GameResult.WHITE_WON, game.getResult()); //TODO this is the issue
+        assertEquals(GameResult.WHITE_WON, game.getResult()); //TODO this is the issue
         assertEquals("Bent Larsen", game.getWhitePlayer().getName());
         assertEquals("Lionel Joyner", game.getBlackPlayer().getName());
         assertEquals("C30", game.getEco());
