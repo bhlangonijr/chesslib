@@ -19,8 +19,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class PgnIteratorTest {
 
-    //TODO test exception...
-
     @Test
     public void testPGNOrder() throws Exception {
         PgnIterator games = new PgnIterator("src/test/resources/pgn_order.pgn");
@@ -28,14 +26,14 @@ public class PgnIteratorTest {
         assertEquals("1st World U20 ch", game.getRound().getEvent().getName());
         assertEquals("Birmingham ENG", game.getRound().getEvent().getSite());
         assertEquals("1951.06.20", game.getDate());
-        //assertEquals("1951.??.??", game.getRound().getEvent().getStartDate());
+        assertEquals("1951.06.20", game.getRound().getEvent().getStartDate());
         assertEquals(9, game.getRound().getNumber());
-        assertEquals(GameResult.WHITE_WON, game.getResult()); //TODO this is the issue
+        assertEquals(GameResult.WHITE_WON, game.getResult());
         assertEquals("Bent Larsen", game.getWhitePlayer().getName());
         assertEquals("Lionel Joyner", game.getBlackPlayer().getName());
         assertEquals("C30", game.getEco());
-        //assertEquals("?", game.getWhitePlayer().getElo()); //TODO have a null (not inserted), vs unknown (?) ?
-        //assertEquals("?", game.getBlackPlayer().getElo());
+        assertEquals(0, game.getWhitePlayer().getElo()); //TODO have a null (not inserted), vs unknown (?) ?
+        assertEquals(0, game.getBlackPlayer().getElo());
         assertEquals("63", game.getPlyCount()); //TODO why is it a string?
         //assertEquals("...", game.getHalfMoves().toString()); //TODO
     }
