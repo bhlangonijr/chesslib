@@ -72,7 +72,7 @@ public class GameLoader {
                     }
                 }
             } catch (Exception e) { //TODO stricter exceptions
-                String name =  container.event != null ? container.event.getName() : "";
+                String name = container.event.getName();
                 int r = container.round != null ? container.round.getNumber() : 0;
                 throw new PgnException("Error parsing PGN[" + r + ", " + name + "]: ", e);
             }
@@ -81,49 +81,38 @@ public class GameLoader {
     }
 
     private static void addProperty(String line, PgnTempContainer container) throws Exception {
-        PgnProperty p = parsePgnProperty(line);
-        if (p == null) {
+        PgnProperty property = parsePgnProperty(line);
+        if (property == null) {
             return;
         }
-        String tag = p.name.toLowerCase().trim();
+        String tag = property.name.toLowerCase().trim();
         //begin
         switch (tag) {
             case "event":
                 if (container.moveTextParsing && container.game != null && container.game.getHalfMoves().size() == 0) {
                     setMoveText(container.game, container.moveText);
                 }
-                container.game = null;
-                container.round = null;
-                container.whitePlayer = null;
-                container.blackPlayer = null;
-                if (container.event == null) {
-                    container.event = GameFactory.newEvent(p.value);
-                }
-                container.moveText = new StringBuilder();
+                container.event.setName(property.value);
+                container.event.setId(property.value);
+                container.moveText = new StringBuilder(); //TODO initialize this
                 break;
             case "site":
-                if (container.event != null) {
-                    container.event.setSite(p.value);
-                }
+                container.event.setSite(property.value);
                 break;
             case "date":
-                if (container.event != null) {
-                    container.event.setStartDate(p.value);
-                }
+                container.event.setStartDate(property.value);
                 break;
             case "round":
-                if (container.event != null) {
-                    int r = 1;
-                    try {
-                        r = Integer.parseInt(p.value);
-                    } catch (Exception e1) {
-                    }
-                    r = Math.max(0, r);
-                    container.round = container.event.getRound().get(r);
-                    if (container.round == null) {
-                        container.round = GameFactory.newRound(container.event, r);
-                        container.event.getRound().put(r, container.round);
-                    }
+                int r = 1;
+                try {
+                    r = Integer.parseInt(property.value); //TODO isParseable
+                } catch (Exception e1) {
+                }
+                r = Math.max(0, r);
+                container.round = container.event.getRound().get(r);
+                if (container.round == null) {
+                    container.round = GameFactory.newRound(container.event, r);
+                    container.event.getRound().put(r, container.round);
                 }
                 break;
             case "white": {
@@ -137,9 +126,9 @@ public class GameLoader {
                     container.round.getGame().add(container.game);
                 }
 
-                Player player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
-                player.setId(p.value);
-                player.setDescription(p.value);
+                Player player = GameFactory.newPlayer(PlayerType.HUMAN, property.value);
+                player.setId(property.value);
+                player.setDescription(property.value);
 
                 container.game.setWhitePlayer(player);
                 container.whitePlayer = player;
@@ -156,9 +145,9 @@ public class GameLoader {
                     container.game.setDate(container.event.getStartDate());
                     container.round.getGame().add(container.game);
                 }
-                Player player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
-                player.setId(p.value);
-                player.setDescription(p.value);
+                Player player = GameFactory.newPlayer(PlayerType.HUMAN, property.value);
+                player.setId(property.value);
+                player.setDescription(property.value);
 
                 container.game.setBlackPlayer(player);
                 container.blackPlayer = player;
@@ -166,28 +155,28 @@ public class GameLoader {
             }
             case "result":
                 if (container.game != null) {
-                    GameResult r = GameResult.fromNotation(p.value);
-                    container.game.setResult(r);
+                    GameResult result = GameResult.fromNotation(property.value);
+                    container.game.setResult(result);
                 }
                 break;
             case "plycount":
                 if (container.game != null) {
-                    container.game.setPlyCount(p.value);
+                    container.game.setPlyCount(property.value);
                 }
                 break;
             case "termination":
                 if (container.game != null) {
                     try {
-                        container.game.setTermination(Termination.fromValue(p.value.toUpperCase()));
+                        container.game.setTermination(Termination.fromValue(property.value.toUpperCase()));
                     } catch (Exception e1) {
                         container.game.setTermination(Termination.UNTERMINATED);
                     }
                 }
                 break;
             case "timecontrol":
-                if (container.event != null && container.event.getTimeControl() == null) {
+                if (container.event.getTimeControl() == null) {
                     try {
-                        container.event.setTimeControl(TimeControl.parseFromString(p.value.toUpperCase()));
+                        container.event.setTimeControl(TimeControl.parseFromString(property.value.toUpperCase()));
                     } catch (Exception e1) {
                         //ignore errors in time control tag as it's not required by standards
                     }
@@ -195,33 +184,33 @@ public class GameLoader {
                 break;
             case "annotator":
                 if (container.game != null) {
-                    container.game.setAnnotator(p.value);
+                    container.game.setAnnotator(property.value);
                 }
                 break;
             case "fen":
                 if (container.game != null) {
-                    container.game.setFen(p.value);
+                    container.game.setFen(property.value);
                 }
                 break;
             case "eco":
                 if (container.game != null) {
-                    container.game.setEco(p.value);
+                    container.game.setEco(property.value);
                 }
                 break;
             case "opening":
                 if (container.game != null) {
-                    container.game.setOpening(p.value);
+                    container.game.setOpening(property.value);
                 }
                 break;
             case "variation":
                 if (container.game != null) {
-                    container.game.setVariation(p.value);
+                    container.game.setVariation(property.value);
                 }
                 break;
             case "whiteelo":
                 if (container.whitePlayer != null) {
                     try {
-                        container.whitePlayer.setElo(Integer.parseInt(p.value));
+                        container.whitePlayer.setElo(Integer.parseInt(property.value));
                     } catch (NumberFormatException e) {
 
                     }
@@ -230,7 +219,7 @@ public class GameLoader {
             case "blackelo":
                 if (container.blackPlayer != null) {
                     try {
-                        container.blackPlayer.setElo(Integer.parseInt(p.value));
+                        container.blackPlayer.setElo(Integer.parseInt(property.value));
                     } catch (NumberFormatException e) {
 
                     }
@@ -241,7 +230,7 @@ public class GameLoader {
                     if (container.game.getProperty() == null) {
                         container.game.setProperty(new HashMap<String, String>());
                     }
-                    container.game.getProperty().put(p.name, p.value);
+                    container.game.getProperty().put(property.name, property.value);
                 }
                 break;
         }
@@ -259,7 +248,7 @@ public class GameLoader {
 
     private static class PgnTempContainer {
 
-        Event event;
+        Event event = new Event();
         Round round;
         Game game;
         Player whitePlayer;

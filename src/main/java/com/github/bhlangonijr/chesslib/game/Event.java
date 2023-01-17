@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class Event {
 
-    private final Map<Integer, Round> round = new HashMap<Integer, Round>();
+    private final Map<Integer, Round> round = new HashMap<>();
     private String id;
     private String name;
     private EventType eventType;
