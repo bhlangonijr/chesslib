@@ -16,6 +16,8 @@
 
 package com.github.bhlangonijr.chesslib;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +32,7 @@ public enum PieceType {
     /**
      * The pawn piece type.
      */
-    PAWN(""),
+    PAWN(StringUtils.EMPTY),
     /**
      * The knight piece type.
      */

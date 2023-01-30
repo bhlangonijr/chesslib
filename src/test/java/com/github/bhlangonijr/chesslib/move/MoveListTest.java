@@ -1,6 +1,7 @@
 package com.github.bhlangonijr.chesslib.move;
 
 import com.github.bhlangonijr.chesslib.Square;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -55,7 +56,7 @@ public class MoveListTest {
         String san = "e4 Nc6 d4 Nf6 d5 Ne5 Nf3 d6 Nxe5 dxe5 Bb5+ Bd7 Bxd7+ Qxd7 Nc3 e6 O-O exd5 ";
         MoveList list = new MoveList();
         list.loadFromText(s);
-        String mvs[] = s.split(" ");
+        String mvs[] = s.split(StringUtils.SPACE);
         int i = 0;
         for (Move move : list) {
             assertEquals(mvs[i++], move.toString());
@@ -76,14 +77,13 @@ public class MoveListTest {
     @Test
     public void testToSanWithMoveNumbers() {
         // No moves yet:
-        String s = "";
-        String expectedSan = "";
+        String expectedSan = StringUtils.EMPTY;
         MoveList list = new MoveList();
         assertEquals(expectedSan, list.toSan());
         assertEquals(expectedSan, list.toSanWithMoveNumbers());
 
         // Ends with a move by Black:
-        s = "e2e4 b8c6 d2d4 g8f6 d4d5 c6e5 g1f3 d7d6 f3e5 d6e5 f1b5 c8d7 b5d7 d8d7 b1c3 e7e6";
+        String s = "e2e4 b8c6 d2d4 g8f6 d4d5 c6e5 g1f3 d7d6 f3e5 d6e5 f1b5 c8d7 b5d7 d8d7 b1c3 e7e6";
         expectedSan = "1. e4 Nc6 2. d4 Nf6 3. d5 Ne5 4. Nf3 d6 5. Nxe5 dxe5 6. Bb5+ Bd7 7. Bxd7+ Qxd7 8. Nc3 e6 ";
         list = new MoveList();
         list.loadFromText(s);
@@ -108,14 +108,13 @@ public class MoveListTest {
     @Test
     public void testToFanWithMoveNumbers() {
         // No moves yet:
-        String s = "";
-        String expectedFan = "";
+        String expectedFan = StringUtils.EMPTY;
         MoveList list = new MoveList();
         assertEquals(expectedFan, list.toFan());
         assertEquals(expectedFan, list.toFanWithMoveNumbers());
 
         // Ends with a move by Black:
-        s = "e2e4 b8c6 d2d4 g8f6 d4d5 c6e5 g1f3 d7d6 f3e5 d6e5 f1b5 c8d7 b5d7 d8d7 b1c3 e7e6";
+        String s = "e2e4 b8c6 d2d4 g8f6 d4d5 c6e5 g1f3 d7d6 f3e5 d6e5 f1b5 c8d7 b5d7 d8d7 b1c3 e7e6";
         expectedFan = "1. ♙e4 ♞c6 2. ♙d4 ♞f6 3. ♙d5 ♞e5 4. ♘f3 ♟d6 5. ♘xe5 ♟dxe5 6. ♗b5+ ♝d7 7. ♗xd7+ ♛xd7 8. ♘c3 ♟e6 ";
         list = new MoveList();
         list.loadFromText(s);

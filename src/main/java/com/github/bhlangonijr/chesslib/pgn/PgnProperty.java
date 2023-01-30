@@ -3,6 +3,7 @@ package com.github.bhlangonijr.chesslib.pgn;
 import java.util.regex.Pattern;
 
 import com.github.bhlangonijr.chesslib.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The definition of a Portable Game Notation (PGN) property, also known as <i>tag</i>.
@@ -60,12 +61,12 @@ public class PgnProperty {
     public static PgnProperty parsePgnProperty(String line) {
         try {
 
-            String l = line.replace("[", "");
-            l = l.replace("]", "");
-            l = l.replace("\"", "");
+            String l = line.replace("[", StringUtils.EMPTY);
+            l = l.replace("]", StringUtils.EMPTY);
+            l = l.replace("\"", StringUtils.EMPTY);
 
-            return new PgnProperty(StringUtil.beforeSequence(l, " "),
-                    StringUtil.afterSequence(l, " "));
+            return new PgnProperty(StringUtil.beforeSequence(l, StringUtils.SPACE),
+                    StringUtil.afterSequence(l, StringUtils.SPACE));
         } catch (Exception e) {
             // do nothing
         }
