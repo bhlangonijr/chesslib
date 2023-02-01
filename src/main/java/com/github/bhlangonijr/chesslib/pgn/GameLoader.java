@@ -27,6 +27,7 @@ import com.github.bhlangonijr.chesslib.game.Round;
 import com.github.bhlangonijr.chesslib.game.Termination;
 import com.github.bhlangonijr.chesslib.game.TimeControl;
 import com.github.bhlangonijr.chesslib.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -66,7 +67,7 @@ public class GameLoader {
             try {
                 if (isProperty(line)) {
                     addProperty(line, container);
-                } else if (!line.equals("")) {
+                } else if (StringUtils.isNotEmpty(line)) {
                     addMoveText(line, container);
                     if (isEndGame(line)) {
                         setMoveText(container.game, container.moveText);
@@ -242,15 +243,15 @@ public class GameLoader {
     private static void setMoveText(Game game, StringBuilder moveText) throws Exception {
 
         //clear game result
-        StringUtil.replaceAll(moveText, "1-0", "");
-        StringUtil.replaceAll(moveText, "0-1", "");
-        StringUtil.replaceAll(moveText, "1/2-1/2", "");
-        StringUtil.replaceAll(moveText, "*", "");
+        StringUtil.replaceAll(moveText, "1-0", StringUtils.EMPTY);
+        StringUtil.replaceAll(moveText, "0-1", StringUtils.EMPTY);
+        StringUtil.replaceAll(moveText, "1/2-1/2", StringUtils.EMPTY);
+        StringUtil.replaceAll(moveText, "*", StringUtils.EMPTY);
 
         game.setMoveText(moveText);
         game.loadMoveText(moveText);
 
-        game.setPlyCount(game.getHalfMoves().size() + "");
+        game.setPlyCount(String.valueOf(game.getHalfMoves().size()));
 
     }
 }

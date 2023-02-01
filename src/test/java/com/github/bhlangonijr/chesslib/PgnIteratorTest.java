@@ -5,6 +5,7 @@ import com.github.bhlangonijr.chesslib.game.GameResult;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.pgn.PgnIterator;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -128,9 +129,9 @@ public class PgnIteratorTest {
             String[] moves = game.getHalfMoves().toSanArray();
             Map<Integer, String> comments = game.getComments();
             for (int i = 0; i < moves.length; i++) {
-                String halfMove = ((i + 2) / 2) + (i % 2 != 0 ? ".." : " ");
+                String halfMove = ((i + 2) / 2) + (i % 2 != 0 ? ".." : StringUtils.SPACE);
                 String move = moves[i];
-                String comment = comments.get(i + 1) + "";
+                String comment = String.valueOf(comments.get(i + 1));
                 commentedMoves.put(halfMove + move, comment.trim());
             }
         }

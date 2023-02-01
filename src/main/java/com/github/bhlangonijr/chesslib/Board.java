@@ -34,6 +34,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.util.XorShiftRandom;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The definition of a chessboard position and its status. It exposes methods to manipulate the board, evolve the
@@ -777,7 +778,7 @@ public class Board implements Cloneable, BoardEvent {
             for (int i = 0; i < r.length(); i++) {
                 char c = r.charAt(i);
                 if (Character.isDigit(c)) {
-                    file += Integer.parseInt(c + "");
+                    file += Character.digit(c, 10);
                 } else {
                     Square sq = Square.encode(Rank.allRanks[rank], File.allFiles[file]);
                     setPiece(Piece.fromFenSymbol(String.valueOf(c)), sq);
@@ -809,7 +810,7 @@ public class Board implements Cloneable, BoardEvent {
             castleRight.put(Side.BLACK, CastleRight.NONE);
         }
 
-        String[] flags = state.split(" ");
+        String[] flags = state.split(StringUtils.SPACE);
 
         if (flags.length >= 3) {
             String s = flags[2].toUpperCase().trim();
@@ -929,7 +930,7 @@ public class Board implements Cloneable, BoardEvent {
             fen.append(" b");
         }
 
-        String rights = "";
+        String rights = StringUtils.EMPTY;
         if (CastleRight.KING_AND_QUEEN_SIDE.
                 equals(castleRight.get(Side.WHITE))) {
             rights += "KQ";
@@ -952,10 +953,10 @@ public class Board implements Cloneable, BoardEvent {
             rights += "q";
         }
 
-        if (rights.equals("")) {
+        if (StringUtils.isEmpty(rights)) {
             fen.append(" -");
         } else {
-            fen.append(" " + rights);
+            fen.append(StringUtils.SPACE + rights);
         }
 
         if (Square.NONE.equals(getEnPassant())
@@ -963,15 +964,14 @@ public class Board implements Cloneable, BoardEvent {
                 && !pawnCanBeCapturedEnPassant())) {
             fen.append(" -");
         } else {
-            fen.append(" ");
+            fen.append(StringUtils.SPACE);
             fen.append(getEnPassant().toString().toLowerCase());
         }
 
         if (includeCounters) {
-            fen.append(" ");
+            fen.append(StringUtils.SPACE);
             fen.append(getHalfMoveCounter());
-
-            fen.append(" ");
+            fen.append(StringUtils.SPACE);
             fen.append(getMoveCounter());
         }
 
@@ -1525,8 +1525,8 @@ public class Board implements Cloneable, BoardEvent {
      * @see Board#getZobristKey()
      */
     public String getPositionId() {
-        String[] parts = this.getFen(false).split(" ");
-        return parts[0] + " " + parts[1] + " " + parts[2] +
+        String[] parts = this.getFen(false).split(StringUtils.SPACE);
+        return parts[0] + StringUtils.SPACE + parts[1] + StringUtils.SPACE + parts[2] +
                 (this.getEnPassantTarget() != Square.NONE ? parts[3] : "-");
     }
 
