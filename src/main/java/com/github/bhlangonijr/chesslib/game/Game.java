@@ -556,7 +556,7 @@ public class Game {
     @Override
     public String toString() {
         try {
-            return toPgn(true, true);
+            return toPgn(true, true); //TODO this throws NPE in debugger sometimes
         } catch (MoveConversionException e) {
             return null;
         }
@@ -802,7 +802,7 @@ public class Game {
                 onCommentBlock = false;
                 if (comment != null) {
                     if (getComments() == null) {
-                        setComments(new HashMap<Integer, String>());
+                        setComments(new HashMap<>());
                     }
                     getComments().put(variantIndex, comment.toString());
                 }

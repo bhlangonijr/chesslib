@@ -60,9 +60,7 @@ public class GameFactory {
      */
     public static Game newGame(String gameId, Round round) {
 
-        Game game = new Game(gameId, round);
-
-        return game;
+        return new Game(gameId, round);
     }
 
     /**
@@ -73,7 +71,9 @@ public class GameFactory {
      * @return he newly created instance of a player
      */
     public static Player newPlayer(PlayerType type, String name) {
-        return new GenericPlayer(name, name);
+        Player player = new GenericPlayer(name, name);
+        player.setType(type);
+        return player;
     }
 
 

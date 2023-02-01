@@ -23,7 +23,7 @@ import java.util.List;
  * A round of a chess event.
  */
 public class Round {
-    private final List<Game> game = new ArrayList<Game>();
+    private final List<Game> game = new ArrayList<>();
     private final Event event;
     private int number;
 

@@ -16,18 +16,11 @@
 
 package com.github.bhlangonijr.chesslib.pgn;
 
-import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.UTF8_BOM;
-import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.isProperty;
-import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.parsePgnProperty;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.UUID;
-
 import com.github.bhlangonijr.chesslib.game.Event;
 import com.github.bhlangonijr.chesslib.game.Game;
 import com.github.bhlangonijr.chesslib.game.GameFactory;
 import com.github.bhlangonijr.chesslib.game.GameResult;
+import com.github.bhlangonijr.chesslib.game.GenericPlayer;
 import com.github.bhlangonijr.chesslib.game.Player;
 import com.github.bhlangonijr.chesslib.game.PlayerType;
 import com.github.bhlangonijr.chesslib.game.Round;
@@ -35,6 +28,14 @@ import com.github.bhlangonijr.chesslib.game.Termination;
 import com.github.bhlangonijr.chesslib.game.TimeControl;
 import com.github.bhlangonijr.chesslib.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.UUID;
+
+import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.UTF8_BOM;
+import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.isProperty;
+import static com.github.bhlangonijr.chesslib.pgn.PgnProperty.parsePgnProperty;
 
 /**
  * A convenient loader to extract a chess game and its metadata from an iterator over the lines of the PGN file.
@@ -52,218 +53,191 @@ public class GameLoader {
      */
     public static Game loadNextGame(Iterator<String> iterator) {
 
-        Event event = null;
-        Round round = null;
-        Game game = null;
-        Player whitePlayer = null;
-        Player blackPlayer = null;
-        StringBuilder moveText = null;
-        boolean moveTextParsing = false;
-
-        while (iterator.hasNext()) {
-            String line = iterator.next();
-            try {
-                line = line.trim();
-                if (line.startsWith(UTF8_BOM)) {
-                    line = line.substring(1);
-                }
-                if (isProperty(line)) {
-                    PgnProperty p = parsePgnProperty(line);
-                    if (p != null) {
-                        String tag = p.name.toLowerCase().trim();
-                        //begin
-                        switch (tag) {
-                            case "event":
-                                if (moveTextParsing && game != null && game.getHalfMoves().size() == 0) {
-                                    setMoveText(game, moveText);
-                                }
-                                game = null;
-                                round = null;
-                                whitePlayer = null;
-                                blackPlayer = null;
-                                if (event == null) {
-                                    event = GameFactory.newEvent(p.value);
-                                }
-                                moveText = new StringBuilder();
-
-                                break;
-                            case "site":
-                                if (event != null) {
-                                    event.setSite(p.value);
-                                }
-                                break;
-                            case "date":
-                                if (event != null) {
-                                    event.setStartDate(p.value);
-                                }
-                                break;
-                            case "round":
-                                if (event != null) {
-                                    int r = 1;
-                                    try {
-                                        r = Integer.parseInt(p.value);
-                                    } catch (Exception e1) {
-                                    }
-                                    r = Math.max(0, r);
-                                    round = event.getRound().get(r);
-                                    if (round == null) {
-                                        round = GameFactory.newRound(event, r);
-                                        event.getRound().put(r, round);
-                                    }
-                                }
-                                break;
-                            case "white": {
-                                if (round == null) {
-                                    round = GameFactory.newRound(event, 1);
-                                    event.getRound().put(1, round);
-                                }
-                                if (game == null) {
-                                    game = GameFactory.newGame(UUID.randomUUID().toString(), round);
-                                    game.setDate(event.getStartDate());
-                                    round.getGame().add(game);
-                                }
-
-                                Player player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
-                                player.setId(p.value);
-                                player.setDescription(p.value);
-
-                                game.setWhitePlayer(player);
-                                whitePlayer = player;
-
-                                break;
-                            }
-                            case "black": {
-                                if (round == null) {
-                                    round = GameFactory.newRound(event, 1);
-                                    event.getRound().put(1, round);
-                                }
-                                if (game == null) {
-                                    game = GameFactory.newGame(UUID.randomUUID().toString(), round);
-                                    game.setDate(event.getStartDate());
-                                    round.getGame().add(game);
-                                }
-                                Player player = GameFactory.newPlayer(PlayerType.HUMAN, p.value);
-                                player.setId(p.value);
-                                player.setDescription(p.value);
-
-                                game.setBlackPlayer(player);
-                                blackPlayer = player;
-
-                                break;
-                            }
-                            case "result":
-                                if (game != null) {
-                                    GameResult r = GameResult.fromNotation(p.value);
-                                    game.setResult(r);
-                                }
-                                break;
-                            case "plycount":
-                                if (game != null) {
-                                    game.setPlyCount(p.value);
-                                }
-                                break;
-                            case "termination":
-                                if (game != null) {
-                                    try {
-                                        game.setTermination(Termination.fromValue(p.value.toUpperCase()));
-                                    } catch (Exception e1) {
-                                        game.setTermination(Termination.UNTERMINATED);
-                                    }
-                                }
-                                break;
-                            case "timecontrol":
-                                if (event != null && event.getTimeControl() == null) {
-                                    try {
-                                        event.setTimeControl(TimeControl.parseFromString(p.value.toUpperCase()));
-                                    } catch (Exception e1) {
-                                        //ignore errors in time control tag as it's not required by standards
-                                    }
-                                }
-                                break;
-                            case "annotator":
-                                if (game != null) {
-                                    game.setAnnotator(p.value);
-                                }
-                                break;
-                            case "fen":
-                                if (game != null) {
-                                    game.setFen(p.value);
-                                }
-                                break;
-                            case "eco":
-                                if (game != null) {
-                                    game.setEco(p.value);
-                                }
-                                break;
-                            case "opening":
-                                if (game != null) {
-                                    game.setOpening(p.value);
-                                }
-                                break;
-                            case "variation":
-                                if (game != null) {
-                                    game.setVariation(p.value);
-                                }
-                                break;
-                            case "whiteelo":
-                                if (whitePlayer != null) {
-                                    try {
-                                        whitePlayer.setElo(Integer.parseInt(p.value));
-                                    } catch (NumberFormatException e) {
-
-                                    }
-                                }
-                                break;
-                            case "blackelo":
-                                if (blackPlayer != null) {
-                                    try {
-                                        blackPlayer.setElo(Integer.parseInt(p.value));
-                                    } catch (NumberFormatException e) {
-
-                                    }
-                                }
-                                break;
-                            default:
-                                if (game != null) {
-                                    if (game.getProperty() == null) {
-                                        game.setProperty(new HashMap<String, String>());
-                                    }
-                                    game.getProperty().put(p.name, p.value);
-                                }
-                                break;
-                        }
-                    }
-                } else if (StringUtils.isNotBlank(line) && moveText != null) {
-                    moveText.append(line);
-                    moveText.append('\n');
-                    moveTextParsing = true;
-                    if (line.endsWith("1-0") ||
-                            line.endsWith("0-1") ||
-                            line.endsWith("1/2-1/2") ||
-                            line.endsWith("*")) {
-                        //end of PGN
-                        if (game != null) {
-                            setMoveText(game, moveText);
-                        }
-                        break;
-                    }
-                }
-
-            } catch (Exception e) {
-                String name = StringUtils.EMPTY;
-                int r = 0;
-                try {
-                    r = round.getNumber();
-                    name = event.getName();
-                } catch (Exception e2) {
-
-                }
-                throw new PgnException("Error parsing PGN[" + r + ", " + name + "]: ", e);
-            }
-
+        if (!iterator.hasNext()) {
+            return null;
         }
 
-        return game;
+        PgnTempContainer container = new PgnTempContainer();
+
+        while (iterator.hasNext()) {
+            String line = iterator.next().trim();
+            if (line.startsWith(UTF8_BOM)) {
+                line = line.substring(1);
+            }
+            try {
+                if (isProperty(line)) {
+                    addProperty(line, container);
+                } else if (StringUtils.isNotEmpty(line)) {
+                    addMoveText(line, container);
+                    if (isEndGame(line)) {
+                        setMoveText(container.game, container.moveText);
+                        return container.initGame ? container.game : null;
+                    }
+                }
+            } catch (Exception e) { //TODO stricter exceptions
+                String name = container.event.getName();
+                int r = container.round.getNumber();
+                throw new PgnException(String.format("Error parsing PGN[%d, %s]: ", r, name), e);
+            }
+        }
+        return container.initGame ? container.game : null;
+    }
+
+    private static void addProperty(String line, PgnTempContainer container) throws Exception {
+        PgnProperty property = parsePgnProperty(line);
+        if (property == null) {
+            return;
+        }
+        container.initGame = true;
+        String tag = property.name.toLowerCase().trim();
+        //begin
+        switch (tag) {
+            case "event":
+                if (container.moveTextParsing && container.game.getHalfMoves().size() == 0) {
+                    setMoveText(container.game, container.moveText);
+                }
+                container.event.setName(property.value);
+                container.event.setId(property.value);
+                break;
+            case "site":
+                container.event.setSite(property.value);
+                break;
+            case "date":
+                container.event.setStartDate(property.value);
+                break;
+            case "round":
+                int r = 1;
+                try {
+                    r = Integer.parseInt(property.value); //TODO isParseable
+                } catch (Exception e1) {
+                }
+                r = Math.max(0, r);
+                container.round.setNumber(r);
+                if (!container.event.getRound().containsKey(r)) {
+                    container.event.getRound().put(r, container.round);
+                }
+                break;
+            case "white": {
+                if (container.round.getNumber() < 1) {
+                    container.round.setNumber(1); //TODO this is just to have the same behaviour as before...
+                }
+
+                container.game.setDate(container.event.getStartDate()); //TODO this should be done only once
+
+                container.whitePlayer.setId(property.value);
+                container.whitePlayer.setName(property.value);
+                container.whitePlayer.setDescription(property.value);
+                break;
+            }
+            case "black": {
+                if (container.round.getNumber() < 1) {
+                    container.round.setNumber(1); //TODO this just to have the same behaviour as before...
+                }
+
+                container.game.setDate(container.event.getStartDate()); //TODO this should be done only once
+
+                container.blackPlayer.setId(property.value);
+                container.blackPlayer.setName(property.value);
+                container.blackPlayer.setDescription(property.value);
+                break;
+            }
+            case "result":
+                container.game.setResult(GameResult.fromNotation(property.value));
+                break;
+            case "plycount":
+                container.game.setPlyCount(property.value);
+                break;
+            case "termination":
+                try {
+                    container.game.setTermination(Termination.fromValue(property.value.toUpperCase()));
+                } catch (Exception e1) {
+                    container.game.setTermination(Termination.UNTERMINATED);
+                }
+                break;
+            case "timecontrol":
+                if (container.event.getTimeControl() == null) {
+                    try {
+                        container.event.setTimeControl(TimeControl.parseFromString(property.value.toUpperCase()));
+                    } catch (Exception e1) {
+                        //ignore errors in time control tag as it's not required by standards
+                    }
+                }
+                break;
+            case "annotator":
+                container.game.setAnnotator(property.value);
+                break;
+            case "fen":
+                container.game.setFen(property.value);
+                break;
+            case "eco":
+                container.game.setEco(property.value);
+                break;
+            case "opening":
+                container.game.setOpening(property.value);
+                break;
+            case "variation":
+                container.game.setVariation(property.value);
+                break;
+            case "whiteelo":
+                try {
+                    container.whitePlayer.setElo(Integer.parseInt(property.value));
+                } catch (NumberFormatException e) {
+
+                }
+                break;
+            case "blackelo":
+                try {
+                    container.blackPlayer.setElo(Integer.parseInt(property.value));
+                } catch (NumberFormatException e) {
+
+                }
+                break;
+            default:
+                if (container.game.getProperty() == null) {
+                    container.game.setProperty(new HashMap<>());
+                }
+                container.game.getProperty().put(property.name, property.value);
+                break;
+        }
+    }
+
+    private static void addMoveText(String line, PgnTempContainer container) {
+        container.initGame = true;
+        container.moveText.append(line);
+        container.moveText.append('\n');
+        container.moveTextParsing = true;
+    }
+
+    private static boolean isEndGame(String line) {
+        return line.endsWith("1-0") || line.endsWith("0-1") || line.endsWith("1/2-1/2") || line.endsWith("*");
+    }
+
+    private static class PgnTempContainer {
+
+        //TODO many of this stuff can be accessed through game
+
+        final Event event;
+        final Round round;
+        final Game game;
+        Player whitePlayer;
+        Player blackPlayer;
+        final StringBuilder moveText;
+        boolean moveTextParsing;
+        boolean initGame;
+
+        PgnTempContainer() {
+            this.event = new Event();
+            this.round = new Round(event);
+            this.game = new Game(UUID.randomUUID().toString(), round);
+            this.round.getGame().add(this.game);
+            this.whitePlayer = new GenericPlayer();
+            this.whitePlayer.setType(PlayerType.HUMAN);
+            this.game.setWhitePlayer(this.whitePlayer);
+            this.blackPlayer = new GenericPlayer();
+            this.blackPlayer.setType(PlayerType.HUMAN);
+            this.game.setBlackPlayer(this.blackPlayer);
+            this.moveText = new StringBuilder();
+        }
     }
 
     private static void setMoveText(Game game, StringBuilder moveText) throws Exception {
