@@ -35,6 +35,14 @@ $ cd chesslib/
 $ mvn clean compile package install
 ```
 
+From source with dependencies
+
+```
+$ git clone git@github.com:bhlangonijr/chesslib.git
+$ cd chesslib/
+$ mvn clean assembly:assembly -DdescriptorId=jar-with-dependencies
+```
+
 ## From repo
 
 Chesslib dependency can be added via the jitpack repository.
