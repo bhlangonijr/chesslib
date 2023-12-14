@@ -78,6 +78,7 @@ public class MoveBackup implements BoardEvent {
         setSideToMove(board.getSideToMove());
         setEnPassantTarget(board.getEnPassantTarget());
         setEnPassant(board.getEnPassant());
+        setEnPassantMove(enPassant != Square.NONE);
         setMoveCounter(board.getMoveCounter());
         setHalfMoveCounter(board.getHalfMoveCounter());
         setMove(move);
