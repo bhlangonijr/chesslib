@@ -60,13 +60,16 @@ public class PgnProperty {
      */
     public static PgnProperty parsePgnProperty(String line) {
         try {
+            int nameStart = 1;
+            int nameEnd = line.indexOf(' ', 1);
 
-            String l = line.replace("[", StringUtils.EMPTY);
-            l = l.replace("]", StringUtils.EMPTY);
-            l = l.replace("\"", StringUtils.EMPTY);
+            int valueStart = line.indexOf('\"', nameEnd) + 1;
+            int valueEnd = line.lastIndexOf('\"');
 
-            return new PgnProperty(StringUtil.beforeSequence(l, StringUtils.SPACE),
-                    StringUtil.afterSequence(l, StringUtils.SPACE));
+            return new PgnProperty(
+                    line.substring(nameStart, nameEnd),
+                    line.substring(valueStart, valueEnd)
+            );
         } catch (Exception e) {
             // do nothing
         }
