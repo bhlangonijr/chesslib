@@ -16,13 +16,16 @@
 
 package com.github.bhlangonijr.chesslib.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.bhlangonijr.chesslib.CastleRight;
 import com.github.bhlangonijr.chesslib.Constants;
+import com.github.bhlangonijr.chesslib.File;
+import com.github.bhlangonijr.chesslib.Rank;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
-
-import java.util.List;
 
 /**
  * The definition of a game context, a support structure used to provide contextual information to a chess position, and
@@ -122,6 +125,23 @@ public class GameContext {
     protected String startFEN;
 
     /**
+     * The file of the white king-side rook (for Shredder-FEN output in Chess960).
+     */
+    protected File whiteRookooFile;
+    /**
+     * The file of the white queen-side rook (for Shredder-FEN output in Chess960).
+     */
+    protected File whiteRookoooFile;
+    /**
+     * The file of the black king-side rook (for Shredder-FEN output in Chess960).
+     */
+    protected File blackRookooFile;
+    /**
+     * The file of the black queen-side rook (for Shredder-FEN output in Chess960).
+     */
+    protected File blackRookoooFile;
+
+    /**
      * The game mode.
      */
     protected GameMode gameMode;
@@ -194,6 +214,143 @@ public class GameContext {
 
         setStartFEN(Constants.startStandardFENPosition);
     }
+
+    /**
+     * Configures this game context for Chess960 based on the actual king and rook positions.
+     *
+     * @param whiteKing     the starting square of the white king
+     * @param whiteRookOO   the starting square of the white king-side rook (may be null if no king-side castling)
+     * @param whiteRookOOO  the starting square of the white queen-side rook (may be null if no queen-side castling)
+     * @param blackKing     the starting square of the black king
+     * @param blackRookOO   the starting square of the black king-side rook (may be null if no king-side castling)
+     * @param blackRookOOO  the starting square of the black queen-side rook (may be null if no queen-side castling)
+     */
+    public void loadChess960(Square whiteKing, Square whiteRookOO, Square whiteRookOOO,
+                             Square blackKing, Square blackRookOO, Square blackRookOOO) {
+        setVariationType(VariationType.CHESS960);
+
+        // King castle moves: king_from -> king_final_square
+        setWhiteoo(new Move(whiteKing, Square.G1));
+        setWhiteooo(new Move(whiteKing, Square.C1));
+        setBlackoo(new Move(blackKing, Square.G8));
+        setBlackooo(new Move(blackKing, Square.C8));
+
+        // Rook castle moves: rook_from -> rook_final_square
+        if (whiteRookOO != null) {
+            setWhiteRookoo(new Move(whiteRookOO, Square.F1));
+            whiteRookooFile = whiteRookOO.getFile();
+        }
+        if (whiteRookOOO != null) {
+            setWhiteRookooo(new Move(whiteRookOOO, Square.D1));
+            whiteRookoooFile = whiteRookOOO.getFile();
+        }
+        if (blackRookOO != null) {
+            setBlackRookoo(new Move(blackRookOO, Square.F8));
+            blackRookooFile = blackRookOO.getFile();
+        }
+        if (blackRookOOO != null) {
+            setBlackRookooo(new Move(blackRookOOO, Square.D8));
+            blackRookoooFile = blackRookOOO.getFile();
+        }
+
+        // Squares the king passes through (for attack checks) - between king start and king dest, inclusive of dest
+        setWhiteooSquares(computeKingPassSquares(whiteKing, Square.G1));
+        setWhiteoooSquares(computeKingPassSquares(whiteKing, Square.C1));
+        setBlackooSquares(computeKingPassSquares(blackKing, Square.G8));
+        setBlackoooSquares(computeKingPassSquares(blackKing, Square.C8));
+
+        setWhiteooSquaresBb(squareListToBb(getWhiteooSquares()));
+        setWhiteoooSquaresBb(squareListToBb(getWhiteoooSquares()));
+        setBlackooSquaresBb(squareListToBb(getBlackooSquares()));
+        setBlackoooSquaresBb(squareListToBb(getBlackoooSquares()));
+
+        // All squares that must be empty for castling (between king and king dest + between rook and rook dest)
+        // Exclude the king and rook starting squares themselves
+        setWhiteooAllSquaresBb(computeAllEmptySquaresBb(whiteKing, Square.G1, whiteRookOO, Square.F1));
+        setWhiteoooAllSquaresBb(computeAllEmptySquaresBb(whiteKing, Square.C1, whiteRookOOO, Square.D1));
+        setBlackooAllSquaresBb(computeAllEmptySquaresBb(blackKing, Square.G8, blackRookOO, Square.F8));
+        setBlackoooAllSquaresBb(computeAllEmptySquaresBb(blackKing, Square.C8, blackRookOOO, Square.D8));
+    }
+
+    /**
+     * Computes the squares the king passes through during castling (inclusive of destination, exclusive of start).
+     * These squares must not be attacked.
+     */
+    private static List<Square> computeKingPassSquares(Square kingFrom, Square kingTo) {
+        List<Square> squares = new ArrayList<>();
+        if (kingFrom == null || kingTo == null) return squares;
+        int fromFile = kingFrom.getFile().ordinal();
+        int toFile = kingTo.getFile().ordinal();
+        Rank rank = kingFrom.getRank();
+        if (fromFile == toFile) {
+            // King doesn't move (e.g., king on G1 doing O-O) - just include the destination
+            squares.add(kingTo);
+            return squares;
+        }
+        int step = fromFile < toFile ? 1 : -1;
+        // Include all squares from kingFrom+step to kingTo (inclusive)
+        for (int f = fromFile + step; ; f += step) {
+            squares.add(Square.encode(rank, File.allFiles[f]));
+            if (f == toFile) break;
+        }
+        return squares;
+    }
+
+    /**
+     * Computes the bitboard of all squares that must be empty for a Chess960 castle move.
+     * This includes squares between king start and king dest, and between rook start and rook dest,
+     * excluding the king and rook starting squares themselves.
+     */
+    private static long computeAllEmptySquaresBb(Square kingFrom, Square kingTo,
+                                                  Square rookFrom, Square rookTo) {
+        if (kingFrom == null || kingTo == null || rookFrom == null || rookTo == null) return 0L;
+        long bb = 0L;
+        Rank rank = kingFrom.getRank();
+
+        // Squares between king start and king dest (inclusive of both endpoints)
+        int kf1 = Math.min(kingFrom.getFile().ordinal(), kingTo.getFile().ordinal());
+        int kf2 = Math.max(kingFrom.getFile().ordinal(), kingTo.getFile().ordinal());
+        for (int f = kf1; f <= kf2; f++) {
+            bb |= Square.encode(rank, File.allFiles[f]).getBitboard();
+        }
+
+        // Squares between rook start and rook dest (inclusive of both endpoints)
+        int rf1 = Math.min(rookFrom.getFile().ordinal(), rookTo.getFile().ordinal());
+        int rf2 = Math.max(rookFrom.getFile().ordinal(), rookTo.getFile().ordinal());
+        for (int f = rf1; f <= rf2; f++) {
+            bb |= Square.encode(rank, File.allFiles[f]).getBitboard();
+        }
+
+        // Exclude king and rook starting squares (they are occupied by our own pieces that will move)
+        bb &= ~kingFrom.getBitboard();
+        bb &= ~rookFrom.getBitboard();
+
+        return bb;
+    }
+
+    /**
+     * Returns the file of the white king-side rook (for Shredder-FEN output).
+     * @return the file, or null if not set
+     */
+    public File getWhiteRookooFile() { return whiteRookooFile; }
+
+    /**
+     * Returns the file of the white queen-side rook (for Shredder-FEN output).
+     * @return the file, or null if not set
+     */
+    public File getWhiteRookoooFile() { return whiteRookoooFile; }
+
+    /**
+     * Returns the file of the black king-side rook (for Shredder-FEN output).
+     * @return the file, or null if not set
+     */
+    public File getBlackRookooFile() { return blackRookooFile; }
+
+    /**
+     * Returns the file of the black queen-side rook (for Shredder-FEN output).
+     * @return the file, or null if not set
+     */
+    public File getBlackRookoooFile() { return blackRookoooFile; }
 
     /**
      * Returns an unambiguous castle move by king given the provided side and castle rights, if possible. A castle move

@@ -21,6 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.github.bhlangonijr.chesslib.Bitboard;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Constants;
@@ -31,7 +33,6 @@ import com.github.bhlangonijr.chesslib.Rank;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.util.StringUtil;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * A convenient data structure to store an ordered sequence of moves and access to their human-readable representation
@@ -136,14 +137,12 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         StringBuilder san = new StringBuilder();
         Piece piece = board.getPiece(move.getFrom());
         if (piece.getPieceType().equals(PieceType.KING)) {
-            int delta = move.getTo().getFile().ordinal() -
-                    move.getFrom().getFile().ordinal();
-            if (Math.abs(delta) >= 2) { // is castle
+            if (board.getContext().isCastleMove(move)) { // Chess960-compatible castle detection
                 if (!board.doMove(move, true)) {
                     throw new MoveConversionException("Invalid move [" +
                             move + "] for current setup: " + board.getFen());
                 }
-                san.append(delta > 0 ? "O-O" : "O-O-O");
+                san.append(board.getContext().isKingSideCastle(move) ? "O-O" : "O-O-O");
                 addCheckFlag(board, san);
                 return san.toString();
             }

@@ -16,10 +16,10 @@
 
 package com.github.bhlangonijr.chesslib;
 
-import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
-
 import java.util.EnumMap;
 
+import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
+import com.github.bhlangonijr.chesslib.game.VariationType;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 /**
@@ -123,6 +123,24 @@ public class MoveBackup implements BoardEvent {
             final boolean isCastle = board.getContext().isCastleMove(getMove());
 
             if (PieceType.KING.equals(movingPiece.getPieceType()) && isCastle) {
+                if (board.getContext().getVariationType() == VariationType.CHESS960) {
+                    // Chess960: clear both pieces from their destination squares, then restore them
+                    Piece king = Piece.make(getSideToMove(), PieceType.KING);
+                    Piece rook = Piece.make(getSideToMove(), PieceType.ROOK);
+                    Move rookMove = getRookCastleMove();
+                    board.unsetPiece(king, getMove().getTo());
+                    if (!rookMove.getTo().equals(getMove().getTo())) {
+                        board.unsetPiece(rook, rookMove.getTo());
+                    }
+                    board.setPiece(rook, rookMove.getFrom());
+                    if (!getMove().getFrom().equals(rookMove.getFrom())) {
+                        board.setPiece(king, getMove().getFrom());
+                    } else {
+                        board.setPiece(king, getMove().getFrom());
+                    }
+                    board.setIncrementalHashKey(getIncrementalHashKey());
+                    return;
+                }
                 board.undoMovePiece(getRookCastleMove());
             }
             board.unsetPiece(movingPiece, getMove().getTo());

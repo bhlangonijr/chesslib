@@ -1,13 +1,11 @@
 # Chesslib
-### A Lightweight, High-Performance Java Chess Library
+### A Lightweight, High-Performance Java Chess Library — Chess960 Fork
 
-[![JitPack](https://jitpack.io/v/bhlangonijr/chesslib.svg)](https://jitpack.io/#bhlangonijr/chesslib)
-![Build Status](https://github.com/bhlangonijr/chesslib/actions/workflows/maven.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 **Chesslib** is a clean, efficient Java library for legal move generation, position validation, and PGN/FEN parsing. It is designed for developers who need a robust engine backbone with high-speed performance and a low memory footprint.
 
-Whether you are building a chess UI, a server-side validator, or a full-strength engine, Chesslib provides the tools you need.
+This is a fork of [bhlangonijr/chesslib](https://github.com/bhlangonijr/chesslib) v1.3.6 that adds full **Chess960 (Fischer Random)** castling support.
 
 ---
 
@@ -19,27 +17,17 @@ Add the JitPack repository and the dependency to your project build file.
 
 #### Maven
 ```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-
 <dependency>
-    <groupId>com.github.bhlangonijr</groupId>
+    <groupId>tech.solusoft.chess</groupId>
     <artifactId>chesslib</artifactId>
-    <version>1.3.7</version>
+    <version>1.3.6-chess960</version>
 </dependency>
-
 ```
 
 #### Gradle
 
 ```groovy
-repositories { maven { url 'https://jitpack.io' } }
-dependencies { implementation 'com.github.bhlangonijr:chesslib:1.3.7' }
-
+dependencies { implementation 'tech.solusoft.chess:chesslib:1.3.6-chess960' }
 ```
 
 ### Hello World: Making Moves
@@ -192,6 +180,68 @@ board.addEventListener(BoardEventType.ON_MOVE, event -> {
 
 * **`board.getZobristKey()`**: Returns the Zobrist hash (long) for rapid transposition table lookups.
 * **`board.strictEquals(otherBoard)`**: Compares position **AND** move history (crucial for 3-fold repetition detection).
+
+---
+
+## ♛ Chess960 (Fischer Random) Support
+
+This fork adds full Chess960 castling support to chesslib. All 960 starting positions are handled correctly, including move generation, validation, execution, undo, SAN parsing, and FEN round-trip.
+
+### Detection
+
+Chess960 is detected automatically when loading a FEN:
+
+- **Shredder-FEN**: castling field uses file letters (`AHah`, `BFbf`, etc.) instead of `KQkq`
+- **KQkq with non-standard king**: king not on e-file but castling rights present (e.g. Lichess format)
+
+You can also force Chess960 mode explicitly — useful when the PGN has `[Variant "Chess960"]` but the FEN uses standard `KQkq` notation with the king on the e-file:
+
+```java
+board.loadFromFen("bnqbrnkr/pppppppp/8/8/8/8/PPPPPPPP/BNQBRNKR w KQkq - 0 1", true);
+```
+
+### Querying
+
+```java
+boolean isChess960 = board.getContext().getVariationType() == VariationType.CHESS960;
+```
+
+### Castling
+
+Chess960 castling follows the standard rules: king always ends on the g-file (O-O) or c-file (O-O-O), rook always ends on the f-file (O-O) or d-file (O-O-O). The `GameContext` is configured dynamically based on the actual king and rook positions found in the FEN.
+
+```java
+Board board = new Board();
+board.loadFromFen("bnqbrnkr/pppppppp/8/8/8/8/PPPPPPPP/BNQBRNKR w KQkq - 0 1");
+
+// SAN parsing works
+MoveList moves = new MoveList(board.getFen());
+moves.loadFromSan("e4 e5 b3 Ng6 g3 O-O");
+
+// Move generation includes castling
+board.legalMoves(); // contains the O-O move for black
+
+// FEN export uses Shredder-FEN for Chess960
+board.getFen(); // castling field will be "EHeh" instead of "KQkq"
+```
+
+### Edge cases handled
+
+- King already on destination square (e.g. king on g1 doing O-O → king stays, rook moves)
+- King and rook adjacent or swapping squares
+- Rook between king start and king destination
+- Correct undo/redo of all Chess960 castling configurations
+- Castle rights properly lost when rook or king moves
+
+### Files changed (vs upstream 1.3.6)
+
+| File | Change |
+|------|--------|
+| `GameContext` | Added `loadChess960()` to configure castling dynamically from piece positions |
+| `Board` | FEN parsing detects Chess960; `loadFromFen(fen, chess960)` overload; `doMove`/`isMoveLegal` handle Chess960 castling; `getFen` exports Shredder-FEN |
+| `MoveGenerator` | `generateCastleMoves` excludes king/rook from occupancy check for Chess960 |
+| `MoveList` | `encode` uses `context.isCastleMove()` instead of file-delta for castle detection |
+| `MoveBackup` | `restore` handles Chess960 castle undo |
 
 ---
 

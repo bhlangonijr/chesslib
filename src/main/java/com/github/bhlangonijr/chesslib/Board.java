@@ -16,9 +16,6 @@
 
 package com.github.bhlangonijr.chesslib;
 
-import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
-import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,12 +26,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
+
+import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
+import static com.github.bhlangonijr.chesslib.Constants.emptyMove;
 import com.github.bhlangonijr.chesslib.game.GameContext;
+import com.github.bhlangonijr.chesslib.game.VariationType;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import com.github.bhlangonijr.chesslib.util.XorShiftRandom;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * The definition of a chessboard position and its status. It exposes methods to manipulate the board, evolve the
@@ -233,7 +234,23 @@ public class Board implements Cloneable, BoardEvent {
                     CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE :
                             CastleRight.QUEEN_SIDE;
                     Move rookMove = context.getRookCastleMove(side, c);
-                    movePiece(rookMove, backupMove);
+                    if (context.getVariationType() == VariationType.CHESS960) {
+                        // Chess960: manually handle piece placement to avoid capture issues
+                        Piece king = getPiece(move.getFrom());
+                        Piece rook = getPiece(rookMove.getFrom());
+                        unsetPiece(king, move.getFrom());
+                        if (!rookMove.getFrom().equals(move.getFrom())) {
+                            unsetPiece(rook, rookMove.getFrom());
+                        }
+                        setPiece(rook, rookMove.getTo());
+                        if (!move.getTo().equals(rookMove.getTo())) {
+                            setPiece(king, move.getTo());
+                        } else {
+                            setPiece(king, move.getTo());
+                        }
+                    } else {
+                        movePiece(rookMove, backupMove);
+                    }
                 } else {
                     return false;
                 }
@@ -268,7 +285,13 @@ public class Board implements Cloneable, BoardEvent {
             }
         }
 
-        Piece capturedPiece = movePiece(move, backupMove);
+        Piece capturedPiece;
+        if (isCastle && context.getVariationType() == VariationType.CHESS960) {
+            // Chess960: king and rook already placed above, no capture possible
+            capturedPiece = Piece.NONE;
+        } else {
+            capturedPiece = movePiece(move, backupMove);
+        }
 
         if (PieceType.ROOK == capturedPiece.getPieceType()) {
             final Move oo = context.getRookoo(side.flip());
@@ -769,6 +792,19 @@ public class Board implements Cloneable, BoardEvent {
      * @param fen the FEN string representing the chess position to load
      */
     public void loadFromFen(String fen) {
+        loadFromFen(fen, false);
+    }
+
+    /**
+     * Loads a specific chess position from a valid Forsyth-Edwards Notation (FEN) string. When {@code chess960} is
+     * {@code true}, the position is treated as Chess960 regardless of the castling notation — this is useful when
+     * the PGN tag {@code [Variant "Chess960"]} is present but the FEN uses standard {@code KQkq} notation with
+     * the king on the e-file.
+     *
+     * @param fen     the FEN string representing the chess position to load
+     * @param chess960 if {@code true}, force Chess960 mode
+     */
+    public void loadFromFen(String fen, boolean chess960) {
         clear();
         String squares = fen.substring(0, fen.indexOf(' '));
         String state = fen.substring(fen.indexOf(' ') + 1);
@@ -793,27 +829,177 @@ public class Board implements Cloneable, BoardEvent {
 
         sideToMove = state.toLowerCase().charAt(0) == 'w' ? Side.WHITE : Side.BLACK;
 
-        if (state.contains("KQ")) {
-            castleRight.put(Side.WHITE, CastleRight.KING_AND_QUEEN_SIDE);
-        } else if (state.contains("K")) {
-            castleRight.put(Side.WHITE, CastleRight.KING_SIDE);
-        } else if (state.contains("Q")) {
-            castleRight.put(Side.WHITE, CastleRight.QUEEN_SIDE);
-        } else {
-            castleRight.put(Side.WHITE, CastleRight.NONE);
-        }
-
-        if (state.contains("kq")) {
-            castleRight.put(Side.BLACK, CastleRight.KING_AND_QUEEN_SIDE);
-        } else if (state.contains("k")) {
-            castleRight.put(Side.BLACK, CastleRight.KING_SIDE);
-        } else if (state.contains("q")) {
-            castleRight.put(Side.BLACK, CastleRight.QUEEN_SIDE);
-        } else {
-            castleRight.put(Side.BLACK, CastleRight.NONE);
-        }
-
         String[] flags = state.split(StringUtils.SPACE);
+        String castlingField = flags.length >= 2 ? flags[1] : "-";
+
+        // Detect Chess960: Shredder-FEN uses file letters (A-H, a-h) for castling rights
+        boolean isShredderFen = false;
+        boolean isChess960 = false;
+        Square whiteRookOO = null, whiteRookOOO = null;
+        Square blackRookOO = null, blackRookOOO = null;
+
+        if (!castlingField.equals("-")) {
+            for (int ci = 0; ci < castlingField.length(); ci++) {
+                char ch = castlingField.charAt(ci);
+                if (ch >= 'A' && ch <= 'H') {
+                    isShredderFen = true;
+                    break;
+                }
+                if (ch >= 'a' && ch <= 'h') {
+                    isShredderFen = true;
+                    break;
+                }
+            }
+        }
+
+        if (isShredderFen) {
+            // Parse Shredder-FEN castling rights
+            isChess960 = true;
+            Square wKing = getKingSquare(Side.WHITE);
+            Square bKing = getKingSquare(Side.BLACK);
+            int wKingFile = wKing != Square.NONE ? wKing.getFile().ordinal() : -1;
+            int bKingFile = bKing != Square.NONE ? bKing.getFile().ordinal() : -1;
+
+            for (int ci = 0; ci < castlingField.length(); ci++) {
+                char ch = castlingField.charAt(ci);
+                if (ch >= 'A' && ch <= 'H') {
+                    int rookFile = ch - 'A';
+                    if (wKingFile >= 0 && rookFile > wKingFile) {
+                        whiteRookOO = Square.encode(Rank.RANK_1, File.allFiles[rookFile]);
+                    } else {
+                        whiteRookOOO = Square.encode(Rank.RANK_1, File.allFiles[rookFile]);
+                    }
+                } else if (ch >= 'a' && ch <= 'h') {
+                    int rookFile = ch - 'a';
+                    if (bKingFile >= 0 && rookFile > bKingFile) {
+                        blackRookOO = Square.encode(Rank.RANK_8, File.allFiles[rookFile]);
+                    } else {
+                        blackRookOOO = Square.encode(Rank.RANK_8, File.allFiles[rookFile]);
+                    }
+                }
+            }
+
+            // Set castle rights based on what we found
+            if (whiteRookOO != null && whiteRookOOO != null) {
+                castleRight.put(Side.WHITE, CastleRight.KING_AND_QUEEN_SIDE);
+            } else if (whiteRookOO != null) {
+                castleRight.put(Side.WHITE, CastleRight.KING_SIDE);
+            } else if (whiteRookOOO != null) {
+                castleRight.put(Side.WHITE, CastleRight.QUEEN_SIDE);
+            } else {
+                castleRight.put(Side.WHITE, CastleRight.NONE);
+            }
+
+            if (blackRookOO != null && blackRookOOO != null) {
+                castleRight.put(Side.BLACK, CastleRight.KING_AND_QUEEN_SIDE);
+            } else if (blackRookOO != null) {
+                castleRight.put(Side.BLACK, CastleRight.KING_SIDE);
+            } else if (blackRookOOO != null) {
+                castleRight.put(Side.BLACK, CastleRight.QUEEN_SIDE);
+            } else {
+                castleRight.put(Side.BLACK, CastleRight.NONE);
+            }
+        } else {
+            // Standard KQkq notation
+            if (castlingField.contains("K") && castlingField.contains("Q")) {
+                castleRight.put(Side.WHITE, CastleRight.KING_AND_QUEEN_SIDE);
+            } else if (castlingField.contains("K")) {
+                castleRight.put(Side.WHITE, CastleRight.KING_SIDE);
+            } else if (castlingField.contains("Q")) {
+                castleRight.put(Side.WHITE, CastleRight.QUEEN_SIDE);
+            } else {
+                castleRight.put(Side.WHITE, CastleRight.NONE);
+            }
+
+            if (castlingField.contains("k") && castlingField.contains("q")) {
+                castleRight.put(Side.BLACK, CastleRight.KING_AND_QUEEN_SIDE);
+            } else if (castlingField.contains("k")) {
+                castleRight.put(Side.BLACK, CastleRight.KING_SIDE);
+            } else if (castlingField.contains("q")) {
+                castleRight.put(Side.BLACK, CastleRight.QUEEN_SIDE);
+            } else {
+                castleRight.put(Side.BLACK, CastleRight.NONE);
+            }
+
+            // Detect Chess960 with KQkq notation: king not on e-file but has castling rights,
+            // or explicitly requested via chess960 flag (e.g. from PGN [Variant "Chess960"] tag)
+            if (!castlingField.equals("-")) {
+                Square wKing = getKingSquare(Side.WHITE);
+                Square bKing = getKingSquare(Side.BLACK);
+                boolean whiteNonStandard = wKing != Square.NONE && wKing != Square.E1
+                        && castleRight.get(Side.WHITE) != CastleRight.NONE;
+                boolean blackNonStandard = bKing != Square.NONE && bKing != Square.E8
+                        && castleRight.get(Side.BLACK) != CastleRight.NONE;
+
+                if (chess960 || whiteNonStandard || blackNonStandard) {
+                    isChess960 = true;
+                    // Find rooks by scanning the back rank
+                    if (castleRight.get(Side.WHITE) != CastleRight.NONE && wKing != Square.NONE) {
+                        int wkf = wKing.getFile().ordinal();
+                        if (castleRight.get(Side.WHITE) == CastleRight.KING_SIDE
+                                || castleRight.get(Side.WHITE) == CastleRight.KING_AND_QUEEN_SIDE) {
+                            // Find rook to the right of king
+                            for (int f = wkf + 1; f <= 7; f++) {
+                                Square sq = Square.encode(Rank.RANK_1, File.allFiles[f]);
+                                if (getPiece(sq) == Piece.WHITE_ROOK) {
+                                    whiteRookOO = sq;
+                                    break;
+                                }
+                            }
+                        }
+                        if (castleRight.get(Side.WHITE) == CastleRight.QUEEN_SIDE
+                                || castleRight.get(Side.WHITE) == CastleRight.KING_AND_QUEEN_SIDE) {
+                            // Find rook to the left of king
+                            for (int f = wkf - 1; f >= 0; f--) {
+                                Square sq = Square.encode(Rank.RANK_1, File.allFiles[f]);
+                                if (getPiece(sq) == Piece.WHITE_ROOK) {
+                                    whiteRookOOO = sq;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (castleRight.get(Side.BLACK) != CastleRight.NONE && bKing != Square.NONE) {
+                        int bkf = bKing.getFile().ordinal();
+                        if (castleRight.get(Side.BLACK) == CastleRight.KING_SIDE
+                                || castleRight.get(Side.BLACK) == CastleRight.KING_AND_QUEEN_SIDE) {
+                            for (int f = bkf + 1; f <= 7; f++) {
+                                Square sq = Square.encode(Rank.RANK_8, File.allFiles[f]);
+                                if (getPiece(sq) == Piece.BLACK_ROOK) {
+                                    blackRookOO = sq;
+                                    break;
+                                }
+                            }
+                        }
+                        if (castleRight.get(Side.BLACK) == CastleRight.QUEEN_SIDE
+                                || castleRight.get(Side.BLACK) == CastleRight.KING_AND_QUEEN_SIDE) {
+                            for (int f = bkf - 1; f >= 0; f--) {
+                                Square sq = Square.encode(Rank.RANK_8, File.allFiles[f]);
+                                if (getPiece(sq) == Piece.BLACK_ROOK) {
+                                    blackRookOOO = sq;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Configure Chess960 context if detected
+        if (isChess960) {
+            Square wKing = getKingSquare(Side.WHITE);
+            Square bKing = getKingSquare(Side.BLACK);
+            context.loadChess960(
+                    wKing != Square.NONE ? wKing : Square.E1,
+                    whiteRookOO, whiteRookOOO,
+                    bKing != Square.NONE ? bKing : Square.E8,
+                    blackRookOO, blackRookOOO
+            );
+        } else if (context.getVariationType() == VariationType.CHESS960) {
+            // Reset to standard if previously was Chess960 (e.g., thread-local board reuse)
+            context = new GameContext();
+        }
 
         if (flags.length >= 3) {
             String s = flags[2].toUpperCase().trim();
@@ -934,26 +1120,54 @@ public class Board implements Cloneable, BoardEvent {
         }
 
         String rights = StringUtils.EMPTY;
-        if (CastleRight.KING_AND_QUEEN_SIDE.
-                equals(castleRight.get(Side.WHITE))) {
-            rights += "KQ";
-        } else if (CastleRight.KING_SIDE.
-                equals(castleRight.get(Side.WHITE))) {
-            rights += "K";
-        } else if (CastleRight.QUEEN_SIDE.
-                equals(castleRight.get(Side.WHITE))) {
-            rights += "Q";
-        }
+        if (context.getVariationType() == VariationType.CHESS960) {
+            // Shredder-FEN: use file letters for castling rights
+            if (CastleRight.KING_AND_QUEEN_SIDE.equals(castleRight.get(Side.WHITE))
+                    || CastleRight.KING_SIDE.equals(castleRight.get(Side.WHITE))) {
+                if (context.getWhiteRookooFile() != null) {
+                    rights += context.getWhiteRookooFile().getNotation().toUpperCase();
+                }
+            }
+            if (CastleRight.KING_AND_QUEEN_SIDE.equals(castleRight.get(Side.WHITE))
+                    || CastleRight.QUEEN_SIDE.equals(castleRight.get(Side.WHITE))) {
+                if (context.getWhiteRookoooFile() != null) {
+                    rights += context.getWhiteRookoooFile().getNotation().toUpperCase();
+                }
+            }
+            if (CastleRight.KING_AND_QUEEN_SIDE.equals(castleRight.get(Side.BLACK))
+                    || CastleRight.KING_SIDE.equals(castleRight.get(Side.BLACK))) {
+                if (context.getBlackRookooFile() != null) {
+                    rights += context.getBlackRookooFile().getNotation().toLowerCase();
+                }
+            }
+            if (CastleRight.KING_AND_QUEEN_SIDE.equals(castleRight.get(Side.BLACK))
+                    || CastleRight.QUEEN_SIDE.equals(castleRight.get(Side.BLACK))) {
+                if (context.getBlackRookoooFile() != null) {
+                    rights += context.getBlackRookoooFile().getNotation().toLowerCase();
+                }
+            }
+        } else {
+            if (CastleRight.KING_AND_QUEEN_SIDE.
+                    equals(castleRight.get(Side.WHITE))) {
+                rights += "KQ";
+            } else if (CastleRight.KING_SIDE.
+                    equals(castleRight.get(Side.WHITE))) {
+                rights += "K";
+            } else if (CastleRight.QUEEN_SIDE.
+                    equals(castleRight.get(Side.WHITE))) {
+                rights += "Q";
+            }
 
-        if (CastleRight.KING_AND_QUEEN_SIDE.
-                equals(castleRight.get(Side.BLACK))) {
-            rights += "kq";
-        } else if (CastleRight.KING_SIDE.
-                equals(castleRight.get(Side.BLACK))) {
-            rights += "k";
-        } else if (CastleRight.QUEEN_SIDE.
-                equals(castleRight.get(Side.BLACK))) {
-            rights += "q";
+            if (CastleRight.KING_AND_QUEEN_SIDE.
+                    equals(castleRight.get(Side.BLACK))) {
+                rights += "kq";
+            } else if (CastleRight.KING_SIDE.
+                    equals(castleRight.get(Side.BLACK))) {
+                rights += "k";
+            } else if (CastleRight.QUEEN_SIDE.
+                    equals(castleRight.get(Side.BLACK))) {
+                rights += "q";
+            }
         }
 
         if (StringUtils.isEmpty(rights)) {
@@ -1210,7 +1424,10 @@ public class Board implements Cloneable, BoardEvent {
                 return false;
             }
 
-            if (fromPiece.getPieceSide().equals(capturedPiece.getPieceSide())) {
+            // In Chess960 castling, the king may move to a square occupied by own rook
+            // (e.g., if rook is on G1 and king castles to G1). Skip the same-side capture check for castle moves.
+            if (fromPiece.getPieceSide().equals(capturedPiece.getPieceSide())
+                    && !(fromType.equals(PieceType.KING) && getContext().isCastleMove(move))) {
                 return false;
             }
 
@@ -1229,7 +1446,16 @@ public class Board implements Cloneable, BoardEvent {
                 if (getContext().isKingSideCastle(move)) {
                     if (getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                             (getCastleRight(side).equals(CastleRight.KING_SIDE))) {
-                        if ((getBitboard() & getContext().getooAllSquaresBb(side)) == 0L) {
+                        long occ = getBitboard();
+                        if (context.getVariationType() == VariationType.CHESS960) {
+                            // Exclude king and rook from occupancy check
+                            occ &= ~move.getFrom().getBitboard();
+                            Move rookMove = context.getRookoo(side);
+                            if (rookMove != null) {
+                                occ &= ~rookMove.getFrom().getBitboard();
+                            }
+                        }
+                        if ((occ & getContext().getooAllSquaresBb(side)) == 0L) {
                             return !isSquareAttackedBy(getContext().getooSquares(side), side.flip());
                         }
                     }
@@ -1238,7 +1464,15 @@ public class Board implements Cloneable, BoardEvent {
                 if (getContext().isQueenSideCastle(move)) {
                     if (getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                             (getCastleRight(side).equals(CastleRight.QUEEN_SIDE))) {
-                        if ((getBitboard() & getContext().getoooAllSquaresBb(side)) == 0L) {
+                        long occ = getBitboard();
+                        if (context.getVariationType() == VariationType.CHESS960) {
+                            occ &= ~move.getFrom().getBitboard();
+                            Move rookMove = context.getRookooo(side);
+                            if (rookMove != null) {
+                                occ &= ~rookMove.getFrom().getBitboard();
+                            }
+                        }
+                        if ((occ & getContext().getoooAllSquaresBb(side)) == 0L) {
                             return !isSquareAttackedBy(getContext().getoooSquares(side), side.flip());
                         }
                     }
@@ -1247,9 +1481,17 @@ public class Board implements Cloneable, BoardEvent {
             }
         }
         if (fromType.equals(PieceType.KING)) {
-            if (squareAttackedBy(move.getTo(), side.flip()) != 0L) {
-                return false;
+            // For Chess960 castling, skip the attack check on king destination here
+            // (it's already checked via ooSquares above in fullValidation, and in generateCastleMoves)
+            if (!(context.getVariationType() == VariationType.CHESS960 && context.isCastleMove(move))) {
+                if (squareAttackedBy(move.getTo(), side.flip()) != 0L) {
+                    return false;
+                }
             }
+        }
+        // For Chess960 castling, the pin/attack detection below doesn't apply
+        if (context.getVariationType() == VariationType.CHESS960 && context.isCastleMove(move)) {
+            return true;
         }
         Square kingSq = (fromType.equals(PieceType.KING) ?
                 move.getTo() : getKingSquare(side));
