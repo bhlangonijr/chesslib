@@ -483,14 +483,13 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
             b.loadFromFen(getStartFen());
         }
         try {
-            Side side = b.getSideToMove();
             text = StringUtil.normalize(text);
             String[] m = text.split(StringUtils.SPACE);
             int i = 0;
             for (String strMove : m) {
-                Move move = new Move(strMove, side);
+                Move move = b.fromUci(strMove);
                 add(i++, move);
-                side = side.flip();
+                b.doMove(move);
             }
         } catch (Exception e) {
             throw new MoveConversionException("Couldn't parse text to MoveList: " + e.getMessage());

@@ -93,6 +93,26 @@ public class Chess960Test {
     }
 
     @Test
+    public void testChess960LoadFromTextUci() {
+        // loadFromText uses UCI notation — Chess960 castling is king→rook (g8h8)
+        Board board = new Board();
+        board.loadFromFen("bnqbrnkr/pppppppp/8/8/8/8/PPPPPPPP/BNQBRNKR w KQkq - 0 1");
+
+        MoveList moves = new MoveList(board.getFen());
+        // e4 e5 b3 Ng6 g3 O-O (O-O = king g8 to rook h8 in UCI Chess960)
+        moves.loadFromText("e2e4 e7e5 b2b3 f8g6 g2g3 g8h8");
+
+        assertEquals(6, moves.size());
+
+        // Replay and verify the castling happened correctly
+        for (Move m : moves) {
+            assertTrue("Move should be legal: " + m, board.doMove(m, true));
+        }
+        assertEquals(Piece.BLACK_KING, board.getPiece(Square.G8));
+        assertEquals(Piece.BLACK_ROOK, board.getPiece(Square.F8));
+    }
+
+    @Test
     public void testChess960FullGame() {
         Board board = new Board();
         board.loadFromFen("bnqbrnkr/pppppppp/8/8/8/8/PPPPPPPP/BNQBRNKR w KQkq - 0 1");
@@ -148,6 +168,43 @@ public class Chess960Test {
         // White should lose king-side castling right
         CastleRight cr = board2.getCastleRight(Side.WHITE);
         assertTrue(cr == CastleRight.QUEEN_SIDE || cr == CastleRight.NONE);
+    }
+
+    @Test
+    public void testChess960UciConversion() {
+        // Position: bnqbrnkr - King on G, Rooks on E and H
+        Board board = new Board();
+        board.loadFromFen("bnqbrnkr/pppppppp/8/8/8/8/PPPPPPPP/BNQBRNKR w KQkq - 0 1");
+
+        // O-O for white: king G1, rook H1 → UCI should be "g1h1" (king to rook)
+        Move whiteOO = board.getContext().getoo(Side.WHITE);
+        assertEquals("g1h1", board.toUci(whiteOO));
+
+        // O-O-O for white: king G1, rook E1 → UCI should be "g1e1"
+        Move whiteOOO = board.getContext().getooo(Side.WHITE);
+        assertEquals("g1e1", board.toUci(whiteOOO));
+
+        // fromUci: "g1h1" should be recognized as O-O
+        Move parsed = board.fromUci("g1h1");
+        assertEquals(whiteOO, parsed);
+
+        // fromUci: "g1e1" should be recognized as O-O-O
+        Move parsedOOO = board.fromUci("g1e1");
+        assertEquals(whiteOOO, parsedOOO);
+
+        // Normal move: "e2e4" should work as usual
+        Move e4 = board.fromUci("e2e4");
+        assertEquals(Square.E2, e4.getFrom());
+        assertEquals(Square.E4, e4.getTo());
+        assertEquals("e2e4", board.toUci(e4));
+    }
+
+    @Test
+    public void testStandardChessUciUnaffected() {
+        Board board = new Board();
+        // Standard chess: O-O is e1g1, not e1h1
+        Move whiteOO = board.getContext().getoo(Side.WHITE);
+        assertEquals("e1g1", board.toUci(whiteOO));
     }
 
     @Test

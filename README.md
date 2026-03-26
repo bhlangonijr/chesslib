@@ -233,14 +233,39 @@ board.getFen(); // castling field will be "EHeh" instead of "KQkq"
 - Correct undo/redo of all Chess960 castling configurations
 - Castle rights properly lost when rook or king moves
 
+### UCI notation
+
+Internally, chesslib represents a castling move as king → final destination (e.g. `G1→G1` for O-O when king is already on g1). This differs from the official UCI Chess960 convention, where castling is encoded as king → rook square (e.g. `g1h1`).
+
+To bridge this gap, use `board.toUci()` and `board.fromUci()` instead of `move.toString()` or `new Move(uci, side)` when working with UCI strings:
+
+```java
+Board board = new Board();
+board.loadFromFen("bnqbrnkr/pppppppp/8/8/8/8/PPPPPPPP/BNQBRNKR w KQkq - 0 1");
+
+// Convert a Move to UCI (king→rook for Chess960 castling)
+Move oo = board.getContext().getoo(Side.WHITE);
+board.toUci(oo);    // "g1h1" (UCI Chess960 convention)
+oo.toString();       // "g1g1" (internal representation — do NOT use for UCI)
+
+// Parse a UCI string into a Move (recognizes king→rook as castling)
+Move parsed = board.fromUci("g1h1");  // returns the O-O castle move
+
+// MoveList.loadFromText also handles Chess960 UCI correctly
+MoveList moves = new MoveList(board.getFen());
+moves.loadFromText("e2e4 e7e5 b2b3 f8g6 g2g3 g8h8");  // g8h8 = Black O-O
+```
+
+In standard chess, `toUci()` and `fromUci()` behave identically to `move.toString()` and `new Move(uci, side)` — no change needed for existing code.
+
 ### Files changed (vs upstream 1.3.6)
 
 | File | Change |
 |------|--------|
 | `GameContext` | Added `loadChess960()` to configure castling dynamically from piece positions |
-| `Board` | FEN parsing detects Chess960; `loadFromFen(fen, chess960)` overload; `doMove`/`isMoveLegal` handle Chess960 castling; `getFen` exports Shredder-FEN |
+| `Board` | FEN parsing detects Chess960; `loadFromFen(fen, chess960)` overload; `doMove`/`isMoveLegal` handle Chess960 castling; `getFen` exports Shredder-FEN; `toUci()`/`fromUci()` for UCI Chess960 convention |
 | `MoveGenerator` | `generateCastleMoves` excludes king/rook from occupancy check for Chess960 |
-| `MoveList` | `encode` uses `context.isCastleMove()` instead of file-delta for castle detection |
+| `MoveList` | `encode` uses `context.isCastleMove()` instead of file-delta for castle detection; `loadFromText` uses `board.fromUci()` |
 | `MoveBackup` | `restore` handles Chess960 castle undo |
 
 ---

@@ -1787,6 +1787,66 @@ public class Board implements Cloneable, BoardEvent {
     }
 
     /**
+     * Converts a move to its UCI string representation. In Chess960, castling is encoded as
+     * king-to-rook (e.g. "e1h1" for O-O when rook is on h1), following the official UCI Chess960 convention.
+     * In standard chess, castling is encoded as king-to-destination (e.g. "e1g1" for O-O).
+     *
+     * @param move the move to convert
+     * @return the UCI string representation of the move
+     */
+    public String toUci(Move move) {
+        if (context.getVariationType() == VariationType.CHESS960 && context.isCastleMove(move)) {
+            Side side = getSideToMove();
+            Move rookMove = context.isKingSideCastle(move)
+                    ? context.getRookoo(side)
+                    : context.getRookooo(side);
+            if (rookMove != null) {
+                return move.getFrom().toString().toLowerCase() + rookMove.getFrom().toString().toLowerCase();
+            }
+        }
+        String uci = move.getFrom().toString().toLowerCase() + move.getTo().toString().toLowerCase();
+        if (move.getPromotion() != Piece.NONE) {
+            uci += move.getPromotion().getFenSymbol().toLowerCase();
+        }
+        return uci;
+    }
+
+    /**
+     * Parses a UCI string into a Move, handling Chess960 castling notation. In Chess960, castling is
+     * encoded as king-to-rook (e.g. "e1h1"), which is converted to the internal king-to-destination format.
+     *
+     * @param uci the UCI string to parse (e.g. "e2e4", "e1h1" for Chess960 castling)
+     * @return the parsed Move
+     */
+    public Move fromUci(String uci) {
+        if (uci.length() >= 4 && context.getVariationType() == VariationType.CHESS960) {
+            Square from = Square.valueOf(uci.substring(0, 2).toUpperCase());
+            Square to = Square.valueOf(uci.substring(2, 4).toUpperCase());
+            Piece fromPiece = getPiece(from);
+            Piece toPiece = getPiece(to);
+            // King moving to own rook = castling in UCI Chess960
+            if (fromPiece.getPieceType() == PieceType.KING && toPiece.getPieceType() == PieceType.ROOK
+                    && fromPiece.getPieceSide() == toPiece.getPieceSide()) {
+                int fromFile = from.getFile().ordinal();
+                int toFile = to.getFile().ordinal();
+                return toFile > fromFile
+                        ? context.getoo(getSideToMove())
+                        : context.getooo(getSideToMove());
+            }
+        }
+        Piece promotion = Piece.NONE;
+        if (uci.length() == 5) {
+            promotion = Piece.fromFenSymbol(
+                    getSideToMove() == Side.WHITE
+                            ? String.valueOf(uci.charAt(4)).toUpperCase()
+                            : String.valueOf(uci.charAt(4)).toLowerCase());
+        }
+        Square from = Square.valueOf(uci.substring(0, 2).toUpperCase());
+        Square to = Square.valueOf(uci.substring(2, 4).toUpperCase());
+        return new Move(from, to, promotion);
+    }
+
+    /**
      * Returns the list of all possible pseudo-legal moves for the current position.
      * <p>
      * A move is considered pseudo-legal when it is legal according to the standard rules of chess piece movements, but
