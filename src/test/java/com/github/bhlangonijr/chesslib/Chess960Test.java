@@ -224,6 +224,207 @@ public class Chess960Test {
         assertEquals(Piece.WHITE_ROOK, board.getPiece(Square.F1));
     }
 
+    // ===== FEN FORMAT TESTS =====
+    // These tests verify the FEN output format for Chess960 positions,
+    // specifically the Shredder-FEN castling notation (file letters vs KQkq).
+
+    @Test
+    public void testShredderFenOutputWhenLoadedWithShredderFen() {
+        // Position: bqnbnrkr - King on G, Rooks on F and H
+        // Loaded with Shredder-FEN → getFen() should output Shredder-FEN
+        Board board = new Board();
+        board.loadFromFen("bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w HFhf - 0 1");
+
+        String fen = board.getFen();
+        String castling = fen.split(" ")[2];
+        assertEquals("Shredder-FEN should be preserved", "HFhf", castling);
+    }
+
+    @Test
+    public void testShredderFenOutputWhenLoadedWithKQkqAndChess960Flag() {
+        // Same position loaded with KQkq + chess960=true
+        // getFen() should output Shredder-FEN (file letters) because the rook files are detected
+        Board board = new Board();
+        board.loadFromFen("bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w KQkq - 0 1", true);
+
+        String fen = board.getFen();
+        String castling = fen.split(" ")[2];
+        assertEquals("Chess960 flag should produce Shredder-FEN", "HFhf", castling);
+    }
+
+    @Test
+    public void testKQkqOutputWhenLoadedWithKQkqWithoutFlag() {
+        // Same position loaded with KQkq WITHOUT chess960=true
+        // King is NOT on e-file → auto-detected as Chess960 → Shredder-FEN
+        Board board = new Board();
+        board.loadFromFen("bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w KQkq - 0 1");
+
+        String fen = board.getFen();
+        String castling = fen.split(" ")[2];
+        // King on G-file (not E) → auto-detected as Chess960
+        assertEquals("Non-standard king position auto-detects Chess960", "HFhf", castling);
+    }
+
+    @Test
+    public void testShredderFenPreservedAfterMoves() {
+        // Load Chess960 position, play some moves, verify FEN stays in Shredder format
+        Board board = new Board();
+        board.loadFromFen("bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w HFhf - 0 1");
+
+        board.doMove(new Move(Square.E2, Square.E4)); // 1. e4
+        String fen1 = board.getFen();
+        String castling1 = fen1.split(" ")[2];
+        assertEquals("Shredder-FEN preserved after pawn move", "HFhf", castling1);
+
+        board.doMove(new Move(Square.E7, Square.E5)); // 1... e5
+        String fen2 = board.getFen();
+        String castling2 = fen2.split(" ")[2];
+        assertEquals("Shredder-FEN preserved after black pawn move", "HFhf", castling2);
+    }
+
+    @Test
+    public void testShredderFenAfterCastlingRightsLost() {
+        // When one side loses castling rights, the remaining rights should still be Shredder
+        Board board = new Board();
+        board.loadFromFen("bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w HFhf - 0 1");
+
+        // Move the H-rook (king-side) → lose king-side castling
+        board.doMove(new Move(Square.H2, Square.H4));
+        board.doMove(new Move(Square.A7, Square.A6));
+        board.doMove(new Move(Square.H1, Square.H3)); // Move H-rook
+
+        String fen = board.getFen();
+        String castling = fen.split(" ")[2];
+        // White should only have queen-side (F-file rook), black still has both
+        assertTrue("Castling should contain F for white queen-side: " + castling,
+                castling.contains("F"));
+        // White should have lost king-side (H) castling right
+        // Check that no uppercase H remains in the castling string
+        boolean hasWhiteKingSide = false;
+        for (char c : castling.toCharArray()) {
+            if (c == 'H') { hasWhiteKingSide = true; break; }
+        }
+        assertTrue("Castling should NOT contain H for white king-side: " + castling,
+                !hasWhiteKingSide);
+    }
+
+    @Test
+    public void testFenHashConsistencyBetweenShredderAndKQkqLoad() {
+        // CRITICAL: Verify that loading the same position with Shredder-FEN vs KQkq+flag
+        // produces the SAME getFen() output (both should be Shredder-FEN)
+        Board board1 = new Board();
+        board1.loadFromFen("bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w HFhf - 0 1");
+
+        Board board2 = new Board();
+        board2.loadFromFen("bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w KQkq - 0 1", true);
+
+        assertEquals("Both loading methods should produce identical FEN",
+                board1.getFen(), board2.getFen());
+    }
+
+    @Test
+    public void testShredderFenWithStandardRookPositions() {
+        // Position 518 (standard starting position) — rooks on A and H files
+        // Even in Chess960 mode, rooks on a/h should produce standard-looking Shredder-FEN
+        Board board = new Board();
+        board.loadFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w HAha - 0 1");
+
+        String fen = board.getFen();
+        String castling = fen.split(" ")[2];
+        // H=king-side, A=queen-side → "HAha"
+        assertEquals("Standard rook positions in Shredder-FEN", "HAha", castling);
+    }
+
+    @Test
+    public void testFenRoundTripWithRealChess960Game() {
+        // Real game FEN from Freestyle Chess Grand Slam: bqnbnrkr position
+        String startFen = "bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w HFhf - 0 1";
+        Board board = new Board();
+        board.loadFromFen(startFen);
+
+        // Play 1. c4 b6 2. b4 e6
+        board.doMove(new Move(Square.C2, Square.C4));
+        board.doMove(new Move(Square.B7, Square.B6));
+        board.doMove(new Move(Square.B2, Square.B4));
+        board.doMove(new Move(Square.E7, Square.E6));
+
+        // Get FEN after moves
+        String fenAfterMoves = board.getFen();
+
+        // Reload from that FEN and verify round-trip
+        Board board2 = new Board();
+        board2.loadFromFen(fenAfterMoves);
+        assertEquals("FEN round-trip should be identical", fenAfterMoves, board2.getFen());
+        assertEquals("Should still be Chess960", VariationType.CHESS960, board2.getContext().getVariationType());
+    }
+
+    // ===== EN PASSANT FEN TESTS =====
+    // These tests verify the en passant square behavior in FEN output.
+    // Standard FEN: always outputs ep square after double pawn push
+    // X-FEN: only outputs ep square when a legal en passant capture exists
+    // chesslib Board.getFen(): outputs ep square ALWAYS (standard FEN behavior)
+    // chesslib Board.getFen(true, true): outputs ep square only if capturable (X-FEN behavior)
+
+    @Test
+    public void testEnPassantAlwaysOutputByDefault() {
+        // After 1. e4, the ep square should be e3 even though no black pawn can capture
+        Board board = new Board();
+        board.doMove(new Move(Square.E2, Square.E4));
+        String fen = board.getFen();
+        String epField = fen.split(" ")[3];
+        assertEquals("Default getFen() always outputs ep square after double push", "e3", epField);
+    }
+
+    @Test
+    public void testEnPassantOnlyIfCapturableOption() {
+        // After 1. e4, with onlyOutputEnPassantIfCapturable=true, ep should be "-"
+        Board board = new Board();
+        board.doMove(new Move(Square.E2, Square.E4));
+        String fen = board.getFen(true, true);
+        String epField = fen.split(" ")[3];
+        assertEquals("getFen(true, true) omits ep when no capture possible", "-", epField);
+    }
+
+    @Test
+    public void testEnPassantOutputWhenCaptureExists() {
+        // After 1. e4 d5 2. e5 f5, the ep square f6 should be output in both modes
+        Board board = new Board();
+        board.doMove(new Move(Square.E2, Square.E4));
+        board.doMove(new Move(Square.D7, Square.D5));
+        board.doMove(new Move(Square.E4, Square.E5));
+        board.doMove(new Move(Square.F7, Square.F5)); // f5 next to e5 pawn
+
+        String fenDefault = board.getFen();
+        String epDefault = fenDefault.split(" ")[3];
+        assertEquals("Default: ep square present when capture exists", "f6", epDefault);
+
+        String fenStrict = board.getFen(true, true);
+        String epStrict = fenStrict.split(" ")[3];
+        assertEquals("Strict: ep square present when capture exists", "f6", epStrict);
+    }
+
+    @Test
+    public void testEnPassantChess960DefaultBehavior() {
+        // In Chess960, the default getFen() also always outputs ep square
+        Board board = new Board();
+        board.loadFromFen("bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w HFhf - 0 1");
+        board.doMove(new Move(Square.E2, Square.E4));
+        String fen = board.getFen();
+        String epField = fen.split(" ")[3];
+        assertEquals("Chess960 default: ep square always output", "e3", epField);
+    }
+
+    @Test
+    public void testEnPassantChess960StrictBehavior() {
+        // In Chess960, getFen(true, true) omits ep when no capture possible
+        Board board = new Board();
+        board.loadFromFen("bqnbnrkr/pppppppp/8/8/8/8/PPPPPPPP/BQNBNRKR w HFhf - 0 1");
+        board.doMove(new Move(Square.E2, Square.E4));
+        String fen = board.getFen(true, true);
+        String epField = fen.split(" ")[3];
+        assertEquals("Chess960 strict: ep square omitted when no capture", "-", epField);
+    }
+
     @Test
     public void testExplicitChess960FlagWithKingOnE() {
         // Chess960 position 518 (identical to standard) but with rooks on B1 and F1

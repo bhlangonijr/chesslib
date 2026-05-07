@@ -87,12 +87,30 @@ public class MoveBackup implements BoardEvent {
         setCapturedSquare(move.getTo());
         Piece moving = board.getPiece(move.getFrom());
         setMovingPiece(moving);
-        if (board.getContext().isCastleMove(move) && movingPiece == Piece.make(board.getSideToMove(), PieceType.KING)) {
-            CastleRight c = board.getContext().isKingSideCastle(move) ? CastleRight.KING_SIDE :
-                    CastleRight.QUEEN_SIDE;
-            Move rookMove = board.getContext().getRookCastleMove(board.getSideToMove(), c);
-            setRookCastleMove(rookMove);
-            setCastleMove(true);
+        if (board.getContext().isCastleMove(move) && movingPiece == Piece.make(board.getSideToMove(), PieceType.KING)
+                && board.getCastleRight(board.getSideToMove()) != CastleRight.NONE) {
+            boolean actualCastle = true;
+            if (board.getContext().getVariationType() == VariationType.CHESS960) {
+                if (move.getFrom() == move.getTo()) {
+                    actualCastle = true; // King stays in place — always a castle
+                } else {
+                    CastleRight c = board.getContext().isKingSideCastle(move) ? CastleRight.KING_SIDE :
+                            CastleRight.QUEEN_SIDE;
+                    Move rookMv = board.getContext().getRookCastleMove(board.getSideToMove(), c);
+                    Piece expectedRook = Piece.make(board.getSideToMove(), PieceType.ROOK);
+                    actualCastle = rookMv != null && board.getPiece(rookMv.getFrom()) == expectedRook;
+                }
+            }
+            if (actualCastle) {
+                CastleRight c = board.getContext().isKingSideCastle(move) ? CastleRight.KING_SIDE :
+                        CastleRight.QUEEN_SIDE;
+                Move rookMove = board.getContext().getRookCastleMove(board.getSideToMove(), c);
+                setRookCastleMove(rookMove);
+                setCastleMove(true);
+            } else {
+                setRookCastleMove(null);
+                setCastleMove(false);
+            }
         } else {
             setRookCastleMove(null);
             setCastleMove(false);
@@ -120,7 +138,7 @@ public class MoveBackup implements BoardEvent {
         board.getCastleRight().put(Side.BLACK, getCastleRight().get(Side.BLACK));
 
         if (move != emptyMove) {
-            final boolean isCastle = board.getContext().isCastleMove(getMove());
+            final boolean isCastle = isCastleMove();
 
             if (PieceType.KING.equals(movingPiece.getPieceType()) && isCastle) {
                 if (board.getContext().getVariationType() == VariationType.CHESS960) {

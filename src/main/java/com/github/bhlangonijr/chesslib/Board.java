@@ -221,7 +221,34 @@ public class Board implements Cloneable, BoardEvent {
         Side side = getSideToMove();
 
         MoveBackup backupMove = new MoveBackup(this, move);
-        final boolean isCastle = context.isCastleMove(move);
+        final boolean isCastle;
+        if (context.isCastleMove(move)
+                && PieceType.KING.equals(movingPiece.getPieceType())
+                && getCastleRight(side) != CastleRight.NONE) {
+            if (context.getVariationType() == VariationType.CHESS960) {
+                // Determine if this is actually a castle or a normal king move:
+                // - If from == to: always a castle (king already on final square)
+                // - If destination has an enemy piece: never a castle (it's a capture)
+                // - If destination is empty: castle only if the rook is on its initial square
+                // - If destination has own rook on rook's initial square: castle
+                Piece destPiece = getPiece(move.getTo());
+                if (move.getFrom() == move.getTo()) {
+                    isCastle = true;
+                } else if (destPiece != Piece.NONE && !destPiece.getPieceSide().equals(side)) {
+                    // Destination has enemy piece — this is a capture, not a castle
+                    isCastle = false;
+                } else {
+                    CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE : CastleRight.QUEEN_SIDE;
+                    Move rookMove = context.getRookCastleMove(side, c);
+                    Piece expectedRook = Piece.make(side, PieceType.ROOK);
+                    isCastle = rookMove != null && getPiece(rookMove.getFrom()) == expectedRook;
+                }
+            } else {
+                isCastle = true;
+            }
+        } else {
+            isCastle = false;
+        }
 
         incrementalHashKey ^= getSideKey(getSideToMove());
         if (getEnPassantTarget() != Square.NONE) {
@@ -230,29 +257,25 @@ public class Board implements Cloneable, BoardEvent {
 
         if (PieceType.KING.equals(movingPiece.getPieceType())) {
             if (isCastle) {
-                if (context.hasCastleRight(move, getCastleRight(side))) {
-                    CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE :
-                            CastleRight.QUEEN_SIDE;
-                    Move rookMove = context.getRookCastleMove(side, c);
-                    if (context.getVariationType() == VariationType.CHESS960) {
-                        // Chess960: manually handle piece placement to avoid capture issues
-                        Piece king = getPiece(move.getFrom());
-                        Piece rook = getPiece(rookMove.getFrom());
-                        unsetPiece(king, move.getFrom());
-                        if (!rookMove.getFrom().equals(move.getFrom())) {
-                            unsetPiece(rook, rookMove.getFrom());
-                        }
-                        setPiece(rook, rookMove.getTo());
-                        if (!move.getTo().equals(rookMove.getTo())) {
-                            setPiece(king, move.getTo());
-                        } else {
-                            setPiece(king, move.getTo());
-                        }
+                CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE :
+                        CastleRight.QUEEN_SIDE;
+                Move rookMove = context.getRookCastleMove(side, c);
+                if (context.getVariationType() == VariationType.CHESS960) {
+                    // Chess960: manually handle piece placement to avoid capture issues
+                    Piece king = getPiece(move.getFrom());
+                    Piece rook = getPiece(rookMove.getFrom());
+                    unsetPiece(king, move.getFrom());
+                    if (!rookMove.getFrom().equals(move.getFrom())) {
+                        unsetPiece(rook, rookMove.getFrom());
+                    }
+                    setPiece(rook, rookMove.getTo());
+                    if (!move.getTo().equals(rookMove.getTo())) {
+                        setPiece(king, move.getTo());
                     } else {
-                        movePiece(rookMove, backupMove);
+                        setPiece(king, move.getTo());
                     }
                 } else {
-                    return false;
+                    movePiece(rookMove, backupMove);
                 }
             }
             if (getCastleRight(side) != CastleRight.NONE) {
@@ -1424,11 +1447,26 @@ public class Board implements Cloneable, BoardEvent {
                 return false;
             }
 
-            // In Chess960 castling, the king may move to a square occupied by own rook
-            // (e.g., if rook is on G1 and king castles to G1). Skip the same-side capture check for castle moves.
-            if (fromPiece.getPieceSide().equals(capturedPiece.getPieceSide())
-                    && !(fromType.equals(PieceType.KING) && getContext().isCastleMove(move))) {
-                return false;
+            // In Chess960 castling, the king moves to the rook's square (own piece).
+            // Special case: when from == to (king already on final square), skip capture check.
+            if (fromPiece.getPieceSide().equals(capturedPiece.getPieceSide())) {
+                boolean allowCapture = false;
+                if (fromType.equals(PieceType.KING)
+                        && context.getVariationType() == VariationType.CHESS960
+                        && getContext().isCastleMove(move)
+                        && getCastleRight(side) != CastleRight.NONE) {
+                    if (move.getFrom() == move.getTo()) {
+                        // King stays in place (already on final square) — always a castle
+                        allowCapture = true;
+                    } else if (capturedPiece.getPieceType().equals(PieceType.ROOK)) {
+                        CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE : CastleRight.QUEEN_SIDE;
+                        Move rookMv = context.getRookCastleMove(side, c);
+                        allowCapture = rookMv != null && move.getTo() == rookMv.getFrom();
+                    }
+                }
+                if (!allowCapture) {
+                    return false;
+                }
             }
 
             if (!side.equals(fromPiece.getPieceSide())) {
@@ -1443,55 +1481,110 @@ public class Board implements Cloneable, BoardEvent {
                 return false;
             }
             if (fromType.equals(PieceType.KING)) {
-                if (getContext().isKingSideCastle(move)) {
-                    if (getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
-                            (getCastleRight(side).equals(CastleRight.KING_SIDE))) {
-                        long occ = getBitboard();
-                        if (context.getVariationType() == VariationType.CHESS960) {
-                            // Exclude king and rook from occupancy check
-                            occ &= ~move.getFrom().getBitboard();
-                            Move rookMove = context.getRookoo(side);
-                            if (rookMove != null) {
-                                occ &= ~rookMove.getFrom().getBitboard();
-                            }
+                // In Chess960, only enter castling validation if:
+                // - rook is on its initial square AND
+                // - destination does NOT have an enemy piece (captures are never castles)
+                boolean rookOnSquareOO = true;
+                boolean rookOnSquareOOO = true;
+                if (context.getVariationType() == VariationType.CHESS960) {
+                    Piece destPiece = getPiece(move.getTo());
+                    boolean destHasEnemy = destPiece != Piece.NONE && !destPiece.getPieceSide().equals(side);
+                    if (destHasEnemy) {
+                        rookOnSquareOO = false;
+                        rookOnSquareOOO = false;
+                    } else if (move.getFrom() == move.getTo()) {
+                        rookOnSquareOO = true;
+                        rookOnSquareOOO = true;
+                    } else {
+                        Move rookOO = context.getRookoo(side);
+                        Move rookOOO = context.getRookooo(side);
+                        Piece expectedRook = Piece.make(side, PieceType.ROOK);
+                        rookOnSquareOO = rookOO != null && getPiece(rookOO.getFrom()) == expectedRook;
+                        rookOnSquareOOO = rookOOO != null && getPiece(rookOOO.getFrom()) == expectedRook;
+                    }
+                }
+
+                if (getContext().isKingSideCastle(move) && rookOnSquareOO &&
+                        (getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
+                         getCastleRight(side).equals(CastleRight.KING_SIDE))) {
+                    long occ = getBitboard();
+                    if (context.getVariationType() == VariationType.CHESS960) {
+                        occ &= ~move.getFrom().getBitboard();
+                        Move rookMove = context.getRookoo(side);
+                        if (rookMove != null) {
+                            occ &= ~rookMove.getFrom().getBitboard();
                         }
-                        if ((occ & getContext().getooAllSquaresBb(side)) == 0L) {
-                            return !isSquareAttackedBy(getContext().getooSquares(side), side.flip());
-                        }
+                    }
+                    if ((occ & getContext().getooAllSquaresBb(side)) == 0L) {
+                        return !isSquareAttackedBy(getContext().getooSquares(side), side.flip());
                     }
                     return false;
                 }
-                if (getContext().isQueenSideCastle(move)) {
-                    if (getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
-                            (getCastleRight(side).equals(CastleRight.QUEEN_SIDE))) {
-                        long occ = getBitboard();
-                        if (context.getVariationType() == VariationType.CHESS960) {
-                            occ &= ~move.getFrom().getBitboard();
-                            Move rookMove = context.getRookooo(side);
-                            if (rookMove != null) {
-                                occ &= ~rookMove.getFrom().getBitboard();
-                            }
+                if (getContext().isQueenSideCastle(move) && rookOnSquareOOO &&
+                        (getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
+                         getCastleRight(side).equals(CastleRight.QUEEN_SIDE))) {
+                    long occ = getBitboard();
+                    if (context.getVariationType() == VariationType.CHESS960) {
+                        occ &= ~move.getFrom().getBitboard();
+                        Move rookMove = context.getRookooo(side);
+                        if (rookMove != null) {
+                            occ &= ~rookMove.getFrom().getBitboard();
                         }
-                        if ((occ & getContext().getoooAllSquaresBb(side)) == 0L) {
-                            return !isSquareAttackedBy(getContext().getoooSquares(side), side.flip());
-                        }
+                    }
+                    if ((occ & getContext().getoooAllSquaresBb(side)) == 0L) {
+                        return !isSquareAttackedBy(getContext().getoooSquares(side), side.flip());
                     }
                     return false;
                 }
             }
         }
         if (fromType.equals(PieceType.KING)) {
-            // For Chess960 castling, skip the attack check on king destination here
-            // (it's already checked via ooSquares above in fullValidation, and in generateCastleMoves)
-            if (!(context.getVariationType() == VariationType.CHESS960 && context.isCastleMove(move))) {
+            // For Chess960 castling, skip the attack check on king destination
+            boolean isActualCastle = false;
+            if (context.getVariationType() == VariationType.CHESS960
+                    && context.isCastleMove(move)
+                    && getCastleRight(side) != CastleRight.NONE) {
+                Piece destPiece = getPiece(move.getTo());
+                boolean destHasEnemy = destPiece != Piece.NONE && !destPiece.getPieceSide().equals(side);
+                if (move.getFrom() == move.getTo()) {
+                    isActualCastle = true;
+                } else if (destHasEnemy) {
+                    isActualCastle = false;
+                } else {
+                    CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE : CastleRight.QUEEN_SIDE;
+                    Move rookMv = context.getRookCastleMove(side, c);
+                    Piece expectedRook = Piece.make(side, PieceType.ROOK);
+                    isActualCastle = rookMv != null && getPiece(rookMv.getFrom()) == expectedRook;
+                }
+            }
+            if (!isActualCastle) {
                 if (squareAttackedBy(move.getTo(), side.flip()) != 0L) {
                     return false;
                 }
             }
         }
         // For Chess960 castling, the pin/attack detection below doesn't apply
-        if (context.getVariationType() == VariationType.CHESS960 && context.isCastleMove(move)) {
-            return true;
+        {
+            boolean isActualCastle = false;
+            if (context.getVariationType() == VariationType.CHESS960
+                    && context.isCastleMove(move)
+                    && getCastleRight(side) != CastleRight.NONE) {
+                Piece destPiece = getPiece(move.getTo());
+                boolean destHasEnemy = destPiece != Piece.NONE && !destPiece.getPieceSide().equals(side);
+                if (move.getFrom() == move.getTo()) {
+                    isActualCastle = true;
+                } else if (destHasEnemy) {
+                    isActualCastle = false;
+                } else {
+                    CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE : CastleRight.QUEEN_SIDE;
+                    Move rookMv = context.getRookCastleMove(side, c);
+                    Piece expectedRook = Piece.make(side, PieceType.ROOK);
+                    isActualCastle = rookMv != null && getPiece(rookMv.getFrom()) == expectedRook;
+                }
+            }
+            if (isActualCastle) {
+                return true;
+            }
         }
         Square kingSq = (fromType.equals(PieceType.KING) ?
                 move.getTo() : getKingSquare(side));
