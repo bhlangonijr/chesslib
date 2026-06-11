@@ -209,11 +209,12 @@ public class GameLoader {
     }
 
     private static boolean isEndGame(String line, PgnTempContainer container) {
-        if (!(line.endsWith("1-0") || line.endsWith("0-1") || line.endsWith("1/2-1/2") || line.endsWith("*")))
-            return false;
-
         updateCommentState(line, container);
-        return !container.commentOpened;
+        if (container.commentOpened) {
+            return false;
+        }
+        return line.endsWith("1-0") || line.endsWith("0-1")
+                || line.endsWith("1/2-1/2") || line.endsWith("*");
     }
 
     private static void updateCommentState(String line, PgnTempContainer container) {
@@ -221,7 +222,7 @@ public class GameLoader {
             char c = line.charAt(i);
             if (c == '{') {
                 container.commentOpened = true;
-            } else if (c == '}') {
+            } else if (c == '}' && container.commentOpened) {
                 container.commentOpened = false;
             }
         }
