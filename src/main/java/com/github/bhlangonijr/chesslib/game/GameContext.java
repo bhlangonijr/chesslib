@@ -411,10 +411,33 @@ public class GameContext {
      * @return {@code true} if the move is a castle one
      */
     public boolean isCastleMove(final Move move) {
-        return move.equals(getWhiteoo()) ||
+        if (move.equals(getWhiteoo()) ||
                 move.equals(getWhiteooo()) ||
                 move.equals(getBlackoo()) ||
-                move.equals(getBlackooo());
+                move.equals(getBlackooo())) {
+            return true;
+        }
+        // Chess960: also detect king-to-rook-square notation (UCI convention)
+        // where the king moves to the rook's starting square instead of its final destination
+        if (getVariationType() == VariationType.CHESS960) {
+            if (whiteRookoo != null && move.getFrom().equals(getWhiteoo().getFrom())
+                    && move.getTo().equals(whiteRookoo.getFrom())) {
+                return true;
+            }
+            if (whiteRookooo != null && move.getFrom().equals(getWhiteooo().getFrom())
+                    && move.getTo().equals(whiteRookooo.getFrom())) {
+                return true;
+            }
+            if (blackRookoo != null && move.getFrom().equals(getBlackoo().getFrom())
+                    && move.getTo().equals(blackRookoo.getFrom())) {
+                return true;
+            }
+            if (blackRookooo != null && move.getFrom().equals(getBlackooo().getFrom())
+                    && move.getTo().equals(blackRookooo.getFrom())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -442,8 +465,21 @@ public class GameContext {
      * @return {@code true} if the move is a king-side castle one
      */
     public boolean isKingSideCastle(Move move) {
-        return move.equals(getWhiteoo()) ||
-                move.equals(getBlackoo());
+        if (move.equals(getWhiteoo()) || move.equals(getBlackoo())) {
+            return true;
+        }
+        // Chess960: king-to-rook-square notation for kingside
+        if (getVariationType() == VariationType.CHESS960) {
+            if (whiteRookoo != null && move.getFrom().equals(getWhiteoo().getFrom())
+                    && move.getTo().equals(whiteRookoo.getFrom())) {
+                return true;
+            }
+            if (blackRookoo != null && move.getFrom().equals(getBlackoo().getFrom())
+                    && move.getTo().equals(blackRookoo.getFrom())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

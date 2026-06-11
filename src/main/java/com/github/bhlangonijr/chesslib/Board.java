@@ -262,6 +262,13 @@ public class Board implements Cloneable, BoardEvent {
                 Move rookMove = context.getRookCastleMove(side, c);
                 if (context.getVariationType() == VariationType.CHESS960) {
                     // Chess960: manually handle piece placement to avoid capture issues
+                    // Determine the king's final destination square (always c1/g1 or c8/g8)
+                    Square kingDest;
+                    if (side == Side.WHITE) {
+                        kingDest = c == CastleRight.KING_SIDE ? Square.G1 : Square.C1;
+                    } else {
+                        kingDest = c == CastleRight.KING_SIDE ? Square.G8 : Square.C8;
+                    }
                     Piece king = getPiece(move.getFrom());
                     Piece rook = getPiece(rookMove.getFrom());
                     unsetPiece(king, move.getFrom());
@@ -269,11 +276,7 @@ public class Board implements Cloneable, BoardEvent {
                         unsetPiece(rook, rookMove.getFrom());
                     }
                     setPiece(rook, rookMove.getTo());
-                    if (!move.getTo().equals(rookMove.getTo())) {
-                        setPiece(king, move.getTo());
-                    } else {
-                        setPiece(king, move.getTo());
-                    }
+                    setPiece(king, kingDest);
                 } else {
                     movePiece(rookMove, backupMove);
                 }
