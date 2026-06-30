@@ -29,7 +29,7 @@ Add the JitPack repository and the dependency to your project build file.
 <dependency>
     <groupId>com.github.bhlangonijr</groupId>
     <artifactId>chesslib</artifactId>
-    <version>1.3.6</version>
+    <version>1.3.7</version>
 </dependency>
 
 ```
@@ -38,7 +38,7 @@ Add the JitPack repository and the dependency to your project build file.
 
 ```groovy
 repositories { maven { url 'https://jitpack.io' } }
-dependencies { implementation 'com.github.bhlangonijr:chesslib:1.3.6' }
+dependencies { implementation 'com.github.bhlangonijr:chesslib:1.3.7' }
 
 ```
 
