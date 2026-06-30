@@ -15,7 +15,6 @@ public class PgnProperty {
      */
     public final static String UTF8_BOM = "\uFEFF";
 
-    private final static Pattern propertyPattern = Pattern.compile("\\[.* \".*\"\\]");
     /**
      * The name of the PGN property.
      */
@@ -49,7 +48,7 @@ public class PgnProperty {
      * @return {@code true} if the line is a PGN property
      */
     public static boolean isProperty(String line) {
-        return propertyPattern.matcher(line).matches();
+        return line.startsWith("[") && line.endsWith("]") && (line.indexOf('\"') != line.lastIndexOf('\"'));
     }
 
     /**
@@ -60,13 +59,16 @@ public class PgnProperty {
      */
     public static PgnProperty parsePgnProperty(String line) {
         try {
+            int nameStart = 1;
+            int nameEnd = line.indexOf(' ', 1);
 
-            String l = line.replace("[", StringUtils.EMPTY);
-            l = l.replace("]", StringUtils.EMPTY);
-            l = l.replace("\"", StringUtils.EMPTY);
+            int valueStart = line.indexOf('\"', nameEnd) + 1;
+            int valueEnd = line.lastIndexOf('\"');
 
-            return new PgnProperty(StringUtil.beforeSequence(l, StringUtils.SPACE),
-                    StringUtil.afterSequence(l, StringUtils.SPACE));
+            return new PgnProperty(
+                    line.substring(nameStart, nameEnd),
+                    line.substring(valueStart, valueEnd)
+            );
         } catch (Exception e) {
             // do nothing
         }

@@ -892,7 +892,7 @@ public class Board implements Cloneable, BoardEvent {
      */
     public String getFen(boolean includeCounters, boolean onlyOutputEnPassantIfCapturable) {
 
-        StringBuffer fen = new StringBuffer();
+        StringBuilder fen = new StringBuilder();
         int emptySquares = 0;
         for (int i = 7; i >= 0; i--) {
             Rank r = Rank.allRanks[i];

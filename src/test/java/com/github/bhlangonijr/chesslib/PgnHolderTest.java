@@ -655,4 +655,47 @@ public class PgnHolderTest {
         assertEquals(6, game.getHalfMoves().size());
     }
 
+    @Test
+    public void testMultiLineCommentSpanningResultToken() {
+        List<String> lines = Arrays.asList(
+                "[Event \"Test\"]",
+                "[Site \"Test\"]",
+                "[Date \"2024.01.01\"]",
+                "[Round \"1\"]",
+                "[White \"Player1\"]",
+                "[Black \"Player2\"]",
+                "[Result \"0-1\"]",
+                "",
+                "1.f3 e5 { Annotator notes:",
+                "the historical score here was 0-1",
+                "} 2.g3 d5 3.g4 Qh4# 0-1",
+                ""
+        );
+        Game game = GameLoader.loadNextGame(lines.iterator());
+        assertEquals("0-1", game.getResult().getDescription());
+        assertEquals(6, game.getHalfMoves().size());
+    }
+
+    @Test
+    public void testMultiLineCommentWithoutBracesOnInteriorLine() {
+        List<String> lines = Arrays.asList(
+                "[Event \"Test\"]",
+                "[Site \"Test\"]",
+                "[Date \"2024.01.01\"]",
+                "[Round \"1\"]",
+                "[White \"Player1\"]",
+                "[Black \"Player2\"]",
+                "[Result \"1-0\"]",
+                "",
+                "1.e4 e5 { comment opens here",
+                "interior line with no braces but ending in 1-0",
+                "still inside comment, score was 1/2-1/2",
+                "closing now } 2.Nf3 Nc6 3.Bb5 a6 1-0",
+                ""
+        );
+        Game game = GameLoader.loadNextGame(lines.iterator());
+        assertEquals("1-0", game.getResult().getDescription());
+        assertEquals(6, game.getHalfMoves().size());
+    }
+
 }

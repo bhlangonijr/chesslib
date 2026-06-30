@@ -69,7 +69,7 @@ public class GameLoader {
                     addProperty(line, container);
                 } else if (StringUtils.isNotEmpty(line)) {
                     addMoveText(line, container);
-                    if (isEndGame(line)) {
+                    if (isEndGame(line, container)) {
                         setMoveText(container.game, container.moveText);
                         return container.initGame ? container.game : null;
                     }
@@ -208,25 +208,24 @@ public class GameLoader {
         container.moveTextParsing = true;
     }
 
-    private static boolean isEndGame(String line) {
-        String stripped = stripBracketContent(line);
-        return stripped.endsWith("1-0") || stripped.endsWith("0-1") || stripped.endsWith("1/2-1/2") || stripped.endsWith("*");
+    private static boolean isEndGame(String line, PgnTempContainer container) {
+        updateCommentState(line, container);
+        if (container.commentOpened) {
+            return false;
+        }
+        return line.endsWith("1-0") || line.endsWith("0-1")
+                || line.endsWith("1/2-1/2") || line.endsWith("*");
     }
 
-    private static String stripBracketContent(String line) {
-        int depth = 0;
-        StringBuilder sb = new StringBuilder(line.length());
+    private static void updateCommentState(String line, PgnTempContainer container) {
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
             if (c == '{') {
-                depth++;
-            } else if (c == '}' && depth > 0) {
-                depth--;
-            } else if (depth == 0) {
-                sb.append(c);
+                container.commentOpened = true;
+            } else if (c == '}' && container.commentOpened) {
+                container.commentOpened = false;
             }
         }
-        return sb.toString().trim();
     }
 
     private static class PgnTempContainer {
@@ -241,6 +240,7 @@ public class GameLoader {
         final StringBuilder moveText;
         boolean moveTextParsing;
         boolean initGame;
+        boolean commentOpened;
 
         PgnTempContainer() {
             this.event = new Event();
