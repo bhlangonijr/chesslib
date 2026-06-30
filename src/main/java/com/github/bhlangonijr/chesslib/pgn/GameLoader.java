@@ -18,7 +18,6 @@ package com.github.bhlangonijr.chesslib.pgn;
 
 import com.github.bhlangonijr.chesslib.game.Event;
 import com.github.bhlangonijr.chesslib.game.Game;
-import com.github.bhlangonijr.chesslib.game.GameFactory;
 import com.github.bhlangonijr.chesslib.game.GameResult;
 import com.github.bhlangonijr.chesslib.game.GenericPlayer;
 import com.github.bhlangonijr.chesslib.game.Player;
@@ -106,41 +105,29 @@ public class GameLoader {
                 container.event.setStartDate(property.value);
                 break;
             case "round":
-                int r = 1;
-                try {
-                    r = Integer.parseInt(property.value); //TODO isParseable
-                } catch (Exception e1) {
-                }
-                r = Math.max(0, r);
-                container.round.setNumber(r);
-                if (!container.event.getRound().containsKey(r)) {
-                    container.event.getRound().put(r, container.round);
+                int roundNumber = Math.max(
+                        0,
+                        parseIntegerOrDefault(property.value, 1));
+
+                container.round.setNumber(roundNumber);
+
+                if (!container.event.getRound().containsKey(roundNumber)) {
+                    container.event.getRound()
+                            .put(roundNumber, container.round);
                 }
                 break;
-            case "white": {
-                if (container.round.getNumber() < 1) {
-                    container.round.setNumber(1); //TODO this is just to have the same behaviour as before...
-                }
-
-                container.game.setDate(container.event.getStartDate()); //TODO this should be done only once
-
-                container.whitePlayer.setId(property.value);
-                container.whitePlayer.setName(property.value);
-                container.whitePlayer.setDescription(property.value);
+            case "white":
+                setPlayerDetails(
+                        property.value,
+                        container.whitePlayer,
+                        container);
                 break;
-            }
-            case "black": {
-                if (container.round.getNumber() < 1) {
-                    container.round.setNumber(1); //TODO this just to have the same behaviour as before...
-                }
-
-                container.game.setDate(container.event.getStartDate()); //TODO this should be done only once
-
-                container.blackPlayer.setId(property.value);
-                container.blackPlayer.setName(property.value);
-                container.blackPlayer.setDescription(property.value);
+            case "black":
+                setPlayerDetails(
+                        property.value,
+                        container.blackPlayer,
+                        container);
                 break;
-            }
             case "result":
                 container.game.setResult(GameResult.fromNotation(property.value));
                 break;
@@ -179,18 +166,16 @@ public class GameLoader {
                 container.game.setVariation(property.value);
                 break;
             case "whiteelo":
-                try {
-                    container.whitePlayer.setElo(Integer.parseInt(property.value));
-                } catch (NumberFormatException e) {
-
-                }
+                container.whitePlayer.setElo(
+                        parseIntegerOrDefault(
+                                property.value,
+                                container.whitePlayer.getElo()));
                 break;
             case "blackelo":
-                try {
-                    container.blackPlayer.setElo(Integer.parseInt(property.value));
-                } catch (NumberFormatException e) {
-
-                }
+                container.blackPlayer.setElo(
+                        parseIntegerOrDefault(
+                                property.value,
+                                container.blackPlayer.getElo()));
                 break;
             default:
                 if (container.game.getProperty() == null) {
@@ -270,5 +255,33 @@ public class GameLoader {
 
         game.setPlyCount(String.valueOf(game.getHalfMoves().size()));
 
+    }
+
+
+    private static int parseIntegerOrDefault(
+            String value,
+            int defaultValue) {
+
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException ignored) {
+            return defaultValue;
+        }
+    }
+
+
+    private static void setPlayerDetails(
+            String value,
+            Player player,
+            PgnTempContainer container) {
+
+        if (container.round.getNumber() < 1) {
+            container.round.setNumber(1);
+        }
+
+        container.game.setDate(container.event.getStartDate());
+        player.setId(value);
+        player.setName(value);
+        player.setDescription(value);
     }
 }
