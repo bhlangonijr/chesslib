@@ -22,7 +22,7 @@ Add the JitPack repository and the dependency to your project build file.
 <repositories>
     <repository>
         <id>jitpack.io</id>
-        <url>[https://jitpack.io](https://jitpack.io)</url>
+        <url>https://jitpack.io</url>
     </repository>
 </repositories>
 
@@ -37,7 +37,7 @@ Add the JitPack repository and the dependency to your project build file.
 #### Gradle
 
 ```groovy
-repositories { maven { url '[https://jitpack.io](https://jitpack.io)' } }
+repositories { maven { url 'https://jitpack.io' } }
 dependencies { implementation 'com.github.bhlangonijr:chesslib:1.3.6' }
 
 ```
