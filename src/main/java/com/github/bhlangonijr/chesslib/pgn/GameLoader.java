@@ -18,7 +18,6 @@ package com.github.bhlangonijr.chesslib.pgn;
 
 import com.github.bhlangonijr.chesslib.game.Event;
 import com.github.bhlangonijr.chesslib.game.Game;
-import com.github.bhlangonijr.chesslib.game.GameFactory;
 import com.github.bhlangonijr.chesslib.game.GameResult;
 import com.github.bhlangonijr.chesslib.game.GenericPlayer;
 import com.github.bhlangonijr.chesslib.game.Player;
@@ -106,15 +105,15 @@ public class GameLoader {
                 container.event.setStartDate(property.value);
                 break;
             case "round":
-                int r = 1;
-                try {
-                    r = Integer.parseInt(property.value); //TODO isParseable
-                } catch (Exception e1) {
-                }
-                r = Math.max(0, r);
-                container.round.setNumber(r);
-                if (!container.event.getRound().containsKey(r)) {
-                    container.event.getRound().put(r, container.round);
+                int roundNumber = Math.max(
+                        0,
+                        parseIntegerOrDefault(property.value, 1));
+
+                container.round.setNumber(roundNumber);
+
+                if (!container.event.getRound().containsKey(roundNumber)) {
+                    container.event.getRound()
+                            .put(roundNumber, container.round);
                 }
                 break;
             case "white": {
@@ -270,5 +269,17 @@ public class GameLoader {
 
         game.setPlyCount(String.valueOf(game.getHalfMoves().size()));
 
+    }
+
+
+    private static int parseIntegerOrDefault(
+            String value,
+            int defaultValue) {
+
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException ignored) {
+            return defaultValue;
+        }
     }
 }
