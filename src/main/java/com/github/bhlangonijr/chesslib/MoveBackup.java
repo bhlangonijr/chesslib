@@ -89,17 +89,11 @@ public class MoveBackup implements BoardEvent {
         setMovingPiece(moving);
         if (board.getContext().isCastleMove(move) && movingPiece == Piece.make(board.getSideToMove(), PieceType.KING)
                 && board.getCastleRight(board.getSideToMove()) != CastleRight.NONE) {
-            boolean actualCastle = true;
+            boolean actualCastle;
             if (board.getContext().getVariationType() == VariationType.CHESS960) {
-                if (move.getFrom() == move.getTo()) {
-                    actualCastle = true; // King stays in place — always a castle
-                } else {
-                    CastleRight c = board.getContext().isKingSideCastle(move) ? CastleRight.KING_SIDE :
-                            CastleRight.QUEEN_SIDE;
-                    Move rookMv = board.getContext().getRookCastleMove(board.getSideToMove(), c);
-                    Piece expectedRook = Piece.make(board.getSideToMove(), PieceType.ROOK);
-                    actualCastle = rookMv != null && board.getPiece(rookMv.getFrom()) == expectedRook;
-                }
+                actualCastle = board.isChess960Castle(move, board.getSideToMove());
+            } else {
+                actualCastle = true;
             }
             if (actualCastle) {
                 CastleRight c = board.getContext().isKingSideCastle(move) ? CastleRight.KING_SIDE :
@@ -151,11 +145,7 @@ public class MoveBackup implements BoardEvent {
                         board.unsetPiece(rook, rookMove.getTo());
                     }
                     board.setPiece(rook, rookMove.getFrom());
-                    if (!getMove().getFrom().equals(rookMove.getFrom())) {
-                        board.setPiece(king, getMove().getFrom());
-                    } else {
-                        board.setPiece(king, getMove().getFrom());
-                    }
+                    board.setPiece(king, getMove().getFrom());
                     board.setIncrementalHashKey(getIncrementalHashKey());
                     return;
                 }

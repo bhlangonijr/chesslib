@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>tech.solusoft.chess</groupId>
+    <groupId>com.github.bhlangonijr.chesslib</groupId>
     <artifactId>chesslib</artifactId>
-    <version>1.3.6-chess960</version>
+    <version>1.3.7</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
