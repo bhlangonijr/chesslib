@@ -217,6 +217,36 @@ We welcome pull requests! Please ensure all tests pass before submitting.
 * **Bug Reports:** Please provide a minimal reproduction case (FEN + Move).
 * **Feature Requests:** Open an issue to discuss.
 
+## ♛ Chess960 (Fischer Random) Support
+
+Full Chess960 castling support is included. All 960 starting positions are handled correctly, including move generation, validation, execution, undo, SAN parsing, and FEN round-trip.
+
+### Detection
+
+Chess960 is detected automatically when loading a FEN with Shredder-FEN castling notation or non-standard king position. You can also force it explicitly:
+
+```java
+board.loadFromFen("bnqbrnkr/pppppppp/8/8/8/8/PPPPPPPP/BNQBRNKR w KQkq - 0 1", true);
+```
+
+### Castling
+
+King always ends on g-file (O-O) or c-file (O-O-O). Rook always ends on f-file (O-O) or d-file (O-O-O). Edge cases handled: king already on destination, king/rook adjacent, rook between king start/dest.
+
+### UCI Notation
+
+Use `board.toUci(move)` and `board.fromUci(uciString)` for Chess960 UCI convention (king-to-rook encoding):
+
+```java
+Board board = new Board();
+board.loadFromFen("bnqbrnkr/pppppppp/8/8/8/8/PPPPPPPP/BNQBRNKR w KQkq - 0 1");
+Move oo = board.getContext().getoo(Side.WHITE);
+board.toUci(oo);    // "g1h1" (king→rook)
+Move parsed = board.fromUci("g1h1");  // returns the O-O castle move
+```
+
+In standard chess, `toUci()` and `fromUci()` behave identically to `move.toString()` and `new Move(uci, side)`.
+
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.

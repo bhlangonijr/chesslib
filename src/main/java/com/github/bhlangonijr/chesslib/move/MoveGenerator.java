@@ -16,13 +16,20 @@
 
 package com.github.bhlangonijr.chesslib.move;
 
-import com.github.bhlangonijr.chesslib.*;
-
 import java.util.LinkedList;
 import java.util.List;
 
+import com.github.bhlangonijr.chesslib.Bitboard;
 import static com.github.bhlangonijr.chesslib.Bitboard.bitScanForward;
 import static com.github.bhlangonijr.chesslib.Bitboard.extractLsb;
+import com.github.bhlangonijr.chesslib.Board;
+import com.github.bhlangonijr.chesslib.CastleRight;
+import com.github.bhlangonijr.chesslib.Piece;
+import com.github.bhlangonijr.chesslib.PieceType;
+import com.github.bhlangonijr.chesslib.Rank;
+import com.github.bhlangonijr.chesslib.Side;
+import com.github.bhlangonijr.chesslib.Square;
+import com.github.bhlangonijr.chesslib.game.VariationType;
 
 /**
  * A handy collection of static utility methods for generating moves from a chess position.
@@ -340,9 +347,20 @@ public class MoveGenerator {
         if (board.isKingAttacked()) {
             return;
         }
+        boolean isChess960 = board.getContext().getVariationType() == VariationType.CHESS960;
         if (board.getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                 (board.getCastleRight(side).equals(CastleRight.KING_SIDE))) {
-            if ((board.getBitboard() & board.getContext().getooAllSquaresBb(side)) == 0L) {
+            long occ = board.getBitboard();
+            if (isChess960) {
+                // Exclude king and rook from occupancy for the "must be empty" check
+                Move kingMove = board.getContext().getoo(side);
+                Move rookMove = board.getContext().getRookoo(side);
+                occ &= ~kingMove.getFrom().getBitboard();
+                if (rookMove != null) {
+                    occ &= ~rookMove.getFrom().getBitboard();
+                }
+            }
+            if ((occ & board.getContext().getooAllSquaresBb(side)) == 0L) {
                 if (!board.isSquareAttackedBy(board.getContext().getooSquares(side), side.flip())) {
                     moves.add(board.getContext().getoo(side));
                 }
@@ -350,7 +368,16 @@ public class MoveGenerator {
         }
         if (board.getCastleRight(side).equals(CastleRight.KING_AND_QUEEN_SIDE) ||
                 (board.getCastleRight(side).equals(CastleRight.QUEEN_SIDE))) {
-            if ((board.getBitboard() & board.getContext().getoooAllSquaresBb(side)) == 0L) {
+            long occ = board.getBitboard();
+            if (isChess960) {
+                Move kingMove = board.getContext().getooo(side);
+                Move rookMove = board.getContext().getRookooo(side);
+                occ &= ~kingMove.getFrom().getBitboard();
+                if (rookMove != null) {
+                    occ &= ~rookMove.getFrom().getBitboard();
+                }
+            }
+            if ((occ & board.getContext().getoooAllSquaresBb(side)) == 0L) {
                 if (!board.isSquareAttackedBy(board.getContext().getoooSquares(side), side.flip())) {
                     moves.add(board.getContext().getooo(side));
                 }
