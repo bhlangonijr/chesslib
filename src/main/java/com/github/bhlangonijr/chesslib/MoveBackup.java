@@ -46,6 +46,7 @@ public class MoveBackup implements BoardEvent {
     private boolean castleMove;
     private boolean enPassantMove;
     private long incrementalHashKey;
+    private long incrementalPolyglotKey;
 
     /**
      * Constructs a new empty move backup.
@@ -73,8 +74,8 @@ public class MoveBackup implements BoardEvent {
      * @param move  the move which could be potentially restored later in time
      */
     public void makeBackup(Board board, Move move) {
-
         setIncrementalHashKey(board.getIncrementalHashKey());
+        setIncrementalPolyglotKey(board.getPolyglotKey());
         setSideToMove(board.getSideToMove());
         setEnPassantTarget(board.getEnPassantTarget());
         setEnPassant(board.getEnPassant());
@@ -147,6 +148,7 @@ public class MoveBackup implements BoardEvent {
                     board.setPiece(rook, rookMove.getFrom());
                     board.setPiece(king, getMove().getFrom());
                     board.setIncrementalHashKey(getIncrementalHashKey());
+                    board.setIncrementalPolyglotKey(getIncrementalPolyglotKey());
                     return;
                 }
                 board.undoMovePiece(getRookCastleMove());
@@ -162,6 +164,7 @@ public class MoveBackup implements BoardEvent {
             }
         }
         board.setIncrementalHashKey(getIncrementalHashKey());
+        board.setIncrementalPolyglotKey(getIncrementalPolyglotKey());
     }
 
     /**
@@ -410,7 +413,7 @@ public class MoveBackup implements BoardEvent {
     public long getIncrementalHashKey() {
         return incrementalHashKey;
     }
-
+    
     /**
      * Sets the incremental hash key used for restoring the board.
      *
@@ -418,5 +421,13 @@ public class MoveBackup implements BoardEvent {
      */
     public void setIncrementalHashKey(long incrementalHashKey) {
         this.incrementalHashKey = incrementalHashKey;
+    }
+    
+    public void setIncrementalPolyglotKey(long key) {
+        incrementalPolyglotKey = key;         
+    }
+    
+    public long getIncrementalPolyglotKey() {
+        return incrementalPolyglotKey;      
     }
 }
