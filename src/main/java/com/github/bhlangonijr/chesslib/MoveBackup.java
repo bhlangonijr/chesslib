@@ -46,6 +46,7 @@ public class MoveBackup implements BoardEvent {
     private boolean castleMove;
     private boolean enPassantMove;
     private long incrementalHashKey;
+    private long incrementalPolyglotKey;
 
     /**
      * Constructs a new empty move backup.
@@ -75,6 +76,7 @@ public class MoveBackup implements BoardEvent {
     public void makeBackup(Board board, Move move) {
 
         setIncrementalHashKey(board.getIncrementalHashKey());
+        setIncrementalPolyglotKey(board.getPolyglotKey());
         setSideToMove(board.getSideToMove());
         setEnPassantTarget(board.getEnPassantTarget());
         setEnPassant(board.getEnPassant());
@@ -147,6 +149,7 @@ public class MoveBackup implements BoardEvent {
                     board.setPiece(rook, rookMove.getFrom());
                     board.setPiece(king, getMove().getFrom());
                     board.setIncrementalHashKey(getIncrementalHashKey());
+                    board.setIncrementalPolyglotKey(getIncrementalPolyglotKey());
                     return;
                 }
                 board.undoMovePiece(getRookCastleMove());
@@ -162,6 +165,7 @@ public class MoveBackup implements BoardEvent {
             }
         }
         board.setIncrementalHashKey(getIncrementalHashKey());
+        board.setIncrementalPolyglotKey(getIncrementalPolyglotKey());
     }
 
     /**
@@ -418,5 +422,23 @@ public class MoveBackup implements BoardEvent {
      */
     public void setIncrementalHashKey(long incrementalHashKey) {
         this.incrementalHashKey = incrementalHashKey;
+    }
+
+    /**
+     * Sets the incremental Polyglot key used for restoring the board.
+     *
+     * @param incrementalPolyglotKey the incremental Polyglot key
+     */
+    public void setIncrementalPolyglotKey(long incrementalPolyglotKey) {
+        this.incrementalPolyglotKey = incrementalPolyglotKey;
+    }
+
+    /**
+     * Returns the incremental Polyglot key used for restoring the board.
+     *
+     * @return the incremental Polyglot key
+     */
+    public long getIncrementalPolyglotKey() {
+        return incrementalPolyglotKey;
     }
 }
