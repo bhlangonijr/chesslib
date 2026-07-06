@@ -199,18 +199,18 @@ public class Constants {
     public static Piece getPieceByNotation(String notation) {
         return Piece.fromFenSymbol(notation);
     }
-    
-    /** Polyglot Zobrist Random Table — 781 entries (public domain)
-     * Index Layout:
+
+    /**
+     * Polyglot Zobrist Random Table — 781 entries (public domain).
+     * Index layout:
      * [0..767] piece keys: 12 pieces × 64 squares
      * pieces: black pawn=0, white pawn=1, black knight=2, white knight=3,
      * black bishop=4, white bishop=5, black rook=6, white rook=7,
      * black queen=8, white queen=9, black king=10, white king=11
-     *   
      * [768..771] castling keys: KQkq combinations (indices 0..3 → bits)
      * [772..779] en passant file keys: files a..h
      * [780] side to move key (white to move)
-     **/
+     */
     public static final long[] POLYGLOT_RANDOM_TABLE = {
         0x9D39247E33776D41L, 0x2AF7398005AAA5C7L, 0x44DB015024623547L, 0x9C15F73E62A76AE2L,
         0x75834465489C0C89L, 0x3290AC3A203001BFL, 0x0FBBAD1F61042279L, 0xE83A908FF2FB60CAL,

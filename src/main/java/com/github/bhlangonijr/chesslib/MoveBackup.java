@@ -74,6 +74,7 @@ public class MoveBackup implements BoardEvent {
      * @param move  the move which could be potentially restored later in time
      */
     public void makeBackup(Board board, Move move) {
+
         setIncrementalHashKey(board.getIncrementalHashKey());
         setIncrementalPolyglotKey(board.getPolyglotKey());
         setSideToMove(board.getSideToMove());
@@ -413,7 +414,7 @@ public class MoveBackup implements BoardEvent {
     public long getIncrementalHashKey() {
         return incrementalHashKey;
     }
-    
+
     /**
      * Sets the incremental hash key used for restoring the board.
      *
@@ -422,12 +423,22 @@ public class MoveBackup implements BoardEvent {
     public void setIncrementalHashKey(long incrementalHashKey) {
         this.incrementalHashKey = incrementalHashKey;
     }
-    
-    public void setIncrementalPolyglotKey(long key) {
-        incrementalPolyglotKey = key;         
+
+    /**
+     * Sets the incremental Polyglot key used for restoring the board.
+     *
+     * @param incrementalPolyglotKey the incremental Polyglot key
+     */
+    public void setIncrementalPolyglotKey(long incrementalPolyglotKey) {
+        this.incrementalPolyglotKey = incrementalPolyglotKey;
     }
-    
+
+    /**
+     * Returns the incremental Polyglot key used for restoring the board.
+     *
+     * @return the incremental Polyglot key
+     */
     public long getIncrementalPolyglotKey() {
-        return incrementalPolyglotKey;      
+        return incrementalPolyglotKey;
     }
 }

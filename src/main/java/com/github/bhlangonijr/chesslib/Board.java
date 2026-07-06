@@ -84,7 +84,7 @@ public class Board implements Cloneable, BoardEvent {
     private final boolean updateHistory;
     private long incrementalHashKey;
     private long incrementalPolyglotKey;
-    
+
     /**
      * Constructs a new board using a default game context. The board will keep its history updated, that is, will store
      * a hash value for each position encountered.
@@ -238,7 +238,7 @@ public class Board implements Cloneable, BoardEvent {
 
         incrementalHashKey ^= getSideKey(getSideToMove());
         incrementalPolyglotKey ^= getSidePolyglotKey();
-        
+
         if (getEnPassantTarget() != Square.NONE) {
             incrementalHashKey ^= getEnPassantKey(getEnPassantTarget());
             incrementalPolyglotKey ^= getEnPassantPolyglotKey(getEnPassantTarget());
@@ -246,7 +246,8 @@ public class Board implements Cloneable, BoardEvent {
 
         if (PieceType.KING.equals(movingPiece.getPieceType())) {
             if (isCastle) {
-                CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE : CastleRight.QUEEN_SIDE;
+                CastleRight c = context.isKingSideCastle(move) ? CastleRight.KING_SIDE :
+                        CastleRight.QUEEN_SIDE;
                 Move rookMove = context.getRookCastleMove(side, c);
                 if (context.getVariationType() == VariationType.CHESS960) {
                     // Chess960: manually handle piece placement to avoid capture issues
@@ -269,7 +270,6 @@ public class Board implements Cloneable, BoardEvent {
                     movePiece(rookMove, backupMove);
                 }
             }
-            
             if (getCastleRight(side) != CastleRight.NONE) {
                 incrementalHashKey ^= getCastleRightKey(side);
                 incrementalPolyglotKey ^= getCastleRightsPolyglotKey(getCastleRight(side), side);
@@ -315,11 +315,9 @@ public class Board implements Cloneable, BoardEvent {
             capturedPiece = movePiece(move, backupMove);
         }
 
-        if (PieceType.ROOK == capturedPiece.getPieceType() &&
-            CastleRight.NONE != getCastleRight(side.flip())) {
+        if (PieceType.ROOK == capturedPiece.getPieceType()) {
             final Move oo = context.getRookoo(side.flip());
             final Move ooo = context.getRookooo(side.flip());
-           
             if (move.getTo() == oo.getFrom()) {
                 if (CastleRight.KING_AND_QUEEN_SIDE == getCastleRight(side.flip())) {
                     incrementalHashKey ^= getCastleRightKey(side.flip());
@@ -405,13 +403,13 @@ public class Board implements Cloneable, BoardEvent {
 
         Side side = getSideToMove();
         MoveBackup backupMove = new MoveBackup(this, emptyMove);
+
         setHalfMoveCounter(getHalfMoveCounter() + 1);
 
         if (getEnPassantTarget() != Square.NONE) {
             incrementalHashKey ^= getEnPassantKey(getEnPassantTarget());
             incrementalPolyglotKey ^= getEnPassantPolyglotKey(getEnPassantTarget());
         }
-        
         setEnPassantTarget(Square.NONE);
         setEnPassant(Square.NONE);
 
@@ -1060,11 +1058,9 @@ public class Board implements Cloneable, BoardEvent {
 
         incrementalHashKey = getZobristKey();
         incrementalPolyglotKey = computePolyglotKey();
-        
         if (updateHistory) {
-            getHistory().addLast(incrementalHashKey);
+            getHistory().addLast(this.getZobristKey());
         }
-        
         // call listeners
         if (isEnableEvents() &&
                 eventListener.get(BoardEventType.ON_LOAD).size() > 0) {
@@ -2222,105 +2218,102 @@ public class Board implements Cloneable, BoardEvent {
 
         return (getBitboard() ^ pieces ^ target.getBitboard()) | enPassant.getBitboard();
     }
-    
+
     private long computePolyglotKey() {
         long polyglot = 0L;
-        
-        for(Square square : Square.values()) {
-            if(square != Square.NONE) {
+
+        for (Square square : Square.values()) {
+            if (square != Square.NONE) {
                 Piece piece = getPiece(square);
-                if(piece == null || piece == Piece.NONE) continue;
+                if (piece == null || piece == Piece.NONE) {
+                    continue;
+                }
                 polyglot ^= getPiecePolyglotKey(piece, square);
             }
         }
-        
-        polyglot ^= getCastleRightsPolyglotKey(
-            getCastleRight(Side.WHITE), Side.WHITE
-        );
-        
-        polyglot ^= getCastleRightsPolyglotKey(
-            getCastleRight(Side.BLACK), Side.BLACK
-        );
-        
-        if(getSideToMove() == Side.WHITE) {
+
+        polyglot ^= getCastleRightsPolyglotKey(getCastleRight(Side.WHITE), Side.WHITE);
+        polyglot ^= getCastleRightsPolyglotKey(getCastleRight(Side.BLACK), Side.BLACK);
+
+        if (getSideToMove() == Side.WHITE) {
             polyglot ^= getSidePolyglotKey();
         }
-        
+
         Square epTarget = getEnPassantTarget();
-        if(epTarget != Square.NONE && pawnCanBeCapturedEnPassant()) {
+        if (epTarget != Square.NONE && pawnCanBeCapturedEnPassant()) {
             polyglot ^= getEnPassantPolyglotKey(epTarget);
         }
-        
+
         return polyglot;
     }
-    
+
+    /**
+     * Returns the Polyglot Zobrist key of the current position. Unlike {@link Board#getZobristKey()}, this key is
+     * computed from the standardized Polyglot random number table, making it suitable for looking up moves in
+     * Polyglot-format opening books and for interoperability with other chess tools.
+     *
+     * @return the Polyglot Zobrist key of the position
+     */
     public long getPolyglotKey() {
         return incrementalPolyglotKey;
     }
-    
-    public void setIncrementalPolyglotKey(long key) {
+
+    void setIncrementalPolyglotKey(long key) {
         this.incrementalPolyglotKey = key;
     }
-    
+
     private static long getEnPassantPolyglotKey(Square square) {
-        if(square == Square.NONE) { 
+        if (square == Square.NONE) {
             throw new IllegalArgumentException("must be a valid square");
         }
-        
-        return POLYGLOT_RANDOM_TABLE[
-            772 + square.getFile().ordinal()
-        ];
+        return POLYGLOT_RANDOM_TABLE[772 + square.getFile().ordinal()];
     }
-    
+
     private static long getSidePolyglotKey() {
         return POLYGLOT_RANDOM_TABLE[780];
     }
-    
+
     private static long getCastleRightsPolyglotKey(CastleRight rights, Side side) {
         long castleKey = 0L;
-        
-        if(rights == CastleRight.KING_AND_QUEEN_SIDE) {
+        if (rights == CastleRight.KING_AND_QUEEN_SIDE) {
             castleKey ^= getKingCastlePolyglotKey(side);
             castleKey ^= getQueenCastlePolyglotKey(side);
-        } else if(rights == CastleRight.KING_SIDE) {
+        } else if (rights == CastleRight.KING_SIDE) {
             castleKey ^= getKingCastlePolyglotKey(side);
-        } else if(rights == CastleRight.QUEEN_SIDE) {
+        } else if (rights == CastleRight.QUEEN_SIDE) {
             castleKey ^= getQueenCastlePolyglotKey(side);
         }
-        
         return castleKey;
     }
-    
+
     private static long getKingCastlePolyglotKey(Side side) {
         return POLYGLOT_RANDOM_TABLE[side == Side.WHITE ? 768 : 770];
     }
-    
+
     private static long getQueenCastlePolyglotKey(Side side) {
         return POLYGLOT_RANDOM_TABLE[side == Side.WHITE ? 769 : 771];
     }
-    
+
     private static long getPiecePolyglotKey(Piece piece, Square square) {
         int pieceIdx = getPiecePolyglotIndex(piece);
         int squareIdx = getSquarePolyglotIndex(square);
         return POLYGLOT_RANDOM_TABLE[pieceIdx * 64 + squareIdx];
     }
-  
+
     private static int getSquarePolyglotIndex(Square square) {
-        if(square == Square.NONE) { 
+        if (square == Square.NONE) {
             throw new IllegalArgumentException("must be a valid square");
         }
-        
         int file = square.getFile().ordinal();
         int rank = square.getRank().ordinal();
         return rank * 8 + file;
     }
-    
+
     private static int getPiecePolyglotIndex(Piece piece) {
-        if(piece == Piece.NONE) {
+        if (piece == Piece.NONE) {
             throw new IllegalArgumentException("must be a valid piece");
         }
-        
-        switch(piece.getPieceType()) {
+        switch (piece.getPieceType()) {
             case PAWN: return piece.getPieceSide() == Side.WHITE ? 1 : 0;
             case KNIGHT: return piece.getPieceSide() == Side.WHITE ? 3 : 2;
             case BISHOP: return piece.getPieceSide() == Side.WHITE ? 5 : 4;

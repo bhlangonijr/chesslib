@@ -1,13 +1,11 @@
-package com.github.bhlangonijr.chesslib; 
+package com.github.bhlangonijr.chesslib;
 
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
-import com.github.bhlangonijr.chesslib.Square;
+import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 
-/** 
+/**
  * The below test positions are from the official test data.
  * https://github.com/ddugovic/polyglot/blob/master/book_format.html
  */
@@ -83,7 +81,7 @@ public class PolyglotKeyTest {
 
         Move move = new Move(Square.E2, Square.E4);
         board.doMove(move);
-        assertEquals(0x823c9b50fd114196L, board.getPolyglotKey()); 
+        assertEquals(0x823c9b50fd114196L, board.getPolyglotKey());
 
         board.undoMove();
         assertEquals(originalKey, board.getPolyglotKey());
