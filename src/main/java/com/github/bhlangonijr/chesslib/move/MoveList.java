@@ -28,6 +28,7 @@ import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Constants;
 import com.github.bhlangonijr.chesslib.File;
 import com.github.bhlangonijr.chesslib.Piece;
+import com.github.bhlangonijr.chesslib.game.VariationType;
 import com.github.bhlangonijr.chesslib.PieceType;
 import com.github.bhlangonijr.chesslib.Rank;
 import com.github.bhlangonijr.chesslib.Side;
@@ -137,7 +138,11 @@ public class MoveList extends LinkedList<Move> implements List<Move> {
         StringBuilder san = new StringBuilder();
         Piece piece = board.getPiece(move.getFrom());
         if (piece.getPieceType().equals(PieceType.KING)) {
-            if (board.getContext().isCastleMove(move)) { // Chess960-compatible castle detection
+            // In Chess960 a castle move is the king moving onto its own rook; once that rook has left,
+            // the same squares are a plain king move.
+            if (board.getContext().isCastleMove(move)
+                    && (board.getContext().getVariationType() != VariationType.CHESS960
+                    || board.getPiece(move.getTo()) == Piece.make(board.getSideToMove(), PieceType.ROOK))) {
                 if (!board.doMove(move, true)) {
                     throw new MoveConversionException("Invalid move [" +
                             move + "] for current setup: " + board.getFen());
