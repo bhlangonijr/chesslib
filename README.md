@@ -245,7 +245,7 @@ board.toUci(oo);    // "g1h1" (king→rook)
 Move parsed = board.fromUci("g1h1");  // returns the O-O castle move
 ```
 
-In standard chess, `toUci()` and `fromUci()` behave identically to `move.toString()` and `new Move(uci, side)`.
+In standard chess, `toUci()` and `fromUci()` behave identically to `move.toString()` and `new Move(uci, side)`. In Chess960 the castle move itself is stored as king-to-rook, so `move.toString()` gives the same result there too, and a king move to g1/c1 (g8/c8) is always a plain king move, never a castle.
 
 ## License
 

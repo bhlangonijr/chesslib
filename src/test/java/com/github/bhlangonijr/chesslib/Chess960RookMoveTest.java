@@ -44,10 +44,10 @@ public class Chess960RookMoveTest {
 
         assertTrue("Should be Chess960", board.getContext().getVariationType() == VariationType.CHESS960);
 
-        // The context defines blackooo = Move(B8, C8) for queen-side castling
+        // The context defines blackooo = Move(B8, A8): king to its own rook, as in UCI Chess960
         Move blackOOO = board.getContext().getooo(Side.BLACK);
         System.out.println("Black OOO (queen-side castle): " + blackOOO);
-        assertEquals("Black OOO should be B8->C8", new Move(Square.B8, Square.C8), blackOOO);
+        assertEquals("Black OOO should be B8->A8", new Move(Square.B8, Square.A8), blackOOO);
 
         // Play all 84 half-moves via MoveList — this should now succeed
         // (previously failed at move 42...Kc8 because it was confused with castling)

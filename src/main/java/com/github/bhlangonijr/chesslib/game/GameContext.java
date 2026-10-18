@@ -229,11 +229,13 @@ public class GameContext {
                              Square blackKing, Square blackRookOO, Square blackRookOOO) {
         setVariationType(VariationType.CHESS960);
 
-        // King castle moves: king_from -> king_final_square
-        setWhiteoo(new Move(whiteKing, Square.G1));
-        setWhiteooo(new Move(whiteKing, Square.C1));
-        setBlackoo(new Move(blackKing, Square.G8));
-        setBlackooo(new Move(blackKing, Square.C8));
+        // King castle moves: king_from -> own rook square (UCI Chess960 convention). Unlike
+        // king_from -> king_final_square this never coincides with a plain king step. Without a
+        // rook the move is king_from -> king_from, which no move generator ever produces.
+        setWhiteoo(new Move(whiteKing, whiteRookOO != null ? whiteRookOO : whiteKing));
+        setWhiteooo(new Move(whiteKing, whiteRookOOO != null ? whiteRookOOO : whiteKing));
+        setBlackoo(new Move(blackKing, blackRookOO != null ? blackRookOO : blackKing));
+        setBlackooo(new Move(blackKing, blackRookOOO != null ? blackRookOOO : blackKing));
 
         // Rook castle moves: rook_from -> rook_final_square
         if (whiteRookOO != null) {

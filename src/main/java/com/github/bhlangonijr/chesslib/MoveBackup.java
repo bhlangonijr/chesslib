@@ -142,8 +142,12 @@ public class MoveBackup implements BoardEvent {
                     Piece king = Piece.make(getSideToMove(), PieceType.KING);
                     Piece rook = Piece.make(getSideToMove(), PieceType.ROOK);
                     Move rookMove = getRookCastleMove();
-                    board.unsetPiece(king, getMove().getTo());
-                    if (!rookMove.getTo().equals(getMove().getTo())) {
+                    boolean kingSide = board.getContext().isKingSideCastle(getMove());
+                    Square kingDest = getSideToMove() == Side.WHITE
+                            ? (kingSide ? Square.G1 : Square.C1)
+                            : (kingSide ? Square.G8 : Square.C8);
+                    board.unsetPiece(king, kingDest);
+                    if (!rookMove.getTo().equals(kingDest)) {
                         board.unsetPiece(rook, rookMove.getTo());
                     }
                     board.setPiece(rook, rookMove.getFrom());

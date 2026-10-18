@@ -1516,6 +1516,9 @@ public class Board implements Cloneable, BoardEvent {
                         }
                     }
                     if ((occ & getContext().getooAllSquaresBb(side)) == 0L) {
+                        if (context.getVariationType() == VariationType.CHESS960) {
+                            return isChess960CastlePathSafe(move, side);
+                        }
                         return !isSquareAttackedBy(getContext().getooSquares(side), side.flip());
                     }
                     return false;
@@ -1532,6 +1535,9 @@ public class Board implements Cloneable, BoardEvent {
                         }
                     }
                     if ((occ & getContext().getoooAllSquaresBb(side)) == 0L) {
+                        if (context.getVariationType() == VariationType.CHESS960) {
+                            return isChess960CastlePathSafe(move, side);
+                        }
                         return !isSquareAttackedBy(getContext().getoooSquares(side), side.flip());
                     }
                     return false;
@@ -1548,7 +1554,7 @@ public class Board implements Cloneable, BoardEvent {
         }
         // For Chess960 castling, the pin/attack detection below doesn't apply
         if (context.getVariationType() == VariationType.CHESS960 && isChess960Castle(move, side)) {
-            return true;
+            return isChess960CastlePathSafe(move, side);
         }
         Square kingSq = (fromType.equals(PieceType.KING) ?
                 move.getTo() : getKingSquare(side));
@@ -1852,15 +1858,6 @@ public class Board implements Cloneable, BoardEvent {
      * @return the UCI string representation of the move
      */
     public String toUci(Move move) {
-        if (context.getVariationType() == VariationType.CHESS960 && context.isCastleMove(move)) {
-            Side side = getSideToMove();
-            Move rookMove = context.isKingSideCastle(move)
-                    ? context.getRookoo(side)
-                    : context.getRookooo(side);
-            if (rookMove != null) {
-                return move.getFrom().toString().toLowerCase() + rookMove.getFrom().toString().toLowerCase();
-            }
-        }
         String uci = move.getFrom().toString().toLowerCase() + move.getTo().toString().toLowerCase();
         if (move.getPromotion() != Piece.NONE) {
             uci += move.getPromotion().getFenSymbol().toLowerCase();
@@ -1870,27 +1867,12 @@ public class Board implements Cloneable, BoardEvent {
 
     /**
      * Parses a UCI string into a Move, handling Chess960 castling notation. In Chess960, castling is
-     * encoded as king-to-rook (e.g. "e1h1"), which is converted to the internal king-to-destination format.
+     * encoded as king-to-rook (e.g. "e1h1"), which is also how the castle move is stored internally.
      *
      * @param uci the UCI string to parse (e.g. "e2e4", "e1h1" for Chess960 castling)
      * @return the parsed Move
      */
     public Move fromUci(String uci) {
-        if (uci.length() >= 4 && context.getVariationType() == VariationType.CHESS960) {
-            Square from = Square.valueOf(uci.substring(0, 2).toUpperCase());
-            Square to = Square.valueOf(uci.substring(2, 4).toUpperCase());
-            Piece fromPiece = getPiece(from);
-            Piece toPiece = getPiece(to);
-            // King moving to own rook = castling in UCI Chess960
-            if (fromPiece.getPieceType() == PieceType.KING && toPiece.getPieceType() == PieceType.ROOK
-                    && fromPiece.getPieceSide() == toPiece.getPieceSide()) {
-                int fromFile = from.getFile().ordinal();
-                int toFile = to.getFile().ordinal();
-                return toFile > fromFile
-                        ? context.getoo(getSideToMove())
-                        : context.getooo(getSideToMove());
-            }
-        }
         Piece promotion = Piece.NONE;
         if (uci.length() == 5) {
             promotion = Piece.fromFenSymbol(
@@ -2158,10 +2140,10 @@ public class Board implements Cloneable, BoardEvent {
      * to squares occupied by friendly rooks could also be normal captures in some edge cases.
      * This helper resolves the ambiguity by checking:
      * <ul>
-     *   <li>The move is recognized as a castle by the game context</li>
-     *   <li>The side still has castling rights</li>
+     *   <li>The move is recognized as a castle by the game context (king moves onto its own rook)</li>
+     *   <li>The side still has the castling right for that side of the board</li>
      *   <li>The destination is not occupied by an enemy piece (which would make it a capture)</li>
-     *   <li>The rook is on its expected initial square (or king from==to, meaning it stays in place)</li>
+     *   <li>The rook is on its expected initial square</li>
      * </ul>
      * <p>
      * This method should only be called when the variant is Chess960 and the moving piece is a king.
@@ -2171,11 +2153,13 @@ public class Board implements Cloneable, BoardEvent {
      * @return {@code true} if the move is a genuine Chess960 castle
      */
     boolean isChess960Castle(Move move, Side side) {
-        if (!context.isCastleMove(move) || getCastleRight(side) == CastleRight.NONE) {
+        if (!context.isCastleMove(move) || move.getFrom() == move.getTo()) {
             return false;
         }
-        if (move.getFrom() == move.getTo()) {
-            return true; // King already on final square — always a castle
+        CastleRight right = getCastleRight(side);
+        CastleRight needed = context.isKingSideCastle(move) ? CastleRight.KING_SIDE : CastleRight.QUEEN_SIDE;
+        if (right != CastleRight.KING_AND_QUEEN_SIDE && right != needed) {
+            return false;
         }
         Piece destPiece = getPiece(move.getTo());
         if (destPiece != Piece.NONE && !destPiece.getPieceSide().equals(side)) {
@@ -2185,6 +2169,28 @@ public class Board implements Cloneable, BoardEvent {
         Move rookMove = context.getRookCastleMove(side, c);
         Piece expectedRook = Piece.make(side, PieceType.ROOK);
         return rookMove != null && getPiece(rookMove.getFrom()) == expectedRook;
+    }
+
+    /**
+     * Checks that no square the king crosses or lands on during a Chess960 castle is attacked, judged
+     * after king and rook have left their squares: the castling rook can shield its own king's final
+     * square from a rook or queen behind it.
+     *
+     * @param move the castle move, as accepted by {@link #isChess960Castle(Move, Side)}
+     * @param side the side of the castling king
+     * @return {@code true} if the king passes and lands on safe squares only
+     */
+    private boolean isChess960CastlePathSafe(Move move, Side side) {
+        boolean kingSide = context.isKingSideCastle(move);
+        Move rookMove = kingSide ? context.getRookoo(side) : context.getRookooo(side);
+        long occ = getBitboard() & ~move.getFrom().getBitboard() & ~rookMove.getFrom().getBitboard();
+        occ |= rookMove.getTo().getBitboard();
+        for (Square square : kingSide ? context.getooSquares(side) : context.getoooSquares(side)) {
+            if (squareAttackedBy(square, side.flip(), occ | square.getBitboard()) != 0L) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean pawnCanBeCapturedEnPassant() {
