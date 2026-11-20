@@ -286,6 +286,13 @@ public class PgnHolder {
         Event event = getEvent().get(game.getRound().getEvent().getName());
         if (event == null) {
             getEvent().put(game.getRound().getEvent().getName(), game.getRound().getEvent());
+        } else {
+            Round round = event.getRound().get(game.getRound().getNumber());
+            if (round == null) {
+                event.getRound().put(game.getRound().getNumber(), game.getRound());
+            } else {
+                round.getGame().add(game);
+            }
         }
         Player whitePlayer = getPlayer().get(game.getWhitePlayer().getId());
         if (whitePlayer == null) {
