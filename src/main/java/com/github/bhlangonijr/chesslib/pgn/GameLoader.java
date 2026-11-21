@@ -138,7 +138,10 @@ public class GameLoader {
                 try {
                     container.game.setTermination(Termination.fromValue(property.value.toUpperCase()));
                 } catch (Exception e1) {
-                    container.game.setTermination(Termination.UNTERMINATED);
+                    if (container.game.getProperty() == null) {
+                        container.game.setProperty(new HashMap<>());
+                    }
+                    container.game.getProperty().put(property.name, property.value);
                 }
                 break;
             case "timecontrol":
