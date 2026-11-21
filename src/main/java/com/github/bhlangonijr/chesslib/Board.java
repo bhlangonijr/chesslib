@@ -1459,6 +1459,12 @@ public class Board implements Cloneable, BoardEvent {
                 return false;
             }
 
+            // A pawn cannot move forward onto an occupied square; that would be an illegal capture.
+            if (PieceType.PAWN.equals(fromType) && !Piece.NONE.equals(capturedPiece)
+                    && move.getFrom().getFile().equals(move.getTo().getFile())) {
+                return false;
+            }
+
             // In Chess960 castling, the king moves to the rook's square (own piece).
             // Special case: when from == to (king already on final square), skip capture check.
             if (fromPiece.getPieceSide().equals(capturedPiece.getPieceSide())) {
